@@ -1,6 +1,6 @@
 Na spustenie projektu je potrebné nainštalovať potrebné balíky pomocou:
 
-### `npm `
+### `npm install`
 
 ## Skripty použiteľné v priečinku projektu
 
