@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import MenuMain from "./components/MenuMain";
-import MenuSeminars from "./components/MenuSeminars";
-import Footer from "./components/Footer";
+import {MenuMain} from "./components/MenuMain";
+import {MenuSeminars} from "./components/MenuSeminars";
+import {Footer} from "./components/Footer";
 
 import Home from "./pages/Home";
 import Malynar from "./pages/Malynar";
@@ -13,7 +13,7 @@ import Zdruzenie from "./pages/Zdruzenie";
 import Ulohy from "./pages/Ulohy";
 import Archive from "./pages/Archive";
 
-function Webstrom() {
+export const Webstrom: React.FC = () => {
   return (
     <Router>
       <div id="page-container">
@@ -37,5 +37,3 @@ function Webstrom() {
     </Router>
   );
 }
-
-export default Webstrom;

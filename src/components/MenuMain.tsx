@@ -3,7 +3,7 @@ import * as FaIcons from "react-icons/fa";
 import * as CgIcons from "react-icons/cg";
 import { Link } from "react-router-dom";
 
-function MenuMain() {
+export const MenuMain: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
 
   const toggleMenu = () => {
@@ -43,5 +43,3 @@ function MenuMain() {
     </div>
   );
 }
-
-export default MenuMain;
