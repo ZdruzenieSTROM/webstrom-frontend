@@ -1,11 +1,7 @@
 import React from "react";
 
-function Strom() {
-  return (
-    <>
-      <h1>Strom</h1>
-    </>
-  );
-}
-
-export default Strom;
+export const Strom: React.FC = () => (
+  <>
+    <h1>Strom</h1>
+  </>
+)

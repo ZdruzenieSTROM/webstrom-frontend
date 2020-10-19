@@ -1,11 +1,7 @@
 import React from "react";
 
-function Malynar() {
-  return (
-    <>
-      <h1>Malynár</h1>
-    </>
-  );
-}
-
-export default Malynar;
+export const Malynar: React.FC = () => (
+  <>
+    <h1>Malynár</h1>
+  </>
+)
