@@ -1,0 +1,30 @@
+#menu-seminars {
+  display: flex;
+  justify-content: flex-end;
+  grid-column: 2 / 4;
+}
+
+.menu-seminars-item {
+  /* background-color: hotpink; */
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 8px;
+  margin: 10px;
+}
+
+.menu-seminars-item a {
+  display: inline-block;
+  padding: 0px 5px 3px 5px;
+  border-bottom: 0.3rem solid black;
+  color: black;
+  /* margin: 20px; */
+}
+
+.menu-seminars-item.active a {
+  border-color: white;
+  color: white;
+}
+
+.menu-seminars-item.active {
+  background-color: black;
+}

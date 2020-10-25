@@ -1,0 +1,4 @@
+.placeholder {
+  display: grid;
+  place-content: center;
+}
