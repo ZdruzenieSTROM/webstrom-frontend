@@ -14,7 +14,6 @@ interface MenuItemInterface {
 export const MenuMain: React.FC<{ seminarId: number }> = ({ seminarId }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [menuItems, setMenuItems] = useState<MenuItemInterface[]>([]);
-  // const location = useLocation();
 
   const toggleMenu = () => {
     setIsVisible((currentIsVisible) => !currentIsVisible);
@@ -22,9 +21,7 @@ export const MenuMain: React.FC<{ seminarId: number }> = ({ seminarId }) => {
 
   useEffect(() => {
     axios.get(`/api/cms/menu-item/on-site/${seminarId}/`).then((res) => {
-      // if (typeof res.data === "object") {
       setMenuItems(res.data);
-      // }
     });
   }, [seminarId]);
 

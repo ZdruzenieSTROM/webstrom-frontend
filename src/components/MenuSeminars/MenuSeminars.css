@@ -5,7 +5,6 @@
 }
 
 .menu-seminars-item {
-  /* background-color: hotpink; */
   font-size: 1.3rem;
   font-weight: bold;
   padding: 8px;
@@ -17,7 +16,6 @@
   padding: 0px 5px 3px 5px;
   border-bottom: 0.3rem solid black;
   color: black;
-  /* margin: 20px; */
 }
 
 .menu-seminars-item.active a {

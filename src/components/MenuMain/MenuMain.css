@@ -6,13 +6,11 @@
   position: relative;
   left: -100%;
   transition: 350ms;
-  /* transition-timing-function: ease-out; */
 }
 
 #menu-main.visible {
   left: 0;
   transition: 350ms;
-  /* transition-timing-function: ease-in-out; */
 }
 
 #menu-main-close-button {
@@ -36,10 +34,6 @@
   left: 0;
 }
 
-/* .icon-close-menu {
-  color: red;
-} */
-
 #menu-main-items {
   margin-top: 80px;
 }
@@ -60,7 +54,6 @@
   border-bottom: 0.3rem solid white;
   color: white;
   text-align: center;
-  /* background-color: hotpink; */
 }
 
 .active {
@@ -70,8 +63,4 @@
 .active > a {
   color: black;
   border-color: black;
-}
-
-.xxx {
-  border: 3px solid green;
 }
