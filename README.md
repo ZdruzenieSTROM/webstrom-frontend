@@ -1,19 +1,35 @@
-Na spustenie projektu je potrebné nainštalovať potrebné balíky pomocou:
+# Návod na spustenie
 
-### `yarn install` alebo len `yarn`
+## Spustenie backendu
 
-## Skripty použiteľné v priečinku projektu
+Na testovanie frontendu je potrebné mať prístup k API rozhraniu na backende. Návod na rozbehanie backendu sa nachádza vo [webstrom-backend](https://github.com/ZdruzenieSTROM/webstrom-backend/blob/master/navod.md) repozitári.
 
-### `yarn start`
+Po inštalácii potrebných balíkov a vytvorení databázy spusti backend django server pomocou:
 
-Spustí development server na ku ktorému sa dá dostať na [http://localhost:3000](http://localhost:3000) v prehliadači.
+```
+python manage.py runserver
+```
+Tento príkaz spustí server na `localhost:8000`, kde sa dá pristupovať k API a k django admin stránke.
 
-Stránka sa automaticky reloadne po zmene v zdrojovom kóde.
+## Spustenie frontendu
 
-### `yarn test`
+Naklonuj si projekt z GitHubu a prepni sa do priečinku projektu:
 
-Spustia sa testy. Viac informácií je na [running tests](https://facebook.github.io/create-react-app/docs/running-tests).
+```
+git clone https://github.com/ZdruzenieSTROM/webstrom-frontend
+cd webstrom-frontend
+```
 
-### `yarn run build`
-
-Vytvorí build aplikácie v priečinku `build`. Viac informácií je na [deployment](https://facebook.github.io/create-react-app/docs/deployment).
+Na nainštalovanie potrebných balíkov je potrebné mať nainštalovaný [node.js](https://nodejs.org/en/) spolu so správcom balíkov [yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable) a potrebné balíky pre projekt sa nainštalujú pomocou:
+```
+yarn install
+````
+alebo len
+```
+yarn
+```
+Development server sa spustí pomocou príkazu:
+```
+yarn start
+```
+Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo frontendovom kóde a automaticky sa reloaduje.
