@@ -24,6 +24,13 @@ export const Webstrom: React.FC = () => {
 
   return (
     <Router>
+      {/*
+      <ApiTest /> je jednoduchý komponent, ktorý slúži ako boilerplate pre
+      komunikáciu s API, ktorá sa nachádza na localhost:8000. Tento komponent
+      nie je zobrazený v html. Jeho jediná funkcionalita je načítanie dát
+      z API a vypísanie týchto dát do console.log().
+      */}
+      <ApiTest />
       <div id="page-container">
         {/* <MenuSeminars updateSeminarId={updateSeminarId} /> */}
         <MenuSeminars seminarId={seminarId} />
