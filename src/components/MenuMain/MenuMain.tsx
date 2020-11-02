@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import * as FaIcons from 'react-icons/fa'
 import * as CgIcons from 'react-icons/cg'
-import { Link, useLocation } from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 import './MenuMain.css'
 import axios from 'axios'
 
 interface MenuItemInterface {
-  id: number;
-  caption: string;
-  url: string;
+  id: number
+  caption: string
+  url: string
 }
 
-export const MenuMain: React.FC<{ seminarId: number }> = ({ seminarId }) => {
+export const MenuMain: React.FC<{seminarId: number}> = ({seminarId}) => {
   const [isVisible, setIsVisible] = useState(true)
   const [menuItems, setMenuItems] = useState<MenuItemInterface[]>([])
 
@@ -45,7 +45,7 @@ export const MenuMain: React.FC<{ seminarId: number }> = ({ seminarId }) => {
   )
 }
 
-const MenuMainItem: React.FC<{ caption: string; url: string }> = ({ caption, url }) => {
+const MenuMainItem: React.FC<{caption: string; url: string}> = ({caption, url}) => {
   const location = useLocation()
 
   return (

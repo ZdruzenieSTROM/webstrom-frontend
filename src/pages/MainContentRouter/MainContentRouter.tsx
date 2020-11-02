@@ -1,20 +1,20 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
-import { PagePlaceholder } from '../PagePlaceholder'
+import {Route, Switch} from 'react-router-dom'
+import {PagePlaceholder} from '../PagePlaceholder'
 
-export const MainContentRouter: React.FC<{ seminarId: number }> = ({ seminarId }) => {
+export const MainContentRouter: React.FC<{seminarId: number}> = ({seminarId}) => {
   const renderRouter = (seminarId: number) => {
     switch (seminarId) {
-    case 1:
-      return <StromRouter />
-    case 2:
-      return <MatikRouter />
-    case 3:
-      return <MalynarRouter />
-    case 4:
-      return <ZdruzenieRouter />
-    default:
-      return <StromRouter />
+      case 1:
+        return <StromRouter />
+      case 2:
+        return <MatikRouter />
+      case 3:
+        return <MalynarRouter />
+      case 4:
+        return <ZdruzenieRouter />
+      default:
+        return <StromRouter />
     }
   }
 

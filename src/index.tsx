@@ -7,5 +7,5 @@ ReactDOM.render(
   <React.StrictMode>
     <Webstrom />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 )

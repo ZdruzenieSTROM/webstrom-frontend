@@ -5,7 +5,7 @@ import './MenuSeminars.css'
 // Ak je to možné, pridal by som updateSeminarId handler na zmenu statu seminarId o component vyššie.
 //
 // export const MenuSeminars: React.FC<{ updateSeminarId: () => void }> = ({ updateSeminarId }) => (
-export const MenuSeminars: React.FC<{ seminarId: number }> = ({ seminarId }) => (
+export const MenuSeminars: React.FC<{seminarId: number}> = ({seminarId}) => (
   <div id="menu-seminars">
     <div className={seminarId === 3 ? 'menu-seminars-item active' : 'menu-seminars-item'}>
       <a href="http://malynar.localhost:3000/">Malynár</a>
