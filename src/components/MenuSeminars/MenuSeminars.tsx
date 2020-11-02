@@ -1,5 +1,6 @@
-import React from 'react'
 import './MenuSeminars.css'
+
+import React from 'react'
 
 // Nie som si istý, či sa dá zmeniť subdoména bez toho, aby sa prehliadač musel reloadnuť.
 // Ak je to možné, pridal by som updateSeminarId handler na zmenu statu seminarId o component vyššie.

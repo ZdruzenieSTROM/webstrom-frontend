@@ -1,5 +1,6 @@
-import React from 'react'
 import './PagePlaceholder.css'
+
+import React from 'react'
 
 export const PagePlaceholder: React.FC<{title: string}> = ({title}) => {
   return (

@@ -1,10 +1,10 @@
 import React from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
 
+import {Footer} from './components/Footer'
 import {MenuMain} from './components/MenuMain/'
 import {MenuSeminars} from './components/MenuSeminars'
 import {MainContentRouter} from './pages/MainContentRouter'
-import {Footer} from './components/Footer'
 
 export const Webstrom: React.FC = () => {
   const seminarId = getSeminarId()

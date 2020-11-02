@@ -1,5 +1,6 @@
 import React from 'react'
 import {Route, Switch} from 'react-router-dom'
+
 import {PagePlaceholder} from '../PagePlaceholder'
 
 export const MainContentRouter: React.FC<{seminarId: number}> = ({seminarId}) => {

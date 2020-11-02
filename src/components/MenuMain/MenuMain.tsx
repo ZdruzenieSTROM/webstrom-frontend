@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react'
-import * as FaIcons from 'react-icons/fa'
-import * as CgIcons from 'react-icons/cg'
-import {Link, useLocation} from 'react-router-dom'
 import './MenuMain.css'
+
 import axios from 'axios'
+import React, {useEffect, useState} from 'react'
+import * as CgIcons from 'react-icons/cg'
+import * as FaIcons from 'react-icons/fa'
+import {Link, useLocation} from 'react-router-dom'
 
 interface MenuItemInterface {
   id: number
