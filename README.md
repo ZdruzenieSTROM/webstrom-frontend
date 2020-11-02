@@ -33,3 +33,6 @@ Development server sa spustí pomocou príkazu:
 yarn start
 ```
 Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo frontendovom kóde a automaticky sa reloaduje.
+
+# IDE setup
+Používame VSCode, nainštaluj si doň ESLint rozšírenie. V repe máme `.vscode` config, preto sa kód sa pri uložení automaticky formátuje.
