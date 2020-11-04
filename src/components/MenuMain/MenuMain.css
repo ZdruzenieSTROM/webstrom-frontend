@@ -1,0 +1,66 @@
+#menu-main {
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+  width: 300px;
+  background-color: black;
+  position: relative;
+  left: -100%;
+  transition: 350ms;
+}
+
+#menu-main.visible {
+  left: 0;
+  transition: 350ms;
+}
+
+#menu-main-close-button {
+  height: 50px;
+  width: 50px;
+  font-size: 2.5rem;
+  display: grid;
+  place-items: center;
+  color: white;
+  z-index: 11;
+}
+#menu-main-open-button {
+  height: 50px;
+  width: 50px;
+  font-size: 2.5rem;
+  display: grid;
+  place-items: center;
+  color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+#menu-main-items {
+  margin-top: 80px;
+}
+
+.menu-main-item {
+  font-size: 1.3rem;
+  font-weight: bold;
+  background-color: transparent;
+  margin: 10px 40px;
+  padding: 8px;
+  display: grid;
+  place-items: center;
+}
+
+.menu-main-item a {
+  display: inline-block;
+  padding: 0px 5px 3px 5px;
+  border-bottom: 0.3rem solid white;
+  color: white;
+  text-align: center;
+}
+
+.active {
+  background-color: white;
+}
+
+.active > a {
+  color: black;
+  border-color: black;
+}
