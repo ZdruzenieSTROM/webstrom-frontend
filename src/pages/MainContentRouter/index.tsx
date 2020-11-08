@@ -1,1 +1,1 @@
-export * from "./MainContentRouter";
+export * from './MainContentRouter'
