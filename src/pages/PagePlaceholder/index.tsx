@@ -1,1 +1,1 @@
-export * from "./PagePlaceholder";
+export * from './PagePlaceholder'

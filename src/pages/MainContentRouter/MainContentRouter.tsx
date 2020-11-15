@@ -1,29 +1,30 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
-import { PagePlaceholder } from "../PagePlaceholder";
+import React from 'react'
+import {Route, Switch} from 'react-router-dom'
 
-export const MainContentRouter: React.FC<{ seminarId: number }> = ({ seminarId }) => {
+import {PagePlaceholder} from '../PagePlaceholder'
+
+export const MainContentRouter: React.FC<{seminarId: number}> = ({seminarId}) => {
   const renderRouter = (seminarId: number) => {
     switch (seminarId) {
       case 1:
-        return <StromRouter />;
+        return <StromRouter />
       case 2:
-        return <MatikRouter />;
+        return <MatikRouter />
       case 3:
-        return <MalynarRouter />;
+        return <MalynarRouter />
       case 4:
-        return <ZdruzenieRouter />;
+        return <ZdruzenieRouter />
       default:
-        return <StromRouter />;
+        return <StromRouter />
     }
-  };
+  }
 
   return (
     <div id="main-content">
       <Switch>{renderRouter(seminarId)}</Switch>
     </div>
-  );
-};
+  )
+}
 
 const MalynarRouter: React.FC = () => {
   return (
@@ -50,8 +51,8 @@ const MalynarRouter: React.FC = () => {
         <PagePlaceholder title="Ochrana osobných údajov" />
       </Route>
     </>
-  );
-};
+  )
+}
 
 const MatikRouter: React.FC = () => {
   return (
@@ -78,8 +79,8 @@ const MatikRouter: React.FC = () => {
         <PagePlaceholder title="Ochrana osobných údajov" />
       </Route>
     </>
-  );
-};
+  )
+}
 
 const StromRouter: React.FC = () => {
   return (
@@ -103,8 +104,8 @@ const StromRouter: React.FC = () => {
         <PagePlaceholder title="Ochrana osobných údajov" />
       </Route>
     </>
-  );
-};
+  )
+}
 
 const ZdruzenieRouter: React.FC = () => {
   return (
@@ -113,5 +114,5 @@ const ZdruzenieRouter: React.FC = () => {
         <PagePlaceholder title="Združenie home" />
       </Route>
     </>
-  );
-};
+  )
+}
