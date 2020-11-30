@@ -4,6 +4,7 @@ import {Route, Switch, useRouteMatch} from 'react-router-dom'
 import {PageLayout} from '../../components/PageLayout/PageLayout'
 import {Admin} from '../Admin/Admin'
 import {PagePlaceholder} from '../PagePlaceholder'
+import {RegisterForm} from '../RegisterForm'
 
 export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
   return (
@@ -50,6 +51,9 @@ const MalynarRouter: React.FC = () => {
       <Route exact path={path + 'gdpr/'}>
         <PagePlaceholder title="Ochrana osobných údajov" />
       </Route>
+      <Route exact path={path + 'register/'}>
+        <RegisterForm />
+      </Route>
     </>
   )
 }
@@ -79,6 +83,9 @@ const MatikRouter: React.FC = () => {
       <Route exact path={path + 'gdpr/'}>
         <PagePlaceholder title="Ochrana osobných údajov" />
       </Route>
+      <Route exact path={path + 'register/'}>
+        <RegisterForm />
+      </Route>
     </>
   )
 }
@@ -105,6 +112,9 @@ const StromRouter: React.FC = () => {
       <Route exact path={path + 'gdpr/'}>
         <PagePlaceholder title="Ochrana osobných údajov" />
       </Route>
+      <Route exact path={path + 'register/'}>
+        <RegisterForm />
+      </Route>
     </>
   )
 }
@@ -115,6 +125,9 @@ const ZdruzenieRouter: React.FC = () => {
     <>
       <Route exact path={path}>
         <PagePlaceholder title="Združenie home" />
+      </Route>
+      <Route exact path="/register/">
+        <RegisterForm />
       </Route>
     </>
   )
