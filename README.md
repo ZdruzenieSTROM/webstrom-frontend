@@ -2,7 +2,7 @@
 
 ## Spustenie backendu
 
-Na testovanie frontendu je potrebné mať prístup k API rozhraniu na backende. Návod na rozbehanie backendu sa nachádza vo [webstrom-backend](https://github.com/ZdruzenieSTROM/webstrom-backend/blob/master/navod.md) repozitári.
+Na testovanie frontendu je potrebné mať prístup k API rozhraniu na backende. Návod na rozbehanie backendu sa nachádza vo [webstrom-backend](https://github.com/ZdruzenieSTROM/webstrom-backend/blob/master/README.md) repozitári.
 
 Po inštalácii potrebných balíkov a vytvorení databázy spusti backend django server pomocou:
 
@@ -35,4 +35,7 @@ yarn start
 Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo frontendovom kóde a automaticky sa reloaduje.
 
 # IDE setup
-Používame VSCode, nainštaluj si doň ESLint rozšírenie. V repe máme `.vscode` config, preto sa kód sa pri uložení automaticky formátuje.
+Používame VSCode, nainštaluj si doň [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) rozšírenie. V repe máme `.vscode` config, preto sa kód pri uložení automaticky formátuje. Rozšírenie je možné doinštalovať pomocou `Ctrl+P` a spustením:
+```
+ext install dbaeumer.vscode-eslint
+```
