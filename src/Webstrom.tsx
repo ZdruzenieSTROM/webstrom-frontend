@@ -1,5 +1,5 @@
-import React from 'react'
-import {BrowserRouter as Router} from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import {useLocation} from 'react-router-dom'
 
 import {Footer} from './components/Footer'
 import {MenuMain} from './components/MenuMain/'
@@ -7,41 +7,32 @@ import {MenuSeminars} from './components/MenuSeminars'
 import {MainContentRouter} from './pages/MainContentRouter'
 
 export const Webstrom: React.FC = () => {
-  const seminarId = getSeminarId()
+  const location = useLocation()
+  const [seminarId, setSeminarId] = useState(getSeminarId(location.pathname))
 
-  // V prípade, že sa dá zmeniť subdoména bez reloadnutia prehliadača, môžeme zmeniť
-  // seminar id z konštanty na state ako na riadkoch nižšie.
-
-  // const [seminarId, setSeminarId] = useState(getSeminarId());
-
-  // const updateSeminarId = () => {
-  //   /**
-  //    * Táto funkcia updatne state seminarId podľa aktuálnej subdomény
-  //    * na ktorej sa nachádzame. Defaultné id je 1 (id Stromu).
-  //    */
-  //   setSeminarId(getSeminarId());
-  // };
+  useEffect(() => {
+    setSeminarId(getSeminarId(location.pathname))
+  }, [location])
 
   return (
-    <Router>
+    <>
       <div id="page-container">
-        {/* <MenuSeminars updateSeminarId={updateSeminarId} /> */}
         <MenuSeminars seminarId={seminarId} />
         <MenuMain seminarId={seminarId} />
         <MainContentRouter seminarId={seminarId} />
         <Footer />
       </div>
-    </Router>
+    </>
   )
 }
 
-const getSeminarId = () => {
+const getSeminarId = (path: string) => {
   /**
-   * Táto funkcia vráti id seminára podľa subdomény vo window.location.host
-   * pre potreby routovania a načítania menu z api.
+   * Táto funkcia vráti id seminára podľa aktuálnej cesty
    */
-  let seminarId = 1
-  switch (window.location.host.split('.')[0]) {
+  let seminarId = 0
+
+  switch (path.split('/')[1]) {
     case 'strom':
       seminarId = 1
       break
@@ -58,7 +49,7 @@ const getSeminarId = () => {
       seminarId = 5 // zatiaľ neexistujú žiadne menu itemy v api
       break
     default:
-      seminarId = 1
+      seminarId = 0
       break
   }
   return seminarId
