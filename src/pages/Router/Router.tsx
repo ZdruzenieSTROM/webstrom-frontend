@@ -6,7 +6,7 @@ import {PageLayout} from '../../components/PageLayout/PageLayout'
 import {Admin} from '../Admin/Admin'
 import {PagePlaceholder} from '../PagePlaceholder'
 import {Posts} from '../Post/Post'
-import {RegisterForm} from '../RegisterForm'
+import RegisterForm from '../RegisterForm/RegisterForm'
 import {VerifyEmail} from '../VerifyEmail/VerifyEmail'
 
 export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
