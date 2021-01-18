@@ -4,7 +4,7 @@ import {Route, Switch, useRouteMatch} from 'react-router-dom'
 import {PageLayout} from '../../components/PageLayout/PageLayout'
 import {Admin} from '../Admin/Admin'
 import {PagePlaceholder} from '../PagePlaceholder'
-import {RegisterForm} from '../RegisterForm'
+import RegisterForm from '../RegisterForm/RegisterForm'
 
 export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
   return (
