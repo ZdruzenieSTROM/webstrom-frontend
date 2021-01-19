@@ -1,53 +1,45 @@
 import React from 'react'
-import {Route, Switch} from 'react-router-dom'
+import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
 import {PagePlaceholder} from '../PagePlaceholder'
 
 export const MainContentRouter: React.FC<{seminarId: number}> = ({seminarId}) => {
-  const renderRouter = (seminarId: number) => {
-    switch (seminarId) {
-      case 1:
-        return <StromRouter />
-      case 2:
-        return <MatikRouter />
-      case 3:
-        return <MalynarRouter />
-      case 4:
-        return <ZdruzenieRouter />
-      default:
-        return <StromRouter />
-    }
-  }
-
   return (
     <div id="main-content">
-      <Switch>{renderRouter(seminarId)}</Switch>
+      <Switch>
+        <Route path={'/strom/'} component={StromRouter}></Route>
+        <Route path={'/matik/'} component={MatikRouter}></Route>
+        <Route path={'/malynar/'} component={MalynarRouter}></Route>
+        <Route path={'/zdruzenie/'} component={ZdruzenieRouter}></Route>
+        <Route path={'/admin/'} component={AdminRouter}></Route>
+      </Switch>
     </div>
   )
 }
 
 const MalynarRouter: React.FC = () => {
+  const {path} = useRouteMatch()
   return (
     <>
-      <Route exact path="/">
+      <Route exact path={path}>
         <PagePlaceholder title="Malynár home" />
       </Route>
-      <Route exact path="/zadania/">
+      <Route exact path={path + 'zadania/'}>
         <PagePlaceholder title="Zadania" />
       </Route>
-      <Route exact path="/vysledky/">
+      <Route exact path={path + 'vysledky/'}>
         <PagePlaceholder title="Výsledky" />
       </Route>
-      <Route exact path="/mamut/">
+      <Route exact path={path + 'mamut/'}>
         <PagePlaceholder title="Mamut" />
       </Route>
-      <Route exact path="/tmm/">
+      <Route exact path={path + 'tmm/'}>
         <PagePlaceholder title="TMM" />
       </Route>
-      <Route exact path="/minisustredenia/">
+      <Route exact path={path + 'minisustredenia/'}>
         <PagePlaceholder title="Minisústredenia" />
       </Route>
-      <Route exact path="/gdpr/">
+      <Route exact path={path + 'gdpr/'}>
         <PagePlaceholder title="Ochrana osobných údajov" />
       </Route>
     </>
@@ -55,27 +47,28 @@ const MalynarRouter: React.FC = () => {
 }
 
 const MatikRouter: React.FC = () => {
+  const {path} = useRouteMatch()
   return (
     <>
-      <Route exact path="/">
+      <Route exact path={path}>
         <PagePlaceholder title="Matik home" />
       </Route>
-      <Route exact path="/zadania/">
+      <Route exact path={path + 'zadania/'}>
         <PagePlaceholder title="Zadania" />
       </Route>
-      <Route exact path="/vysledky/">
+      <Route exact path={path + 'vysledky/'}>
         <PagePlaceholder title="Výsledky" />
       </Route>
-      <Route exact path="/lomihlav/">
+      <Route exact path={path + 'lomihlav/'}>
         <PagePlaceholder title="Lomihlav" />
       </Route>
-      <Route exact path="/tmm/">
+      <Route exact path={path + 'tmm/'}>
         <PagePlaceholder title="TMM" />
       </Route>
-      <Route exact path="/minisustredenia/">
+      <Route exact path={path + 'minisustredenia/'}>
         <PagePlaceholder title="Minisústredenia" />
       </Route>
-      <Route exact path="/gdpr/">
+      <Route exact path={path + 'gdpr/'}>
         <PagePlaceholder title="Ochrana osobných údajov" />
       </Route>
     </>
@@ -83,24 +76,25 @@ const MatikRouter: React.FC = () => {
 }
 
 const StromRouter: React.FC = () => {
+  const {path} = useRouteMatch()
   return (
     <>
-      <Route exact path="/">
+      <Route exact path={path}>
         <PagePlaceholder title="Strom home" />
       </Route>
-      <Route exact path="/zadania/">
+      <Route exact path={path + 'zadania/'}>
         <PagePlaceholder title="Zadania" />
       </Route>
-      <Route exact path="/vysledky/">
+      <Route exact path={path + 'vysledky/'}>
         <PagePlaceholder title="Výsledky" />
       </Route>
-      <Route exact path="/matboj/">
+      <Route exact path={path + 'matboj/'}>
         <PagePlaceholder title="Matboj" />
       </Route>
-      <Route exact path="/tmm/">
+      <Route exact path={path + 'tmm/'}>
         <PagePlaceholder title="TMM" />
       </Route>
-      <Route exact path="/gdpr/">
+      <Route exact path={path + 'gdpr/'}>
         <PagePlaceholder title="Ochrana osobných údajov" />
       </Route>
     </>
@@ -108,10 +102,22 @@ const StromRouter: React.FC = () => {
 }
 
 const ZdruzenieRouter: React.FC = () => {
+  const {path} = useRouteMatch()
   return (
     <>
-      <Route exact path="/">
+      <Route exact path={path}>
         <PagePlaceholder title="Združenie home" />
+      </Route>
+    </>
+  )
+}
+
+const AdminRouter: React.FC = () => {
+  const {path} = useRouteMatch()
+  return (
+    <>
+      <Route exact path={path}>
+        <PagePlaceholder title="Admin home" />
       </Route>
     </>
   )
