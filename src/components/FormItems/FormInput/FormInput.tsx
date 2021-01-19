@@ -1,10 +1,9 @@
 import TextField from '@material-ui/core/TextField'
 import React from 'react'
-import {Controller, useFormContext} from 'react-hook-form'
+import {Controller} from 'react-hook-form'
 
 const FormInput = (props: any) => {
-  const {control} = useFormContext()
-  const {name, label, required, isError, errorMessage} = props
+  const {control, name, label, required, isError, errorMessage} = props
 
   return (
     <Controller

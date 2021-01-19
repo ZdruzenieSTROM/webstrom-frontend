@@ -2,13 +2,12 @@ import './RegisterForm.css'
 
 import {Button} from '@material-ui/core'
 import React from 'react'
-import {FormProvider, useForm} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 
 import FormInput from '../../components/FormItems/FormInput/FormInput'
 
 const RegisterForm: React.FC = () => {
-  const methods = useForm()
-  const {handleSubmit} = methods
+  const {handleSubmit, control} = useForm()
 
   const onSubmit = (data: any) => {
     console.log(data)
@@ -18,21 +17,19 @@ const RegisterForm: React.FC = () => {
     <div className="registerform">
       <h1>Registrácia</h1>
 
-      <FormProvider {...methods}>
-        <form>
-          <FormInput name="email" label="Email" />
-          <FormInput name="password1" label="Heslo" />
-          <FormInput name="password2" label="Potvrdenie hesla" />
-          <FormInput name="first_name" label="Krstné meno" />
-          <FormInput name="last_name" label="Priezvisko" />
-          <FormInput name="nickname" label="Prezývka" />
-          <FormInput name="school" label="Škola" />
-          <FormInput name="year_of_graduation" label="Ročník" />
-          <FormInput name="phone" label="Telefónne číslo" />
-          <FormInput name="parent_phone" label="Telefónne číslo na rodiča" />
-          <FormInput name="gdpr" label="Súhlas so spracovaním osobných údajov" />
-        </form>
-      </FormProvider>
+      <form>
+        <FormInput control={control} name="email" label="Email" required />
+        <FormInput control={control} name="password1" label="Heslo" type="password" required />
+        <FormInput control={control} name="password2" label="Potvrdenie hesla" type="password" required />
+        <FormInput control={control} name="first_name" label="Krstné meno" required />
+        <FormInput control={control} name="last_name" label="Priezvisko" required />
+        <FormInput control={control} name="nickname" label="Prezývka" />
+        <FormInput control={control} name="school" label="Škola" required />
+        <FormInput control={control} name="year_of_graduation" label="Ročník" required />
+        <FormInput control={control} name="phone" label="Telefónne číslo" />
+        <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" />
+        <FormInput control={control} name="gdpr" label="Súhlas so spracovaním osobných údajov" required />
+      </form>
 
       <br />
       <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
