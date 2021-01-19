@@ -4,6 +4,7 @@ import {Button} from '@material-ui/core'
 import React from 'react'
 import {useForm} from 'react-hook-form'
 
+import FormCheckbox from '../../components/FormItems/FormCheckbox/FromCheckbox'
 import FormInput from '../../components/FormItems/FormInput/FormInput'
 
 const RegisterForm: React.FC = () => {
@@ -28,7 +29,7 @@ const RegisterForm: React.FC = () => {
         <FormInput control={control} name="year_of_graduation" label="Ročník" required />
         <FormInput control={control} name="phone" label="Telefónne číslo" />
         <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" />
-        <FormInput control={control} name="gdpr" label="Súhlas so spracovaním osobných údajov" required />
+        <FormCheckbox control={control} name="gdpr" label="Súhlas so spracovaním osobných údajov" required />
       </form>
 
       <br />
