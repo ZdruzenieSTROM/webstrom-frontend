@@ -9,7 +9,6 @@ const FormCheckbox = (props: any) => {
       <Controller
         name={name}
         control={control}
-        defaultValue={false}
         render={(props) => (
           <FormControlLabel
             control={<Checkbox onChange={(e) => props.onChange(e.target.checked)} checked={props.value} />}

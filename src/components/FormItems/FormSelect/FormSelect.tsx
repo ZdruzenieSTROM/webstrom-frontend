@@ -9,9 +9,6 @@ const MuiSelect = (props: any) => {
     <FormControl fullWidth={true}>
       <InputLabel htmlFor={name}>{label}</InputLabel>
       <Select id={name} {...props}>
-        <MenuItem value="">
-          <em>-</em>
-        </MenuItem>
         {options.map((item: {id: string; label: string}) => (
           <MenuItem key={item.id} value={item.id}>
             {item.label}
@@ -29,7 +26,6 @@ function FormSelect(props: any) {
       <Controller
         name={name}
         control={control}
-        defaultValue=""
         render={(props) => <MuiSelect options={options} label={label} {...props} />}
       />
     </React.Fragment>

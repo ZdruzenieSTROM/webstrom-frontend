@@ -8,8 +8,13 @@ import FormCheckbox from '../../components/FormItems/FormCheckbox/FromCheckbox'
 import FormInput from '../../components/FormItems/FormInput/FormInput'
 import FormSelect from '../../components/FormItems/FormSelect/FormSelect'
 
+const defaultValues = {
+  year_of_graduation: '',
+  gdpr: false,
+}
+
 const RegisterForm: React.FC = () => {
-  const {handleSubmit, control} = useForm()
+  const {handleSubmit, control} = useForm({defaultValues})
 
   const grades = [
     {
