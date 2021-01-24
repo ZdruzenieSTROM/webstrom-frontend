@@ -1,26 +1,17 @@
-import TextField from '@material-ui/core/TextField'
-import React from 'react'
-import {Controller} from 'react-hook-form'
+import {FormControl, Input, InputLabel, InputProps} from '@material-ui/core'
+import React, {FC} from 'react'
+import {Control, Controller} from 'react-hook-form'
 
-const FormInput = (props: any) => {
-  const {control, name, label, required, isError, errorMessage} = props
+const FormInput: FC<InputProps & {name: string; control: Control; label: string}> = (props) => {
+  const {control, name, label, required} = props
 
   return (
-    <Controller
-      as={TextField}
-      name={name}
-      control={control}
-      defaultValue=""
-      label={label}
-      fullWidth={true}
-      InputLabelProps={{
-        className: required ? 'required-label' : '',
-        required: required || false,
-      }}
-      error={isError}
-      helperText={errorMessage}
-      {...props}
-    />
+    <FormControl fullWidth={true}>
+      <InputLabel htmlFor={name} required={!!required}>
+        {label}
+      </InputLabel>
+      <Controller name={name} control={control} defaultValue="" as={<Input id={name} {...props} />} />
+    </FormControl>
   )
 }
 
