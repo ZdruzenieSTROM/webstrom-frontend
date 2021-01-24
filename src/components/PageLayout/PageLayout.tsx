@@ -1,8 +1,8 @@
 import React, {FC} from 'react'
 
-import {Footer} from '../Footer'
-import {MenuMain} from '../MenuMain'
-import {MenuSeminars} from '../MenuSeminars'
+import {Footer} from './components/Footer'
+import {MenuMain} from './components/MenuMain'
+import {MenuSeminars} from './components/MenuSeminars'
 
 export const PageLayout: FC<{seminarId: number}> = ({seminarId, children}) => (
   <div id="page-container">
