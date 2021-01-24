@@ -2,9 +2,9 @@ import {FormControl, InputLabel, MenuItem, Select, SelectProps} from '@material-
 import React, {FC} from 'react'
 import {Control, Controller} from 'react-hook-form'
 
-export type SelectItem = {id: number; label: string}
+export type SelectOption = {id: number; label: string}
 
-export const FormSelect: FC<SelectProps & {name: string; control: Control; options: SelectItem[]}> = (props) => {
+export const FormSelect: FC<SelectProps & {name: string; control: Control; options: SelectOption[]}> = (props) => {
   const {label, name, options, control} = props
   return (
     <FormControl fullWidth={true}>

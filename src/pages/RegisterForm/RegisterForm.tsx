@@ -7,7 +7,7 @@ import {useForm} from 'react-hook-form'
 
 import FormCheckbox from '../../components/FormItems/FormCheckbox/FromCheckbox'
 import FormInput from '../../components/FormItems/FormInput/FormInput'
-import {FormSelect, SelectItem} from '../../components/FormItems/FormSelect/FormSelect'
+import {FormSelect, SelectOption} from '../../components/FormItems/FormSelect/FormSelect'
 
 const defaultValues = {
   school_not: false,
@@ -23,9 +23,9 @@ const defaultValues = {
 const RegisterForm: React.FC = () => {
   const {handleSubmit, control, watch} = useForm({defaultValues})
   const fields = watch(Object.keys(defaultValues))
-  const [schoolsItems, setSchoolItems] = useState<SelectItem[]>([])
-  const [districtItems, setDistrictItems] = useState<SelectItem[]>([])
-  const [countyItems, setCountyItems] = useState<SelectItem[]>([])
+  const [schoolsItems, setSchoolItems] = useState<SelectOption[]>([])
+  const [districtItems, setDistrictItems] = useState<SelectOption[]>([])
+  const [countyItems, setCountyItems] = useState<SelectOption[]>([])
 
   const grades = [
     {
@@ -164,15 +164,12 @@ const RegisterForm: React.FC = () => {
         <FormSelect control={control} name="district" label="Okres školy" options={districtItems} />
         <FormSelect control={control} name="school" label="Škola" options={schoolsItems} />
         <FormCheckbox control={control} name="school_not_found" label="Moja škola sa v zozname nenachádza." />
-        {fields.school_not_found && (
-          <FormInput
-            control={control}
-            name="school_info"
-            label="povedz nám, kam chodíš na školu, aby sme ti ju mohli dodatočne pridať"
-            hide="true"
-          />
-        )}
-        {/* <FormSelect control={control} name="year_of_graduation" label="Ročník" options={grades} required /> */}
+        <FormInput
+          control={control}
+          name="school_info"
+          label="povedz nám, kam chodíš na školu, aby sme ti ju mohli dodatočne pridať"
+        />
+        <FormSelect control={control} name="year_of_graduation" label="Ročník" options={grades} required />
         <FormInput control={control} name="phone" label="Telefónne číslo" />
         <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" />
         <FormCheckbox control={control} name="gdpr" label="Súhlas so spracovaním osobných údajov" required />

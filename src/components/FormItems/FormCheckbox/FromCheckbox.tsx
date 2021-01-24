@@ -1,22 +1,21 @@
-import {Checkbox, FormControlLabel} from '@material-ui/core'
-import React from 'react'
-import {Controller} from 'react-hook-form'
+import {Checkbox, CheckboxProps, FormControlLabel} from '@material-ui/core'
+import React, {FC} from 'react'
+import {Control, Controller} from 'react-hook-form'
 
-const FormCheckbox = (props: any) => {
+const FormCheckbox: FC<CheckboxProps & {name: string; control: Control; label: string}> = (props) => {
   const {control, name, label} = props
   return (
-    <React.Fragment>
-      <Controller
-        name={name}
-        control={control}
-        render={(props) => (
-          <FormControlLabel
-            control={<Checkbox onChange={(e) => props.onChange(e.target.checked)} checked={props.value} />}
-            label={label}
-          />
-        )}
-      />
-    </React.Fragment>
+    <Controller
+      name={name}
+      control={control}
+      render={(controlProps) => (
+        <FormControlLabel
+          control={<Checkbox onChange={(e) => controlProps.onChange(e.target.checked)} checked={controlProps.value} />}
+          label={label}
+          disabled={props.disabled}
+        />
+      )}
+    />
   )
 }
 
