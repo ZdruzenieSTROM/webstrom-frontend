@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useLocation} from 'react-router-dom'
 
-import {Footer} from './components/Footer'
-import {MenuMain} from './components/MenuMain/'
-import {MenuSeminars} from './components/MenuSeminars'
-import {MainContentRouter} from './pages/MainContentRouter'
+import {Router} from './pages/Router/Router'
 
 export const Webstrom: React.FC = () => {
   const location = useLocation()
@@ -14,16 +11,7 @@ export const Webstrom: React.FC = () => {
     setSeminarId(getSeminarId(location.pathname))
   }, [location])
 
-  return (
-    <>
-      <div id="page-container">
-        <MenuSeminars seminarId={seminarId} />
-        <MenuMain seminarId={seminarId} />
-        <MainContentRouter seminarId={seminarId} />
-        <Footer />
-      </div>
-    </>
-  )
+  return <Router seminarId={seminarId} />
 }
 
 const getSeminarId = (path: string) => {
