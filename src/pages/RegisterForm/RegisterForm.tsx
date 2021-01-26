@@ -117,11 +117,11 @@ const RegisterForm: React.FC = () => {
       <h1>Registrácia</h1>
 
       <form>
-        <FormInput control={control} name="email" label="Email" required />
-        <FormInput control={control} name="password1" label="Heslo" type="password" required />
-        <FormInput control={control} name="password2" label="Potvrdenie hesla" type="password" required />
-        <FormInput control={control} name="first_name" label="Krstné meno" required />
-        <FormInput control={control} name="last_name" label="Priezvisko" required />
+        <FormInput control={control} name="email" label="Email" />
+        <FormInput control={control} name="password1" label="Heslo" type="password" />
+        <FormInput control={control} name="password2" label="Potvrdenie hesla" type="password" />
+        <FormInput control={control} name="first_name" label="Krstné meno" />
+        <FormInput control={control} name="last_name" label="Priezvisko" />
         <FormInput control={control} name="nickname" label="Prezývka" />
         <FormCheckbox control={control} name="school_not" label="Už nie som študent základnej ani strednej školy." />
         <FormSelect
@@ -163,12 +163,11 @@ const RegisterForm: React.FC = () => {
           name="year_of_graduation"
           label="Ročník"
           options={gradeItems}
-          required
           disabled={fields.school_not}
         />
         <FormInput control={control} name="phone" label="Telefónne číslo" />
         <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" />
-        <FormCheckbox control={control} name="gdpr" label="Súhlas so spracovaním osobných údajov" required />
+        <FormCheckbox control={control} name="gdpr" label="Súhlas so spracovaním osobných údajov" />
       </form>
 
       <br />
