@@ -1,15 +1,20 @@
 import './RegisterForm.css'
 
+import {yupResolver} from '@hookform/resolvers/yup'
 import {Button} from '@material-ui/core'
 import axios from 'axios'
 import React, {useEffect, useState} from 'react'
 import {useForm} from 'react-hook-form'
+import * as yup from 'yup'
 
 import FormCheckbox from '../../components/FormItems/FormCheckbox/FromCheckbox'
 import FormInput from '../../components/FormItems/FormInput/FormInput'
 import {FormSelect, SelectOption} from '../../components/FormItems/FormSelect/FormSelect'
 
 const defaultValues: {
+  email: string
+  password1: string
+  password2: string
   school_not: boolean
   county: number | ''
   district: number | ''
@@ -18,6 +23,9 @@ const defaultValues: {
   year_of_graduation: number | ''
   gdpr: boolean
 } = {
+  email: '',
+  password1: '',
+  password2: '',
   school_not: false,
   county: '',
   district: '',
@@ -27,8 +35,18 @@ const defaultValues: {
   gdpr: false,
 }
 
+const schema = yup.object().shape({
+  email: yup.string().required(),
+  password1: yup.string().required(),
+  password2: yup.string().required(),
+  // age: yup.number().positive().integer().required(),
+})
+
 const RegisterForm: React.FC = () => {
-  const {handleSubmit, control, watch, setValue} = useForm({defaultValues})
+  const {handleSubmit, control, watch, setValue, errors} = useForm({
+    defaultValues,
+    resolver: yupResolver(schema),
+  })
   const fields = watch(Object.keys(defaultValues))
 
   const [schoolsItems, setSchoolItems] = useState<SelectOption[]>([])
@@ -186,6 +204,7 @@ const RegisterForm: React.FC = () => {
 
   const onSubmit = (data: any) => {
     console.log(data)
+    // console.log(errors)
   }
 
   return (
@@ -193,11 +212,17 @@ const RegisterForm: React.FC = () => {
       <h1>Registrácia</h1>
 
       <form>
-        <FormInput control={control} name="email" label="Email" required />
-        <FormInput control={control} name="password1" label="Heslo" type="password" required />
-        <FormInput control={control} name="password2" label="Potvrdenie hesla" type="password" required />
-        <FormInput control={control} name="first_name" label="Krstné meno" required />
-        <FormInput control={control} name="last_name" label="Priezvisko" required />
+        <FormInput control={control} name="email" label="Email" errors={errors.email} />
+        <FormInput control={control} name="password1" label="Heslo" type="password" errors={errors.password1} />
+        <FormInput
+          control={control}
+          name="password2"
+          label="Potvrdenie hesla"
+          type="password"
+          errors={errors.password2}
+        />
+        <FormInput control={control} name="first_name" label="Krstné meno" />
+        <FormInput control={control} name="last_name" label="Priezvisko" />
         <FormInput control={control} name="nickname" label="Prezývka" />
         <FormCheckbox control={control} name="school_not" label="Už nie som študent základnej ani strednej školy." />
         <FormSelect
@@ -239,12 +264,11 @@ const RegisterForm: React.FC = () => {
           name="year_of_graduation"
           label="Ročník"
           options={grades}
-          required
           disabled={fields.school_not}
         />
         <FormInput control={control} name="phone" label="Telefónne číslo" />
         <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" />
-        <FormCheckbox control={control} name="gdpr" label="Súhlas so spracovaním osobných údajov" required />
+        <FormCheckbox control={control} name="gdpr" label="Súhlas so spracovaním osobných údajov" />
       </form>
 
       <br />

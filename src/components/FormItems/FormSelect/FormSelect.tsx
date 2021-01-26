@@ -8,7 +8,9 @@ export const FormSelect: FC<SelectProps & {name: string; control: Control; optio
   const {label, name, options, control} = props
   return (
     <FormControl fullWidth={true}>
-      <InputLabel htmlFor={name}>{label}</InputLabel>
+      <InputLabel htmlFor={name} shrink>
+        {label}
+      </InputLabel>
       <Controller
         name={name}
         control={control}
