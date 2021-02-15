@@ -202,8 +202,13 @@ const RegisterForm: React.FC = () => {
     }
   }, [fields.school_not_found, fields.school_not, emptyDistrictItems, emptySchoolItems, setValue])
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data)
+    console.log('responseasdasda sd')
+    const response = await axios.post(`http://localhost:8000/user/registration/`, data, {
+      headers: {'Access-Control-Allow-Origin': '*'},
+    })
+    console.log('response', response)
     // console.log(errors)
   }
 
