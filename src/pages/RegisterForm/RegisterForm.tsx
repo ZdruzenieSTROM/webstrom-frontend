@@ -108,8 +108,16 @@ const RegisterForm: React.FC = () => {
     }
   }, [fields.school_not_found, fields.school_not, emptyDistrictItems, emptySchoolItems, setValue])
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data)
+    axios.post(`/api/user/registration/`, data).then(
+      (response) => {
+        console.log('response', response)
+      },
+      (error) => {
+        console.log('error', error)
+      },
+    )
   }
 
   return (
