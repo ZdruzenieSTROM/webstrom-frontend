@@ -1,0 +1,8 @@
+.latex-example-container {
+  height: 20rem;
+  display: flex;
+  flex-direction: column;
+}
+.latex-example-container textarea {
+  height: 20rem;
+}

@@ -1,3 +1,5 @@
+import './LatexExample.css'
+
 import React, {useState} from 'react'
 
 import {Latex} from './Latex'
@@ -10,9 +12,9 @@ export const LatexExample: React.FC = () => {
   }
 
   return (
-    <>
+    <div className="latex-example-container">
       <textarea value={tex} onChange={handleInputChange} />
       <Latex>{tex}</Latex>
-    </>
+    </div>
   )
 }
