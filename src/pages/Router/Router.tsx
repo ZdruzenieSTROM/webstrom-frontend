@@ -1,17 +1,25 @@
 import React from 'react'
 import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
+import {PageLayout} from '../../components/PageLayout/PageLayout'
+import {Admin} from '../Admin/Admin'
 import {PagePlaceholder} from '../PagePlaceholder'
 
-export const MainContentRouter: React.FC<{seminarId: number}> = ({seminarId}) => {
+export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
   return (
     <div id="main-content">
       <Switch>
-        <Route path={'/strom/'} component={StromRouter}></Route>
-        <Route path={'/matik/'} component={MatikRouter}></Route>
-        <Route path={'/malynar/'} component={MalynarRouter}></Route>
-        <Route path={'/zdruzenie/'} component={ZdruzenieRouter}></Route>
-        <Route path={'/admin/'} component={AdminRouter}></Route>
+        <Route path={'/admin'} component={AdminRouter} />
+        {/* aby sme mohli pouzit PageLayout len pre niektore stranky (vsetky okrem admina), musi to byt takto zabalene
+          vo vlastnej Route, ktora vie, ktore stranky matchuje (a potom hlada hlbsie dalsie Routes) */}
+        <Route path={['/strom/', '/matik/', '/malynar/', '/zdruzenie/', '/']}>
+          <PageLayout seminarId={seminarId}>
+            <Route path={'/strom/'} component={StromRouter} />
+            <Route path={'/matik/'} component={MatikRouter} />
+            <Route path={'/malynar/'} component={MalynarRouter} />
+            <Route path={'/zdruzenie/'} component={ZdruzenieRouter} />
+          </PageLayout>
+        </Route>
       </Switch>
     </div>
   )
@@ -117,7 +125,7 @@ const AdminRouter: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <PagePlaceholder title="Admin home" />
+        <Admin />
       </Route>
     </>
   )
