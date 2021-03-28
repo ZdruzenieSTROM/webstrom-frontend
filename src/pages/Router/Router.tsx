@@ -4,6 +4,7 @@ import {Route, Switch, useRouteMatch} from 'react-router-dom'
 import {PageLayout} from '../../components/PageLayout/PageLayout'
 import {Admin} from '../Admin/Admin'
 import {PagePlaceholder} from '../PagePlaceholder'
+import {Posts} from '../Post/Post'
 
 export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
   return (
@@ -114,7 +115,7 @@ const ZdruzenieRouter: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <PagePlaceholder title="Združenie home" />
+        <Posts />
       </Route>
     </>
   )
