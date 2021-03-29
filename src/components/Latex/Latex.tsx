@@ -32,9 +32,6 @@ export const Latex: React.FC<{children: string}> = ({children}) => {
       </>,
     )
 
-    const p = m.index
-    console.log(p)
-
     if (typeof m.index !== 'undefined') {
       currentPosition = m.index + m[0].length
     }
