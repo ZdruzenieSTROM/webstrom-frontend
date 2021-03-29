@@ -3,9 +3,10 @@ import './Latex.css'
 import {MathComponent} from 'mathjax-react'
 import React from 'react'
 
-let re = /((?<!(\\|\$))\$(?!\$).+?(?<!(\\|\$))\$(?!\$))|(\$\$.+?\$\$)|(\\\[.+?\\\])|(\\\(.+?\\\))/gs
+// toto je regex, ktory matchuje LaTeX matematiku: $$.$$ \[.\] $.$ \(.\)
+const re = /((?<!(\\|\$))\$(?!\$).+?(?<!(\\|\$))\$(?!\$))|(\$\$.+?\$\$)|(\\\[.+?\\\])|(\\\(.+?\\\))/gs
 
-let trim = (str: string) => {
+const trim = (str: string) => {
   if (str[0] === '$' && str[1] !== '$') {
     return str.substring(1, str.length - 1)
   } else {
@@ -13,36 +14,33 @@ let trim = (str: string) => {
   }
 }
 
-export const Latex: React.FC<{children: any}> = ({children}) => {
-  let matches: any = Array.from(children.matchAll(re))
+export const Latex: React.FC<{children: string}> = ({children}) => {
+  const matches = Array.from(children.matchAll(re))
 
   if (matches.length === 0) {
     return <>{children}</>
   }
 
   let result = []
-  let currentPosition: number = 0
+  let currentPosition = 0
 
-  for (let m in matches) {
-    result.push(<>{children.substring(currentPosition, matches[m].index)}</>)
-    if (matches[m][0].substring(0, 2) === '\\[' || matches[m][0].substring(0, 2) === '$$') {
-      result.push(
-        <>
-          <MathComponent tex={trim(matches[m][0])} display={true} />
-        </>,
-      )
-    } else {
-      result.push(
-        <>
-          <MathComponent tex={trim(matches[m][0])} display={false} />
-        </>,
-      )
+  for (const m of matches) {
+    result.push(<>{children.substring(currentPosition, m.index)}</>)
+    result.push(
+      <>
+        <MathComponent tex={trim(m[0])} display={m[0].substring(0, 2) === '\\[' || m[0].substring(0, 2) === '$$'} />
+      </>,
+    )
+
+    const p = m.index
+    console.log(p)
+
+    if (typeof m.index !== 'undefined') {
+      currentPosition = m.index + m[0].length
     }
-
-    currentPosition = matches[m].index + matches[m][0].length
   }
 
-  result.push(<span>{children.substring(currentPosition)}</span>)
+  result.push(<>{children.substring(currentPosition)}</>)
 
   return <div>{result}</div>
 }
