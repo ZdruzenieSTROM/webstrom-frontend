@@ -21,7 +21,7 @@ export const Latex: React.FC<{children: string}> = ({children}) => {
     return <>{children}</>
   }
 
-  let result = []
+  const result = []
   let currentPosition = 0
 
   for (const m of matches) {
