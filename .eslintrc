@@ -9,6 +9,7 @@
         "react-app",
         "plugin:react/recommended",
         "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended",
         // eslint-config-prettier package - turns off eslint rules conflicting with prettier
         "prettier"
     ],
