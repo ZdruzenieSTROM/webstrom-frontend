@@ -17,5 +17,13 @@
     "rules": {
         "react/prop-types": "off",
         "simple-import-sort/sort": "error"
-    }
+    },
+    "overrides": [
+        {
+            "files": ["*.js"],
+            "rules": {
+                "@typescript-eslint/no-var-requires": "off"
+            }
+        }
+    ]
 }
