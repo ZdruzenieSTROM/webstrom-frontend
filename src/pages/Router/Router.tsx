@@ -6,7 +6,7 @@ import {PageLayout} from '../../components/PageLayout/PageLayout'
 import {Admin} from '../Admin/Admin'
 import {PagePlaceholder} from '../PagePlaceholder'
 import {Posts} from '../Post/Post'
-import RegisterForm from '../RegisterForm/RegisterForm'
+import {RegisterForm} from '../RegisterForm/RegisterForm'
 import {VerifyEmail} from '../VerifyEmail/VerifyEmail'
 
 export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
@@ -131,7 +131,7 @@ const ZdruzenieRouter: React.FC = () => {
       <Route exact path={path}>
         <PagePlaceholder title="Združenie Strom" />
       </Route>
-      <Route exact path="/register/">
+      <Route exact path={path + 'register/'}>
         <RegisterForm />
       </Route>
     </>

@@ -2,15 +2,15 @@ import './RegisterForm.css'
 
 import {Button} from '@material-ui/core'
 import axios from 'axios'
-import React, {useEffect, useState} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {useForm} from 'react-hook-form'
 
-import FormCheckbox from '../../components/FormItems/FormCheckbox/FromCheckbox'
-import FormInput from '../../components/FormItems/FormInput/FormInput'
+import {FormCheckbox} from '../../components/FormItems/FormCheckbox/FromCheckbox'
+import {FormInput} from '../../components/FormItems/FormInput/FormInput'
 import {FormSelect, SelectOption} from '../../components/FormItems/FormSelect/FormSelect'
 
 const defaultValues: {
-  school_not: boolean
+  without_school: boolean
   county: number | ''
   district: number | ''
   school: number | ''
@@ -18,7 +18,7 @@ const defaultValues: {
   grade: number | ''
   gdpr: boolean
 } = {
-  school_not: false,
+  without_school: false,
   county: '',
   district: '',
   school: '',
@@ -27,7 +27,7 @@ const defaultValues: {
   gdpr: false,
 }
 
-const RegisterForm: React.FC = () => {
+export const RegisterForm: FC = () => {
   const {handleSubmit, control, watch, setValue} = useForm({defaultValues})
   const fields = watch(Object.keys(defaultValues))
 
@@ -49,7 +49,7 @@ const RegisterForm: React.FC = () => {
     fetchData()
   }, [])
 
-  // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
+  // iniciálne načítanie ročníkov z BE, ktorými vyplníme FormSelect so školami
   useEffect(() => {
     const fetchData = async () => {
       const schools = await axios.get(`/api/personal/schools/?district=0`)
@@ -58,6 +58,7 @@ const RegisterForm: React.FC = () => {
     fetchData()
   }, [])
 
+  // načítanie ročníkov z BE, ktorými vyplníme FormSelect s krajmi
   useEffect(() => {
     const fetchData = async () => {
       const counties = await axios.get(`/api/personal/counties/`)
@@ -66,6 +67,7 @@ const RegisterForm: React.FC = () => {
     fetchData()
   }, [])
 
+  // načítanie ročníkov z BE, ktorými vyplníme FormSelect s okresmi (naviazené na zmenu číselníku s krajom)
   useEffect(() => {
     const fetchData = async () => {
       const districts =
@@ -76,6 +78,7 @@ const RegisterForm: React.FC = () => {
     fetchData()
   }, [fields.county, setValue])
 
+  // načítanie ročníkov z BE, ktorými vyplníme FormSelect so školami (naviazené na zmenu číselníku s okresmi)
   useEffect(() => {
     const fetchData = async () => {
       const schools =
@@ -92,11 +95,12 @@ const RegisterForm: React.FC = () => {
     fetchData()
   }, [fields.district, setValue])
 
+  // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxov pre neznámu školu/užívateľa po škole
   useEffect(() => {
     if (fields.school_not_found) {
       setSchoolItems(emptySchoolItems)
       setValue('school', 0)
-    } else if (fields.school_not) {
+    } else if (fields.without_school) {
       setValue('county', 0)
       setValue('grade', 13)
     } else {
@@ -105,7 +109,7 @@ const RegisterForm: React.FC = () => {
       setValue('school', '')
       setValue('grade', '')
     }
-  }, [fields.school_not_found, fields.school_not, emptySchoolItems, setValue])
+  }, [fields.school_not_found, fields.without_school, emptySchoolItems, setValue])
 
   const transformFormData = (data: any) => {
     return {
@@ -151,7 +155,7 @@ const RegisterForm: React.FC = () => {
             <FormInput control={control} name="nickname" label="Prezývka" />
             <FormCheckbox
               control={control}
-              name="school_not"
+              name="without_school"
               label="Už nie som študent základnej ani strednej školy."
             />
             <FormSelect
@@ -159,27 +163,27 @@ const RegisterForm: React.FC = () => {
               name="county"
               label="Kraj školy"
               options={countyItems}
-              disabled={fields.school_not_found || fields.school_not}
+              disabled={fields.school_not_found || fields.without_school}
             />
             <FormSelect
               control={control}
               name="district"
               label="Okres školy"
               options={districtItems}
-              disabled={!districtItems.length || fields.school_not_found || fields.school_not}
+              disabled={!districtItems.length || fields.school_not_found || fields.without_school}
             />
             <FormSelect
               control={control}
               name="school"
               label="Škola"
               options={schoolItems}
-              disabled={!schoolItems.length || fields.school_not_found || fields.school_not}
+              disabled={!schoolItems.length || fields.school_not_found || fields.without_school}
             />
             <FormCheckbox
               control={control}
               name="school_not_found"
               label="Moja škola sa v zozname nenachádza."
-              disabled={fields.district === '' || fields.school_not}
+              disabled={fields.district === '' || fields.without_school}
             />
             {fields.school_not_found && (
               <FormInput
@@ -193,7 +197,7 @@ const RegisterForm: React.FC = () => {
               name="grade"
               label="Ročník"
               options={gradeItems}
-              disabled={fields.school_not}
+              disabled={fields.without_school}
             />
             <FormInput control={control} name="phone" label="Telefónne číslo" />
             <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" />
@@ -208,5 +212,3 @@ const RegisterForm: React.FC = () => {
     </div>
   )
 }
-
-export default RegisterForm
