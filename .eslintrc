@@ -9,6 +9,7 @@
         "react-app",
         "plugin:react/recommended",
         "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended",
         // eslint-config-prettier package - turns off eslint rules conflicting with prettier
         "prettier"
     ],
@@ -16,5 +17,13 @@
     "rules": {
         "react/prop-types": "off",
         "simple-import-sort/sort": "error"
-    }
+    },
+    "overrides": [
+        {
+            "files": ["*.js"],
+            "rules": {
+                "@typescript-eslint/no-var-requires": "off"
+            }
+        }
+    ]
 }

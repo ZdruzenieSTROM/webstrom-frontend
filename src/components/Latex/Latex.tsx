@@ -21,15 +21,13 @@ export const Latex: React.FC<{children: string}> = ({children}) => {
     return <>{children}</>
   }
 
-  let result = []
+  const result = []
   let currentPosition = 0
 
   for (const m of matches) {
     result.push(<>{children.substring(currentPosition, m.index)}</>)
     result.push(
-      <>
-        <MathComponent tex={trim(m[0])} display={m[0].substring(0, 2) === '\\[' || m[0].substring(0, 2) === '$$'} />
-      </>,
+      <MathComponent tex={trim(m[0])} display={m[0].substring(0, 2) === '\\[' || m[0].substring(0, 2) === '$$'} />,
     )
 
     if (typeof m.index !== 'undefined') {
