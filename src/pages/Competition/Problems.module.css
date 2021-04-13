@@ -1,0 +1,23 @@
+
+.grid {
+    display: grid;
+    grid-template-columns: 4% 32% 32% 32%; 
+    grid-gap: 10px;
+}
+
+.cell {
+    padding: 10px;
+}
+  
+.threeColumns {
+    grid-column-start: 2;
+    grid-column-end: 4;
+}
+
+.problemTitle {
+    font-weight: bold;
+}
+
+.changeSemester {
+    font-weight: 900;
+}
