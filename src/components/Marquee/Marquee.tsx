@@ -1,6 +1,6 @@
 import './Marquee.scss'
 
-import React, {Fragment, useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 
 interface MarqueeProps {
   /**
@@ -77,6 +77,7 @@ interface MarqueeProps {
   children?: React.ReactNode
 }
 
+// tento komponent je z https://github.com/justin-chu/react-fast-marquee/blob/master/src/components/Marquee.tsx
 export const Marquee: React.FC<MarqueeProps> = ({
   style = {},
   className = '',
@@ -115,13 +116,13 @@ export const Marquee: React.FC<MarqueeProps> = ({
     } else {
       setDuration(marqueeWidth / speed)
     }
-  })
+  }, [marqueeWidth, containerWidth, speed])
 
   // Gradient color in an unfinished rgba format
   const rgbaGradientColor = `rgba(${gradientColor[0]}, ${gradientColor[1]}, ${gradientColor[2]}`
 
   return (
-    <Fragment>
+    <>
       {!isMounted ? null : (
         <div
           ref={containerRef}
@@ -169,6 +170,6 @@ export const Marquee: React.FC<MarqueeProps> = ({
           </div>
         </div>
       )}
-    </Fragment>
+    </>
   )
 }
