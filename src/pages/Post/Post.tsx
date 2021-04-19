@@ -15,10 +15,10 @@ interface IPost {
 }
 
 export const Posts: FC = () => {
-  const [posts, setPosts]: [IPost[], (posts: IPost[]) => void] = useState<IPost[]>([])
-  const [loading, setLoading]: [boolean, (loading: boolean) => void] = React.useState<boolean>(true)
-  const [error, setError]: [string, (error: string) => void] = React.useState('')
-
+  const [posts, setPosts] = useState(defaultPosts)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  
   useEffect(() => {
     try {
       fetch('/api/cms/post/visible/', {
