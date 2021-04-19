@@ -18,9 +18,9 @@ interface IPost {
 const defaultPosts: IPost[] = []
 
 export const Posts: React.FC = () => {
-    const [posts, setPosts]: [IPost[], (posts: IPost[]) => void] = useState(defaultPosts)
-    const [loading, setLoading]: [boolean, (loading: boolean) => void] = React.useState<boolean>(true)
-    const [error, setError]: [string, (error: string) => void] = React.useState("")
+  const [posts, setPosts] = useState(defaultPosts)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
     
     useEffect(() => {
         axios.get<IPost[]>('/api/cms/post/visible/', {
