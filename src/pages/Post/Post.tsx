@@ -1,62 +1,69 @@
-/* eslint-disable prettier/prettier */
 import './Post.css'
 
-import axios from 'axios'
-import React, {useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
+import { FC } from 'react'
 
 interface IPost {
-    id: number,
-    links: {id: number, caption: string, url: string}[],
-    caption: string, 
-    short_text: string, 
-    details: string,
-    added_at: string,
-    show_after: string,
-    disable_after: string
+  id: number
+  links: {id: number; caption: string; url: string}[]
+  caption: string
+  short_text: string
+  details: string
+  added_at: string
+  show_after: string
+  disable_after: string
 }
 
-const defaultPosts: IPost[] = []
+export const Posts: FC = () => {
+  const [posts, setPosts]: [IPost[], (posts: IPost[]) => void] = useState<IPost[]>([])
+  const [loading, setLoading]: [boolean, (loading: boolean) => void] = React.useState<boolean>(true)
+  const [error, setError]: [string, (error: string) => void] = React.useState('')
 
-export const Posts: React.FC = () => {
-    const [posts, setPosts]: [IPost[], (posts: IPost[]) => void] = useState(defaultPosts)
-    const [loading, setLoading]: [boolean, (loading: boolean) => void] = React.useState<boolean>(true)
-    const [error, setError]: [string, (error: string) => void] = React.useState("")
-    
-    useEffect(() => {
-        axios.get<IPost[]>('/api/cms/post/visible/', {
-            headers: {
-                "Content-type": "application/json"
-            }
-        })
-        .then(response => {
-            setPosts(response.data)
-            setLoading(false)
-        })
-        .catch(ex => {
-            const error =
-            ex.response.status === 404
-                ? "Resource Not found"
-                : "An unexpected error has occurred"
-            setError(error)
-            setLoading(false)
-        })
-    }, [])
+  useEffect(() => {
+    try {
+      fetch('/api/cms/post/visible/', {
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }).then(
+        response => {
+          if (response.ok) {
+            response.json().then(data => {
+              setPosts(data)
+            })
+          } else {
+            setError("Network response is not ok.")
+          }
+        }
+      )
+      
+    } catch (ex) {
+      const error = ex.response.status === 404 ? 'Resource Not found' : 'An unexpected error has occurred'
+      setError(error)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-    return(
-        <div id="posts">
-            <ul id="post">
-                {posts.map((post) => (
-                    <li key={post.id}>
-                        <h2 id="bold">{post.caption}</h2>
-                        <h3>{post.short_text}</h3>
-                        {post.links.map((link) => (
-                            <p key={link.id}><h3><a href={link.url}>{link.caption}</a></h3></p>
-                        ))}
-                        <h5 id="bold">PODROBNOSTI</h5>
-                    </li>
-                ))}
-            </ul>
-            {error && <p className="error">{error}</p>}
-        </div>
-    )
+  return (
+    <div id="posts">
+      <ul id="post">
+        {posts.map((post) => (
+          <li key={post.id}>
+            <h2 id="bold">{post.caption}</h2>
+            <h3>{post.short_text}</h3>
+            {post.links.map((link) => (
+              <p key={link.id}>
+                <h3>
+                  <a href={link.url}>{link.caption}</a>
+                </h3>
+              </p>
+            ))}
+            <h5 id="bold">PODROBNOSTI</h5>
+          </li>
+        ))}
+      </ul>
+      {error && <p className="error">{error}</p>}
+    </div>
+  )
 }
