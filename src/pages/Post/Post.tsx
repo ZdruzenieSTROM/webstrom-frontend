@@ -45,13 +45,17 @@ export const Posts: React.FC = () => {
     return(
         <div id="posts">
             <ul id="post">
-                {posts.map((post) => (
-                    <li key={post.id}>
-                        <h2 id="bold">{post.caption}</h2>
-                        <h3>{post.short_text}</h3>
-                        {post.links.map((link) => (
-                            <p key={link.id}><h3><a href={link.url}>{link.caption}</a></h3></p>
-                        ))}
+        {posts.map(({id, caption, short_text, links}) => (
+          <li key={id}>
+            <h2 id="bold">{caption}</h2>
+            <h3>{short_text}</h3>
+            {links.map(({id, url, caption}) => (
+              <p key={id}>
+                <h3>
+                  <a href={url}>{caption}</a>
+                </h3>
+              </p>
+            ))}
                         <h5 id="bold">PODROBNOSTI</h5>
                     </li>
                 ))}
