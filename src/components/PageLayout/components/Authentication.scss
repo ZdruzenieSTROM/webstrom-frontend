@@ -1,0 +1,86 @@
+#authentication-display-buttons {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+  color: white;
+
+  > span {
+    padding: 0px 10px;
+    margin: 0px;
+    cursor: pointer;
+  }
+
+  > span:not(:first-child) {
+    border-left: 2px solid white;
+  }
+}
+
+#authentication-container {
+  padding: 0px;
+  width: 300px;
+  height: 400px;
+  color: black;
+  background-color: white;
+  z-index: 1000;
+  border: 10px solid black;
+
+  input {
+    width: 100%;
+    height: 30px;
+    border: 2px solid black;
+    color: black;
+    text-align: start;
+    padding: 0px 10px;
+    background-color: white;
+    margin-bottom: 10px;
+  }
+
+  button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 0px 5px 15px;
+    font-weight: bold;
+  }
+
+  span.underline {
+    border-bottom: 4px solid black;
+    padding-bottom: 1px;
+  }
+
+  .tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+
+    > div {
+      background-color: black;
+      color: white;
+      text-transform: uppercase;
+      font-weight: bold;
+      text-align: center;
+      height: 2.4rem;
+      padding-top: 2px;
+      cursor: pointer;
+
+      span.underline {
+        border-bottom: 4px solid white;
+      }
+    }
+
+    > div.active {
+      background-color: white;
+      color: black;
+
+      span.underline {
+        border-color: black;
+      }
+    }
+  }
+
+  .content {
+    padding: 20px;
+  }
+}

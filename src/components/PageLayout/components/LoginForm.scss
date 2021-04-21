@@ -1,0 +1,9 @@
+#login-form {
+  display: grid;
+  grid-template-columns: 100%;
+  color: black;
+
+  > button {
+    justify-self: end;
+  }
+}

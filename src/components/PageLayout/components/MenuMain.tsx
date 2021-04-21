@@ -6,6 +6,8 @@ import * as CgIcons from 'react-icons/cg'
 import * as FaIcons from 'react-icons/fa'
 import {Link, useLocation} from 'react-router-dom'
 
+import {Authentication} from './Authentication'
+
 interface MenuItemInterface {
   id: number
   caption: string
@@ -63,6 +65,7 @@ export const MenuMain: React.FC<{seminarId: number}> = ({seminarId}) => {
             return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={getPrefix() + menuItem.url} />
           })}
       </div>
+      <Authentication />
     </div>
   )
 }
