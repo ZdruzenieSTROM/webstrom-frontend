@@ -1,5 +1,6 @@
 import './Post.css'
 
+import axios, {AxiosError} from 'axios'
 import React, {FC, useEffect, useState} from 'react'
 
 interface IPost {
@@ -19,39 +20,36 @@ export const Posts: FC = () => {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    try {
-      fetch('/api/cms/post/visible/', {
-        headers: {
-          'Content-type': 'application/json',
-        },
-      }).then((response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            setPosts(data)
-          })
-        } else {
-          setError('Network response is not ok.')
-        }
-      })
-    } catch (ex) {
-      const error = ex.response.status === 404 ? 'Resource Not found' : 'An unexpected error has occurred'
-      setError(error)
-    } finally {
-      setLoading(false)
+    const fetchData = async () => {
+      try {
+        const {data} = await axios.get<IPost[]>('/api/cms/post/visible/', {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        })
+        setPosts(data)
+      } catch (e) {
+        const ex = e as AxiosError
+        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+        setError(error)
+      } finally {
+        setLoading(false)
+      }
     }
+    fetchData()
   }, [])
 
   return (
     <div id="posts">
       <ul id="post">
-        {posts.map((post) => (
-          <li key={post.id}>
-            <h2 id="bold">{post.caption}</h2>
-            <h3>{post.short_text}</h3>
-            {post.links.map((link) => (
-              <p key={link.id}>
+        {posts.map(({id, caption, short_text, links}) => (
+          <li key={id}>
+            <h2 id="bold">{caption}</h2>
+            <h3>{short_text}</h3>
+            {links.map(({id, url, caption}) => (
+              <p key={id}>
                 <h3>
-                  <a href={link.url}>{link.caption}</a>
+                  <a href={url}>{caption}</a>
                 </h3>
               </p>
             ))}
@@ -59,7 +57,7 @@ export const Posts: FC = () => {
           </li>
         ))}
       </ul>
-      {error && <p className="error">{error}</p>}
+      {error && <p>{error}</p>}
     </div>
   )
 }
