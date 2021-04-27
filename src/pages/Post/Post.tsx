@@ -1,7 +1,6 @@
 import './Post.css'
 
-import React, {useEffect, useState} from 'react'
-import { FC } from 'react'
+import React, {FC, useEffect, useState} from 'react'
 
 interface IPost {
   id: number
@@ -25,18 +24,15 @@ export const Posts: FC = () => {
         headers: {
           'Content-type': 'application/json',
         },
-      }).then(
-        response => {
-          if (response.ok) {
-            response.json().then(data => {
-              setPosts(data)
-            })
-          } else {
-            setError("Network response is not ok.")
-          }
+      }).then((response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            setPosts(data)
+          })
+        } else {
+          setError('Network response is not ok.')
         }
-      )
-      
+      })
     } catch (ex) {
       const error = ex.response.status === 404 ? 'Resource Not found' : 'An unexpected error has occurred'
       setError(error)

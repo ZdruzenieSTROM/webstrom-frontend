@@ -15,7 +15,6 @@
     "plugins": ["simple-import-sort"],
     "rules": {
         "react/prop-types": "off",
-        "simple-import-sort/sort": "error",
-        "prettier/prettier": 0
+        "simple-import-sort/sort": "error"
     }
 }
