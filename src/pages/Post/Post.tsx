@@ -12,9 +12,10 @@ interface IPost {
   added_at: string
   show_after: string
   disable_after: string
+  sites: number[]
 }
 
-export const Posts: FC = () => {
+export const Posts: FC<{seminarid: number}> = ({seminarid}) => {
   const [posts, setPosts] = useState<IPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -45,22 +46,30 @@ export const Posts: FC = () => {
     }
   }, [])
 
+  function returnPost(seminarid:number, post:IPost) {
+    if (post.sites.includes(seminarid)) {
+      return (
+        <li key={post.id}>
+          <h2 id="bold">{post.caption}</h2>
+          <h3>{post.short_text}</h3>
+          {post.links.map((link) => (
+            <p key={link.id}>
+              <h3>
+                <a href={link.url}>{link.caption}</a>
+              </h3>
+            </p>
+          ))}
+          <h5 id="bold">PODROBNOSTI</h5>
+        </li>
+      )
+    }
+  } 
+
   return (
     <div id="posts">
       <ul id="post">
         {posts.map((post) => (
-          <li key={post.id}>
-            <h2 id="bold">{post.caption}</h2>
-            <h3>{post.short_text}</h3>
-            {post.links.map((link) => (
-              <p key={link.id}>
-                <h3>
-                  <a href={link.url}>{link.caption}</a>
-                </h3>
-              </p>
-            ))}
-            <h5 id="bold">PODROBNOSTI</h5>
-          </li>
+          returnPost(seminarid, post)
         ))}
       </ul>
       {error && <p className="error">{error}</p>}
