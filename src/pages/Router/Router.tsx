@@ -6,6 +6,7 @@ import {PageLayout} from '../../components/PageLayout/PageLayout'
 import {Admin} from '../Admin/Admin'
 import {PagePlaceholder} from '../PagePlaceholder'
 import {Posts} from '../Post/Post'
+import {VerifyEmail} from '../VerifyEmail/VerifyEmail'
 
 export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
   return (
@@ -20,7 +21,8 @@ export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
             <Route path={'/matik/'} component={MatikRouter} />
             <Route path={'/malynar/'} component={MalynarRouter} />
             <Route path={'/zdruzenie/'} component={ZdruzenieRouter} />
-            <Route path={'/example/'} component={ExampleRouter}></Route>
+            <Route path={'/verify-email/:verificationKey'} component={VerifyEmail} />
+            <Route path={'/example/'} component={ExampleRouter} />
           </PageLayout>
         </Route>
       </Switch>
