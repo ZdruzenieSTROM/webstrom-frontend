@@ -68,5 +68,9 @@
     "eslint-plugin-unicorn": "^29.0.0",
     "http-proxy-middleware": "^1.0.6",
     "prettier": "^2.1.2"
+  },
+  "resolutions": {
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0"
   }
 }
