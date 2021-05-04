@@ -17,7 +17,7 @@ export const VerifyEmail: React.FC = () => {
         const response =
           data.status === 200 ? 'Email successfully verified' : 'An unexpected response status code has occurred'
         setResponse(response)
-      } catch (e) {
+      } catch (e: unknown) {
         const ex = e as AxiosError
         const error = ex.response?.status === 404 ? 'Wrong verification key' : 'An unexpected error has occurred'
         setResponse(error)

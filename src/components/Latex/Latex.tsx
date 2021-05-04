@@ -4,13 +4,13 @@ import {MathComponent} from 'mathjax-react'
 import React from 'react'
 
 // toto je regex, ktory matchuje LaTeX matematiku: $$.$$ \[.\] $.$ \(.\)
-const re = /((?<!(\\|\$))\$(?!\$).+?(?<!(\\|\$))\$(?!\$))|(\$\$.+?\$\$)|(\\\[.+?\\\])|(\\\(.+?\\\))/gs
+const re = /((?<!(\\|\$))\$(?!\$).+?(?<!(\\|\$))\$(?!\$))|(\$\$.+?\$\$)|(\\\[.+?\\\])|(\\\(.+?\\\))/gsu
 
 const trim = (str: string) => {
   if (str[0] === '$' && str[1] !== '$') {
-    return str.substring(1, str.length - 1)
+    return str.slice(1, -1)
   } else {
-    return str.substring(2, str.length - 2)
+    return str.slice(2, -2)
   }
 }
 
@@ -25,9 +25,9 @@ export const Latex: React.FC<{children: string}> = ({children}) => {
   let currentPosition = 0
 
   for (const m of matches) {
-    result.push(<>{children.substring(currentPosition, m.index)}</>)
     result.push(
-      <MathComponent tex={trim(m[0])} display={m[0].substring(0, 2) === '\\[' || m[0].substring(0, 2) === '$$'} />,
+      <>{children.slice(currentPosition, m.index)}</>,
+      <MathComponent tex={trim(m[0])} display={m[0].slice(0, 2) === '\\[' || m[0].slice(0, 2) === '$$'} />,
     )
 
     if (typeof m.index !== 'undefined') {
@@ -35,7 +35,7 @@ export const Latex: React.FC<{children: string}> = ({children}) => {
     }
   }
 
-  result.push(<>{children.substring(currentPosition)}</>)
+  result.push(<>{children.slice(Math.max(0, currentPosition))}</>)
 
   return <div>{result}</div>
 }

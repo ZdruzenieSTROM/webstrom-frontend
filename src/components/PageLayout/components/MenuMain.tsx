@@ -36,9 +36,15 @@ export const MenuMain: React.FC<{seminarId: number}> = ({seminarId}) => {
   }
 
   useEffect(() => {
-    axios.get(`/api/cms/menu-item/on-site/${seminarId}/`).then((res) => {
-      setMenuItems(res.data)
-    })
+    const fetchData = async () => {
+      try {
+        const {data} = await axios.get<MenuItemInterface[]>(`/api/cms/menu-item/on-site/${seminarId}/`)
+        setMenuItems(data)
+      } catch {
+        return
+      }
+    }
+    fetchData()
   }, [seminarId])
 
   return (
