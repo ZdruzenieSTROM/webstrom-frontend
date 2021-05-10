@@ -1,7 +1,9 @@
-import './Post.css'
+import './Post.css';
 
-import React, {useEffect, useState} from 'react'
-import { FC } from 'react'
+import axios, { AxiosError } from 'axios';
+import React, { useEffect, useState } from 'react';
+import { FC } from 'react';
+
 
 interface IPost {
   id: number
@@ -21,29 +23,23 @@ export const Posts: FC<{seminarid: number}> = ({seminarid}) => {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    try {
-      fetch('/api/cms/post/visible/', {
-        headers: {
-          'Content-type': 'application/json',
-        },
-      }).then(
-        response => {
-          if (response.ok) {
-            response.json().then(data => {
-              setPosts(data)
-            })
-          } else {
-            setError("Network response is not ok.")
-          }
-        }
-      )
-      
-    } catch (ex) {
-      const error = ex.response.status === 404 ? 'Resource Not found' : 'An unexpected error has occurred'
-      setError(error)
-    } finally {
-      setLoading(false)
+    const fetchData = async () => {
+      try {
+        const {data} = await axios.get<IPost[]>('/api/cms/post/visible/', {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        })
+        setPosts(data)
+      } catch (e) {
+        const ex = e as AxiosError
+        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+        setError(error)
+      } finally {
+        setLoading(false)
+      }
     }
+    fetchData()
   }, [])
 
   function returnPost(seminarid:number, post:IPost) {
