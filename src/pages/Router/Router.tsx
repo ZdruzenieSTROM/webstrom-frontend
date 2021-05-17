@@ -119,7 +119,7 @@ const ZdruzenieRouter: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <Posts />
+        <PagePlaceholder title="Združenie Strom" />
       </Route>
     </>
   )
