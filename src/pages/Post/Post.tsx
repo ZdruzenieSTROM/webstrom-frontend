@@ -1,9 +1,8 @@
-import './Post.css';
+import './Post.css'
 
-import axios, { AxiosError } from 'axios';
-import React, { useEffect, useState } from 'react';
-import { FC } from 'react';
-
+import axios, {AxiosError} from 'axios'
+import React, {useEffect, useState} from 'react'
+import {FC} from 'react'
 
 interface IPost {
   id: number
@@ -42,11 +41,11 @@ export const Posts: FC<{seminarid: number}> = ({seminarid}) => {
     fetchData()
   }, [])
 
-  function returnPost(seminarid:number, post:IPost) {
+  function returnPost(seminarid: number, post: IPost) {
     if (post.sites.includes(seminarid)) {
       return (
         <li key={post.id}>
-          <h2 id="bold">{post.caption}</h2>
+          <h2>{post.caption}</h2>
           <h3>{post.short_text}</h3>
           {post.links.map((link) => (
             <p key={link.id}>
@@ -55,19 +54,15 @@ export const Posts: FC<{seminarid: number}> = ({seminarid}) => {
               </h3>
             </p>
           ))}
-          <h5 id="bold">PODROBNOSTI</h5>
+          <h5>PODROBNOSTI</h5>
         </li>
       )
     }
-  } 
+  }
 
   return (
     <div id="posts">
-      <ul id="post">
-        {posts.map((post) => (
-          returnPost(seminarid, post)
-        ))}
-      </ul>
+      <ul className="post">{posts.map((post) => returnPost(seminarid, post))}</ul>
       {error && <p className="error">{error}</p>}
     </div>
   )
