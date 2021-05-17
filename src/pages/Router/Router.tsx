@@ -35,7 +35,7 @@ const MalynarRouter: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <Posts seminarid={1} />
+        <PagePlaceholder title="Malynár home" />
       </Route>
       <Route exact path={path + 'zadania/'}>
         <PagePlaceholder title="Zadania" />
@@ -64,7 +64,7 @@ const MatikRouter: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <Posts seminarid={2} />
+        <PagePlaceholder title="Matik home" />
       </Route>
       <Route exact path={path + 'zadania/'}>
         <PagePlaceholder title="Zadania" />
@@ -93,7 +93,7 @@ const StromRouter: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <Posts seminarid={3} />
+        <PagePlaceholder title="Strom home" />
       </Route>
       <Route exact path={path + 'zadania/'}>
         <PagePlaceholder title="Zadania" />
