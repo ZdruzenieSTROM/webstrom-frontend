@@ -1,8 +1,7 @@
 import './Post.css'
 
 import axios, {AxiosError} from 'axios'
-import React, {useEffect, useState} from 'react'
-import {FC} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 
 interface IPost {
   id: number
@@ -16,7 +15,7 @@ interface IPost {
   sites: number[]
 }
 
-export const Posts: FC<{seminarid: number}> = ({seminarid}) => {
+export const Posts: FC<{seminarId: number}> = ({seminarId}) => {
   const [posts, setPosts] = useState<IPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -26,11 +25,12 @@ export const Posts: FC<{seminarid: number}> = ({seminarid}) => {
       try {
         const {data} = await axios.get<IPost[]>('/api/cms/post/visible/', {
           headers: {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             'Content-type': 'application/json',
           },
         })
         setPosts(data)
-      } catch (e) {
+      } catch (e: unknown) {
         const ex = e as AxiosError
         const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
         setError(error)
@@ -41,28 +41,25 @@ export const Posts: FC<{seminarid: number}> = ({seminarid}) => {
     fetchData()
   }, [])
 
-  function returnPost(seminarid: number, post: IPost) {
-    if (post.sites.includes(seminarid)) {
-      return (
-        <li key={post.id}>
-          <h2>{post.caption}</h2>
-          <h3>{post.short_text}</h3>
-          {post.links.map((link) => (
-            <p key={link.id}>
-              <h3>
-                <a href={link.url}>{link.caption}</a>
-              </h3>
-            </p>
-          ))}
-          <h5>PODROBNOSTI</h5>
-        </li>
-      )
-    }
-  }
+  const returnPost = ({id, caption, short_text, links, sites}: IPost) =>
+    sites.includes(seminarId) && (
+      <li key={id}>
+        <h2>{caption}</h2>
+        <h3>{short_text}</h3>
+        {links.map(({id, url, caption}) => (
+          <p key={id}>
+            <h3>
+              <a href={url}>{caption}</a>
+            </h3>
+          </p>
+        ))}
+        <h5>PODROBNOSTI</h5>
+      </li>
+    )
 
   return (
-    <div id="posts">
-      <ul className="post">{posts.map((post) => returnPost(seminarid, post))}</ul>
+    <div className="posts">
+      <ul className="post">{posts.map((post) => returnPost(post))}</ul>
       {error && <p className="error">{error}</p>}
     </div>
   )
