@@ -1,7 +1,8 @@
 import './Post.css'
 
 import axios, {AxiosError} from 'axios'
-import React, {FC, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
+import {FC} from 'react'
 
 interface IPost {
   id: number
@@ -12,9 +13,10 @@ interface IPost {
   added_at: string
   show_after: string
   disable_after: string
+  sites: number[]
 }
 
-export const Posts: FC = () => {
+export const Posts: FC<{seminarid: number}> = ({seminarid}) => {
   const [posts, setPosts] = useState<IPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -39,25 +41,29 @@ export const Posts: FC = () => {
     fetchData()
   }, [])
 
+  function returnPost(seminarid: number, post: IPost) {
+    if (post.sites.includes(seminarid)) {
+      return (
+        <li key={post.id}>
+          <h2>{post.caption}</h2>
+          <h3>{post.short_text}</h3>
+          {post.links.map((link) => (
+            <p key={link.id}>
+              <h3>
+                <a href={link.url}>{link.caption}</a>
+              </h3>
+            </p>
+          ))}
+          <h5>PODROBNOSTI</h5>
+        </li>
+      )
+    }
+  }
+
   return (
     <div id="posts">
-      <ul id="post">
-        {posts.map(({id, caption, short_text, links}) => (
-          <li key={id}>
-            <h2 id="bold">{caption}</h2>
-            <h3>{short_text}</h3>
-            {links.map(({id, url, caption}) => (
-              <p key={id}>
-                <h3>
-                  <a href={url}>{caption}</a>
-                </h3>
-              </p>
-            ))}
-            <h5 id="bold">PODROBNOSTI</h5>
-          </li>
-        ))}
-      </ul>
-      {error && <p>{error}</p>}
+      <ul className="post">{posts.map((post) => returnPost(seminarid, post))}</ul>
+      {error && <p className="error">{error}</p>}
     </div>
   )
 }
