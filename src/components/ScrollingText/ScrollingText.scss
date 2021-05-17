@@ -1,0 +1,16 @@
+.scrolling-text {
+  position: absolute;
+  top: 10rem;
+  color: white;
+  background-color: black;
+  width: 100%;
+  padding: 0.3rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  z-index: -5;
+}
+
+.marquee-text-container {
+  white-space: nowrap;
+  padding: 0px 20px;
+}

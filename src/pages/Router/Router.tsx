@@ -1,10 +1,12 @@
 import React from 'react'
 import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
+import {LatexExample} from '../../components/Latex/LatexExample'
 import {PageLayout} from '../../components/PageLayout/PageLayout'
 import {Admin} from '../Admin/Admin'
 import {PagePlaceholder} from '../PagePlaceholder'
 import {Posts} from '../Post/Post'
+import {VerifyEmail} from '../VerifyEmail/VerifyEmail'
 
 export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
   return (
@@ -19,6 +21,8 @@ export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
             <Route path={'/matik/'} component={MatikRouter} />
             <Route path={'/malynar/'} component={MalynarRouter} />
             <Route path={'/zdruzenie/'} component={ZdruzenieRouter} />
+            <Route path={'/verify-email/:verificationKey'} component={VerifyEmail} />
+            <Route path={'/example/'} component={ExampleRouter} />
           </PageLayout>
         </Route>
       </Switch>
@@ -115,7 +119,7 @@ const ZdruzenieRouter: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <PagePlaceholder title="Združenie home" />
+        <Posts />
       </Route>
     </>
   )
@@ -127,6 +131,20 @@ const AdminRouter: React.FC = () => {
     <>
       <Route exact path={path}>
         <Admin />
+      </Route>
+    </>
+  )
+}
+
+const ExampleRouter: React.FC = () => {
+  const {path} = useRouteMatch()
+  return (
+    <>
+      <Route exact path={path}>
+        <PagePlaceholder title="Examples" />
+      </Route>
+      <Route exact path={path + 'latex/'}>
+        <LatexExample />
       </Route>
     </>
   )
