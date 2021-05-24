@@ -4,6 +4,7 @@ import {Route, Switch, useRouteMatch} from 'react-router-dom'
 import {LatexExample} from '../../components/Latex/LatexExample'
 import {PageLayout} from '../../components/PageLayout/PageLayout'
 import {Admin} from '../Admin/Admin'
+import {Problems} from '../Competition/Competition'
 import {PagePlaceholder} from '../PagePlaceholder'
 import {Posts} from '../Post/Post'
 import {VerifyEmail} from '../VerifyEmail/VerifyEmail'
@@ -38,7 +39,13 @@ const MalynarRouter: React.FC = () => {
         <Posts seminarId={1} />
       </Route>
       <Route exact path={path + 'zadania/'}>
-        <PagePlaceholder title="Zadania" />
+        <Problems series={0} />
+      </Route>
+      <Route exact path={path + 'zadania/0'}>
+        <Problems series={0} />
+      </Route>
+      <Route exact path={path + 'zadania/1'}>
+        <Problems series={1} />
       </Route>
       <Route exact path={path + 'vysledky/'}>
         <PagePlaceholder title="Výsledky" />
