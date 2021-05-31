@@ -68,7 +68,7 @@ export const RegisterForm: FC = () => {
     fetchData()
   }, [])
 
-  // iniciálne načítanie ročníkov z BE, ktorými vyplníme FormSelect so školami
+  // iniciálne načítanie škôl z BE, ktorými vyplníme FormSelect so školami
   useEffect(() => {
     const fetchData = async () => {
       const schools = await axios.get<ISchool[]>(`/api/personal/schools/?district=0`)
@@ -77,7 +77,7 @@ export const RegisterForm: FC = () => {
     fetchData()
   }, [])
 
-  // načítanie ročníkov z BE, ktorými vyplníme FormSelect s krajmi
+  // načítanie krajov z BE, ktorými vyplníme FormSelect s krajmi
   useEffect(() => {
     const fetchData = async () => {
       const counties = await axios.get<ICounty[]>(`/api/personal/counties/`)
@@ -86,7 +86,7 @@ export const RegisterForm: FC = () => {
     fetchData()
   }, [])
 
-  // načítanie ročníkov z BE, ktorými vyplníme FormSelect s okresmi (naviazené na zmenu číselníku s krajom)
+  // načítanie okresov z BE, ktorými vyplníme FormSelect s okresmi (naviazené na zmenu číselníku s krajom)
   useEffect(() => {
     const fetchData = async () => {
       const districts = county !== '' ? await axios.get<IDistrict[]>(`/api/personal/districts/?county=${county}`) : null
@@ -96,7 +96,7 @@ export const RegisterForm: FC = () => {
     fetchData()
   }, [county, setValue])
 
-  // načítanie ročníkov z BE, ktorými vyplníme FormSelect so školami (naviazené na zmenu číselníku s okresmi)
+  // načítanie škôl z BE, ktorými vyplníme FormSelect so školami (naviazené na zmenu číselníku s okresmi)
   useEffect(() => {
     const fetchData = async () => {
       const schools = district !== '' ? await axios.get<ISchool[]>(`/api/personal/schools/?district=${district}`) : null
