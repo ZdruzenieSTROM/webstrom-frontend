@@ -5,7 +5,7 @@ import axios from 'axios'
 import React, {FC, useEffect, useState} from 'react'
 import {useForm} from 'react-hook-form'
 
-import {FormCheckbox} from '../../components/FormItems/FormCheckbox/FromCheckbox'
+import {FormCheckbox} from '../../components/FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '../../components/FormItems/FormInput/FormInput'
 import {FormSelect, SelectOption} from '../../components/FormItems/FormSelect/FormSelect'
 
