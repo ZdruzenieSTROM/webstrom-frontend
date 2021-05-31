@@ -25,7 +25,6 @@ export const Posts: FC<{seminarId: number}> = ({seminarId}) => {
       try {
         const {data} = await axios.get<IPost[]>('/api/cms/post/visible/', {
           headers: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             'Content-type': 'application/json',
           },
         })

@@ -152,8 +152,9 @@ export const RegisterForm: FC = () => {
     try {
       const response = await axios.post<IGeneralPostResponse>(`/api/user/registration/`, transformFormData(data))
       setSuccessfulRegistration(response.data.detail)
-    } catch (error) {
-      console.log('error', error)
+    } catch (error: unknown) {
+      // TODO: error handling
+      return
     }
   }
 
