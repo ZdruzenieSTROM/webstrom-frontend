@@ -89,8 +89,10 @@ export const RegisterForm: FC = () => {
   // načítanie okresov z BE, ktorými vyplníme FormSelect s okresmi (naviazené na zmenu číselníku s krajom)
   useEffect(() => {
     const fetchData = async () => {
-      const districts = county !== '' ? await axios.get<IDistrict[]>(`/api/personal/districts/?county=${county}`) : null
-      districts && setDistrictItems(districts.data.map(({code, name}) => ({id: code, label: name})))
+      if (county !== '') {
+        const districts = await axios.get<IDistrict[]>(`/api/personal/districts/?county=${county}`)
+        setDistrictItems(districts.data.map(({code, name}) => ({id: code, label: name})))
+      }
       county === 0 ? setValue('district', 0) : setValue('district', '')
     }
     fetchData()
@@ -99,14 +101,15 @@ export const RegisterForm: FC = () => {
   // načítanie škôl z BE, ktorými vyplníme FormSelect so školami (naviazené na zmenu číselníku s okresmi)
   useEffect(() => {
     const fetchData = async () => {
-      const schools = district !== '' ? await axios.get<ISchool[]>(`/api/personal/schools/?district=${district}`) : null
-      schools &&
+      if (district !== '') {
+        const schools = await axios.get<ISchool[]>(`/api/personal/schools/?district=${district}`)
         setSchoolItems(
           schools.data.map(({code, city, name, street}) => ({
             id: code,
             label: city ? `${name} ${street}, ${city}` : name,
           })),
         )
+      }
       district === 0 ? setValue('school', 1) : setValue('school', '')
     }
     fetchData()
