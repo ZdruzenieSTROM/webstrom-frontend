@@ -4,11 +4,18 @@ const restrictedGlobals = require('confusing-browser-globals')
 
 // Basic naming conventions for all types of files.
 // More specific cases are listed further down in the rule definitions.
+// docs: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/naming-convention.md
 const namingConventions = [
   // Unless specified otherwise, all names are camelCased
   {
     selector: 'default',
     format: ['camelCase'],
+  },
+
+  // For parameters and properties, allow PascalCase for passed/destructured components as parameters and allow snake_case for BE parameters
+  {
+    selector: ['variable', 'parameter', 'property'],
+    format: ['PascalCase', 'camelCase', 'snake_case'],
   },
 
   // For constants declared at top level, allow using CONSTANT_NAME and allow component names in PascalCase
@@ -24,12 +31,6 @@ const namingConventions = [
     modifiers: ['unused'],
     format: ['camelCase'],
     leadingUnderscore: 'require',
-  },
-
-  // For parameters and properties, allow PascalCase for passed/destructured components as parameters and allow snake_case for BE parameters
-  {
-    selector: ['parameter', 'typeProperty'],
-    format: ['PascalCase', 'camelCase', 'snake_case'],
   },
 
   // For classes, interfaces, type aliases, enums/enum members and type parameters, use PascalCase
