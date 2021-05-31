@@ -3,13 +3,25 @@ import './RegisterForm.css'
 import {Button} from '@material-ui/core'
 import axios from 'axios'
 import React, {FC, useEffect, useState} from 'react'
-import {useForm} from 'react-hook-form'
+import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {FormCheckbox} from '../../components/FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '../../components/FormItems/FormInput/FormInput'
 import {FormSelect, SelectOption} from '../../components/FormItems/FormSelect/FormSelect'
+import {IGrade} from '../../types/api/competition'
+import {IGeneralPostResponse} from '../../types/api/general'
+import {ICounty, IDistrict, ISchool} from '../../types/api/personal'
 
-const defaultValues: {
+type RegisterFormValues = {
+  email?: string
+  password1?: string
+  password2?: string
+  first_name?: string
+  last_name?: string
+  nickname?: string
+  phone?: string
+  parent_phone?: string
+  new_school_description?: string
   without_school: boolean
   county: number | ''
   district: number | ''
@@ -17,7 +29,9 @@ const defaultValues: {
   school_not_found: boolean
   grade: number | ''
   gdpr: boolean
-} = {
+}
+
+const defaultValues: RegisterFormValues = {
   without_school: false,
   county: '',
   district: '',
@@ -28,8 +42,13 @@ const defaultValues: {
 }
 
 export const RegisterForm: FC = () => {
-  const {handleSubmit, control, watch, setValue} = useForm({defaultValues})
-  const fields = watch(Object.keys(defaultValues))
+  const {handleSubmit, control, watch, setValue} = useForm<RegisterFormValues>({defaultValues})
+  const {county, district, school_not_found, without_school} = watch([
+    'county',
+    'district',
+    'school_not_found',
+    'without_school',
+  ])
 
   const [gradeItems, setGradeItems] = useState<SelectOption[]>([])
   const [schoolItems, setSchoolItems] = useState<SelectOption[]>([])
@@ -38,13 +57,13 @@ export const RegisterForm: FC = () => {
 
   const [emptySchoolItems, setEmptySchoolItems] = useState<SelectOption[]>([])
 
-  const [successfullRegistration, setSuccessfullRegistration] = useState<string>('')
+  const [successfulRegistration, setSuccessfulRegistration] = useState('')
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   useEffect(() => {
     const fetchData = async () => {
-      const grades = await axios.get(`/api/competition/grade/`)
-      setGradeItems(grades.data.map((grade: any) => ({id: grade.id, label: grade.name})))
+      const grades = await axios.get<IGrade[]>(`/api/competition/grade/`)
+      setGradeItems(grades.data.map(({id, name}) => ({id, label: name})))
     }
     fetchData()
   }, [])
@@ -52,8 +71,8 @@ export const RegisterForm: FC = () => {
   // iniciálne načítanie ročníkov z BE, ktorými vyplníme FormSelect so školami
   useEffect(() => {
     const fetchData = async () => {
-      const schools = await axios.get(`/api/personal/schools/?district=0`)
-      setEmptySchoolItems(schools.data.map((school: any) => ({id: school.code, label: school.name})))
+      const schools = await axios.get<ISchool[]>(`/api/personal/schools/?district=0`)
+      setEmptySchoolItems(schools.data.map(({code, name}) => ({id: code, label: name})))
     }
     fetchData()
   }, [])
@@ -61,8 +80,8 @@ export const RegisterForm: FC = () => {
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s krajmi
   useEffect(() => {
     const fetchData = async () => {
-      const counties = await axios.get(`/api/personal/counties/`)
-      setCountyItems(counties.data.map((county: any) => ({id: county.code, label: county.name})))
+      const counties = await axios.get<ICounty[]>(`/api/personal/counties/`)
+      setCountyItems(counties.data.map(({code, name}) => ({id: code, label: name})))
     }
     fetchData()
   }, [])
@@ -70,37 +89,35 @@ export const RegisterForm: FC = () => {
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s okresmi (naviazené na zmenu číselníku s krajom)
   useEffect(() => {
     const fetchData = async () => {
-      const districts =
-        fields.county !== '' ? await axios.get(`/api/personal/districts/?county=${fields.county}`) : null
-      districts && setDistrictItems(districts.data.map((district: any) => ({id: district.code, label: district.name})))
-      fields.county === 0 ? setValue('district', 0) : setValue('district', '')
+      const districts = county !== '' ? await axios.get<IDistrict[]>(`/api/personal/districts/?county=${county}`) : null
+      districts && setDistrictItems(districts.data.map(({code, name}) => ({id: code, label: name})))
+      county === 0 ? setValue('district', 0) : setValue('district', '')
     }
     fetchData()
-  }, [fields.county, setValue])
+  }, [county, setValue])
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect so školami (naviazené na zmenu číselníku s okresmi)
   useEffect(() => {
     const fetchData = async () => {
-      const schools =
-        fields.district !== '' ? await axios.get(`/api/personal/schools/?district=${fields.district}`) : null
+      const schools = district !== '' ? await axios.get<ISchool[]>(`/api/personal/schools/?district=${district}`) : null
       schools &&
         setSchoolItems(
-          schools.data.map((school: any) => ({
-            id: school.code,
-            label: school.city ? `${school.name} ${school.street}, ${school.city}` : school.name,
+          schools.data.map(({code, city, name, street}) => ({
+            id: code,
+            label: city ? `${name} ${street}, ${city}` : name,
           })),
         )
-      fields.district === 0 ? setValue('school', 1) : setValue('school', '')
+      district === 0 ? setValue('school', 1) : setValue('school', '')
     }
     fetchData()
-  }, [fields.district, setValue])
+  }, [district, setValue])
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxov pre neznámu školu/užívateľa po škole
   useEffect(() => {
-    if (fields.school_not_found) {
+    if (school_not_found) {
       setSchoolItems(emptySchoolItems)
       setValue('school', 0)
-    } else if (fields.without_school) {
+    } else if (without_school) {
       setValue('county', 0)
       setValue('grade', 13)
     } else {
@@ -109,31 +126,29 @@ export const RegisterForm: FC = () => {
       setValue('school', '')
       setValue('grade', '')
     }
-  }, [fields.school_not_found, fields.without_school, emptySchoolItems, setValue])
+  }, [school_not_found, without_school, emptySchoolItems, setValue])
 
-  const transformFormData = (data: any) => {
-    return {
-      email: data.email,
-      password1: data.password1,
-      password2: data.password2,
-      profile: {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        nickname: data.nickname,
-        school: data.school,
-        phone: data.phone,
-        parent_phone: data.parent_phone,
-        gdpr: data.gdpr,
-        grade: data.grade,
-      },
-      new_school_description: data.new_school_description || '',
-    }
-  }
+  const transformFormData = (data: RegisterFormValues) => ({
+    email: data.email,
+    password1: data.password1,
+    password2: data.password2,
+    profile: {
+      first_name: data.first_name,
+      last_name: data.last_name,
+      nickname: data.nickname,
+      school: data.school,
+      phone: data.phone,
+      parent_phone: data.parent_phone,
+      gdpr: data.gdpr,
+      grade: data.grade,
+    },
+    new_school_description: data.new_school_description || '',
+  })
 
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     try {
-      const response = await axios.post(`/api/user/registration/`, transformFormData(data))
-      setSuccessfullRegistration(response.data.detail)
+      const response = await axios.post<IGeneralPostResponse>(`/api/user/registration/`, transformFormData(data))
+      setSuccessfulRegistration(response.data.detail)
     } catch (error) {
       console.log('error', error)
     }
@@ -142,8 +157,8 @@ export const RegisterForm: FC = () => {
   return (
     <div className="registerform">
       <h1>Registrácia</h1>
-      {successfullRegistration ? (
-        <p>{successfullRegistration}</p>
+      {successfulRegistration ? (
+        <p>{successfulRegistration}</p>
       ) : (
         <>
           <form>
@@ -163,42 +178,36 @@ export const RegisterForm: FC = () => {
               name="county"
               label="Kraj školy"
               options={countyItems}
-              disabled={fields.school_not_found || fields.without_school}
+              disabled={school_not_found || without_school}
             />
             <FormSelect
               control={control}
               name="district"
               label="Okres školy"
               options={districtItems}
-              disabled={!districtItems.length || fields.school_not_found || fields.without_school}
+              disabled={!districtItems.length || school_not_found || without_school}
             />
             <FormSelect
               control={control}
               name="school"
               label="Škola"
               options={schoolItems}
-              disabled={!schoolItems.length || fields.school_not_found || fields.without_school}
+              disabled={!schoolItems.length || school_not_found || without_school}
             />
             <FormCheckbox
               control={control}
               name="school_not_found"
               label="Moja škola sa v zozname nenachádza."
-              disabled={fields.district === '' || fields.without_school}
+              disabled={district === '' || without_school}
             />
-            {fields.school_not_found && (
+            {school_not_found && (
               <FormInput
                 control={control}
                 name="new_school_description"
                 label="povedz nám, kam chodíš na školu, aby sme ti ju mohli dodatočne pridať"
               />
             )}
-            <FormSelect
-              control={control}
-              name="grade"
-              label="Ročník"
-              options={gradeItems}
-              disabled={fields.without_school}
-            />
+            <FormSelect control={control} name="grade" label="Ročník" options={gradeItems} disabled={without_school} />
             <FormInput control={control} name="phone" label="Telefónne číslo" />
             <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" />
             <FormCheckbox control={control} name="gdpr" label="Súhlas so spracovaním osobných údajov" />
