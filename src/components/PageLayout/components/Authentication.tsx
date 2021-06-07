@@ -1,6 +1,6 @@
 import './Authentication.scss'
 
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import React, {useState} from 'react'
 import {useCookies} from 'react-cookie'
 
@@ -21,6 +21,10 @@ export const Authentication: React.FC = () => {
       }
       return !prevDisplay
     })
+  }
+
+  const closeAuthenticationOverlay = () => {
+    setDisplayAuthenticationOverlay(false)
   }
 
   const toggleDisplayLogin = () => {
@@ -48,7 +52,9 @@ export const Authentication: React.FC = () => {
     // Funkcia ktorá zavolá logout api point ktorý zmaže token na BE a odstráni cookies s tokenom a menom.
     try {
       await axios.post('/api/user/logout/', {})
-    } catch (error) {
+    } catch (e: unknown) {
+      const ex = e as AxiosError
+      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
       console.log(error)
     }
     removeCookie('webstrom-token', {path: '/'})
@@ -66,7 +72,7 @@ export const Authentication: React.FC = () => {
           {/* Testovací "Cookie" button, ktorý nasvaví webstrom-token na nezmyselný string */}
           <span onClick={addRandomCookie}>Cookie</span>
         </div>
-        <Overlay display={displayAuthenticationOverlay} displayToggle={toggleDisplayAuthenticationOverlay}>
+        <Overlay display={displayAuthenticationOverlay} closeOverlay={closeAuthenticationOverlay}>
           <div id="authentication-container">
             <div className="tabs">
               <div
@@ -89,7 +95,7 @@ export const Authentication: React.FC = () => {
             <div className="content">
               {displayLogin ? (
                 <LoginForm
-                  overlayToggle={toggleDisplayAuthenticationOverlay}
+                  closeOverlay={toggleDisplayAuthenticationOverlay}
                   loginRegistrationToggle={toggleDisplayLogin}
                 />
               ) : (

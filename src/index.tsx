@@ -23,7 +23,7 @@ axios.interceptors.request.use((request) => {
   // Interceptor ktorý pridá webstrom-token do autorizačného headera
   const key = cookies.get('webstrom-token')
   if (key !== undefined) {
-    request.headers.Authorization = 'Token ' + key
+    request.headers.Authorization = `Token ${key}`
   }
   return request
 })

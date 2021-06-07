@@ -1,25 +1,26 @@
 import './LoginForm.scss'
 
 import axios from 'axios'
-import React, {useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useCookies} from 'react-cookie'
 
 interface ILoginForm {
-  overlayToggle: () => void
+  closeOverlay: () => void
   loginRegistrationToggle: () => void
 }
 
-export const LoginForm: React.FC<ILoginForm> = ({overlayToggle, loginRegistrationToggle}) => {
+export const LoginForm: React.FC<ILoginForm> = ({closeOverlay, loginRegistrationToggle}) => {
   const [formData, setFormData] = useState({email: '', password: ''})
   const [, setCookie] = useCookies(['webstrom-token'])
+  const emailRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    emailRef.current?.focus()
+  }, [])
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const name = e.currentTarget.name
-    const value = e.currentTarget.value
-    setFormData((prevData) => {
-      const newData = {...prevData, [name]: value}
-      return newData
-    })
+    const {name, value} = e.currentTarget
+    setFormData((prevData) => ({...prevData, [name]: value}))
   }
 
   const handleLogin = async (event: React.SyntheticEvent) => {
@@ -35,7 +36,7 @@ export const LoginForm: React.FC<ILoginForm> = ({overlayToggle, loginRegistratio
       const responseDetails = await axios.get('/api/personal/profiles/myprofile/')
       setCookie('webstrom-name', responseDetails.data['first_name'], {path: '/', expires: expirationDate})
 
-      overlayToggle()
+      closeOverlay()
     } catch (error) {
       if (error.response.status === 400) {
         console.log('Neplatné prihlasovacie údaje')
@@ -48,7 +49,14 @@ export const LoginForm: React.FC<ILoginForm> = ({overlayToggle, loginRegistratio
       <form onSubmit={handleLogin}>
         <div id="login-form">
           <div>
-            <input type="text" name="email" placeholder="e-mail" value={formData.email} onChange={handleChange} />
+            <input
+              ref={emailRef}
+              type="text"
+              name="email"
+              placeholder="e-mail"
+              value={formData.email}
+              onChange={handleChange}
+            />
           </div>
           <div>
             <input

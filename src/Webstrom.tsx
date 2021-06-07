@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import React, {useEffect, useState} from 'react'
 import {useCookies} from 'react-cookie'
 import {useLocation} from 'react-router-dom'
@@ -16,11 +16,9 @@ export const Webstrom: React.FC = () => {
 
   useEffect(() => {
     axios.interceptors.response.use(
-      (response) => {
-        return response
-      },
-      async (error) => {
-        const status = error.response ? error.response.status : null
+      (response) => response,
+      async (error: AxiosError) => {
+        const status = error.response?.status
 
         if (status === 401) {
           // Nesprávny webstrom-token vráti 401. V tomto prápade sa zrušia cookies ktoré
@@ -30,9 +28,9 @@ export const Webstrom: React.FC = () => {
           removeCookie('webstrom-name', {path: '/'})
 
           const originalRequestConfig = error.config
-          delete originalRequestConfig.headers['Authorization']
+          delete originalRequestConfig.headers.Authorization
 
-          return await axios.request(originalRequestConfig)
+          return axios.request(originalRequestConfig)
         }
 
         return Promise.reject(error)
