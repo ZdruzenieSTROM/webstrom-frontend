@@ -1,5 +1,12 @@
 #footer {
+  display: grid;
   background-color: black;
   height: 40px;
   grid-column: 1 / 4;
+  color: white;
+  align-items: flex-end;
+}
+
+#footer > div > span {
+  margin-right: 40px;
 }

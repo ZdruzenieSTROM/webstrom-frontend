@@ -104,6 +104,7 @@ export const Marquee: React.FC<MarqueeProps> = ({
     setIsMounted(true)
   }, [])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     /* Find width of container and width of marquee */
     if (marqueeRef.current && containerRef.current) {
@@ -116,7 +117,7 @@ export const Marquee: React.FC<MarqueeProps> = ({
     } else {
       setDuration(marqueeWidth / speed)
     }
-  }, [marqueeWidth, containerWidth, speed])
+  })
 
   // Gradient color in an unfinished rgba format
   const rgbaGradientColor = `rgba(${gradientColor[0]}, ${gradientColor[1]}, ${gradientColor[2]}`
