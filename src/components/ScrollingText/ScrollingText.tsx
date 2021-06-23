@@ -1,5 +1,4 @@
-import './ScrollingText.scss'
-
+// import './ScrollingText.scss'
 import React from 'react'
 
 import {Marquee} from '../Marquee/Marquee'

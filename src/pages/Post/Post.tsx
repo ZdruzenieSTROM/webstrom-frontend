@@ -1,5 +1,4 @@
-import './Post.css'
-
+// import './Post.css'
 import axios, {AxiosError} from 'axios'
 import React, {FC, useEffect, useState} from 'react'
 

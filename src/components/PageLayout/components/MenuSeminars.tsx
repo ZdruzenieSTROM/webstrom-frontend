@@ -1,5 +1,4 @@
-import './MenuSeminars.css'
-
+// import './MenuSeminars.css'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
