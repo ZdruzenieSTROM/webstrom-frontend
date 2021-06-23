@@ -1,4 +1,4 @@
-import {AuthProvider} from 'react-admin'
+import {AuthProvider, HttpError} from 'react-admin'
 import {Cookies} from 'react-cookie'
 
 const authTokenUrl = '/api/user/login/'
@@ -28,12 +28,14 @@ export const authProvider: AuthProvider = {
     return Promise.resolve()
   },
   checkAuth: () =>
-    cookies.get('webstrom-token') ? Promise.resolve() : Promise.reject(new Error('webstrom-token cookie is missing')),
+    cookies.get('webstrom-token')
+      ? Promise.resolve()
+      : Promise.reject(new HttpError('checkAuth: webstrom-token cookie is missing', 401)),
   checkError: (error) => {
     const status = error.status
     if (status === 401 || status === 403) {
       cookies.remove('webstrom-token')
-      return Promise.reject(new Error(`request status ${status}`))
+      return Promise.reject(new HttpError(`checkError: unauthorized/forbidden request`, status))
     }
     return Promise.resolve()
   },
