@@ -1,5 +1,4 @@
-import './Latex.css'
-
+// import './Latex.css'
 import {MathComponent} from 'mathjax-react'
 import React from 'react'
 

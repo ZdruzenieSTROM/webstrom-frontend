@@ -1,5 +1,4 @@
-import './index.css'
-
+// import './index.css'
 import axios from 'axios'
 import React from 'react'
 import {Cookies} from 'react-cookie'
@@ -10,14 +9,15 @@ import {Webstrom} from './Webstrom'
 
 const cookies = new Cookies()
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Router>
-      <Webstrom />
-    </Router>
-  </React.StrictMode>,
-  document.getElementById('root'),
-)
+export default function NextIndexWrapper() {
+  return (
+    <React.StrictMode>
+      <Router>
+        <Webstrom />
+      </Router>
+    </React.StrictMode>
+  );
+}
 
 axios.interceptors.request.use((request) => {
   // Interceptor ktorý pridá webstrom-token do autorizačného headera

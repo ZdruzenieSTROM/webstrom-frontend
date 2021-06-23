@@ -1,5 +1,4 @@
-import './Overlay.scss'
-
+// import './Overlay.scss'
 import React from 'react'
 
 interface IOverlay {

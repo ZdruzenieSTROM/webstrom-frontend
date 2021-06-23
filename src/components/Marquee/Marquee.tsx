@@ -1,5 +1,4 @@
-import './Marquee.scss'
-
+// import './Marquee.scss'
 import React, {useEffect, useRef, useState} from 'react'
 
 interface MarqueeProps {
