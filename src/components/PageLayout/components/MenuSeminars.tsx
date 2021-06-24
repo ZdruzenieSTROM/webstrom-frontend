@@ -1,21 +1,29 @@
 // import './MenuSeminars.css'
+import Link from 'next/link'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
 export const MenuSeminars: React.FC<{seminarId: number}> = ({seminarId}) => {
   return (
     <div id="menu-seminars">
       <div className={seminarId === 3 ? 'menu-seminars-item active' : 'menu-seminars-item'}>
-        <Link to="/malynar/">Malynár</Link>
+        <Link href="/malynar">
+          <a>Malynár</a>
+        </Link>
       </div>
       <div className={seminarId === 2 ? 'menu-seminars-item active' : 'menu-seminars-item'}>
-        <Link to="/matik/">Matik</Link>
+        <Link href="/matik">
+          <a>Matik</a>
+        </Link>
       </div>
       <div className={seminarId === 1 ? 'menu-seminars-item active' : 'menu-seminars-item'}>
-        <Link to="/strom/">Strom</Link>
+        <Link href="/strom">
+          <a>Strom</a>
+        </Link>
       </div>
       <div className={seminarId === 4 ? 'menu-seminars-item active' : 'menu-seminars-item'}>
-        <Link to="/zdruzenie/">Združenie</Link>
+        <Link href="/zdruzenie">
+          <a>Združenie</a>
+        </Link>
       </div>
     </div>
   )
