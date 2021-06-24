@@ -324,5 +324,13 @@ module.exports = {
         'node/no-unpublished-require': 'off',
       },
     },
+
+    // Next.js needs default exports for pages and API points
+    {
+      files: ['pages/**/*'],
+      rules: {
+        'import/no-default-export': 'off',
+      },
+    },
   ],
 }
