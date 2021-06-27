@@ -26,21 +26,6 @@
     "build": "next build",
     "test": "jest test"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
     "@testing-library/dom": "^7.26.6",
     "@types/jest": "^26.0.14",
@@ -69,9 +54,5 @@
     "eslint-plugin-unicorn": "^29.0.0",
     "http-proxy-middleware": "^1.0.6",
     "prettier": "^2.1.2"
-  },
-  "resolutions": {
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0"
   }
 }

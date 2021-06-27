@@ -7,11 +7,13 @@ class MyDocument extends Document {
       <Html lang="sk">
         <Head>
           <meta charSet="utf-8" />
-          <link rel="icon" href={`${process.env.PUBLIC_URL}/favicon.ico`} />
           <meta name="theme-color" content="#000000" />
-          <meta name="description" content="Web site created using create-react-app" />
-          <link rel="manifest" href={`${process.env.PUBLIC_URL}/manifest.json`} />
-          <noscript>You need to enable JavaScript to run this app.</noscript>
+          <link rel="icon" href="/favicon.ico" />
+          <link rel="manifest" href="/manifest.json" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />
