@@ -21,8 +21,8 @@
     "typescript": "^4.3.4"
   },
   "scripts": {
-    "start": "next dev",
-    "start-production": "next start",
+    "dev": "next dev",
+    "start": "next start",
     "build": "next build",
     "test": "jest test"
   },
