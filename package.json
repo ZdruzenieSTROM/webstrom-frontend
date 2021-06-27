@@ -52,7 +52,6 @@
     "eslint-plugin-security-node": "^1.0.14",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unicorn": "^29.0.0",
-    "http-proxy-middleware": "^1.0.6",
     "prettier": "^2.1.2"
   }
 }
