@@ -1,13 +1,10 @@
 import axios, {AxiosError} from 'axios'
+import {useRouter} from 'next/router'
 import React, {useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom'
-
-interface IUseParam {
-  verificationKey: string
-}
 
 export const VerifyEmail: React.FC = () => {
-  const {verificationKey} = useParams<IUseParam>()
+  const router = useRouter()
+  const {verificationKey} = router.query
   const [response, setResponse] = useState('')
 
   useEffect(() => {

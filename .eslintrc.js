@@ -64,8 +64,8 @@ module.exports = {
     'simple-import-sort',
   ],
   extends: [
-    // for what's included, check: https://github.com/facebook/create-react-app/blob/master/packages/eslint-config-react-app/index.js
-    // "react-app",
+    // for what's included, check: https://github.com/vercel/next.js/blob/canary/packages/eslint-config-next/index.js
+    'next',
 
     // Baseline configurations
     'eslint:recommended',
@@ -89,9 +89,9 @@ module.exports = {
     // Run Prettier as an ESLint plugin (not separately after ESLint)
     'plugin:prettier/recommended',
 
-    // React-specific rules
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
+    // React-specific rules - not needed, included in 'next'
+    // 'plugin:react/recommended',
+    // 'plugin:react-hooks/recommended',
   ],
   settings: {
     react: {
@@ -322,6 +322,14 @@ module.exports = {
       files: ['.eslintrc.js'],
       rules: {
         'node/no-unpublished-require': 'off',
+      },
+    },
+
+    // Next.js needs default exports for pages and API points
+    {
+      files: ['pages/**/*'],
+      rules: {
+        'import/no-default-export': 'off',
       },
     },
   ],
