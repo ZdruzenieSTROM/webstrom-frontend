@@ -1,6 +1,6 @@
 // import './Latex.css'
 import {MathComponent} from 'mathjax-react'
-import React from 'react'
+import {FC} from 'react'
 
 // toto je regex, ktory matchuje LaTeX matematiku: $$.$$ \[.\] $.$ \(.\)
 const re = /((?<!(\\|\$))\$(?!\$).+?(?<!(\\|\$))\$(?!\$))|(\$\$.+?\$\$)|(\\\[.+?\\\])|(\\\(.+?\\\))/gsu
@@ -13,7 +13,7 @@ const trim = (str: string) => {
   }
 }
 
-export const Latex: React.FC<{children: string}> = ({children}) => {
+export const Latex: FC<{children: string}> = ({children}) => {
   const matches = Array.from(children.matchAll(re))
 
   if (matches.length === 0) {

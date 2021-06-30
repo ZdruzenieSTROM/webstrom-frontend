@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import {FC} from 'react'
 import {Admin as ReactAdmin, Resource} from 'react-admin'
 
 import {dataProvider} from '../../admin/dataProvider'

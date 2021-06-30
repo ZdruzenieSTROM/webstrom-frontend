@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import {FC} from 'react'
 import {Datagrid, DateField, List, ListProps, NumberField, TextField} from 'react-admin'
 
 export const PostList: FC<ListProps> = (props) => (

@@ -1,5 +1,5 @@
 // import './Marquee.scss'
-import React, {useEffect, useRef, useState} from 'react'
+import {FC, useEffect, useRef, useState} from 'react'
 
 interface MarqueeProps {
   /**
@@ -77,7 +77,7 @@ interface MarqueeProps {
 }
 
 // tento komponent je z https://github.com/justin-chu/react-fast-marquee/blob/master/src/components/Marquee.tsx
-export const Marquee: React.FC<MarqueeProps> = ({
+export const Marquee: FC<MarqueeProps> = ({
   style = {},
   className = '',
   play = true,

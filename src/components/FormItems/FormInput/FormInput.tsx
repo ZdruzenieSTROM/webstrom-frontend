@@ -1,5 +1,5 @@
 import {FormControl, Input, InputLabel, InputProps} from '@material-ui/core'
-import React, {FC} from 'react'
+import {FC} from 'react'
 import {Control, Controller} from 'react-hook-form'
 
 export const FormInput: FC<InputProps & {name: string; control: Control; label: string}> = ({control, name, label}) => (
