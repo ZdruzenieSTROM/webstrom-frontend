@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import {FC} from 'react'
 import {ArrayInput, Create, CreateProps, DateInput, SimpleForm, SimpleFormIterator, TextInput} from 'react-admin'
 
 // TODO: treba zistit, ako ma vyzerat tento PUT request a teda form, potom otestovat

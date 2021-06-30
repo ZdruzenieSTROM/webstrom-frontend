@@ -1,8 +1,8 @@
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
-import React, {useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 
-export const VerifyEmail: React.FC = () => {
+export const VerifyEmail: FC = () => {
   const router = useRouter()
   const {verificationKey} = router.query
   const [response, setResponse] = useState('')

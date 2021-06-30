@@ -16,7 +16,7 @@ import '../src/components/PageLayout/components/MenuMain.css'
 import axios, {AxiosError} from 'axios'
 import {AppProps} from 'next/app'
 import Head from 'next/head'
-import React, {FC, useEffect} from 'react'
+import {FC, useEffect} from 'react'
 import {Cookies, useCookies} from 'react-cookie'
 
 const cookies = new Cookies()

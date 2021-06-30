@@ -1,5 +1,5 @@
 import {FormControl, InputLabel, MenuItem, Select, SelectProps} from '@material-ui/core'
-import React, {FC} from 'react'
+import {FC} from 'react'
 import {Control, Controller} from 'react-hook-form'
 
 export type SelectOption = {id: number; label: string}
