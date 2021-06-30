@@ -26,10 +26,6 @@ export const Authentication: FC = () => {
     setDisplayAuthenticationOverlay(false)
   }
 
-  const toggleDisplayLogin = () => {
-    setDisplayLogin((prevDisplay) => !prevDisplay)
-  }
-
   const displayLoginForm = () => {
     setDisplayAuthenticationOverlay(true)
     setDisplayLogin(true)
@@ -93,10 +89,7 @@ export const Authentication: FC = () => {
             </div>
             <div className="content">
               {displayLogin ? (
-                <LoginForm
-                  closeOverlay={toggleDisplayAuthenticationOverlay}
-                  loginRegistrationToggle={toggleDisplayLogin}
-                />
+                <LoginForm closeOverlay={toggleDisplayAuthenticationOverlay} />
               ) : (
                 '<RegistrationForm />' // Tu by mal byť registračný form od Matúša
               )}
