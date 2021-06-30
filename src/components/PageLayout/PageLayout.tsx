@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import {FC} from 'react'
 
 import {ScrollingText} from '../ScrollingText/ScrollingText'
 import {Footer} from './components/Footer'

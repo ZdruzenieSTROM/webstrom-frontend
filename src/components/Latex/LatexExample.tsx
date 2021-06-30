@@ -1,11 +1,11 @@
 // import './LatexExample.css'
-import React, {useState} from 'react'
+import {ChangeEvent, FC, useState} from 'react'
 
 import {Latex} from './Latex'
 
-export const LatexExample: React.FC = () => {
+export const LatexExample: FC = () => {
   const [tex, setTex] = useState('')
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setTex(event.target.value)
   }
 

@@ -1,6 +1,6 @@
 // import './Post.css'
 import axios, {AxiosError} from 'axios'
-import React, {FC, useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 
 interface IPost {
   id: number

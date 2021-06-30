@@ -1,7 +1,7 @@
 // import './RegisterForm.css'
 import {Button} from '@material-ui/core'
 import axios from 'axios'
-import React, {FC, useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {FormCheckbox} from '../../components/FormItems/FormCheckbox/FormCheckbox'
