@@ -2,7 +2,7 @@
 import axios from 'axios'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
-import React, {useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 import * as CgIcons from 'react-icons/cg'
 import * as FaIcons from 'react-icons/fa'
 
@@ -14,7 +14,7 @@ interface MenuItemInterface {
   url: string
 }
 
-export const MenuMain: React.FC<{seminarId: number}> = ({seminarId}) => {
+export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
   const [isVisible, setIsVisible] = useState(true)
   const [menuItems, setMenuItems] = useState<MenuItemInterface[]>([])
 
@@ -70,7 +70,7 @@ export const MenuMain: React.FC<{seminarId: number}> = ({seminarId}) => {
   )
 }
 
-const MenuMainItem: React.FC<{caption: string; url: string}> = ({caption, url}) => {
+const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
   const router = useRouter()
   return (
     <div className={router.pathname === url ? 'menu-main-item active' : 'menu-main-item'}>

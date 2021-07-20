@@ -1,8 +1,8 @@
 // import './Footer.css'
-import React from 'react'
+import {FC} from 'react'
 import {useCookies} from 'react-cookie'
 
-export const Footer: React.FC = () => {
+export const Footer: FC = () => {
   const [cookies] = useCookies(['webstrom-token', 'webstrom-name'])
 
   return (

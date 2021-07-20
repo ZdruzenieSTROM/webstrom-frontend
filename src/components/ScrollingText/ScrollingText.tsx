@@ -1,9 +1,9 @@
 // import './ScrollingText.scss'
-import React from 'react'
+import {FC} from 'react'
 
 import {Marquee} from '../Marquee/Marquee'
 
-export const ScrollingText: React.FC = () => {
+export const ScrollingText: FC = () => {
   // text sa bude nacitavat z API ked bude vytvoreny endpoint na to
   const text =
     'Matboj sa uskutoční 15. októbra 2021 - Matboj sa uskutoční 15. októbra 2021 - Matboj sa uskutoční 15. októbra 2021'

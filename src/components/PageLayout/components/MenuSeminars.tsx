@@ -1,8 +1,8 @@
 // import './MenuSeminars.css'
 import Link from 'next/link'
-import React from 'react'
+import {FC} from 'react'
 
-export const MenuSeminars: React.FC<{seminarId: number}> = ({seminarId}) => {
+export const MenuSeminars: FC<{seminarId: number}> = ({seminarId}) => {
   return (
     <div id="menu-seminars">
       <div className={seminarId === 3 ? 'menu-seminars-item active' : 'menu-seminars-item'}>

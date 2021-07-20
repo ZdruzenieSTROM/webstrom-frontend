@@ -1,14 +1,13 @@
 // import './LoginForm.scss'
-import axios from 'axios'
-import React, {useEffect, useRef, useState} from 'react'
+import axios, {AxiosError} from 'axios'
+import {FC, FormEvent, SyntheticEvent, useEffect, useRef, useState} from 'react'
 import {useCookies} from 'react-cookie'
 
 interface ILoginForm {
   closeOverlay: () => void
-  loginRegistrationToggle: () => void
 }
 
-export const LoginForm: React.FC<ILoginForm> = ({closeOverlay, loginRegistrationToggle}) => {
+export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const [formData, setFormData] = useState({email: '', password: ''})
   const [, setCookie] = useCookies(['webstrom-token'])
   const emailRef = useRef<HTMLInputElement>(null)
@@ -17,12 +16,12 @@ export const LoginForm: React.FC<ILoginForm> = ({closeOverlay, loginRegistration
     emailRef.current?.focus()
   }, [])
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleChange = (e: FormEvent<HTMLInputElement>) => {
     const {name, value} = e.currentTarget
     setFormData((prevData) => ({...prevData, [name]: value}))
   }
 
-  const handleLogin = async (event: React.SyntheticEvent) => {
+  const handleLogin = async (event: SyntheticEvent) => {
     event.preventDefault()
 
     try {
@@ -36,8 +35,9 @@ export const LoginForm: React.FC<ILoginForm> = ({closeOverlay, loginRegistration
       setCookie('webstrom-name', responseDetails.data['first_name'], {path: '/', expires: expirationDate})
 
       closeOverlay()
-    } catch (error) {
-      if (error.response.status === 400) {
+    } catch (e: unknown) {
+      const error = e as AxiosError
+      if (error.response?.status === 400) {
         console.log('Neplatné prihlasovacie údaje')
       }
     }

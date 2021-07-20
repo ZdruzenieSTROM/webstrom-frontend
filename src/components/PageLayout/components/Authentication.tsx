@@ -1,12 +1,12 @@
 // import './Authentication.scss'
 import axios, {AxiosError} from 'axios'
-import React, {useState} from 'react'
+import {FC, useState} from 'react'
 import {useCookies} from 'react-cookie'
 
 import {Overlay} from '../../Overlay/Overlay'
 import {LoginForm} from './LoginForm'
 
-export const Authentication: React.FC = () => {
+export const Authentication: FC = () => {
   const [displayAuthenticationOverlay, setDisplayAuthenticationOverlay] = useState(false)
   const [displayLogin, setDisplayLogin] = useState(true) // true -> zobrazí sa login, false -> zobrazí sa registrácia
   const [cookies, setCookie, removeCookie] = useCookies(['webstrom-token'])
@@ -24,10 +24,6 @@ export const Authentication: React.FC = () => {
 
   const closeAuthenticationOverlay = () => {
     setDisplayAuthenticationOverlay(false)
-  }
-
-  const toggleDisplayLogin = () => {
-    setDisplayLogin((prevDisplay) => !prevDisplay)
   }
 
   const displayLoginForm = () => {
@@ -93,10 +89,7 @@ export const Authentication: React.FC = () => {
             </div>
             <div className="content">
               {displayLogin ? (
-                <LoginForm
-                  closeOverlay={toggleDisplayAuthenticationOverlay}
-                  loginRegistrationToggle={toggleDisplayLogin}
-                />
+                <LoginForm closeOverlay={toggleDisplayAuthenticationOverlay} />
               ) : (
                 '<RegistrationForm />' // Tu by mal byť registračný form od Matúša
               )}

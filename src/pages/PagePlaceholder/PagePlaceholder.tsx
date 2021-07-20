@@ -1,7 +1,7 @@
 // import './PagePlaceholder.css'
-import React from 'react'
+import {FC} from 'react'
 
-export const PagePlaceholder: React.FC<{title: string}> = ({title}) => {
+export const PagePlaceholder: FC<{title: string}> = ({title}) => {
   return (
     <div className="placeholder">
       <h1>{title}</h1>
