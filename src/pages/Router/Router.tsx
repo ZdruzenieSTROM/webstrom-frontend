@@ -13,7 +13,7 @@ export const Router: React.FC<{seminarId: number}> = ({seminarId}) => {
   return (
     <div id="main-content">
       <Switch>
-        <Route path={'/admin'} component={AdminRouter} />
+        <Route path={'/admin'} component={Admin} />
         {/* aby sme mohli pouzit PageLayout len pre niektore stranky (vsetky okrem admina), musi to byt takto zabalene
           vo vlastnej Route, ktora vie, ktore stranky matchuje (a potom hlada hlbsie dalsie Routes) */}
         <Route path={['/strom/', '/matik/', '/malynar/', '/zdruzenie/', '/']}>
@@ -133,17 +133,6 @@ const ZdruzenieRouter: React.FC = () => {
       </Route>
       <Route exact path={path + 'register/'}>
         <RegisterForm />
-      </Route>
-    </>
-  )
-}
-
-const AdminRouter: React.FC = () => {
-  const {path} = useRouteMatch()
-  return (
-    <>
-      <Route exact path={path}>
-        <Admin />
       </Route>
     </>
   )
