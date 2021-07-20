@@ -30,7 +30,7 @@ yarn
 ```
 Development server sa spustí pomocou príkazu:
 ```
-yarn start
+yarn dev
 ```
 Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo frontendovom kóde a automaticky sa reloaduje.
 

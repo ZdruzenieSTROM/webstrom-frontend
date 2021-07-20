@@ -1,5 +1,4 @@
-import './LatexExample.css'
-
+// import './LatexExample.css'
 import React, {useState} from 'react'
 
 import {Latex} from './Latex'

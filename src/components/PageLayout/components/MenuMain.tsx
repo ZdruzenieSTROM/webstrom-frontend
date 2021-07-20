@@ -1,10 +1,10 @@
-import './MenuMain.css'
-
+// import './MenuMain.css'
 import axios from 'axios'
+import Link from 'next/link'
+import {useRouter} from 'next/router'
 import React, {useEffect, useState} from 'react'
 import * as CgIcons from 'react-icons/cg'
 import * as FaIcons from 'react-icons/fa'
-import {Link, useLocation} from 'react-router-dom'
 
 import {Authentication} from './Authentication'
 
@@ -71,10 +71,12 @@ export const MenuMain: React.FC<{seminarId: number}> = ({seminarId}) => {
 }
 
 const MenuMainItem: React.FC<{caption: string; url: string}> = ({caption, url}) => {
-  const location = useLocation()
+  const router = useRouter()
   return (
-    <div className={location.pathname === url ? 'menu-main-item active' : 'menu-main-item'}>
-      <Link to={url}>{caption}</Link>
+    <div className={router.pathname === url ? 'menu-main-item active' : 'menu-main-item'}>
+      <Link href={url}>
+        <a>{caption}</a>
+      </Link>
     </div>
   )
 }
