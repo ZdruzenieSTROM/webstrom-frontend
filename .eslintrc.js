@@ -168,6 +168,9 @@ module.exports = {
     // Heuristic to try to detect secrets accidentally left in the code
     'no-secrets/no-secrets': 'warn',
 
+    // Unluckily this rule has a very high false-positivity rate, making it unusable
+    'security/detect-object-injection': 'off',
+
     // Improve regexes by making them shorter, more consistent, and safer
     'require-unicode-regexp': 'warn',
     'unicorn/better-regex': 'warn',
@@ -273,7 +276,7 @@ module.exports = {
         // Use explicit type signatures for everything that is exported from a module
         // This works as a live documentation system and helps catching more errors.
         '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/explicit-module-boundary-types': 'warn',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
 
         // Disable const x = require("module") syntax (use imports instead)
         '@typescript-eslint/no-var-requires': 'warn',
