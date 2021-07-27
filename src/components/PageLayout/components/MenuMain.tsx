@@ -8,6 +8,20 @@ import * as FaIcons from 'react-icons/fa'
 
 import {Authentication} from './Authentication'
 
+export const getSeminarName = (seminarId: number) => {
+  switch (seminarId) {
+    case 1:
+      return 'strom'
+    case 2:
+      return 'matik'
+    case 3:
+      return 'malynar'
+    case 4:
+      return 'zdruzenie'
+    default:
+      return 'strom'
+  }
+}
 interface MenuItemInterface {
   id: number
   caption: string
@@ -17,21 +31,6 @@ interface MenuItemInterface {
 export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
   const [isVisible, setIsVisible] = useState(true)
   const [menuItems, setMenuItems] = useState<MenuItemInterface[]>([])
-
-  const getPrefix = () => {
-    switch (seminarId) {
-      case 1:
-        return '/strom'
-      case 2:
-        return '/matik'
-      case 3:
-        return '/malynar'
-      case 4:
-        return '/zdruzenie'
-      default:
-        return '/strom'
-    }
-  }
 
   const toggleMenu = () => {
     setIsVisible((currentIsVisible) => !currentIsVisible)
@@ -62,7 +61,13 @@ export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
       <div id="menu-main-items">
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {
-            return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={getPrefix() + menuItem.url} />
+            return (
+              <MenuMainItem
+                key={menuItem.id}
+                caption={menuItem.caption}
+                url={`/${getSeminarName(seminarId)}${menuItem.url}`}
+              />
+            )
           })}
       </div>
       <Authentication />
