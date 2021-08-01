@@ -4,8 +4,8 @@ import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 
-import {Latex} from '../../components/Latex/Latex'
-import {getSeminarName} from '../../components/PageLayout/components/MenuMain'
+import {Latex} from '../Latex/Latex'
+import {getSeminarName} from '../PageLayout/components/MenuMain'
 import styles from './Problems.module.css'
 
 interface Problem {
