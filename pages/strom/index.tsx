@@ -1,7 +1,7 @@
 import {NextPage} from 'next'
 
 import {PageLayout} from '../../src/components/PageLayout/PageLayout'
-import {Posts} from '../../src/pages/Post/Post'
+import {Posts} from '../../src/components/Post/Post'
 
 const Strom: NextPage = () => (
   <PageLayout seminarId={1}>
