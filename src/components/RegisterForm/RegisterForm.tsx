@@ -4,12 +4,12 @@ import axios from 'axios'
 import {FC, useEffect, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import {FormCheckbox} from '../../components/FormItems/FormCheckbox/FormCheckbox'
-import {FormInput} from '../../components/FormItems/FormInput/FormInput'
-import {FormSelect, SelectOption} from '../../components/FormItems/FormSelect/FormSelect'
 import {IGrade} from '../../types/api/competition'
 import {IGeneralPostResponse} from '../../types/api/general'
 import {ICounty, IDistrict, ISchool} from '../../types/api/personal'
+import {FormCheckbox} from '../FormItems/FormCheckbox/FormCheckbox'
+import {FormInput} from '../FormItems/FormInput/FormInput'
+import {FormSelect, SelectOption} from '../FormItems/FormSelect/FormSelect'
 
 type RegisterFormValues = {
   email?: string

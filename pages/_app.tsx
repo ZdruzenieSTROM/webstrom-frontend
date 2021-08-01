@@ -10,7 +10,7 @@ import '../src/components/PageLayout/components/MenuSeminars.css'
 import '../src/components/PageLayout/components/Footer.css'
 import '../src/components/PageLayout/components/LoginForm.scss'
 import '../src/components/PageLayout/components/Authentication.scss'
-import '../src/pages/RegisterForm/RegisterForm.css'
+import '../src/components/RegisterForm/RegisterForm.css'
 import '../src/components/PageLayout/components/MenuMain.css'
 
 import axios, {AxiosError} from 'axios'
