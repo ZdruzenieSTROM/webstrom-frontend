@@ -37,9 +37,7 @@ const authFetchJson = (url: string, options?: Record<string, unknown>) => {
 const dynamicSort = (key: string, order: string) => {
   const orderValue = order === 'ASC' ? 1 : -1
   return (a: RARecord, b: RARecord) => {
-    // eslint-disable-next-line security/detect-object-injection
     if (a[key] > b[key]) return orderValue
-    // eslint-disable-next-line security/detect-object-injection
     if (a[key] < b[key]) return -orderValue
     return 0
   }
