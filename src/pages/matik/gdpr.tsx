@@ -1,7 +1,7 @@
 import {NextPage} from 'next'
 
-import {PageLayout} from '../../src/components/PageLayout/PageLayout'
-import {PagePlaceholder} from '../../src/components/PagePlaceholder'
+import {PageLayout} from '@/components/PageLayout/PageLayout'
+import {PagePlaceholder} from '@/components/PagePlaceholder'
 
 const Gdpr: NextPage = () => (
   <PageLayout seminarId={2}>

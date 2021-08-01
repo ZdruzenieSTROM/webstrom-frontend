@@ -1,8 +1,8 @@
 import {NextPage} from 'next'
 import Link from 'next/link'
 
-import {getSeminarName} from '../../components/PageLayout/components/MenuMain'
-import {PageLayout} from '../../components/PageLayout/PageLayout'
+import {getSeminarName} from '@/components/PageLayout/components/MenuMain'
+import {PageLayout} from '@/components/PageLayout/PageLayout'
 
 const Zadania: NextPage = () => {
   const seminarName = getSeminarName(3)

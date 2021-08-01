@@ -1,7 +1,7 @@
 import {NextPage} from 'next'
 
-import {PageLayout} from '../../components/PageLayout/PageLayout'
-import {Posts} from '../../components/Post/Post'
+import {PageLayout} from '@/components/PageLayout/PageLayout'
+import {Posts} from '@/components/Post/Post'
 
 const Malynar: NextPage = () => (
   <PageLayout seminarId={3}>

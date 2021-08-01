@@ -1,7 +1,7 @@
 import {NextPage} from 'next'
 
-import {PageLayout} from '../../components/PageLayout/PageLayout'
-import {PagePlaceholder} from '../../components/PagePlaceholder'
+import {PageLayout} from '@/components/PageLayout/PageLayout'
+import {PagePlaceholder} from '@/components/PagePlaceholder'
 
 const Vysledky: NextPage = () => (
   <PageLayout seminarId={3}>
