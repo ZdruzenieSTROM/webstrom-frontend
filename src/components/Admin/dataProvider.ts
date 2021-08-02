@@ -97,7 +97,7 @@ export const dataProvider: DataProvider = {
   },
   update: async (resource, params) => {
     const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}/`, {
-      method: 'PATCH',
+      method: 'POST',
       body: JSON.stringify(params.data),
     })
 
