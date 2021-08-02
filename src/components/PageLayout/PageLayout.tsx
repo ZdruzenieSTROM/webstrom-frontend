@@ -1,9 +1,9 @@
 import {FC} from 'react'
 
 import {ScrollingText} from '../ScrollingText/ScrollingText'
-import {Footer} from './components/Footer'
-import {MenuMain} from './components/MenuMain'
-import {MenuSeminars} from './components/MenuSeminars'
+import {Footer} from './Footer/Footer'
+import {MenuMain} from './MenuMain/MenuMain'
+import {MenuSeminars} from './MenuSeminars/MenuSeminars'
 
 export const PageLayout: FC<{seminarId: number}> = ({seminarId, children}) => (
   <div id="main-content">

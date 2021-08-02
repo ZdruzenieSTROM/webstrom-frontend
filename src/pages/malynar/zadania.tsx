@@ -1,7 +1,7 @@
 import {NextPage} from 'next'
 import Link from 'next/link'
 
-import {getSeminarName} from '@/components/PageLayout/components/MenuMain'
+import {getSeminarName} from '@/components/PageLayout/MenuMain/MenuMain'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 
 const Zadania: NextPage = () => {

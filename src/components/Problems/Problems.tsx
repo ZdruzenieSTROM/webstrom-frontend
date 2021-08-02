@@ -5,7 +5,7 @@ import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 
 import {Latex} from '../Latex/Latex'
-import {getSeminarName} from '../PageLayout/components/MenuMain'
+import {getSeminarName} from '../PageLayout/MenuMain/MenuMain'
 import styles from './Problems.module.css'
 
 interface Problem {
