@@ -4,7 +4,7 @@ import {FC, useState} from 'react'
 import {useCookies} from 'react-cookie'
 
 import {Overlay} from '../../Overlay/Overlay'
-import {LoginForm} from './LoginForm'
+import {LoginForm} from '../LoginForm/LoginForm'
 
 export const Authentication: FC = () => {
   const [displayAuthenticationOverlay, setDisplayAuthenticationOverlay] = useState(false)

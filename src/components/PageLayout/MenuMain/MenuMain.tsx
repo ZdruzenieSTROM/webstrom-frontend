@@ -6,7 +6,7 @@ import {FC, useEffect, useState} from 'react'
 import * as CgIcons from 'react-icons/cg'
 import * as FaIcons from 'react-icons/fa'
 
-import {Authentication} from './Authentication'
+import {Authentication} from '../Authentication/Authentication'
 
 export const getSeminarName = (seminarId: number) => {
   switch (seminarId) {
