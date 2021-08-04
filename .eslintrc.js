@@ -330,7 +330,7 @@ module.exports = {
 
     // Next.js needs default exports for pages and API points
     {
-      files: ['pages/**/*'],
+      files: ['src/pages/**/*'],
       rules: {
         'import/no-default-export': 'off',
       },
