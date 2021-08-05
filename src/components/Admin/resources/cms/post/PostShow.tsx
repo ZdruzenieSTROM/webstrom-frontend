@@ -3,28 +3,20 @@ import {
   ArrayField,
   Datagrid,
   DateField,
-  EditButton,
-  ListButton,
   NumberField,
   Show,
-  ShowActionsProps,
   ShowProps,
   SimpleShowLayout,
   Tab,
   TabbedShowLayout,
   TextField,
-  TopToolbar,
 } from 'react-admin'
 
-const PostShowActions: FC<ShowActionsProps> = ({basePath, data}) => (
-  <TopToolbar>
-    <EditButton basePath={basePath} record={data} />
-    <ListButton basePath={basePath} record={data} />
-  </TopToolbar>
-)
+import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
+import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 
 export const PostShow: FC<ShowProps> = (props) => (
-  <Show {...props} actions={<PostShowActions />}>
+  <Show {...props} actions={<MyShowActions />}>
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
@@ -35,7 +27,7 @@ export const PostShow: FC<ShowProps> = (props) => (
           <DateField source="added_at" />
           <DateField source="show_after" />
           <DateField source="disable_after" />
-          {/* <ArrayField source="sites" /> */}
+          <SitesArrayField source="sites" />
         </SimpleShowLayout>
       </Tab>
       <Tab label="links">
