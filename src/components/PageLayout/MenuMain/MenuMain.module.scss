@@ -1,0 +1,71 @@
+.menu {
+  position: fixed;
+  width: calc(calc(100% - 0px) / 4);
+  height: 100vh;
+  // top: -100%;
+  left: -100%;
+  background-color: black;
+  // background: transparent;
+  transition: 750ms;
+  margin: 0px;
+  padding: 0px;
+  z-index: 100;
+  
+  &.visible {
+    left: 0;
+    top: 0;
+    transition: 750ms;
+  }
+}
+
+.menuCloseButton {
+  height: 50px;
+  width: 50px;
+  font-size: 2.5rem;
+  display: grid;
+  place-items: center;
+  color: white;
+  z-index: 11;
+}
+.menuOpenButton {
+  height: 50px;
+  width: 50px;
+  font-size: 2.5rem;
+  display: grid;
+  place-items: center;
+  color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.menuItems {
+  margin-top: 80px;
+}
+
+.menuItem {
+  font-size: 1.3rem;
+  font-weight: bold;
+  background-color: transparent;
+  margin: 10px 40px;
+  padding: 8px 0px;
+  display: grid;
+  place-items: center;
+
+  a {
+    display: inline-block;
+    padding: 0px 5px 3px 5px;
+    border-bottom: 0.3rem solid white;
+    color: white;
+    text-align: center;
+  }
+}
+
+.active {
+  background-color: white;
+  
+  > a {
+    color: black;
+    border-color: black;
+  }
+}

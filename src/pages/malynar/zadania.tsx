@@ -8,7 +8,7 @@ const Zadania: NextPage = () => {
   const seminarName = getSeminarName(3)
 
   return (
-    <PageLayout seminarId={3}>
+    <PageLayout seminarId={3} colWidth={2}>
       <div>
         <h1>Zadania</h1>
         <Link href={`/${seminarName}/zadania/0`}>

@@ -4,7 +4,7 @@ import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Problems} from '@/components/Problems/Problems'
 
 const ProblemsPage: NextPage = () => (
-  <PageLayout seminarId={3}>
+  <PageLayout seminarId={3} colWidth={2}>
     <Problems seminarId={3} />
   </PageLayout>
 )

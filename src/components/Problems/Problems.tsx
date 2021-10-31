@@ -1,12 +1,10 @@
 import axios, {AxiosError} from 'axios'
-import clsx from 'clsx'
-import Link from 'next/link'
 import {useRouter} from 'next/router'
-import {FC, useEffect, useState} from 'react'
+import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react'
 
 import {Latex} from '../Latex/Latex'
 import {getSeminarName} from '../PageLayout/MenuMain/MenuMain'
-import styles from './Problems.module.css'
+import styles from './Problems.module.scss'
 
 interface Problem {
   id: number
@@ -25,46 +23,72 @@ interface Series {
   semester: number
 }
 
-interface Semester {
+interface DiscussionProps {
+  problemId: number
+  problemNumber: number
+  display: boolean
+  setCommentCount: Dispatch<SetStateAction<number[]>>
+}
+
+interface Comments {
   id: number
-  series_set: Series[]
-  semesterpublication_set: any[]
-  unspecifiedpublication_set: any[]
-  year: number
-  school_year: string
-  start: string
-  end: string
-  season_code: number
-  frozen_results: boolean
-  competition: number
-  late_tags: any[]
+  text: string
+  posted_at: string
+  published: boolean
+  problem: number
+  posted_by: number
 }
 
-type ProblemsProps = {
-  seminarId: number
+interface Comment {
+  id: number
+  text: string
+  published: boolean
+  posted_by: number
+  name: string
 }
 
-export const Problems: FC<ProblemsProps> = ({seminarId}) => {
+interface Profile {
+  first_name: string
+  last_name: string
+  nickname: string
+  school: number
+  phone: string
+  parent_phone: string
+  gdpr: boolean
+  grade: number
+}
+
+type ProblemsProps = {}
+
+export const Problems: FC<ProblemsProps> = () => {
   const router = useRouter()
-  const {series} = router.query
 
   const [problems, setProblems] = useState<Problem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [year, setYear] = useState<number>()
+  const [seriesId, setSeriesId] = useState(-1)
+  const [displayDiscussionId, setDisplayDiscussionId] = useState(-1)
+  const [commentCount, setCommentCount] = useState<number[]>([])
 
-  const seminarName = getSeminarName(seminarId)
+  const seminarId = getSeminarId(router.pathname)
+  // const seminarName = getSeminarName(seminarId)
 
   useEffect(() => {
-    const fetchData = async (series: number) => {
+    const newId = getSeriesId(router.query.params)
+    if (seriesId !== newId) {
+      setSeriesId(newId)
+    }
+  }, [router.query.params, seriesId])
+
+  useEffect(() => {
+    const fetchData = async (seriesId: number) => {
       try {
-        const {data} = await axios.get<Semester[]>('/api/competition/semester/', {
+        const {data} = await axios.get<Series>(`/api/competition/series/${seriesId}/`, {
           headers: {
             'Content-type': 'application/json',
           },
         })
-        setProblems(data[0].series_set[series].problems)
-        setYear(data[0].year)
+        setProblems(data.problems)
       } catch (e: unknown) {
         const ex = e as AxiosError
         const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
@@ -73,43 +97,159 @@ export const Problems: FC<ProblemsProps> = ({seminarId}) => {
         setLoading(false)
       }
     }
-    // seria query parametra nie je pristupna pri prvom renderi, tento check to riesi a pomaha aj s typescriptom
-    typeof series === 'string' && fetchData(Number.parseInt(series))
-  }, [series])
+    fetchData(seriesId)
+  }, [seriesId])
+
+  const handleClick = (id: number) => {
+    setDisplayDiscussionId((prevDisplayDiscussionId) => {
+      if (prevDisplayDiscussionId === id) {
+        return -1
+      } else {
+        return id
+      }
+    })
+  }
 
   return (
-    <div className={styles.grid}>
-      <div className={clsx(styles.cell, styles.threeColumns)}>
-        <h3>ZADANIA - {year}.ROČNÍK - ZIMNÝ SEMESTER</h3>
-      </div>
-      <div className={styles.cell} />
-      <div className={styles.cell} />
-      <div className={styles.cell}>
-        <h3>
-          <Link href={`/${seminarName}/zadania/0`}>
-            <a>1. SÉRIA ZIMNÉHO SEMESTRA</a>
-          </Link>
-        </h3>
-      </div>
-      <div className={styles.cell}>
-        <h3>
-          <Link href={`/${seminarName}/zadania/1`}>
-            <a>2. SÉRIA ZIMNÉHO SEMESTRA</a>
-          </Link>
-        </h3>
-      </div>
-      <div className={styles.cell}>
-        <h4 className={styles.changeSemester}>ZMENIŤ SEMESTER</h4>
-      </div>
-
+    <div className={styles.container}>
       {problems.map((problem) => (
-        <div className={clsx(styles.cell, styles.threeColumns)} key={problem.id}>
-          <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
-          <Latex>{problem.text}</Latex>
-        </div>
+        <Fragment key={problem.id}>
+          <div className={styles.problem}>
+            <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
+            <Latex>{problem.text}</Latex>
+            <div className={styles.actions}>
+              <span>ODOVZDAŤ</span>
+              <span onClick={() => handleClick(problem.id)}>
+                DISKUSIA - {commentCount[problem.order] === undefined ? '0' : commentCount[problem.order]}
+              </span>
+            </div>
+          </div>
+          <Discussion
+            problemId={problem.id}
+            problemNumber={problem.order}
+            display={problem.id === displayDiscussionId}
+            setCommentCount={setCommentCount}
+          />
+        </Fragment>
       ))}
-
-      {error && <p>{error}</p>}
     </div>
   )
+}
+
+const getSeminarId = (pathname: string) => {
+  switch (pathname.slice(1).split('/', 1)[0]) {
+    case 'strom':
+      return 0
+    case 'matik':
+      return 1
+    case 'malynar':
+      return 2
+    default:
+      return -1
+  }
+}
+
+const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, display, setCommentCount}) => {
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [comments, setComments] = useState<Comment[]>([])
+  const [names, setNames] = useState<string[]>([])
+
+  useEffect(() => {
+    const fetchData = async (problemId: number) => {
+      try {
+        const {data} = await axios.get<Comments[]>(`/api/competition/problem/${problemId}/comments`, {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        })
+
+        const getName = async (id: number) => {
+          if (names[id] !== undefined) {
+            return names[id]
+          } else {
+            try {
+              const {data} = await axios.get<Profile>(`/api/personal/profiles/${id}/`, {
+                headers: {
+                  'Content-type': 'application/json',
+                },
+              })
+
+              setNames((prevNames) => {
+                prevNames[id] = data.first_name + ' ' + data.last_name
+                return prevNames
+              })
+              return data.first_name + ' ' + data.last_name
+            } catch (e: unknown) {
+              const ex = e as AxiosError
+              const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+              setError(error)
+              return ''
+            } finally {
+              setLoading(false)
+            }
+          }
+        }
+
+        const comments = data.map((comment) => {
+          return {
+            id: comment.id,
+            text: comment.text,
+            published: comment.published,
+            posted_by: comment.posted_by,
+            name: '',
+          }
+        })
+
+        comments.forEach(async (comment) => {
+          comment.name = await getName(comment.posted_by)
+        })
+
+        setCommentCount((prevCommentCount) => {
+          prevCommentCount[problemNumber] = comments.length
+          return prevCommentCount
+        })
+        setComments(comments)
+      } catch (e: unknown) {
+        const ex = e as AxiosError
+        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+        setError(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData(problemId)
+  }, [problemId, names, problemNumber, setCommentCount])
+
+  if (!display) {
+    return <></>
+  }
+
+  return (
+    <div className={styles.discussion}>
+      <div className={styles.overlay}></div>
+      <div className={styles.discussionBox}>
+        <div className={styles.title}>Diskusia - úloha {problemNumber}</div>
+        <div className={styles.comments}>
+          {comments.map((comment) => {
+            return (
+              <div className={styles.comment} key={comment.id}>
+                <div className={styles.title}>{comment.name}</div>
+                <div className={styles.body}>{comment.text}</div>
+              </div>
+            )
+          })}
+        </div>
+        <div className={styles.textArea}>
+          <textarea />
+          <button>Odoslať</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const getSeriesId = (params: string | string[] | undefined) => {
+  // Using path params return the id of the series to be displayed
+  return 1
 }

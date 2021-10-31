@@ -1,4 +1,3 @@
-// import './MenuMain.css'
 import axios from 'axios'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
@@ -7,17 +6,16 @@ import * as CgIcons from 'react-icons/cg'
 import * as FaIcons from 'react-icons/fa'
 
 import {Authentication} from '../Authentication/Authentication'
+import styles from './MenuMain.module.scss'
 
 export const getSeminarName = (seminarId: number) => {
   switch (seminarId) {
-    case 1:
+    case 0:
       return 'strom'
-    case 2:
+    case 1:
       return 'matik'
-    case 3:
+    case 2:
       return 'malynar'
-    case 4:
-      return 'zdruzenie'
     default:
       return 'strom'
   }
@@ -49,16 +47,16 @@ export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
   }, [seminarId])
 
   return (
-    <div id="menu-main" className={isVisible ? 'visible' : ''}>
+    <div className={isVisible ? `${styles.menu} ${styles.visible}` : styles.menu}>
       {!isVisible && (
-        <div id="menu-main-open-button">
+        <div className={styles.menuOpenButton}>
           <FaIcons.FaBars className="icon-bars" onClick={toggleMenu} />
         </div>
       )}
-      <div id="menu-main-close-button">
-        <CgIcons.CgClose className="icon-close-menu" onClick={toggleMenu} />
+      <div className={styles.menuCloseButton}>
+        <CgIcons.CgClose className={styles.iconCloseMenu} onClick={toggleMenu} />
       </div>
-      <div id="menu-main-items">
+      <div className={styles.menuItems}>
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {
             return (
@@ -78,7 +76,7 @@ export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
 const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
   const router = useRouter()
   return (
-    <div className={router.pathname === url ? 'menu-main-item active' : 'menu-main-item'}>
+    <div className={router.pathname === url ? `${styles.menuItem} ${styles.active}` : styles.menuItem}>
       <Link href={url}>
         <a>{caption}</a>
       </Link>

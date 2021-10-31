@@ -1,11 +1,11 @@
 import {NextPage} from 'next'
 
+import {Matboj as MatbojComponent} from '@/components/Matboj/Matboj'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {PagePlaceholder} from '@/components/PagePlaceholder'
 
 const Matboj: NextPage = () => (
-  <PageLayout seminarId={1}>
-    <PagePlaceholder title="Matboj" />
+  <PageLayout contentWidth={2} title={'Košický Matboj'}>
+    <MatbojComponent />
   </PageLayout>
 )
 

@@ -1,15 +1,14 @@
-// import './ScrollingText.scss'
 import {FC} from 'react'
 
-import {Marquee} from '../Marquee/Marquee'
-import styles from './ScrollingText.module.scss'
+import {Marquee} from '@/components/Marquee/Marquee'
 
-export const ScrollingText: FC = () => {
-  // text sa bude nacitavat z API ked bude vytvoreny endpoint na to
+import styles from './Banner.module.scss'
+
+export const Banner: FC = () => {
   const text =
     'Matboj sa uskutoční 15. októbra 2021 - Matboj sa uskutoční 15. októbra 2021 - Matboj sa uskutoční 15. októbra 2021'
   return (
-    <div className={styles.scrollingText}>
+    <div className={styles.banner}>
       <Marquee gradient={false} speed={50}>
         <div className={styles.marqueeTextContainer}>{text}</div>
       </Marquee>
