@@ -1,7 +1,7 @@
 import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
 import Link from 'next/link'
-import {useRouter} from 'next/router'
+import {NextRouter, useRouter} from 'next/router'
 import {Dispatch, FC, Fragment, MouseEvent, SetStateAction, useEffect, useState} from 'react'
 
 import styles from './Results.module.scss'
@@ -66,6 +66,28 @@ interface Semester {
   semester?: 0 | 1
 }
 
+interface SeriesList {
+  id: number
+  order: number
+  deadline: string
+  complete: boolean
+  frozen_results: string | null
+  semester: number
+}
+
+interface SemesterList {
+  id: number
+  year: number
+  school_year: string
+  season_code: number
+  start: string
+  end: string
+  frozen_results: boolean
+  competition: number
+  late_tags: string[]
+  series_set: SeriesList[]
+}
+
 export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateAction<string>>}> = ({
   seminarId,
   setPageTitle,
@@ -73,25 +95,122 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
   const [results, setResults] = useState<Result[]>([])
   const [semesters, setSemesters] = useState<Semester[]>([])
 
-  // delete?
-  const [resultsId, setResultsId] = useState(0)
+  const router: NextRouter = useRouter()
+
+  // Id of results to be fetched
+  const [resultsId, setResultsId] = useState({semester: true, id: -1})
+
+  // List of semesters with their ids and series belonging to them
+  const [semesterList, setSemesterList] = useState<SemesterList[]>([])
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const router = useRouter()
+  // get list of semesters from the api
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const {data} = await axios.get<SemesterList[]>(`/api/competition/semester-list/?competition=${seminarId}`, {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        })
+        setSemesterList(data)
+      } catch (e: unknown) {
+        const ex = e as AxiosError
+        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+        setError(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [seminarId])
 
+  // Set resultsId from url.
+  // If nothing is specified, use id=-1 for the current semester.
+  // If series is not specified, set semesterId.semester to true and find semester id using year and semesterCode from the url.
+  // If series is specifies, set semesterId.semester to false and find series id using year, semesterCode, and series number from the url.
+
+  useEffect(() => {
+    const {params} = router.query
+
+    const getIdFromUrl = (params: string | string[] | undefined): {semester: boolean; id: number} => {
+      if (params === undefined || params?.length === 0 || params?.length === 1) {
+        return {semester: true, id: -1}
+      }
+      if (params?.length === 2) {
+        const year = getNumber(params[0])
+        let seasonCode = -1
+        let id = -1
+
+        if (params[1] === 'zima') {
+          seasonCode = 0
+        }
+        if (params[1] === 'leto') {
+          seasonCode = 1
+        }
+
+        for (let i = 0; i < semesterList.length; i++) {
+          if (semesterList[i].year === year && semesterList[i].season_code === seasonCode) {
+            id = semesterList[i].id
+          }
+        }
+
+        return {semester: true, id: id}
+      }
+      if (params?.length >= 3) {
+        const year = getNumber(params[0])
+        let seasonCode = -1
+        let id = -1
+
+        if (params[1] === 'zima') {
+          seasonCode = 0
+        }
+        if (params[1] === 'leto') {
+          seasonCode = 1
+        }
+
+        for (let i = 0; i < semesterList.length; i++) {
+          if (semesterList[i].year === year && semesterList[i].season_code === seasonCode) {
+            const order = getNumber(params[2])
+            for (let j = 0; j < semesterList[i].series_set.length; j++) {
+              if (semesterList[i].series_set[j].order === order) {
+                id = semesterList[i].series_set[j].id
+              }
+            }
+          }
+        }
+
+        if (id === -1) {
+          return {semester: true, id: id}
+        } else {
+          return {semester: false, id: id}
+        }
+      }
+
+      return {semester: true, id: -1}
+    }
+
+    setResultsId(getIdFromUrl(params))
+  }, [router.query, semesterList])
+
+  // Fetch data either from the semester api point is semesterId.semester is true or from the series api point id semesterId.semester is false. Use semesterId.id to get specific results to display.
   useEffect(() => {
     const fetchData = async () => {
       try {
         const {data} = await axios.get<Result[]>(
-          `/api/competition/semester/${resultsId === -1 ? 'current-results' : resultsId + '/results/'}`,
+          `/api/competition/${resultsId.semester === true ? 'semester' : 'series'}/${
+            resultsId.id === -1 ? 'current-results' : resultsId.id + '/results/'
+          }`,
           {
             headers: {
               'Content-type': 'application/json',
             },
           },
         )
+        // console.log(data)
+
         setResults(data)
       } catch (e: unknown) {
         const ex = e as AxiosError
@@ -104,55 +223,10 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
     fetchData()
   }, [resultsId])
 
+  // Update site title
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<Semesters>(`/api/competition/competition/${seminarId}/`, {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        })
-
-        setSemesters(
-          data.event_set.map((event) => {
-            return {id: event.id, year: event.year, seminar: seminarName(seminarId), semester: 0} // change it after peto changes api endpoint
-          }),
-        )
-        // setResults(data)
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [seminarId])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<Semesters>(`/api/competition/competition/${seminarId}/`, {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        })
-        data.event_set.forEach((event) => {
-          if (event.id === resultsId) {
-            setPageTitle(`${event.year}. Ročník - ${event.id === 1 ? 'zimný' : 'letný'} semester`) // change event.id === 1 to event.semester === 0 after peto changes api endpoint
-          }
-        })
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [resultsId, seminarId, setPageTitle])
+    setPageTitle(`44. Ročník - zimný semester`)
+  }, [resultsId, semesterList])
 
   const displayRow = (row: Result, key: number) => {
     let votes_pos = 0
@@ -202,7 +276,7 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
 
   return (
     <div>
-      <Menu seminarId={seminarId} />
+      <Menu seminarId={seminarId} semesterList={semesterList} />
       <div className={styles.results}>{results.map((row, index) => displayRow(row, index))}</div>
     </div>
   )
@@ -210,38 +284,15 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
 
 // interfaces for dropdown menus
 
-interface SeriesList {
-  id: number
-  order: number
-  deadline: string
-  complete: boolean
-  frozen_results: string | null
-  semester: number
-}
-
-interface SemesterList {
-  id: number
-  year: number
-  school_year: string
-  season_code: number
-  start: string
-  end: string
-  frozen_results: boolean
-  competition: number
-  late_tags: string[]
-  series_set: SeriesList[]
-}
-
 interface DropdownOptions {
   id: number
   text: string
   link: string
 }
 
-const Menu: FC<{seminarId: number}> = ({seminarId}) => {
+const Menu: FC<{seminarId: number; semesterList: SemesterList[]}> = ({seminarId, semesterList}) => {
   const router = useRouter()
 
-  const [semesterList, setSemesterList] = useState<SemesterList[]>([])
   const [dropdownSemesterList, setDropdownSemesterList] = useState<DropdownOptions[]>([])
   const [dropdownSeriesList, setDropdownSeriesList] = useState<DropdownOptions[]>([])
   const [selectedSemesterId, setSelectedSemesterId] = useState(-1)
@@ -250,27 +301,6 @@ const Menu: FC<{seminarId: number}> = ({seminarId}) => {
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-
-  // get menu items for dropdowns
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<SemesterList[]>(`/api/competition/semester-list/?competition=${seminarId}`, {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        })
-        setSemesterList(data)
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [seminarId])
 
   useEffect(() => {
     setDropdownSemesterList(
@@ -322,8 +352,12 @@ const Menu: FC<{seminarId: number}> = ({seminarId}) => {
     setSelectedSeriesId(selectedSeries)
   }, [router.query.params, semesterList])
 
+  const handleClick = (event: MouseEvent) => {
+    console.log('menu clicked') // make sure only one menu is open at the time
+  }
+
   return (
-    <div className={styles.menu}>
+    <div className={styles.menu} onClick={handleClick}>
       <Dropdown title={'Séria'} selectedId={selectedSeriesId} options={dropdownSeriesList} />
       <Dropdown title={'Semester'} selectedId={selectedSemesterId} options={dropdownSemesterList} />
     </div>

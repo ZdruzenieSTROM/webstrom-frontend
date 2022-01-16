@@ -1,13 +1,19 @@
 import {NextPage} from 'next'
-import {useRouter} from 'next/router'
+import {NextRouter, useRouter} from 'next/router'
 import {useState} from 'react'
 
 import {PageLayout} from '../../../components/PageLayout/PageLayout'
 import {Results} from '../../../components/Results/Results'
 
+interface ResultsRoute {
+  [0]: number | undefined
+  [1]: string | undefined
+  [2]: number | undefined
+}
+
 const Vysledky: NextPage = () => {
   const [pageTitle, setPageTitle] = useState('')
-  const router = useRouter()
+  const router: NextRouter = useRouter()
 
   return (
     <PageLayout title={pageTitle} contentWidth={2}>

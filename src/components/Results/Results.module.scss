@@ -1,25 +1,25 @@
-.results{
+.results {
   background-color: transparent;
   margin-top: 80px;
   display: grid;
   row-gap: 10px;
   grid-template-columns: max-content 1fr repeat(4, max-content);
 
-  .rowWrapper{
+  .rowWrapper {
     display: contents;
   }
-  
-  .rowWrapper > div{
+
+  .rowWrapper > div {
     padding: 0px 10px;
   }
 
-  .rowWrapper:hover > div{
+  .rowWrapper:hover > div {
     background-color: #000;
-    color: #FFF;
+    color: #fff;
   }
 }
 
-.rank{
+.rank {
   font-weight: bold;
   font-style: italic;
   font-size: 2rem;
@@ -29,12 +29,12 @@
   padding: 0px;
 }
 
-.nameAndSchool{
+.nameAndSchool {
   display: grid;
   grid-template-rows: 2fr 1fr;
 }
 
-.name{
+.name {
   align-self: end;
   font-weight: bold;
   font-style: italic;
@@ -42,15 +42,15 @@
   font-size: 1.2rem;
 }
 
-.school{
+.school {
   align-self: start;
-  font-size: .6rem;
+  font-size: 0.6rem;
   padding-right: 20px;
   white-space: nowrap;
   overflow: hidden;
 }
 
-.grade{
+.grade {
   font-style: italic;
   font-size: 1.5rem;
   display: flex;
@@ -59,28 +59,28 @@
   padding: 0px;
 }
 
-.score{
+.score {
   display: flex;
   flex-direction: column;
   justify-content: center;
   // border: 1px solid red;
   grid-template-rows: max-content max-content;
 
-  > div{
+  > div {
     // border: 1px solid red;
     display: grid;
     grid-template-columns: repeat(6, 18px) 25px;
     justify-items: center;
-    font-size: .75rem;
+    font-size: 0.75rem;
   }
 
-  .subtotal{
+  .subtotal {
     padding-left: 5px;
-    font-weight: bold;  
+    font-weight: bold;
   }
 }
 
-.totalScore{
+.totalScore {
   font-weight: bold;
   font-style: italic;
   font-size: 1.5rem;
@@ -89,28 +89,20 @@
   align-items: center;
 }
 
-.votes{
+.votes {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
 }
 
-
-
-
-
-
-
-
-
-.menu{
+.menu {
   position: fixed;
   top: 5rem;
   right: 0px;
-  width:25vw;
+  width: 25vw;
   height: 5rem;
-  // border: 1px solid red;
+  border: 1px solid red;
   z-index: 1000;
 
   display: flex;
@@ -118,7 +110,7 @@
   justify-content: flex-end;
 }
 
-.dropdown{
+.dropdown {
   // border: 1px solid red;
   border-bottom: 5px solid black;
   width: fit-content;
@@ -130,18 +122,18 @@
   position: relative;
   margin: 0px 20px;
 
-  .arrow{
+  .arrow {
     margin-left: 1rem;
     display: inline-block;
     width: 0;
     height: 0;
-    border-left: .5rem solid transparent;
-    border-right: .5rem solid transparent;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
 
-    border-top: .8rem solid black;
+    border-top: 0.8rem solid black;
   }
 
-  .options{
+  .options {
     display: none;
     position: absolute;
     width: fit-content;
@@ -155,24 +147,23 @@
     }
   }
 
-  .displayOptions{
+  .displayOptions {
     display: inline-block;
   }
 
-  .option{
+  .option {
     background-color: white;
     color: black;
     display: inline-block;
     width: max-content;
     padding: 5px;
   }
-  .option:hover{
-    background-color: #CCC;
+  .option:hover {
+    background-color: #ccc;
   }
 
-  .option.selectedOption{
+  .option.selectedOption {
     background-color: black;
     color: white;
   }
 }
-
