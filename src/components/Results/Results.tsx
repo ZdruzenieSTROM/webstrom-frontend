@@ -38,34 +38,6 @@ interface Result {
   }[][]
 }
 
-// interface Semesters {
-//   event_set: {
-//     id: number
-//     unspecifiedpublication_set: string[]
-//     registration_links: string[]
-//     year: number
-//     school_year: string
-//     start: string
-//     end: string
-//     competition: number
-//   }[]
-//   name: string
-//   start_year: number
-//   description: string
-//   rules: string
-//   competition_type: number
-//   min_years_until_graduation: number
-//   sites: number[]
-//   permission_group: number[]
-// }
-
-// interface Semester {
-//   id: number
-//   year: number
-//   seminar: string
-//   semester?: 0 | 1
-// }
-
 interface SeriesList {
   id: number
   order: number
