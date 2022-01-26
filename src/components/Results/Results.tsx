@@ -2,7 +2,7 @@ import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
 import Link from 'next/link'
 import {NextRouter, useRouter} from 'next/router'
-import {Dispatch, FC, Fragment, MouseEvent, SetStateAction, useEffect, useState} from 'react'
+import {Dispatch, FC, MouseEvent, SetStateAction, useEffect, useState} from 'react'
 
 import styles from './Results.module.scss'
 
@@ -38,33 +38,33 @@ interface Result {
   }[][]
 }
 
-interface Semesters {
-  event_set: {
-    id: number
-    unspecifiedpublication_set: string[]
-    registration_links: string[]
-    year: number
-    school_year: string
-    start: string
-    end: string
-    competition: number
-  }[]
-  name: string
-  start_year: number
-  description: string
-  rules: string
-  competition_type: number
-  min_years_until_graduation: number
-  sites: number[]
-  permission_group: number[]
-}
+// interface Semesters {
+//   event_set: {
+//     id: number
+//     unspecifiedpublication_set: string[]
+//     registration_links: string[]
+//     year: number
+//     school_year: string
+//     start: string
+//     end: string
+//     competition: number
+//   }[]
+//   name: string
+//   start_year: number
+//   description: string
+//   rules: string
+//   competition_type: number
+//   min_years_until_graduation: number
+//   sites: number[]
+//   permission_group: number[]
+// }
 
-interface Semester {
-  id: number
-  year: number
-  seminar: string
-  semester?: 0 | 1
-}
+// interface Semester {
+//   id: number
+//   year: number
+//   seminar: string
+//   semester?: 0 | 1
+// }
 
 interface SeriesList {
   id: number
@@ -88,23 +88,40 @@ interface SemesterList {
   series_set: SeriesList[]
 }
 
+interface CurrentSemester {
+  id: number
+  series_set: SeriesList[]
+  semesterpublication_set: string[]
+  unspecifiedpublication_set: string[]
+  year: number
+  school_year: string
+  season_code: number
+  start: string
+  end: string
+  frozen_results: string
+  competition: number
+  late_tags: string[]
+}
+
 export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateAction<string>>}> = ({
   seminarId,
   setPageTitle,
 }) => {
   const [results, setResults] = useState<Result[]>([])
-  const [semesters, setSemesters] = useState<Semester[]>([])
 
   const router: NextRouter = useRouter()
 
   // Id of results to be fetched
   const [resultsId, setResultsId] = useState({semester: true, id: -1})
 
+  // Id of the current semester
+  const [currentSemesterId, setCurrentSemesterId] = useState(-1)
+
   // List of semesters with their ids and series belonging to them
   const [semesterList, setSemesterList] = useState<SemesterList[]>([])
 
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
+  const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
 
   // get list of semesters from the api
   useEffect(() => {
@@ -137,7 +154,7 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
 
     const getIdFromUrl = (params: string | string[] | undefined): {semester: boolean; id: number} => {
       if (params === undefined || params?.length === 0 || params?.length === 1) {
-        return {semester: true, id: -1}
+        return {semester: true, id: currentSemesterId}
       }
       if (params?.length === 2) {
         const year = getNumber(params[0])
@@ -157,7 +174,11 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
           }
         }
 
-        return {semester: true, id: id}
+        if (id === -1) {
+          return {semester: true, id: currentSemesterId}
+        } else {
+          return {semester: true, id: id}
+        }
       }
       if (params?.length >= 3) {
         const year = getNumber(params[0])
@@ -183,34 +204,30 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
         }
 
         if (id === -1) {
-          return {semester: true, id: id}
+          return {semester: true, id: currentSemesterId}
         } else {
           return {semester: false, id: id}
         }
       }
 
-      return {semester: true, id: -1}
+      return {semester: true, id: currentSemesterId}
     }
 
     setResultsId(getIdFromUrl(params))
-  }, [router.query, semesterList])
+  }, [router.query, semesterList, currentSemesterId])
 
   // Fetch data either from the semester api point is semesterId.semester is true or from the series api point id semesterId.semester is false. Use semesterId.id to get specific results to display.
   useEffect(() => {
     const fetchData = async () => {
       try {
         const {data} = await axios.get<Result[]>(
-          `/api/competition/${resultsId.semester === true ? 'semester' : 'series'}/${
-            resultsId.id === -1 ? 'current-results' : resultsId.id + '/results/'
-          }`,
+          '/api/competition/' + (resultsId.semester === true ? 'semester/' : 'series/') + resultsId.id + '/results/',
           {
             headers: {
               'Content-type': 'application/json',
             },
           },
         )
-        // console.log(data)
-
         setResults(data)
       } catch (e: unknown) {
         const ex = e as AxiosError
@@ -220,13 +237,66 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
         setLoading(false)
       }
     }
-    fetchData()
+    if (resultsId.id !== -1) {
+      fetchData()
+    } else {
+      setResults([])
+    }
   }, [resultsId])
 
-  // Update site title
+  // set currentSemesterId from competition/semester/current/seminarId/ api point
   useEffect(() => {
-    setPageTitle(`44. Ročník - zimný semester`)
-  }, [resultsId, semesterList])
+    const fetchData = async () => {
+      try {
+        const {data} = await axios.get<CurrentSemester>(`/api/competition/semester/current/` + seminarId, {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        })
+        setCurrentSemesterId(data.id)
+      } catch (e: unknown) {
+        const ex = e as AxiosError
+        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+        setError(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [seminarId])
+
+  // Update site title if resultsId changes
+  useEffect(() => {
+    let title = ''
+
+    for (let i = 0; i < semesterList.length; i++) {
+      if (resultsId.semester === true) {
+        if (resultsId.id === semesterList[i].id) {
+          title =
+            '' +
+            semesterList[i].year +
+            ' ročník - ' +
+            (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
+            ' semester'
+        }
+      } else {
+        for (let j = 0; j < semesterList[i].series_set.length; j++) {
+          if (resultsId.id === semesterList[i].series_set[j].id) {
+            title =
+              '' +
+              semesterList[i].year +
+              ' ročník - ' +
+              (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
+              ' semester - ' +
+              semesterList[i].series_set[j].order +
+              ' séria'
+          }
+        }
+      }
+    }
+
+    setPageTitle(title)
+  }, [resultsId, semesterList, setPageTitle])
 
   const displayRow = (row: Result, key: number) => {
     let votes_pos = 0
@@ -276,101 +346,80 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
 
   return (
     <div>
-      <Menu seminarId={seminarId} semesterList={semesterList} />
+      <Menu seminarId={seminarId} semesterList={semesterList} selectedId={resultsId} />
       <div className={styles.results}>{results.map((row, index) => displayRow(row, index))}</div>
     </div>
   )
 }
 
 // interfaces for dropdown menus
-
-interface DropdownOptions {
+interface DropdownOption {
   id: number
   text: string
   link: string
 }
 
-const Menu: FC<{seminarId: number; semesterList: SemesterList[]}> = ({seminarId, semesterList}) => {
-  const router = useRouter()
+const Menu: FC<{seminarId: number; semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({
+  seminarId,
+  semesterList,
+  selectedId,
+}) => {
+  let selectedSemesterId = -1
+  let selectedSeriesId = -1
 
-  const [dropdownSemesterList, setDropdownSemesterList] = useState<DropdownOptions[]>([])
-  const [dropdownSeriesList, setDropdownSeriesList] = useState<DropdownOptions[]>([])
-  const [selectedSemesterId, setSelectedSemesterId] = useState(-1)
-  const [selectedSeriesId, setSelectedSeriesId] = useState(-1)
-  // const [pathToIdMap, setPathToIdMap] = useState({})
+  const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
+  const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const dropdownSemesterList = semesterList.map((semester) => {
+    return {
+      id: semester.id,
+      text: `${semester.year}. Ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
+      link: `/${getSeminarName(seminarId)}/vysledky/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/`,
+    }
+  })
 
-  useEffect(() => {
-    setDropdownSemesterList(
-      semesterList.map((semester) => {
+  let dropdownSeriesList: DropdownOption[] = []
+
+  for (let i = 0; i < semesterList.length; i++) {
+    if (selectedId.semester === true && selectedId.id === semesterList[i].id) {
+      selectedSemesterId = selectedId.id
+      dropdownSeriesList = semesterList[i].series_set.map((series) => {
         return {
-          id: semester.id,
-          text: `${semester.year}. Ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
-          link: `/${getSeminarName(seminarId)}/vysledky/${semester.year}/${
-            semester.season_code === 0 ? 'zima' : 'leto'
-          }/`,
+          id: series.id,
+          text: `${series.order}. séria`,
+          link: `/${getSeminarName(seminarId)}/vysledky/${semesterList[i].year}/${
+            semesterList[i].season_code === 0 ? 'zima' : 'leto'
+          }/${series.order}/`,
         }
-      }),
-    )
-  }, [semesterList, seminarId])
-
-  useEffect(() => {
-    let selectedSemester = -1
-    let selectedSeries = -1
-    semesterList.forEach((semester) => {
-      if (router.query.params !== undefined) {
-        if (
-          getNumber(router.query.params[0]) === semester.year &&
-          router.query.params[1] === (semester.season_code === 0 ? 'zima' : 'leto')
-        ) {
-          selectedSemester = semester.id
-          setDropdownSeriesList(
-            semester.series_set.map((series) => {
-              return {
-                id: series.id,
-                text: `${series.order} séria`,
-                link: `/${getSeminarName(seminarId)}/vysledky/${semester.year}/${
-                  semester.season_code === 0 ? 'zima' : 'leto'
-                }/${series.order}`,
-              }
-            }),
-          )
-
-          semester.series_set.forEach((series) => {
-            if (router.query.params !== undefined) {
-              if (getNumber(router.query.params[2]) === series.order) {
-                selectedSeries = series.id
-              }
+      })
+    } else if (selectedId.semester === false) {
+      for (let j = 0; j < semesterList[i].series_set.length; j++) {
+        if (semesterList[i].series_set[j].id === selectedId.id) {
+          selectedSemesterId = semesterList[i].id
+          selectedSeriesId = selectedId.id
+          dropdownSeriesList = semesterList[i].series_set.map((series) => {
+            return {
+              id: series.id,
+              text: `${series.order}. séria`,
+              link: `/${getSeminarName(seminarId)}/vysledky/${semesterList[i].year}/${
+                semesterList[i].season_code === 0 ? 'zima' : 'leto'
+              }/${series.order}/`,
             }
           })
         }
       }
-    })
-    setSelectedSemesterId(selectedSemester)
-    setSelectedSeriesId(selectedSeries)
-  }, [router.query.params, semesterList])
-
-  const handleClick = (event: MouseEvent) => {
-    console.log('menu clicked') // make sure only one menu is open at the time
+    }
   }
 
   return (
-    <div className={styles.menu} onClick={handleClick}>
+    <div className={styles.menu}>
       <Dropdown title={'Séria'} selectedId={selectedSeriesId} options={dropdownSeriesList} />
       <Dropdown title={'Semester'} selectedId={selectedSemesterId} options={dropdownSemesterList} />
     </div>
   )
 }
 
-interface Option {
-  id: number
-  text: string
-  link: string
-}
-
-const Dropdown: FC<{title: string; selectedId: number; options: Option[]}> = ({title, selectedId, options}) => {
+const Dropdown: FC<{title: string; selectedId: number; options: DropdownOption[]}> = ({title, selectedId, options}) => {
   const [display, setDisplay] = useState(false)
 
   const handleClick = (event: MouseEvent) => {
@@ -380,8 +429,12 @@ const Dropdown: FC<{title: string; selectedId: number; options: Option[]}> = ({t
     })
   }
 
+  const handleMouseLeave = () => {
+    setDisplay(false)
+  }
+
   return (
-    <div className={styles.dropdown} onClick={handleClick}>
+    <div className={styles.dropdown} onClick={handleClick} onMouseLeave={handleMouseLeave}>
       {title} <div className={styles.arrow}></div>
       <div className={clsx(styles.options, display && styles.displayOptions)}>
         {options.map((option) => {
@@ -413,6 +466,7 @@ const getSeminarName = (id: number) => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getNumber = (n: any) => {
   if (Number.isNaN(Number(n))) {
     return -1

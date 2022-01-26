@@ -102,16 +102,14 @@
   right: 0px;
   width: 25vw;
   height: 5rem;
-  border: 1px solid red;
   z-index: 1000;
-
+  user-select: none;
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
 .dropdown {
-  // border: 1px solid red;
   border-bottom: 5px solid black;
   width: fit-content;
   display: flex;
@@ -134,6 +132,7 @@
   }
 
   .options {
+    background-color: white;
     display: none;
     position: absolute;
     width: fit-content;
@@ -148,14 +147,16 @@
   }
 
   .displayOptions {
-    display: inline-block;
+    display: grid;
+    grid-template-columns: max-content;
   }
 
   .option {
     background-color: white;
     color: black;
     display: inline-block;
-    width: max-content;
+    white-space: nowrap;
+    width: 100%;
     padding: 5px;
   }
   .option:hover {
