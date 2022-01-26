@@ -5,12 +5,6 @@ import {useState} from 'react'
 import {PageLayout} from '../../../components/PageLayout/PageLayout'
 import {Results} from '../../../components/Results/Results'
 
-interface ResultsRoute {
-  [0]: number | undefined
-  [1]: string | undefined
-  [2]: number | undefined
-}
-
 const Vysledky: NextPage = () => {
   const [pageTitle, setPageTitle] = useState('')
   const router: NextRouter = useRouter()
@@ -34,13 +28,5 @@ const getSeminarId = (pathname: string) => {
       return 2
     default:
       return -1
-  }
-}
-
-const num = (n: any) => {
-  if (Number.isNaN(Number(n))) {
-    return -1
-  } else {
-    return Number(n) ?? -1
   }
 }
