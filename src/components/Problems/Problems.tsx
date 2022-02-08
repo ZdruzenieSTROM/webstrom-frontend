@@ -265,7 +265,7 @@ export const Problems: FC<{seminarId: number; setPageTitle: Dispatch<SetStateAct
           title =
             '' +
             semesterList[i].year +
-            ' ročník - ' +
+            '. ročník - ' +
             (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
             ' semester'
         }
@@ -275,7 +275,7 @@ export const Problems: FC<{seminarId: number; setPageTitle: Dispatch<SetStateAct
             title =
               '' +
               semesterList[i].year +
-              ' ročník - ' +
+              '. ročník - ' +
               (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
               ' semester - ' +
               semesterList[i].series_set[j].order +

@@ -247,7 +247,7 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
           title =
             '' +
             semesterList[i].year +
-            ' ročník - ' +
+            '. ročník - ' +
             (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
             ' semester'
         }
@@ -257,11 +257,11 @@ export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateActi
             title =
               '' +
               semesterList[i].year +
-              ' ročník - ' +
+              '. ročník - ' +
               (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
               ' semester - ' +
               semesterList[i].series_set[j].order +
-              ' séria'
+              '. séria'
           }
         }
       }
