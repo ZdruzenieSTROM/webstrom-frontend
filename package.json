@@ -51,6 +51,7 @@
     "eslint-plugin-security-node": "^1.0.14",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unicorn": "^29.0.0",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "sass": "^1.49.7"
   }
 }
