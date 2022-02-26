@@ -4,7 +4,7 @@ import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {RegisterForm} from '@/components/RegisterForm/RegisterForm'
 
 const Register: NextPage = () => (
-  <PageLayout seminarId={2}>
+  <PageLayout>
     <RegisterForm />
   </PageLayout>
 )

@@ -4,7 +4,7 @@ import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {PagePlaceholder} from '@/components/PagePlaceholder'
 
 const Minisustredenia: NextPage = () => (
-  <PageLayout seminarId={2}>
+  <PageLayout>
     <PagePlaceholder title="Minisústredenia" />
   </PageLayout>
 )

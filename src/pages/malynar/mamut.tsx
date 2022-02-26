@@ -4,7 +4,7 @@ import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {PagePlaceholder} from '@/components/PagePlaceholder'
 
 const Mamut: NextPage = () => (
-  <PageLayout seminarId={3}>
+  <PageLayout>
     <PagePlaceholder title="Mamut" />
   </PageLayout>
 )
