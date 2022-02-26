@@ -9,7 +9,12 @@ import {MenuSeminars} from './MenuSeminars/MenuSeminars'
 import styles from './PageLayout.module.scss'
 import {StromLogo} from './StromLogo/StromLogo'
 
-export const PageLayout: FC<{contentWidth?: number; title?: string}> = ({contentWidth = 3, title = '', children}) => {
+type PageLayoutProps = {
+  contentWidth?: number
+  title?: string
+}
+
+export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 3, title = '', children}) => {
   const router = useRouter()
   const [seminarId, setSeminarId] = useState(0)
 
