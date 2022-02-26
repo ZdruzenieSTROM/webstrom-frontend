@@ -1,8 +1,10 @@
 import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
 import Link from 'next/link'
-import {NextRouter, useRouter} from 'next/router'
-import {Dispatch, FC, MouseEvent, SetStateAction, useEffect, useState} from 'react'
+import {useRouter} from 'next/router'
+import {FC, MouseEvent, useEffect, useState} from 'react'
+
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import styles from './Results.module.scss'
 
@@ -75,13 +77,16 @@ interface CurrentSemester {
   late_tags: string[]
 }
 
-export const Results: FC<{seminarId: number; setPageTitle: Dispatch<SetStateAction<string>>}> = ({
-  seminarId,
-  setPageTitle,
-}) => {
+type ResultsProps = {
+  setPageTitle: (title: string) => void
+}
+
+export const Results: FC<ResultsProps> = ({setPageTitle}) => {
   const [results, setResults] = useState<Result[]>([])
 
-  const router: NextRouter = useRouter()
+  const router = useRouter()
+
+  const {seminarId} = useSeminarInfo()
 
   // Id of results to be fetched
   const [resultsId, setResultsId] = useState({semester: true, id: -1})

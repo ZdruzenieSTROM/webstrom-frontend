@@ -4,6 +4,8 @@ import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, Fragment, MouseEvent, SetStateAction, useEffect, useState} from 'react'
 
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
+
 import {Latex} from '../Latex/Latex'
 import styles from './Problems.module.scss'
 
@@ -116,11 +118,14 @@ interface DropdownOption {
   link: string
 }
 
-export const Problems: FC<{seminarId: number; setPageTitle: Dispatch<SetStateAction<string>>}> = ({
-  seminarId,
-  setPageTitle,
-}) => {
+type ProblemsProps = {
+  setPageTitle: (title: string) => void
+}
+
+export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const router = useRouter()
+
+  const {seminarId} = useSeminarInfo()
 
   // List of semesters with their ids and series belonging to them
   const [semesterList, setSemesterList] = useState<SemesterList[]>([])
