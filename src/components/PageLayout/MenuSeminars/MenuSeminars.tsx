@@ -1,7 +1,8 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import {FC} from 'react'
-import {useSeminarInfo} from 'src/utils/useSeminarInfo'
+
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import styles from './MenuSeminars.module.scss'
 

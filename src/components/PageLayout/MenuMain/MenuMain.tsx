@@ -4,7 +4,8 @@ import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 import * as CgIcons from 'react-icons/cg'
 import * as FaIcons from 'react-icons/fa'
-import {useSeminarInfo} from 'src/utils/useSeminarInfo'
+
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Authentication} from '../Authentication/Authentication'
 import styles from './MenuMain.module.scss'
