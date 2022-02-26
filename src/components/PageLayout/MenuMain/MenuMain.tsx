@@ -4,29 +4,20 @@ import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 import * as CgIcons from 'react-icons/cg'
 import * as FaIcons from 'react-icons/fa'
+import {useSeminarInfo} from 'src/utils/useSeminarInfo'
 
 import {Authentication} from '../Authentication/Authentication'
 import styles from './MenuMain.module.scss'
 
-export const getSeminarName = (seminarId: number) => {
-  switch (seminarId) {
-    case 0:
-      return 'strom'
-    case 1:
-      return 'matik'
-    case 2:
-      return 'malynar'
-    default:
-      return 'strom'
-  }
-}
 interface MenuItemInterface {
   id: number
   caption: string
   url: string
 }
 
-export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
+export const MenuMain: FC = () => {
+  const {seminar, seminarId} = useSeminarInfo()
+
   const [isVisible, setIsVisible] = useState(true)
   const [menuItems, setMenuItems] = useState<MenuItemInterface[]>([])
 
@@ -59,13 +50,7 @@ export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
       <div className={styles.menuItems}>
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {
-            return (
-              <MenuMainItem
-                key={menuItem.id}
-                caption={menuItem.caption}
-                url={`/${getSeminarName(seminarId)}${menuItem.url}`}
-              />
-            )
+            return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
           })}
       </div>
       <Authentication />
