@@ -1,4 +1,5 @@
 import axios from 'axios'
+import clsx from 'clsx'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
@@ -51,6 +52,7 @@ export const MenuMain: FC = () => {
       <div className={styles.menuItems}>
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {
+            // url je vo formate `/matik/vysledky/`
             return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
           })}
       </div>
@@ -61,8 +63,17 @@ export const MenuMain: FC = () => {
 
 const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
   const router = useRouter()
+  // pre routy, kde by `pathname` vratilo napr. `/matik/vysledky/[[...params]]`,
+  // `asPath` vrati URL ako v browseri, teda `/matik/vysledky` alebo `/matik/vysledky/44/leto/2`
+  // potrebne koncove lomitko pre porovnanie s URLkami z BE
+  const pathWithSlash = `${router.asPath}/`
+
+  // ak sme na `/matik/vysledky/44/leto/2`, orezme to na dlzku `url`, v zavere porovnajme
+  // (teda v podstate zistime, ci `pathWithSlash` zacina znakmi `url`)
+  const active = pathWithSlash.slice(0, url.length) === url
+
   return (
-    <div className={router.pathname === url ? `${styles.menuItem} ${styles.active}` : styles.menuItem}>
+    <div className={clsx(styles.menuItem, active && styles.active)}>
       <Link href={url}>
         <a>{caption}</a>
       </Link>
