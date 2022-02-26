@@ -1,7 +1,5 @@
 import {FC} from 'react'
 
-import {ScrollingText} from '@/components/ScrollingText/ScrollingText'
-
 import styles from './Matboj.module.scss'
 
 export const Matboj: FC = () => {
