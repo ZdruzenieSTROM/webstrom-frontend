@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router'
 
-type Seminar = 'strom' | 'matik' | 'malynar'
+export type Seminar = 'strom' | 'matik' | 'malynar'
 type SeminarId = 0 | 1 | 2
 
 const seminarToId: Record<Seminar, SeminarId> = {
