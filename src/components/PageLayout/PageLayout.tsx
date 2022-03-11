@@ -1,19 +1,38 @@
+import clsx from 'clsx'
 import {FC} from 'react'
 
-import {ScrollingText} from '../ScrollingText/ScrollingText'
+import {Banner} from './Banner/Banner'
 import {Footer} from './Footer/Footer'
 import {MenuMain} from './MenuMain/MenuMain'
 import {MenuSeminars} from './MenuSeminars/MenuSeminars'
+import styles from './PageLayout.module.scss'
+import {StromLogo} from './StromLogo/StromLogo'
 
-export const PageLayout: FC<{seminarId: number}> = ({seminarId, children}) => (
-  <div id="main-content">
-    <div id="page-container">
-      <MenuSeminars seminarId={seminarId} />
-      <MenuMain seminarId={seminarId} />
-      {/* ScrollingText sa mozno este niekam presumie podla toho kde vsade sa bude pouzivat */}
-      <ScrollingText />
-      {children}
+type PageLayoutProps = {
+  contentWidth?: number
+  title?: string
+}
+
+// pre pouzitie len na seminarovych strankach a podstrankach - `/matik(/*)`
+// ked budeme potrebovat top-level stranky ako `/ina-stranka`, budeme musiet upravit, ako sa pracuje s `useSeminarInfo`
+export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 3, title = '', children}) => {
+  return (
+    <div className={styles.pageContainer}>
+      <MenuSeminars title={title} />
+      <Banner />
+      <MenuMain />
+      <StromLogo />
+      <div
+        className={clsx(
+          styles.mainContent,
+          contentWidth === 1 && styles.col1,
+          contentWidth === 2 && styles.col2,
+          contentWidth === 3 && styles.col3,
+        )}
+      >
+        {children}
+      </div>
       <Footer />
     </div>
-  </div>
-)
+  )
+}

@@ -4,7 +4,7 @@ import {LatexExample} from '@/components/Latex/LatexExample'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 
 const Latex: NextPage = () => (
-  <PageLayout seminarId={0}>
+  <PageLayout>
     <LatexExample />
   </PageLayout>
 )

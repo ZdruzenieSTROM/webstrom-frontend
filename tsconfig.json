@@ -24,6 +24,7 @@
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
       "@/types/*": ["src/types/*"],
+      "@/utils/*": ["src/utils/*"],
     },
   },
   "include": [

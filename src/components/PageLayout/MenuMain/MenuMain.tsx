@@ -1,34 +1,25 @@
-// import './MenuMain.css'
 import axios from 'axios'
+import clsx from 'clsx'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 import * as CgIcons from 'react-icons/cg'
 import * as FaIcons from 'react-icons/fa'
 
-import {Authentication} from '../Authentication/Authentication'
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-export const getSeminarName = (seminarId: number) => {
-  switch (seminarId) {
-    case 1:
-      return 'strom'
-    case 2:
-      return 'matik'
-    case 3:
-      return 'malynar'
-    case 4:
-      return 'zdruzenie'
-    default:
-      return 'strom'
-  }
-}
+import {Authentication} from '../Authentication/Authentication'
+import styles from './MenuMain.module.scss'
+
 interface MenuItemInterface {
   id: number
   caption: string
   url: string
 }
 
-export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
+export const MenuMain: FC = () => {
+  const {seminar, seminarId} = useSeminarInfo()
+
   const [isVisible, setIsVisible] = useState(true)
   const [menuItems, setMenuItems] = useState<MenuItemInterface[]>([])
 
@@ -49,25 +40,20 @@ export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
   }, [seminarId])
 
   return (
-    <div id="menu-main" className={isVisible ? 'visible' : ''}>
+    <div className={isVisible ? `${styles.menu} ${styles.visible}` : styles.menu}>
       {!isVisible && (
-        <div id="menu-main-open-button">
+        <div className={styles.menuOpenButton}>
           <FaIcons.FaBars className="icon-bars" onClick={toggleMenu} />
         </div>
       )}
-      <div id="menu-main-close-button">
-        <CgIcons.CgClose className="icon-close-menu" onClick={toggleMenu} />
+      <div className={styles.menuCloseButton}>
+        <CgIcons.CgClose className={styles.iconCloseMenu} onClick={toggleMenu} />
       </div>
-      <div id="menu-main-items">
+      <div className={styles.menuItems}>
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {
-            return (
-              <MenuMainItem
-                key={menuItem.id}
-                caption={menuItem.caption}
-                url={`/${getSeminarName(seminarId)}${menuItem.url}`}
-              />
-            )
+            // url je vo formate `/matik/vysledky/`
+            return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
           })}
       </div>
       <Authentication />
@@ -77,8 +63,17 @@ export const MenuMain: FC<{seminarId: number}> = ({seminarId}) => {
 
 const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
   const router = useRouter()
+  // pre routy, kde by `pathname` vratilo napr. `/matik/vysledky/[[...params]]`,
+  // `asPath` vrati URL ako v browseri, teda `/matik/vysledky` alebo `/matik/vysledky/44/leto/2`
+  // potrebne koncove lomitko pre porovnanie s URLkami z BE
+  const pathWithSlash = `${router.asPath}/`
+
+  // ak sme na `/matik/vysledky/44/leto/2`, orezme to na dlzku `url`, v zavere porovnajme
+  // (teda v podstate zistime, ci `pathWithSlash` zacina znakmi `url`)
+  const active = pathWithSlash.slice(0, url.length) === url
+
   return (
-    <div className={router.pathname === url ? 'menu-main-item active' : 'menu-main-item'}>
+    <div className={clsx(styles.menuItem, active && styles.active)}>
       <Link href={url}>
         <a>{caption}</a>
       </Link>
