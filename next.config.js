@@ -16,7 +16,7 @@ module.exports = {
       // rewrite API requestov na django BE (podstatne aj koncove lomitko)
       {
         source: '/api/:path*',
-        destination: 'http://localhost:8000/:path*/',
+        destination: `${process.env.NEXT_PUBLIC_BE_URL}/:path*/`,
       },
     ]
   },

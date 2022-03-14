@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router'
 
-type Seminar = 'strom' | 'matik' | 'malynar'
+export type Seminar = 'strom' | 'matik' | 'malynar'
 type SeminarId = 0 | 1 | 2
 
 const seminarToId: Record<Seminar, SeminarId> = {
@@ -18,3 +18,10 @@ export const useSeminarInfo = () => {
 
   return {seminar, seminarId}
 }
+
+// for admin purposes we need backwards mapping from seminar ID to seminar name
+// need to use `number` signature instead of `SeminarId`
+export const seminarIdToName = Object.entries(seminarToId).reduce<Record<number, Seminar>>(
+  (acc, [seminar, seminarId]) => ((acc[seminarId] = seminar as Seminar), acc),
+  {},
+)
