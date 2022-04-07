@@ -350,6 +350,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
           />
         </Fragment>
       ))}
+      <ProblemSubmission></ProblemSubmission>
     </div>
   )
 }
@@ -547,6 +548,18 @@ const Dropdown: FC<{title: string; selectedId: number; options: DropdownOption[]
       </div>
     </div>
   )
+}
+
+// Temp component for problem submission testing - zmenit ho na problemId dependent component
+// 1. Check ci je uzivatel registrovany do semestra (Peto na to prida api point)
+// 2. if !registered niekde na stranke sa zobrazi button na registraciu a nedovoli sa odovzdavat oluhy
+//    POST http://localhost:8000/competition/event/0/register/ sluzi na registrovanie do semestra
+// 3. if registerad, pri kazdej ulohe sa zobrazuje odovzdat/odovzdane
+// 4. po kliknuti na odovzdat/odovzdane sa otvori okno v parvom stlpci kde bude drop-zone na pdf
+//    http://localhost:8000/competition/problem/9/upload_solution/
+// 5. pridat moznost stiahnut riesenie ku kazden odovzdanej ulohe a aj vo vysledkovke
+const ProblemSubmission: FC = () => {
+  return <div className={styles.problemSubmission}>Hello Problem submission</div>
 }
 
 const getSeminarName = (id: number) => {
