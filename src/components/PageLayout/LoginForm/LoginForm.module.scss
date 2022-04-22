@@ -1,9 +1,14 @@
-#login-form {
+.loginForm {
   display: grid;
   grid-template-columns: 100%;
   color: black;
 
   > button {
     justify-self: end;
+  }
+  
+  span.underline {
+    border-bottom: 4px solid black;
+    padding-bottom: 1px;
   }
 }

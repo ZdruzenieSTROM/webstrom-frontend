@@ -1,4 +1,4 @@
-#authentication-display-buttons {
+.authenticationDisplayButtons {
   position: absolute;
   left: 0px;
   bottom: 0px;
@@ -17,7 +17,8 @@
   }
 }
 
-#authentication-container {
+.authenticationContainer {
+  place-self: center;
   padding: 0px;
   width: 300px;
   height: 400px;
