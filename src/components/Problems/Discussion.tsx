@@ -2,7 +2,7 @@ import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
 import {FC, useEffect, useState} from 'react'
 
-import {UserContainer} from '@/utils/UserContainer'
+import {AuthContainer} from '@/utils/AuthContainer'
 
 import styles from './Discussion.module.scss'
 import problemStyles from './Problems.module.scss'
@@ -40,7 +40,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
   // ToDo: find out whether the user can publish comments form the api
   const [canPublish, setCanPublish] = useState(true)
   const [reloadComments, setReloadComments] = useState(true)
-  const {user} = UserContainer.useContainer()
+  const {user} = AuthContainer.useContainer()
 
   // trigger comments reload whenever problemId changes
   useEffect(() => {

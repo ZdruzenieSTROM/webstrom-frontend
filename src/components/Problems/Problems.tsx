@@ -4,7 +4,7 @@ import {useRouter} from 'next/router'
 import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
-import {UserContainer} from '@/utils/UserContainer'
+import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
@@ -103,7 +103,7 @@ type ProblemsProps = {
 export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const router = useRouter()
 
-  const {user} = UserContainer.useContainer()
+  const {user} = AuthContainer.useContainer()
   // ToDo: initial state false + set value after API update
   const [canRegister, setCanRegister] = useState(true)
   // ToDo: initial state false + set value after API update

@@ -3,7 +3,7 @@ import {FC, FormEvent, SyntheticEvent, useEffect, useRef, useState} from 'react'
 import {useCookies} from 'react-cookie'
 
 import {Login, Token} from '@/types/api/generated/user'
-import {WebstromTokenContainer} from '@/utils/WebstromTokenContainer'
+import {AuthContainer} from '@/utils/AuthContainer'
 
 import styles from './LoginForm.module.scss'
 
@@ -15,7 +15,7 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const [formData, setFormData] = useState<Login>({email: '', password: ''})
   const [, setCookie] = useCookies(['webstrom-token'])
   const emailRef = useRef<HTMLInputElement>(null)
-  const {setWebstromToken} = WebstromTokenContainer.useContainer()
+  const {setWebstromToken} = AuthContainer.useContainer()
 
   useEffect(() => {
     emailRef.current?.focus()
@@ -42,6 +42,7 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
     } catch (e: unknown) {
       const error = e as AxiosError
       if (error.response?.status === 400) {
+        alert('Neplatné prihlasovacie údaje')
         // console.log('Neplatné prihlasovacie údaje')
       }
     }

@@ -2,8 +2,7 @@ import axios, {AxiosError} from 'axios'
 import {FC, useState} from 'react'
 import {useCookies} from 'react-cookie'
 
-import {UserContainer} from '@/utils/UserContainer'
-import {WebstromTokenContainer} from '@/utils/WebstromTokenContainer'
+import {AuthContainer} from '@/utils/AuthContainer'
 
 import {Overlay} from '../../Overlay/Overlay'
 import {LoginForm} from '../LoginForm/LoginForm'
@@ -13,8 +12,7 @@ export const Authentication: FC = () => {
   const [displayAuthenticationOverlay, setDisplayAuthenticationOverlay] = useState(false)
   const [displayLogin, setDisplayLogin] = useState(true) // true -> zobrazí sa login, false -> zobrazí sa registrácia
   const [, , removeCookie] = useCookies(['webstrom-token']) // ToDo: remove
-  const {user} = UserContainer.useContainer()
-  const {setWebstromToken} = WebstromTokenContainer.useContainer()
+  const {setWebstromToken, user} = AuthContainer.useContainer()
 
   const toggleDisplayAuthenticationOverlay = () => {
     setDisplayAuthenticationOverlay((prevDisplay) => {

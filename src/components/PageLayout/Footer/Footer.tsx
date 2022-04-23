@@ -1,13 +1,11 @@
 import {FC} from 'react'
 
-import {UserContainer} from '@/utils/UserContainer'
-import {WebstromTokenContainer} from '@/utils/WebstromTokenContainer'
+import {AuthContainer} from '@/utils/AuthContainer'
 
 import styles from './Footer.module.scss'
 
 export const Footer: FC = () => {
-  const {user} = UserContainer.useContainer()
-  const {webstromToken} = WebstromTokenContainer.useContainer()
+  const {webstromToken, user} = AuthContainer.useContainer()
   return (
     <div className={styles.footer}>
       <div>
