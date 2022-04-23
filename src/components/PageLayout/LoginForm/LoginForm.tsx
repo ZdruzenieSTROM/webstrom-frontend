@@ -2,7 +2,8 @@ import axios, {AxiosError} from 'axios'
 import {FC, FormEvent, SyntheticEvent, useEffect, useRef, useState} from 'react'
 import {useCookies} from 'react-cookie'
 
-import {useSetWebstromToken} from '@/utils/UserContext'
+import {Login, Token} from '@/types/api/generated/user'
+import {WebstromTokenContainer} from '@/utils/WebstromTokenContainer'
 
 import styles from './LoginForm.module.scss'
 
@@ -11,10 +12,10 @@ interface ILoginForm {
 }
 
 export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
-  const [formData, setFormData] = useState({email: '', password: ''})
+  const [formData, setFormData] = useState<Login>({email: '', password: ''})
   const [, setCookie] = useCookies(['webstrom-token'])
   const emailRef = useRef<HTMLInputElement>(null)
-  const setWebstromToken = useSetWebstromToken()
+  const {setWebstromToken} = WebstromTokenContainer.useContainer()
 
   useEffect(() => {
     emailRef.current?.focus()
@@ -32,10 +33,10 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
       const expirationDate = new Date()
       expirationDate.setMonth(expirationDate.getMonth() + 1)
 
-      const {data} = await axios.post('/api/user/login/', formData)
+      const {data} = await axios.post<Token>('/api/user/login/', formData)
 
-      setCookie('webstrom-token', data['key'], {path: '/', expires: expirationDate})
-      setWebstromToken(data['key'])
+      setCookie('webstrom-token', data.key, {path: '/', expires: expirationDate})
+      setWebstromToken(data.key)
 
       closeOverlay()
     } catch (e: unknown) {

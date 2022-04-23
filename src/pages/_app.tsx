@@ -10,7 +10,8 @@ import {AppProps} from 'next/app'
 import Head from 'next/head'
 import {FC} from 'react'
 
-import {UserProvider} from '@/utils/UserContext'
+import {UserContainer} from '@/utils/UserContainer'
+import {WebstromTokenContainer} from '@/utils/WebstromTokenContainer'
 
 const MyApp: FC<AppProps> = ({Component, pageProps}) => {
   return (
@@ -19,9 +20,12 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
         <title>React App</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <UserProvider>
-        <Component {...pageProps} />
-      </UserProvider>
+      <WebstromTokenContainer.Provider>
+        {/* UserContainer needs to be a child of WebstromTokenContainer */}
+        <UserContainer.Provider>
+          <Component {...pageProps} />
+        </UserContainer.Provider>
+      </WebstromTokenContainer.Provider>
     </>
   )
 }

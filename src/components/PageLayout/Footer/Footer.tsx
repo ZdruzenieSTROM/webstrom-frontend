@@ -1,14 +1,13 @@
 import {FC} from 'react'
-import {useCookies} from 'react-cookie'
 
-import {useUser, useWebstromToken} from '@/utils/UserContext'
+import {UserContainer} from '@/utils/UserContainer'
+import {WebstromTokenContainer} from '@/utils/WebstromTokenContainer'
 
 import styles from './Footer.module.scss'
 
 export const Footer: FC = () => {
-  const user = useUser()
-  // const [cookies] = useCookies('webstrom-token')
-  const webstromToken = useWebstromToken()
+  const {user} = UserContainer.useContainer()
+  const {webstromToken} = WebstromTokenContainer.useContainer()
   return (
     <div className={styles.footer}>
       <div>
