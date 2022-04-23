@@ -129,16 +129,14 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
 
   const deleteComment = async (id: number) => {
     // ToDo: add one extra check before deleting the post
-    // ToDo: use delete method when it is implemented on the backend
-    console.log('delete comment id = ', id)
-    // try {
-    //   await axios.delete('/api/competition/comment/' + id + '/')
-    //   setReloadComments(true)
-    // } catch (e: unknown) {
-    //   const ex = e as AxiosError
-    //   const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-    //   // ToDo: handle error
-    // }
+    try {
+      await axios.delete('/api/competition/comment/' + id + '/')
+      setReloadComments(true)
+    } catch (e: unknown) {
+      const ex = e as AxiosError
+      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+      // ToDo: handle error
+    }
   }
 
   return (
