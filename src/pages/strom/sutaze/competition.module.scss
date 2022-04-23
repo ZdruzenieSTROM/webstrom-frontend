@@ -1,9 +1,40 @@
 .mainText{
     >p{
       padding: 20px;
+      width: 1000px;
     }
   }
+
+  .container {
+    display: grid;
+    grid-gap: 0px;
+    margin: -20px;
+    padding-top: 20px;
+}
+
+  .actions{
+    margin-top: .5rem;  
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .actionButton, .commentActions>span{
+    cursor: pointer;
+    font-size: .8rem;
+    font-style: italic;
+    font-weight: bold;
+    margin-left: 40px;
+    border-bottom: 5px solid black;
+    user-select: none;
+    text-transform: uppercase;
+    
   
+    &.disabled{
+      color: #CCC;
+      border-color: #CCC;
+    }
+  }
+
   .archive{
     display: grid;
     grid-template-columns: 1fr max-content max-content;
