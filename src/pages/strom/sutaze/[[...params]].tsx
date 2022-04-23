@@ -1,5 +1,8 @@
 import axios from 'axios'
+import clsx from 'clsx'
 import {GetServerSideProps, NextPage} from 'next'
+import Link from 'next/link'
+import {useRouter} from 'next/router'
 import {FC, Fragment} from 'react'
 
 import {PageLayout} from '@/components/PageLayout/PageLayout'
@@ -10,18 +13,7 @@ import {Seminar} from '@/utils/useSeminarInfo'
 import styles from './competition.module.scss'
 
 type CompetitionPageProps = {
-  competition: {
-    id?: number
-    event_set: Event[]
-    name: string
-    start_year?: number
-    description?: string
-    rules?: string | null
-    competition_type: any
-    min_years_until_graduation?: number | null
-    sites: any[]
-    permission_group?: any[]
-  }
+  competition: Competition
   is_rules: boolean
 }
 
@@ -37,17 +29,26 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
         {competition.rules && (
           <div className={styles.container}>
             <div className={styles.action}>
-              <RulesButton />
+              <div className={styles.actionButton}>
+                <RulesLink />
+              </div>
             </div>
           </div>
         )}
+        <br></br>
+        <br></br>
+        <div className={styles.h2}>
+          <h2>Archív: </h2>
+        </div>
         <div className={styles.archive}>
           {competition.event_set.map((event) => (
             <Fragment key={event.id}>
-              <p>{event.year}</p>
+              <div>
+                {competition.name + ' '} {event.school_year}
+              </div>
               {event.unspecifiedpublication_set.map((publication) => (
                 <Fragment key={publication.id}>
-                  <p> {publication.name}</p>
+                  <div> {publication.name}</div>
                 </Fragment>
               ))}
             </Fragment>
@@ -84,9 +85,6 @@ export const competitionBasedGetServerSideProps = (
       },
     )
 
-    // ked stranka neexistuje, vrati sa `content: ""`. teraz renderujeme stranku len ked je content neprazdny a server rovno vrati redirect.
-    // druha moznost by bola nechat prazdny content handlovat clienta - napriklad zobrazit custom error, ale nechat usera na neplatnej stranke.
-    // tretia moznost je miesto redirectu vratit nextovsku 404
     if (data?.name) {
       return {
         props: {competition: data, is_rules},
@@ -99,15 +97,14 @@ export const competitionBasedGetServerSideProps = (
 
 export const getServerSideProps = competitionBasedGetServerSideProps('strom')
 
-const RulesButton: FC = () => {
-  const handleClick = async () => {
-    /* Todo presmeruje na stranku s pravidlami */
-  }
+const RulesLink: FC = () => {
+  const router = useRouter()
+  const active = `${router.asPath}/pravidla`
   return (
-    <>
-      <span onClick={() => handleClick()} className={styles.actionButton}>
-        Pravidlá
-      </span>
-    </>
+    <div className={clsx(styles.menuItem, active && styles.active)}>
+      <Link href={active}>
+        <a>Pravidlá</a>
+      </Link>
+    </div>
   )
 }

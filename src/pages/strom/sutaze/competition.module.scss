@@ -1,8 +1,12 @@
-.mainText{
+ .mainText{
     >p{
       padding: 20px;
       width: 1000px;
     }
+  }
+
+  .h2{
+      padding: 20px;
   }
 
   .container {
@@ -20,11 +24,10 @@
 
   .actionButton, .commentActions>span{
     cursor: pointer;
-    font-size: .8rem;
+    font-size: 30px;
     font-style: italic;
     font-weight: bold;
     margin-left: 40px;
-    border-bottom: 5px solid black;
     user-select: none;
     text-transform: uppercase;
     
@@ -37,12 +40,14 @@
 
   .archive{
     display: grid;
+    width: 50%;
     grid-template-columns: 1fr max-content max-content;
     font-weight: bold;
     text-transform: uppercase;
-    margin-top: 50px;
+    margin-top: 10px;
     font-style: italic;
     row-gap: 10px;
+    margin-left: 20px;
   
     div:not(:nth-child(3n+1)){
       margin-left: 20px;
