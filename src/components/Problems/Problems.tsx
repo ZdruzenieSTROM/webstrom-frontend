@@ -1,5 +1,6 @@
 import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
+import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
@@ -323,6 +324,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
               <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
               <Latex>{problem.text}</Latex>
               <div className={styles.actions}>
+                <CorrectedSolutionButton problemId={problem.id} />
                 <MySolutionButton problemId={problem.id} />
                 <UploadProblemButton
                   problemId={problem.id}
@@ -395,35 +397,15 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 const MySolutionButton: FC<{
   problemId: number
 }> = ({problemId}) => {
-  // ToDo: remove the state after api downloads the solution instead of providing just a link
-  const [solutionLink, setSolutionLink] = useState<string>('')
+  // TODO: pridat styly aby sme sa nedogrcali
+  return <Link href={`/api/competition/problem/${problemId}/my-solution/`}>moje riesenie</Link>
+}
 
-  const handleClick = async () => {
-    // ToDo: update with the right api point
-    try {
-      const {data} = await axios.get<{solution: null | string}>(`/api/competition/problem/${problemId}/my-solution/`)
-      // ToDo: download the solutions instead of creating a link
-      if (data.solution === null) {
-        setSolutionLink('')
-      } else {
-        setSolutionLink('/api' + data.solution)
-      }
-    } catch (e: unknown) {
-      const ex = e as AxiosError
-      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-      // ToDo: handle error
-    }
-  }
-
-  return (
-    <>
-      {/* Temporary solution until api point changes */}
-      {solutionLink !== '' && <a href={solutionLink}> (temporary solution link)</a>}
-      <span onClick={() => handleClick()} className={styles.actionButton}>
-        Moje riešenie
-      </span>
-    </>
-  )
+const CorrectedSolutionButton: FC<{
+  problemId: number
+}> = ({problemId}) => {
+  // TODO: pridat styly aby sme sa nedogrcali
+  return <Link href={`/api/competition/problem/${problemId}/corrected-solution/`}>opravene riesenie</Link>
 }
 
 const DiscussionButton: FC<{
