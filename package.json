@@ -59,6 +59,7 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unicorn": "^29.0.0",
     "prettier": "^2.1.2",
-    "sass": "^1.49.7"
+    "sass": "^1.49.7",
+    "typed-scss-modules": "^6.2.0"
   }
 }
