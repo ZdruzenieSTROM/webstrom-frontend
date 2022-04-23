@@ -37,7 +37,6 @@ const useAuth = () => {
   const [webstromToken, setWebstromToken] = useState(cookies.get('webstrom-token') || '')
 
   useEffect(() => {
-    console.log('effect to add auth interceptor')
     if (webstromToken !== '') {
       // Interceptor ktorý pridá webstromToken do autorizačného headera
       const requestInterceptor = axios.interceptors.request.use((request) => {
@@ -52,7 +51,6 @@ const useAuth = () => {
   }, [webstromToken])
 
   useEffect(() => {
-    console.log('effect to add removeCookie')
     const responseInterceptor = axios.interceptors.response.use(
       (response) => response,
       async (error: AxiosError) => {
@@ -62,7 +60,6 @@ const useAuth = () => {
           // Nesprávny webstromToken vráti 401. V tomto prápade sa webstromToken zmaže
           // Uložia sa informácie o userovi, zruší sa autorizačný header a prepošle sa request.
 
-          console.log('clearing token')
           removeCookie('webstrom-token', {path: '/'})
           setWebstromToken('')
 
@@ -83,13 +80,10 @@ const useAuth = () => {
 
   const [user, setUser] = useState(emptyUser)
 
-  console.log(user, webstromToken)
-
   // Fetch user info whenever cookies['webstrom-token'] change
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        console.log('before my profile')
         setUser(emptyUser)
         const {data} = await axios.get<User>(`/api/personal/profiles/myprofile/`)
         setUser({...data, online: true, triggerUserUpdate: fetchUserInfo})
@@ -102,9 +96,7 @@ const useAuth = () => {
       }
     }
 
-    console.log('user container effect')
     if (webstromToken === '') {
-      console.log('setting user to empty')
       setUser(emptyUser)
     } else {
       fetchUserInfo()
