@@ -1,16 +1,21 @@
-// import './LoginForm.scss'
 import axios, {AxiosError} from 'axios'
 import {FC, FormEvent, SyntheticEvent, useEffect, useRef, useState} from 'react'
 import {useCookies} from 'react-cookie'
+
+import {Login, Token} from '@/types/api/generated/user'
+import {AuthContainer} from '@/utils/AuthContainer'
+
+import styles from './LoginForm.module.scss'
 
 interface ILoginForm {
   closeOverlay: () => void
 }
 
 export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
-  const [formData, setFormData] = useState({email: '', password: ''})
+  const [formData, setFormData] = useState<Login>({email: '', password: ''})
   const [, setCookie] = useCookies(['webstrom-token'])
   const emailRef = useRef<HTMLInputElement>(null)
+  const {setWebstromToken} = AuthContainer.useContainer()
 
   useEffect(() => {
     emailRef.current?.focus()
@@ -28,17 +33,17 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
       const expirationDate = new Date()
       expirationDate.setMonth(expirationDate.getMonth() + 1)
 
-      const response = await axios.post('/api/user/login/', formData)
-      setCookie('webstrom-token', response.data['key'], {path: '/', expires: expirationDate})
+      const {data} = await axios.post<Token>('/api/user/login/', formData)
 
-      const responseDetails = await axios.get('/api/personal/profiles/myprofile/')
-      setCookie('webstrom-name', responseDetails.data['first_name'], {path: '/', expires: expirationDate})
+      setCookie('webstrom-token', data.key, {path: '/', expires: expirationDate})
+      setWebstromToken(data.key)
 
       closeOverlay()
     } catch (e: unknown) {
       const error = e as AxiosError
       if (error.response?.status === 400) {
-        console.log('Neplatné prihlasovacie údaje')
+        alert('Neplatné prihlasovacie údaje')
+        // console.log('Neplatné prihlasovacie údaje')
       }
     }
   }
@@ -46,7 +51,7 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   return (
     <>
       <form onSubmit={handleLogin}>
-        <div id="login-form">
+        <div className={styles.loginForm}>
           <div>
             <input
               ref={emailRef}
@@ -68,7 +73,7 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
           </div>
 
           <button>
-            <span className="underline">Prihlásiť</span>
+            <span className={styles.underline}>Prihlásiť</span>
           </button>
         </div>
       </form>

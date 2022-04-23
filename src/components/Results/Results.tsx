@@ -323,7 +323,7 @@ export const Results: FC<ResultsProps> = ({setPageTitle}) => {
 
   return (
     <div>
-      <Menu seminarId={seminarId} semesterList={semesterList} selectedId={resultsId} />
+      <Menu semesterList={semesterList} selectedId={resultsId} />
       <div className={styles.results}>{results.map((row, index) => displayRow(row, index))}</div>
     </div>
   )
@@ -336,11 +336,12 @@ interface DropdownOption {
   link: string
 }
 
-const Menu: FC<{seminarId: number; semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({
-  seminarId,
+const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({
   semesterList,
   selectedId,
 }) => {
+  const {seminar} = useSeminarInfo()
+
   let selectedSemesterId = -1
   let selectedSeriesId = -1
 
@@ -351,7 +352,7 @@ const Menu: FC<{seminarId: number; semesterList: SemesterList[]; selectedId: {se
     return {
       id: semester.id,
       text: `${semester.year}. Ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
-      link: `/${getSeminarName(seminarId)}/vysledky/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/`,
+      link: `/${seminar}/vysledky/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/`,
     }
   })
 
@@ -364,9 +365,9 @@ const Menu: FC<{seminarId: number; semesterList: SemesterList[]; selectedId: {se
         return {
           id: series.id,
           text: `${series.order}. séria`,
-          link: `/${getSeminarName(seminarId)}/vysledky/${semesterList[i].year}/${
-            semesterList[i].season_code === 0 ? 'zima' : 'leto'
-          }/${series.order}/`,
+          link: `/${seminar}/vysledky/${semesterList[i].year}/${semesterList[i].season_code === 0 ? 'zima' : 'leto'}/${
+            series.order
+          }/`,
         }
       })
     } else if (selectedId.semester === false) {
@@ -378,7 +379,7 @@ const Menu: FC<{seminarId: number; semesterList: SemesterList[]; selectedId: {se
             return {
               id: series.id,
               text: `${series.order}. séria`,
-              link: `/${getSeminarName(seminarId)}/vysledky/${semesterList[i].year}/${
+              link: `/${seminar}/vysledky/${semesterList[i].year}/${
                 semesterList[i].season_code === 0 ? 'zima' : 'leto'
               }/${series.order}/`,
             }
@@ -428,19 +429,6 @@ const Dropdown: FC<{title: string; selectedId: number; options: DropdownOption[]
       </div>
     </div>
   )
-}
-
-const getSeminarName = (id: number) => {
-  switch (id) {
-    case 0:
-      return 'strom'
-    case 1:
-      return 'matik'
-    case 2:
-      return 'malynar'
-    default:
-      return ''
-  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

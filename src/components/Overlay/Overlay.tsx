@@ -1,12 +1,13 @@
-// import './Overlay.scss'
 import {FC, MouseEvent} from 'react'
 
-interface IOverlay {
+import styles from './Overlay.module.scss'
+
+interface OverlayProps {
   display: boolean
   closeOverlay: () => void
 }
 
-export const Overlay: FC<IOverlay> = ({children, display, closeOverlay}) => {
+export const Overlay: FC<OverlayProps> = ({children, display, closeOverlay}) => {
   const handleClick = (e: MouseEvent) => {
     // Po kliknutí na overlay, mimo akýchkoľvek iných elementov, sa overlay zatvorí.
     if ((e.target as Element).classList.contains('overlay')) {
@@ -15,7 +16,7 @@ export const Overlay: FC<IOverlay> = ({children, display, closeOverlay}) => {
   }
 
   return display ? (
-    <div className="overlay" onClick={handleClick}>
+    <div className={styles.overlay} onClick={handleClick}>
       {children}
     </div>
   ) : null

@@ -1,13 +1,17 @@
 import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
-import Link from 'next/link'
 import {useRouter} from 'next/router'
-import {Dispatch, FC, Fragment, MouseEvent, SetStateAction, useEffect, useState} from 'react'
+import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react'
+import {useDropzone} from 'react-dropzone'
 
+import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
+import {Discussion} from './Discussion'
+import {Dropdown, DropdownOption} from './Dropdown'
 import styles from './Problems.module.scss'
+import {SideContainer} from './SideContainer'
 
 interface SeriesList {
   id: number
@@ -39,6 +43,8 @@ interface Problem {
 }
 
 interface Series {
+  can_participate: boolean
+  is_registered: boolean // ToDo: is_registered should be negated !is_registered - api mistake
   id: number
   problems: Problem[]
   order: number
@@ -48,6 +54,7 @@ interface Series {
   semester: number
 }
 
+// ToDo: remove? so far we do not need this semester but maybe later?
 // interface Semester {
 //   id: number
 //   series_set: Series[]
@@ -62,30 +69,6 @@ interface Series {
 //   competition: number
 //   late_tags: string[]
 // }
-
-interface DiscussionProps {
-  problemId: number
-  problemNumber: number
-  display: boolean
-  setCommentCount: Dispatch<SetStateAction<number[]>>
-}
-
-interface Comments {
-  id: number
-  text: string
-  posted_at: string
-  published: boolean
-  problem: number
-  posted_by: number
-}
-
-interface Comment {
-  id: number
-  text: string
-  published: boolean
-  posted_by: number
-  name: string
-}
 
 interface Profile {
   first_name: string
@@ -112,11 +95,6 @@ interface Profile {
 //   late_tags: string[]
 // }
 // interfaces for dropdown menus
-interface DropdownOption {
-  id: number
-  text: string
-  link: string
-}
 
 type ProblemsProps = {
   setPageTitle: (title: string) => void
@@ -125,6 +103,11 @@ type ProblemsProps = {
 export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const router = useRouter()
 
+  const {user} = AuthContainer.useContainer()
+  // ToDo: initial state false + set value after API update
+  const [canRegister, setCanRegister] = useState(true)
+  // ToDo: initial state false + set value after API update
+  const [registered, setRegistered] = useState(false)
   const {seminarId} = useSeminarInfo()
 
   // List of semesters with their ids and series belonging to them
@@ -137,23 +120,19 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const [currentSeriesId, setCurrentSeriesId] = useState(-1)
 
   const [problems, setProblems] = useState<Problem[]>([])
+  const [semesterId, setSemesterId] = useState(-1)
 
-  // const [seriesId, setSeriesId] = useState(-1)
-  const [displayDiscussionId, setDisplayDiscussionId] = useState(-1)
-  const [commentCount, setCommentCount] = useState<number[]>([])
+  const [displaySideContent, setDisplaySideContent] = useState({type: '', problemId: -1, problemNumber: -1}) // todo: use to display discussions and file upload boxes
+  const [commentCount, setCommentCount] = useState<number[]>([]) // ToDo: implement it somehow, probably need some api point for that?
 
   const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  // get list of semesters from the api
+  // Fetch list of semesters from the api
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const {data} = await axios.get<SemesterList[]>(`/api/competition/semester-list/?competition=${seminarId}`, {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        })
+        const {data} = await axios.get<SemesterList[]>(`/api/competition/semester-list/?competition=${seminarId}`)
         setSemesterList(data)
       } catch (e: unknown) {
         const ex = e as AxiosError
@@ -239,15 +218,11 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     setProblemsId(getIdFromUrl(params))
   }, [router.query, semesterList, currentSeriesId])
 
-  // set currentSeriesId from competition/semester/current/seminarId/ api point
+  // Set currentSeriesId from competition/semester/current/seminarId/ api point
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const {data} = await axios.get<Series>(`/api/competition/series/current/` + seminarId, {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        })
+        const {data} = await axios.get<Series>(`/api/competition/series/current/` + seminarId)
         setCurrentSeriesId(data.id)
       } catch (e: unknown) {
         const ex = e as AxiosError
@@ -293,15 +268,24 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     setPageTitle(title)
   }, [problemsId, semesterList, setPageTitle])
 
+  // Fetch problems from the api using series id
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const {data} = await axios.get<Series>('/api/competition/series/' + problemsId.id + '/', {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        })
+        const {data} = await axios.get<Series>('/api/competition/series/' + problemsId.id + '/')
         setProblems(data.problems)
+        setSemesterId(data.semester)
+
+        if (data.can_participate === null) {
+          setCanRegister(false)
+        } else {
+          setCanRegister(data.can_participate)
+        }
+        if (data.is_registered === null) {
+          setRegistered(false)
+        } else {
+          setRegistered(data.is_registered)
+        }
       } catch (e: unknown) {
         const ex = e as AxiosError
         const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
@@ -315,162 +299,257 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     } else {
       setProblems([])
     }
-  }, [problemsId])
+  }, [problemsId, user])
 
-  const handleClick = (id: number) => {
-    setDisplayDiscussionId((prevDisplayDiscussionId) => {
-      if (prevDisplayDiscussionId === id) {
-        return -1
+  const handleRegistrationToSemester = async (id: number) => {
+    // ToDo: check user details and use the following request to register the user to semester.
+    try {
+      await axios.post(`/api/competition/event/${id}/register`)
+    } catch (e: unknown) {
+      const ex = e as AxiosError
+      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+      console.log('Error while registering to semester: ', error)
+    }
+    setRegistered(true)
+  }
+
+  return (
+    <>
+      <div className={styles.container}>
+        <Menu semesterList={semesterList} selectedId={problemsId} />
+        {problems.map((problem) => (
+          <Fragment key={problem.id}>
+            <div className={styles.problem}>
+              <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
+              <Latex>{problem.text}</Latex>
+              <div className={styles.actions}>
+                <MySolutionButton problemId={problem.id} />
+                <UploadProblemButton
+                  problemId={problem.id}
+                  problemNumber={problem.order}
+                  registered={registered}
+                  canRegister={canRegister}
+                  setDisplaySideContent={setDisplaySideContent}
+                />
+                <DiscussionButton
+                  problemId={problem.id}
+                  problemNumber={problem.order}
+                  commentCount={commentCount[problem.order] === undefined ? 0 : commentCount[problem.order]}
+                  setDisplaySideContent={setDisplaySideContent}
+                />
+              </div>
+            </div>
+          </Fragment>
+        ))}
+        <div className={styles.actions}>
+          debug row:
+          <span
+            onClick={() => {
+              setRegistered((prevState) => {
+                return !prevState
+              })
+            }}
+            className={clsx(styles.actionButton)}
+          >
+            Toggle registered: <span style={{color: '#A00'}}>{registered ? 'true' : 'false'}</span>
+          </span>
+          <span
+            onClick={() => {
+              setCanRegister((prevState) => {
+                return !prevState
+              })
+            }}
+            className={clsx(styles.actionButton)}
+          >
+            Toggle canRegister: <span style={{color: '#A00'}}>{canRegister ? 'true' : 'false'}</span>
+          </span>
+        </div>
+      </div>
+
+      <div className={styles.sideContainer}>
+        {!registered && canRegister && (
+          <div
+            onClick={() => {
+              handleRegistrationToSemester(semesterId)
+            }}
+            className={styles.registerButton}
+          >
+            Chcem riešiť!
+          </div>
+        )}
+        {(registered || !canRegister) && <div></div>}
+        {displaySideContent.type === 'discussion' && (
+          <Discussion problemId={displaySideContent.problemId} problemNumber={displaySideContent.problemNumber} />
+        )}
+        {displaySideContent.type === 'uploadProblemForm' && (
+          <UploadProblemForm
+            problemId={displaySideContent.problemId}
+            problemNumber={displaySideContent.problemNumber}
+          />
+        )}
+      </div>
+    </>
+  )
+}
+
+const MySolutionButton: FC<{
+  problemId: number
+}> = ({problemId}) => {
+  // ToDo: remove the state after api downloads the solution instead of providing just a link
+  const [solutionLink, setSolutionLink] = useState<string>('')
+
+  const handleClick = async () => {
+    // ToDo: update with the right api point
+    try {
+      const {data} = await axios.get<{solution: null | string}>(`/api/competition/problem/${problemId}/my-solution/`)
+      // ToDo: download the solutions instead of creating a link
+      if (data.solution === null) {
+        setSolutionLink('')
       } else {
-        return id
+        setSolutionLink('/api' + data.solution)
+      }
+    } catch (e: unknown) {
+      const ex = e as AxiosError
+      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+      // ToDo: handle error
+    }
+  }
+
+  return (
+    <>
+      {/* Temporary solution until api point changes */}
+      {solutionLink !== '' && <a href={solutionLink}> (temporary solution link)</a>}
+      <span onClick={() => handleClick()} className={styles.actionButton}>
+        Moje riešenie
+      </span>
+    </>
+  )
+}
+
+const DiscussionButton: FC<{
+  problemId: number
+  problemNumber: number
+  commentCount: number
+  setDisplaySideContent: Dispatch<
+    SetStateAction<{
+      type: string
+      problemId: number
+      problemNumber: number
+    }>
+  >
+}> = ({problemId, problemNumber, commentCount, setDisplaySideContent}) => {
+  const handleClick = () => {
+    setDisplaySideContent((prevState) => {
+      if (prevState.type === 'discussion' && prevState.problemId === problemId) {
+        return {type: '', problemId: -1, problemNumber: -1}
+      } else {
+        return {type: 'discussion', problemId: problemId, problemNumber: problemNumber}
       }
     })
   }
-
   return (
-    <div className={styles.container}>
-      <Menu seminarId={seminarId} semesterList={semesterList} selectedId={problemsId} />
-      {problems.map((problem) => (
-        <Fragment key={problem.id}>
-          <div className={styles.problem}>
-            <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
-            <Latex>{problem.text}</Latex>
-            <div className={styles.actions}>
-              <span>ODOVZDAŤ</span>
-              <span onClick={() => handleClick(problem.id)}>
-                DISKUSIA - {commentCount[problem.order] === undefined ? '0' : commentCount[problem.order]}
-              </span>
-            </div>
-          </div>
-          <Discussion
-            problemId={problem.id}
-            problemNumber={problem.order}
-            display={problem.id === displayDiscussionId}
-            setCommentCount={setCommentCount}
-          />
-        </Fragment>
-      ))}
-    </div>
+    <span onClick={() => handleClick()} className={styles.actionButton}>
+      DISKUSIA - {commentCount}
+    </span>
   )
 }
 
-// Whole component needs to be updated!
-const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, display, setCommentCount}) => {
-  const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [comments, setComments] = useState<Comment[]>([])
-  const [names, setNames] = useState<string[]>([])
-
-  useEffect(() => {
-    const fetchData = async (problemId: number) => {
-      try {
-        const {data} = await axios.get<Comments[]>(`/api/competition/problem/${problemId}/comments`, {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        })
-
-        const getName = async (id: number) => {
-          if (names[id] !== undefined) {
-            return names[id]
-          } else {
-            try {
-              const {data} = await axios.get<Profile>(`/api/personal/profiles/${id}/`, {
-                headers: {
-                  'Content-type': 'application/json',
-                },
-              })
-
-              setNames((prevNames) => {
-                prevNames[id] = data.first_name + ' ' + data.last_name
-                return prevNames
-              })
-              return data.first_name + ' ' + data.last_name
-            } catch (e: unknown) {
-              const ex = e as AxiosError
-              const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-              setError(error)
-              return ''
-            } finally {
-              setLoading(false)
-            }
-          }
+const UploadProblemButton: FC<{
+  problemId: number
+  problemNumber: number
+  registered: boolean
+  canRegister: boolean
+  setDisplaySideContent: Dispatch<
+    SetStateAction<{
+      type: string
+      problemId: number
+      problemNumber: number
+    }>
+  >
+}> = ({problemId, problemNumber, registered, canRegister, setDisplaySideContent}) => {
+  const handleClick = () => {
+    if (registered) {
+      setDisplaySideContent((prevState) => {
+        if (prevState.type === 'uploadProblemForm' && prevState.problemId === problemId) {
+          return {type: '', problemId: -1, problemNumber: -1}
+        } else {
+          return {type: 'uploadProblemForm', problemId: problemId, problemNumber: problemNumber}
         }
-
-        const comments = data.map((comment) => {
-          return {
-            id: comment.id,
-            text: comment.text,
-            published: comment.published,
-            posted_by: comment.posted_by,
-            name: '',
-          }
-        })
-
-        comments.forEach(async (comment) => {
-          comment.name = await getName(comment.posted_by)
-        })
-
-        setCommentCount((prevCommentCount) => {
-          prevCommentCount[problemNumber] = comments.length
-          return prevCommentCount
-        })
-        setComments(comments)
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
+      })
+    } else {
+      // ToDo: implement what happens when when the user is not registered
+      // probably something like display a message somewhere.
     }
-    fetchData(problemId)
-  }, [problemId, names, problemNumber, setCommentCount])
+  }
 
-  if (!display) {
+  if (registered || canRegister) {
+    return (
+      <span onClick={() => handleClick()} className={clsx(styles.actionButton, !registered && styles.disabled)}>
+        ODOVZDAŤ
+      </span>
+    )
+  } else {
     return <></>
+  }
+}
+
+const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({problemId, problemNumber}) => {
+  const {acceptedFiles, getRootProps, getInputProps} = useDropzone()
+
+  const handleSubmit = async () => {
+    const formData = new FormData()
+    formData.append('file', acceptedFiles[0])
+
+    try {
+      const response = await axios.post(`/api/competition/problem/${problemId}/upload-solution/`, formData)
+      if (response.status === 201) {
+        console.log('file uploaded') // ToDo: remove log() and let user know the response! message system? or something else?
+      }
+    } catch (e: unknown) {
+      const ex = e as AxiosError
+      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+    }
   }
 
   return (
-    <div className={styles.discussion}>
-      <div className={styles.overlay}></div>
-      <div className={styles.discussionBox}>
-        <div className={styles.title}>Diskusia - úloha {problemNumber}</div>
-        <div className={styles.comments}>
-          {comments.map((comment) => {
-            return (
-              <div className={styles.comment} key={comment.id}>
-                <div className={styles.title}>{comment.name}</div>
-                <div className={styles.body}>{comment.text}</div>
-              </div>
-            )
-          })}
-        </div>
-        <div className={styles.textArea}>
-          <textarea />
-          <button>Odoslať</button>
-        </div>
+    <SideContainer title={'Odovzdať úlohu - ' + problemNumber}>
+      <div {...getRootProps({className: styles.dropzone})}>
+        <input {...getInputProps()} />
+        <p>DROP pdf</p>
       </div>
-    </div>
+      <aside>
+        <h4>Files</h4>
+        {acceptedFiles[0]?.name && (
+          <span>
+            {acceptedFiles[0].name} - {acceptedFiles[0].size} bytes
+          </span>
+        )}
+      </aside>
+      <div className={styles.actions} style={{padding: '5px'}}>
+        <span className={styles.actionButton} onClick={handleSubmit}>
+          Odovzdať
+        </span>
+      </div>
+    </SideContainer>
   )
+
+  // return UploadProblemForm - {problemNumber}
 }
 
-const Menu: FC<{seminarId: number; semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({
-  seminarId,
+const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({
   semesterList,
   selectedId,
 }) => {
+  const {seminar} = useSeminarInfo()
+
   let selectedSemesterId = -1
   let selectedSeriesId = -1
-
-  const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const dropdownSemesterList = semesterList.map((semester) => {
     return {
       id: semester.id,
       text: `${semester.year}. Ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
-      link: `/${getSeminarName(seminarId)}/zadania/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/`,
+      link: `/${seminar}/zadania/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/`,
     }
   })
 
@@ -483,9 +562,9 @@ const Menu: FC<{seminarId: number; semesterList: SemesterList[]; selectedId: {se
         return {
           id: series.id,
           text: `${series.order}. séria`,
-          link: `/${getSeminarName(seminarId)}/zadania/${semesterList[i].year}/${
-            semesterList[i].season_code === 0 ? 'zima' : 'leto'
-          }/${series.order}/`,
+          link: `/${seminar}/zadania/${semesterList[i].year}/${semesterList[i].season_code === 0 ? 'zima' : 'leto'}/${
+            series.order
+          }/`,
         }
       })
     } else if (selectedId.semester === false) {
@@ -497,7 +576,7 @@ const Menu: FC<{seminarId: number; semesterList: SemesterList[]; selectedId: {se
             return {
               id: series.id,
               text: `${series.order}. séria`,
-              link: `/${getSeminarName(seminarId)}/zadania/${semesterList[i].year}/${
+              link: `/${seminar}/zadania/${semesterList[i].year}/${
                 semesterList[i].season_code === 0 ? 'zima' : 'leto'
               }/${series.order}/`,
             }
@@ -513,53 +592,6 @@ const Menu: FC<{seminarId: number; semesterList: SemesterList[]; selectedId: {se
       <Dropdown title={'Semester'} selectedId={selectedSemesterId} options={dropdownSemesterList} />
     </div>
   )
-}
-
-const Dropdown: FC<{title: string; selectedId: number; options: DropdownOption[]}> = ({title, selectedId, options}) => {
-  const [display, setDisplay] = useState(false)
-
-  const handleClick = (event: MouseEvent) => {
-    event.preventDefault()
-    setDisplay((prevDisplay) => {
-      return !prevDisplay
-    })
-  }
-
-  const handleMouseLeave = () => {
-    setDisplay(false)
-  }
-
-  return (
-    <div className={styles.dropdown} onClick={handleClick} onMouseLeave={handleMouseLeave}>
-      {title} <div className={styles.arrow}></div>
-      <div className={clsx(styles.options, display && styles.displayOptions)}>
-        {options.map((option) => {
-          return (
-            <Link href={option.link} key={option.id}>
-              <a>
-                <div className={clsx(styles.option, selectedId === option.id && styles.selectedOption)}>
-                  {option.text}
-                </div>
-              </a>
-            </Link>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-const getSeminarName = (id: number) => {
-  switch (id) {
-    case 0:
-      return 'strom'
-    case 1:
-      return 'matik'
-    case 2:
-      return 'malynar'
-    default:
-      return ''
-  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
