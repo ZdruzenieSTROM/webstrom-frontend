@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import {FC, MouseEvent} from 'react'
 
 import styles from './Overlay.module.scss'
@@ -17,7 +16,7 @@ export const Overlay: FC<OverlayProps> = ({children, display, closeOverlay}) => 
   }
 
   return display ? (
-    <div className={clsx(styles.overlay, 'overlay')} onClick={handleClick}>
+    <div className={styles.overlay} onClick={handleClick}>
       {children}
     </div>
   ) : null
