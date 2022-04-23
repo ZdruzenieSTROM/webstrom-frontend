@@ -164,7 +164,7 @@ export const RegisterForm: FC = () => {
     }
   }
 
-  const requiredRule = {required: {value: true, message: '* Toto pole nemože byť prázdne.'}}
+  const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   const phoneRule = {
     validate: (val: string) => {
       if (val && !/^(\+\d{10,12})$/u.test(val.replace(/\s+/gu, '')))
