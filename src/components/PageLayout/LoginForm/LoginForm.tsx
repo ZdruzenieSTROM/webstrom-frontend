@@ -1,8 +1,6 @@
-import axios, {AxiosError} from 'axios'
-import {FC, FormEvent, SyntheticEvent, useEffect, useRef, useState} from 'react'
-import {useCookies} from 'react-cookie'
+import {FC, FormEvent, FormEventHandler, useEffect, useRef, useState} from 'react'
 
-import {Login, Token} from '@/types/api/generated/user'
+import {Login} from '@/types/api/generated/user'
 import {AuthContainer} from '@/utils/AuthContainer'
 
 import styles from './LoginForm.module.scss'
@@ -13,9 +11,8 @@ interface ILoginForm {
 
 export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const [formData, setFormData] = useState<Login>({email: '', password: ''})
-  const [, setCookie] = useCookies(['webstrom-token'])
   const emailRef = useRef<HTMLInputElement>(null)
-  const {setWebstromToken} = AuthContainer.useContainer()
+  const {login} = AuthContainer.useContainer()
 
   useEffect(() => {
     emailRef.current?.focus()
@@ -26,26 +23,11 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
     setFormData((prevData) => ({...prevData, [name]: value}))
   }
 
-  const handleLogin = async (event: SyntheticEvent) => {
-    event.preventDefault()
-
-    try {
-      const expirationDate = new Date()
-      expirationDate.setMonth(expirationDate.getMonth() + 1)
-
-      const {data} = await axios.post<Token>('/api/user/login/', formData)
-
-      setCookie('webstrom-token', data.key, {path: '/', expires: expirationDate})
-      setWebstromToken(data.key)
-
-      closeOverlay()
-    } catch (e: unknown) {
-      const error = e as AxiosError
-      if (error.response?.status === 400) {
-        alert('Neplatné prihlasovacie údaje')
-        // console.log('Neplatné prihlasovacie údaje')
-      }
-    }
+  const handleLogin: FormEventHandler<HTMLFormElement> = async (e) => {
+    // ak to tu nie je, robi to weird veci- prida to email a password do URL
+    // ako query parametre, refreshne stranku a vobec nestihne pustit nas kod
+    e.preventDefault()
+    await login(formData, closeOverlay)
   }
 
   return (

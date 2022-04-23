@@ -1,8 +1,8 @@
-import axios, {AxiosError} from 'axios'
+import Link from 'next/link'
 import {FC, useState} from 'react'
-import {useCookies} from 'react-cookie'
 
 import {AuthContainer} from '@/utils/AuthContainer'
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Overlay} from '../../Overlay/Overlay'
 import {LoginForm} from '../LoginForm/LoginForm'
@@ -11,8 +11,7 @@ import styles from './Authentication.module.scss'
 export const Authentication: FC = () => {
   const [displayAuthenticationOverlay, setDisplayAuthenticationOverlay] = useState(false)
   const [displayLogin, setDisplayLogin] = useState(true) // true -> zobrazí sa login, false -> zobrazí sa registrácia
-  const [, , removeCookie] = useCookies(['webstrom-token']) // ToDo: remove
-  const {setWebstromToken, user} = AuthContainer.useContainer()
+  const {logout, user} = AuthContainer.useContainer()
 
   const toggleDisplayAuthenticationOverlay = () => {
     setDisplayAuthenticationOverlay((prevDisplay) => {
@@ -39,18 +38,7 @@ export const Authentication: FC = () => {
     setDisplayLogin(false)
   }
 
-  const handleLogout = async () => {
-    // Funkcia ktorá zavolá logout api point ktorý zmaže token na BE a odstráni cookies s tokenom a menom.
-    try {
-      await axios.post('/api/user/logout/', {})
-    } catch (e: unknown) {
-      const ex = e as AxiosError
-      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-      // console.log(error)
-    }
-    removeCookie('webstrom-token', {path: '/'})
-    setWebstromToken('')
-  }
+  const {seminar} = useSeminarInfo()
 
   if (!user.online) {
     return (
@@ -83,7 +71,10 @@ export const Authentication: FC = () => {
               {displayLogin ? (
                 <LoginForm closeOverlay={toggleDisplayAuthenticationOverlay} />
               ) : (
-                '<RegistrationForm />' // Tu by mal byť registračný form od Matúša
+                // Tu by mal byť registračný form od Matúša
+                <Link href={`/${seminar}/registracia`}>
+                  <a>Registrácia</a>
+                </Link>
               )}
             </div>
           </div>
@@ -93,7 +84,7 @@ export const Authentication: FC = () => {
   } else {
     return (
       <div className={styles.authenticationDisplayButtons}>
-        <span onClick={handleLogout}>Odhlásiť</span>
+        <span onClick={logout}>Odhlásiť</span>
       </div>
     )
   }
