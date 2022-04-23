@@ -6,6 +6,7 @@ import {IGrade} from '@/types/api/competition'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {ICounty, IDistrict, ISchool} from '@/types/api/personal'
 
+import {FormAutocomplete} from '../FormItems/FormAutocomplete/FormAutocomplete'
 import {FormCheckbox} from '../FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '../FormItems/FormInput/FormInput'
 import {FormSelect, SelectOption} from '../FormItems/FormSelect/FormSelect'
@@ -24,17 +25,26 @@ type RegisterFormValues = {
   without_school: boolean
   county: number | ''
   district: number | ''
-  school: number | ''
+  school: SelectOption | null
   school_not_found: boolean
   grade: number | ''
   gdpr: boolean
 }
 
 const defaultValues: RegisterFormValues = {
+  email: '',
+  password1: '',
+  password2: '',
+  first_name: '',
+  last_name: '',
+  nickname: '',
+  phone: '',
+  parent_phone: '',
+  new_school_description: '',
   without_school: false,
   county: '',
   district: '',
-  school: '',
+  school: null,
   school_not_found: false,
   grade: '',
   gdpr: false,
@@ -145,7 +155,7 @@ export const RegisterForm: FC = () => {
       first_name: data.first_name,
       last_name: data.last_name,
       nickname: data.nickname,
-      school: data.school,
+      school: data.school?.id,
       phone: data.phone,
       parent_phone: data.parent_phone,
       gdpr: data.gdpr,
@@ -254,7 +264,7 @@ export const RegisterForm: FC = () => {
               options={districtItems}
               disabled={!districtItems.length || school_not_found || without_school}
             />
-            <FormSelect
+            <FormAutocomplete
               control={control}
               name="school"
               label="Škola"

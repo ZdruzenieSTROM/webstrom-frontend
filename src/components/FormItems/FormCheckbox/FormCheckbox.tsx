@@ -8,7 +8,7 @@ export const FormCheckbox: FC<
   CheckboxProps &
     Pick<ControllerProps<'input'>, 'name' | 'control' | 'rules'> & {label: string; fieldError?: FieldError}
 > = ({control, name, label, disabled, rules, fieldError}) => (
-  <FormControl fullWidth={true} sx={formItemStyle}>
+  <FormControl fullWidth sx={formItemStyle}>
     <Controller
       name={name}
       control={control}
