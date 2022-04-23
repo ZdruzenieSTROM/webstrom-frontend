@@ -1,0 +1,24 @@
+.mainText{
+    >p{
+      padding: 20px;
+    }
+  }
+  
+  .archive{
+    display: grid;
+    grid-template-columns: 1fr max-content max-content;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 50px;
+    font-style: italic;
+    row-gap: 10px;
+  
+    div:not(:nth-child(3n+1)){
+      margin-left: 20px;
+      border-bottom: 4px solid black;
+    }
+  
+    div:nth-child(3n+1){
+      font-size: 1.2rem;
+    }
+  }
