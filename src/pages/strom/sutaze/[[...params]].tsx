@@ -28,9 +28,7 @@ type CompetitionPageProps = {
 const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => (
   <PageLayout title={competition.name}>
     {is_rules ? (
-      <div className={styles.mainText}>
-        <p>{competition.rules}</p>
-      </div>
+      <div className={styles.mainText}>{competition.rules && <Markdown content={competition.rules} />}</div>
     ) : (
       <>
         <div className={styles.mainText}>
