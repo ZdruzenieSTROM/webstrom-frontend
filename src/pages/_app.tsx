@@ -4,7 +4,6 @@ import '@/components/Latex/LatexExample.css'
 import '@/components/Marquee/Marquee.scss'
 import '@/components/Post/Post.css'
 import '@/components/PagePlaceholder/PagePlaceholder.css'
-import '@/components/RegisterForm/RegisterForm.css'
 
 import {AppProps} from 'next/app'
 import Head from 'next/head'

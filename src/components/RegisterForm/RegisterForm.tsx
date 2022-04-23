@@ -1,5 +1,3 @@
-// import './RegisterForm.css'
-import {Button} from '@material-ui/core'
 import axios from 'axios'
 import {FC, useEffect, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
@@ -11,6 +9,7 @@ import {ICounty, IDistrict, ISchool} from '@/types/api/personal'
 import {FormCheckbox} from '../FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '../FormItems/FormInput/FormInput'
 import {FormSelect, SelectOption} from '../FormItems/FormSelect/FormSelect'
+import styles from './RegisterForm.module.scss'
 
 type RegisterFormValues = {
   email?: string
@@ -165,22 +164,22 @@ export const RegisterForm: FC = () => {
     }
   }
 
-  const requiredRule = {required: {value: true, message: 'Toto pole nemože byť prázdne.'}}
+  const requiredRule = {required: {value: true, message: '* Toto pole nemože byť prázdne.'}}
   const phoneRule = {
     validate: (val: string) => {
       if (val && !/^(\+\d{10,12})$/u.test(val.replace(/\s+/gu, '')))
-        return 'Zadaj telefónne číslo vo formáte validnom formáte +421 123 456 789 alebo +421123456789.'
+        return '* Zadaj telefónne číslo vo formáte validnom formáte +421 123 456 789 alebo +421123456789.'
     },
   }
 
   return (
-    <div className="registerform">
+    <div>
       <h1>Registrácia</h1>
       {successfulRegistration ? (
         <p>{successfulRegistration}</p>
       ) : (
         <>
-          <form>
+          <form className={styles.registerForm}>
             <FormInput
               control={control}
               name="email"
@@ -189,7 +188,7 @@ export const RegisterForm: FC = () => {
                 ...requiredRule,
                 pattern: {
                   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-                  message: 'Vložte správnu emailovú adresu.',
+                  message: '* Vložte správnu emailovú adresu.',
                 },
               }}
               fieldError={errors.email}
@@ -203,7 +202,7 @@ export const RegisterForm: FC = () => {
                 ...requiredRule,
                 minLength: {
                   value: 8,
-                  message: 'Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
+                  message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
                 },
               }}
               fieldError={errors.password1}
@@ -216,7 +215,7 @@ export const RegisterForm: FC = () => {
               rules={{
                 ...requiredRule,
                 validate: (val) => {
-                  if (val !== getValues().password1) return 'Zadané heslá sa nezhodujú.'
+                  if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
                 },
               }}
               fieldError={errors.password2}
@@ -306,16 +305,16 @@ export const RegisterForm: FC = () => {
               label="Súhlas so spracovaním osobných údajov"
               rules={{
                 validate: (val) => {
-                  if (!val) return 'Súhlas so spracovaním osobných údajov je nutnou podmienkou registrácie.'
+                  if (!val) return '* Súhlas so spracovaním osobných údajov je nutnou podmienkou registrácie.'
                 },
               }}
               fieldError={errors.gdpr}
             />
+            <br />
+            <button onClick={handleSubmit(onSubmit)}>
+              <span className={styles.underline}>Registrovať</span>
+            </button>
           </form>
-          <br />
-          <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
-            Registrovať
-          </Button>
         </>
       )}
     </div>

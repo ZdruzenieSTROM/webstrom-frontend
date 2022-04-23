@@ -1,15 +1,28 @@
-import {FormControl, FormHelperText, Input, InputLabel, InputProps} from '@material-ui/core'
+import {TextField, TextFieldProps} from '@mui/material'
 import {FC} from 'react'
 import {Controller, ControllerProps, FieldError} from 'react-hook-form'
 
+import {formItemStyle} from '../styles'
+
 export const FormInput: FC<
-  InputProps & Pick<ControllerProps<'input'>, 'name' | 'control' | 'rules'> & {label: string; fieldError?: FieldError}
+  TextFieldProps &
+    Pick<ControllerProps<'input'>, 'name' | 'control' | 'rules'> & {label: string; fieldError?: FieldError}
 > = ({control, name, label, rules, fieldError}) => (
-  <FormControl fullWidth={true} error={!!fieldError}>
-    <InputLabel htmlFor={name} shrink>
-      {label}
-    </InputLabel>
-    <Controller name={name} control={control} rules={rules} defaultValue="" as={<Input type="text" id={name} />} />
-    <FormHelperText>{fieldError?.message}</FormHelperText>
-  </FormControl>
+  <Controller
+    name={name}
+    control={control}
+    rules={rules}
+    defaultValue=""
+    as={
+      <TextField
+        id={name}
+        label={label}
+        variant="outlined"
+        fullWidth={true}
+        helperText={fieldError?.message}
+        focused={false}
+        sx={formItemStyle}
+      />
+    }
+  />
 )

@@ -1,0 +1,18 @@
+.registerForm {
+  display: grid;
+  gap: 1rem 0;
+
+  > button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 0px 5px 15px;
+    font-weight: bold;
+    justify-self: end;
+  }
+
+  span.underline {
+    border-bottom: 4px solid black;
+    padding-bottom: 1px;
+  }
+}
