@@ -35,8 +35,6 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
             </div>
           </div>
         )}
-        <br></br>
-        <br></br>
         <div className={styles.h2}>
           <h2>Archív: </h2>
         </div>
