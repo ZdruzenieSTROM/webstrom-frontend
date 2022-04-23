@@ -7,7 +7,7 @@ import {FC, Fragment} from 'react'
 
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Markdown} from '@/components/StaticSites/Markdown'
-import {Competition, Event, UnspecifiedPublication} from '@/types/api/generated/competition'
+import {Competition} from '@/types/api/generated/competition'
 import {Seminar} from '@/utils/useSeminarInfo'
 
 import styles from './competition.module.scss'
@@ -40,20 +40,32 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
         <div className={styles.h2}>
           <h2>Archív: </h2>
         </div>
-        <div className={styles.archive}>
-          {competition.event_set.map((event) => (
-            <Fragment key={event.id}>
-              <div>
-                {competition.name + ' '} {event.school_year}
-              </div>
-              {event.unspecifiedpublication_set.map((publication) => (
-                <Fragment key={publication.id}>
-                  <div> {publication.name}</div>
-                </Fragment>
-              ))}
-            </Fragment>
-          ))}
-        </div>
+        {competition.competition_type.name === 'Tábor' ? (
+          <div className={styles.archive_camp}>
+            {competition.event_set.map((event) => (
+              <Fragment key={event.id}>
+                <div>
+                  {competition.name + ' '} {event.school_year}
+                </div>
+              </Fragment>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.archive}>
+            {competition.event_set.map((event) => (
+              <Fragment key={event.id}>
+                <div>
+                  {competition.name + ' '} {event.school_year}
+                </div>
+                {event.unspecifiedpublication_set.map((publication) => (
+                  <Fragment key={publication.id}>
+                    <div> {publication.name}</div>
+                  </Fragment>
+                ))}
+              </Fragment>
+            ))}
+          </div>
+        )}
       </>
     )}
   </PageLayout>
