@@ -20,17 +20,3 @@ export interface Register {
   profile: any
   new_school_description: string
 }
-
-export interface VerifyEmail {
-  key: string
-}
-
-export interface PasswordChange {
-  old_password: string
-  new_password1: string
-  new_password2: string
-}
-
-export interface UserShort {
-  email: string
-}
