@@ -65,7 +65,9 @@ const useAuth = () => {
     if (isAuthed) {
       // interceptor pre auth
       const requestInterceptor = axios.interceptors.request.use((request) => {
-        request.withCredentials = true // mozno netreba
+        // auth pozostava z comba:
+        // 1. `sessionid` httpOnly cookie ktoru nastavuje aj maze server pri login/logout
+        // 2. tato CSRF hlavicka, ktora ma obsahovat cookie, ktoru nastavuje server
         request.headers['X-CSRFToken'] = cookies.get('csrftoken')
 
         return request
