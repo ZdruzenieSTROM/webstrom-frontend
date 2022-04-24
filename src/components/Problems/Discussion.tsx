@@ -8,7 +8,7 @@ import styles from './Discussion.module.scss'
 import problemStyles from './Problems.module.scss'
 import {SideContainer} from './SideContainer'
 
-// komenty co pridu z BE endpointu 
+// komenty co pridu z BE endpointu
 //  `/api/competition/problem/${problemId}/comments`
 interface Comments {
   id: number
