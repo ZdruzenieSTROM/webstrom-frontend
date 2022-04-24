@@ -25,6 +25,7 @@ export const FormAutocomplete: FC<
           options={options}
           value={value || null}
           getOptionLabel={(option) => option.label}
+          isOptionEqualToValue={(option, value) => option?.id === value?.id}
           disabled={disabled}
           sx={formItemStyle}
           renderInput={(params) => (
