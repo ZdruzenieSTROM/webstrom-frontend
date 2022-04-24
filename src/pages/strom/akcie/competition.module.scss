@@ -39,7 +39,7 @@
     }
   }
 
-  .archive{
+  .archive_with_publications{
     display: grid;
     width: 50%;
     grid-template-columns: 1fr max-content max-content;
@@ -60,7 +60,7 @@
     }
   }
 
-  .archiveCamp{
+  .archive_without_publications{
     font-weight: bold;
     text-transform: uppercase;
     margin-top: 10px;

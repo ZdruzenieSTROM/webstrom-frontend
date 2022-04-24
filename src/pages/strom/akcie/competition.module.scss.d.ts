@@ -1,8 +1,8 @@
 export type Styles = {
+  archive_without_publications: string
+  archive_with_publications: string
   actionButton: string
   actions: string
-  archive: string
-  archiveCamp: string
   commentActions: string
   container: string
   disabled: string

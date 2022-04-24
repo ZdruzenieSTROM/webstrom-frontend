@@ -39,8 +39,8 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
         <div className={styles.h2}>
           <h2>Archív: </h2>
         </div>
-        {competition.competition_type.name === 'Tábor' ? (
-          <div className={styles.archiveCamp}>
+        {competition.competition_type.name === 'Tábor' || competition.competition_type.name === 'Seminár' ? (
+          <div className={styles.archive_without_publications}>
             {competition.history_events.map((event) => (
               <div key={event.id}>
                 {competition.name} {event.school_year}
@@ -48,7 +48,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
             ))}
           </div>
         ) : (
-          <div className={styles.archive}>
+          <div className={styles.archive_with_publications}>
             {competition.history_events.map((event) => (
               <Fragment key={event.id}>
                 <div>
