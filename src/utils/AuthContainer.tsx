@@ -13,8 +13,11 @@ const useAuth = () => {
   // stav, ktory napoveda, ci mame sessionid cookie a vieme robit auth requesty
   const [isAuthed, setIsAuthed] = useState(false)
 
-  // AuthContainer teda musi byt child ProfieContaineru v _app.tsx
-  const {fetchProfile, resetProfile} = ProfileContainer.useContainer()
+  // kedze vyuzivame ProfieContaineru, AuthContainer musi byt child ProfieContaineru v _app.tsx
+  const {profile, fetchProfile, resetProfile} = ProfileContainer.useContainer()
+
+  // odvodeny stav, ktory riadi, ci ukazeme userovi, ze je prihlaseny
+  const isLoggedIn = profile && isAuthed
 
   const testAuthAndLogin = () => {
     fetchProfile(() => setIsAuthed(true))
@@ -23,7 +26,7 @@ const useAuth = () => {
   useEffect(() => {
     // zistime, ci ma user platne sessionid - request na nejaky autentikovany endpoint
     testAuthAndLogin()
-    // one-time vec
+    // one-time vec pri prvom nacitani stranky
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -99,7 +102,7 @@ const useAuth = () => {
     // sessionid cookie odstrani server sam
   }
 
-  return {isAuthed, login, logout}
+  return {isAuthed, isLoggedIn, login, logout}
 }
 
 export const AuthContainer = createContainer(useAuth)

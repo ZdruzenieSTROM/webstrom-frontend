@@ -11,7 +11,7 @@ import styles from './Authentication.module.scss'
 export const Authentication: FC = () => {
   const [displayAuthenticationOverlay, setDisplayAuthenticationOverlay] = useState(false)
   const [displayLogin, setDisplayLogin] = useState(true) // true -> zobrazí sa login, false -> zobrazí sa registrácia
-  const {logout, isAuthed} = AuthContainer.useContainer()
+  const {logout, isLoggedIn} = AuthContainer.useContainer()
 
   const toggleDisplayAuthenticationOverlay = () => {
     setDisplayAuthenticationOverlay((prevDisplay) => {
@@ -40,7 +40,7 @@ export const Authentication: FC = () => {
 
   const {seminar} = useSeminarInfo()
 
-  if (!isAuthed) {
+  if (!isLoggedIn) {
     return (
       <>
         <div className={styles.authenticationDisplayButtons}>
