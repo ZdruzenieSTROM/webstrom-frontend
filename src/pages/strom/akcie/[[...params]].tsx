@@ -24,6 +24,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
     ) : (
       <>
         <div className={styles.mainText}>
+          <p>Pre koho? {competition.who_can_participate}</p>
           <p>{competition.description}</p>
         </div>
         {competition.rules && (
