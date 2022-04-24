@@ -81,28 +81,33 @@ export const competitionBasedGetServerSideProps = (
   let is_rules = false
   if (query?.params) {
     const requestedUrl = query.params[0]
-    const {data} = await axios.get<Competition | undefined>(
-      `${process.env.NEXT_PUBLIC_BE_URL}/competition/competition/${requestedUrl}/`,
-      {
-        headers: {
-          'Content-type': 'application/json',
-        },
-      },
-    )
-    if (query.params?.length === 1) {
-      is_rules = false
-    }
-    if (query.params?.length === 2 && query.params[1] === 'pravidla') {
-      if (!data?.rules) {
-        return {redirect: {destination: `/${seminar}/akcie/${requestedUrl}`, permanent: false}}
-      }
-      is_rules = true
-    }
 
-    if (data?.name) {
-      return {
-        props: {competition: data, is_rules},
+    try {
+      const {data} = await axios.get<Competition | undefined>(
+        `${process.env.NEXT_PUBLIC_BE_URL}/competition/competition/${requestedUrl}/`,
+        {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        },
+      )
+      if (query.params?.length === 1) {
+        is_rules = false
       }
+      if (query.params?.length === 2 && query.params[1] === 'pravidla') {
+        if (!data?.rules) {
+          return {redirect: {destination: `/${seminar}/akcie/${requestedUrl}`, permanent: false}}
+        }
+        is_rules = true
+      }
+
+      if (data?.name) {
+        return {
+          props: {competition: data, is_rules},
+        }
+      }
+    } catch (e: unknown) {
+      return {redirect: {destination: `/${seminar}`, permanent: false}}
     }
   }
 
