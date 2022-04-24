@@ -4,7 +4,7 @@ import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {RegisterForm} from '@/components/RegisterForm/RegisterForm'
 
 const Register: NextPage = () => (
-  <PageLayout>
+  <PageLayout contentWidth={2} title="Registrácia">
     <RegisterForm />
   </PageLayout>
 )

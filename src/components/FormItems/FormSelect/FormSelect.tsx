@@ -18,15 +18,15 @@ export const FormSelect: FC<
     name={name}
     control={control}
     rules={rules}
-    defaultValue=""
-    as={
+    render={(props) => (
       <TextField
+        {...props}
         id={name}
         disabled={disabled}
         select
         variant="outlined"
         label={label}
-        fullWidth={true}
+        fullWidth
         helperText={fieldError?.message}
         focused={false}
         sx={formItemStyle}
@@ -37,6 +37,6 @@ export const FormSelect: FC<
           </MenuItem>
         ))}
       </TextField>
-    }
+    )}
   />
 )
