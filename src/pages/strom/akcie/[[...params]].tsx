@@ -77,9 +77,8 @@ export const competitionBasedGetServerSideProps = (
   seminar: Seminar,
 ): GetServerSideProps<CompetitionPageProps> => async ({query}) => {
   // `params` vychadza z nazvu suboru `[[...params]]`
-  // tento check je hlavne pre typescript - parameter `params` by vzdy mal existovat
-  let is_rules = false
-  if (query?.params) {
+  // tento check je hlavne pre typescript - parameter `params` by vzdy mal existovat a mal by byt typu string[]
+  if (query?.params && Array.isArray(query.params) && query.params.length > 0) {
     const requestedUrl = query.params[0]
 
     try {
@@ -91,10 +90,11 @@ export const competitionBasedGetServerSideProps = (
           },
         },
       )
-      if (query.params?.length === 1) {
+      let is_rules = false
+      if (query.params.length === 1) {
         is_rules = false
       }
-      if (query.params?.length === 2 && query.params[1] === 'pravidla') {
+      if (query.params.length === 2 && query.params[1] === 'pravidla') {
         if (!data?.rules) {
           return {redirect: {destination: `/${seminar}/akcie/${requestedUrl}`, permanent: false}}
         }
