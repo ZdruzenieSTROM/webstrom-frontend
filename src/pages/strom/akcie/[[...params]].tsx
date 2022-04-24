@@ -76,6 +76,8 @@ export default StaticPage
 export const competitionBasedGetServerSideProps = (
   seminar: Seminar,
 ): GetServerSideProps<CompetitionPageProps> => async ({query}) => {
+  const redirectToSeminar = {redirect: {destination: `/${seminar}`, permanent: false}}
+
   // `params` vychadza z nazvu suboru `[[...params]]`
   // tento check je hlavne pre typescript - parameter `params` by vzdy mal existovat a mal by byt typu string[]
   if (query?.params && Array.isArray(query.params) && query.params.length > 0) {
@@ -85,28 +87,22 @@ export const competitionBasedGetServerSideProps = (
       const {data} = await axios.get<Competition | undefined>(
         `${process.env.NEXT_PUBLIC_BE_URL}/competition/competition/${requestedUrl}/`,
       )
-      let is_rules = false
-      if (query.params.length === 1) {
-        is_rules = false
-      }
+      if (!data) return redirectToSeminar
+
       if (query.params.length === 2 && query.params[1] === 'pravidla') {
-        if (!data?.rules) {
+        if (!data.rules) {
           return {redirect: {destination: `/${seminar}/akcie/${requestedUrl}`, permanent: false}}
         }
-        is_rules = true
+        return {props: {competition: data, is_rules: true}}
       }
 
-      if (data?.name) {
-        return {
-          props: {competition: data, is_rules},
-        }
-      }
+      return {props: {competition: data, is_rules: false}}
     } catch (e: unknown) {
-      return {redirect: {destination: `/${seminar}`, permanent: false}}
+      return redirectToSeminar
     }
   }
 
-  return {redirect: {destination: `/${seminar}`, permanent: false}}
+  return redirectToSeminar
 }
 
 export const getServerSideProps = competitionBasedGetServerSideProps('strom')
