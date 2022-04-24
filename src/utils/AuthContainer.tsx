@@ -3,42 +3,21 @@ import {useEffect, useState} from 'react'
 import {Cookies} from 'react-cookie'
 import {createContainer} from 'unstated-next'
 
-import {Profile} from '@/types/api/generated/personal'
 import {Login, Token} from '@/types/api/generated/user'
 
-const emptyProfile: Profile = {
-  first_name: '',
-  last_name: '',
-  nickname: '',
-  school: 0,
-  phone: '',
-  parent_phone: '',
-  gdpr: false,
-  grade: 0,
-}
+import {ProfileContainer} from './ProfileContainer'
 
 const cookies = new Cookies()
 
-// webstrom token global state
 const useAuth = () => {
+  // stav, ktory napoveda, ci mame sessionid cookie a vieme robit auth requesty
   const [isAuthed, setIsAuthed] = useState(false)
-  const [profile, setProfile] = useState<Profile>()
 
-  const fetchUserProfile = async (onSuccess?: () => void) => {
-    try {
-      setProfile(emptyProfile) // treba?
-      const {data} = await axios.get<Profile>(`/api/personal/profiles/myprofile/`)
-      setProfile(data)
-      // ked to necrashlo s errorom, mame spravny sessionid, mozeme zavolat tento optional callback
-      // - pouzite pre prihlasenie usera do UI, ak to bol len test request
-      onSuccess?.()
-    } catch (e: unknown) {
-      const error = e as AxiosError
-    }
-  }
+  // AuthContainer teda musi byt child ProfieContaineru v _app.tsx
+  const {fetchProfile, resetProfile} = ProfileContainer.useContainer()
 
   const testAuthAndLogin = () => {
-    fetchUserProfile(() => setIsAuthed(true))
+    fetchProfile(() => setIsAuthed(true))
   }
 
   useEffect(() => {
@@ -76,7 +55,7 @@ const useAuth = () => {
         if (status === 401 && isAuthed) {
           // odhlasime usera z UI
           setIsAuthed(false)
-          setProfile(emptyProfile)
+          resetProfile()
         }
 
         return Promise.reject(error)
@@ -86,7 +65,7 @@ const useAuth = () => {
     return () => {
       axios.interceptors.response.eject(responseInterceptor)
     }
-  }, [isAuthed])
+  }, [isAuthed, resetProfile])
 
   const login = async (formData: Login, closeOverlay: () => void) => {
     try {
@@ -96,7 +75,8 @@ const useAuth = () => {
       setIsAuthed(true)
       closeOverlay()
 
-      await fetchUserProfile()
+      // fetchProfile ma vlastny error handling, necrashne
+      await fetchProfile()
     } catch (e: unknown) {
       const error = e as AxiosError
       if (error.response?.status === 400) {
@@ -115,11 +95,11 @@ const useAuth = () => {
       alert(error)
     }
     setIsAuthed(false)
-    setProfile(emptyProfile)
+    resetProfile()
     // sessionid cookie odstrani server sam
   }
 
-  return {isAuthed, login, logout, profile}
+  return {isAuthed, login, logout}
 }
 
 export const AuthContainer = createContainer(useAuth)
