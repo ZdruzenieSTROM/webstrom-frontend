@@ -1,4 +1,5 @@
 .registerForm {
+  font-family: "Poppins", sans-serif !important;
   display: grid;
   gap: 1rem 0;
 
@@ -7,8 +8,10 @@
     border: none;
     cursor: pointer;
     padding: 5px 0px 5px 15px;
+    font-size: 1.4rem;
     font-weight: bold;
-    justify-self: end;
+    text-transform: uppercase;
+    justify-self: center;
   }
 
   span.underline {

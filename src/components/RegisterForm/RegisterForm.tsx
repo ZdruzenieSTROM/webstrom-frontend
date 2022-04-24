@@ -106,7 +106,7 @@ export const RegisterForm: FC = () => {
     fetchData()
   }, [])
 
-  // načítanie okresov z BE, ktorými vyplníme FormSelect s okresmi (naviazené na zmenu číselníku s krajom)
+  // načítanie okresov a škôl z BE, po zmene hodnoty v číselníku s krajom
   useEffect(() => {
     const fetchData = async () => {
       if (county !== '') {
@@ -115,7 +115,23 @@ export const RegisterForm: FC = () => {
       } else {
         setDistrictItems([])
       }
-      county === 0 ? setValue('district', 0) : setValue('district', '')
+      if (county === 0) {
+        // neznamy kraj, takze vyplname neznamy okres, atd...
+        setValue('district', 0)
+      } else {
+        // vyplnili sme novy kraj, nie je defaultny okres
+        setValue('district', '')
+        if (county !== '') {
+          // chceme naplnit aj Autocomplete so skolami
+          const schools = await axios.get<ISchool[]>(`/api/personal/schools/?county=${county}`)
+          setSchoolItems(
+            schools.data.map(({code, city, name, street}) => ({
+              id: code,
+              label: city ? `${name} ${street}, ${city}` : name,
+            })),
+          )
+        }
+      }
     }
     fetchData()
   }, [county, setValue])

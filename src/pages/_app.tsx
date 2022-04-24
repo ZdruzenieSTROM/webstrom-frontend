@@ -5,12 +5,19 @@ import '@/components/Marquee/Marquee.scss'
 import '@/components/Post/Post.css'
 import '@/components/PagePlaceholder/PagePlaceholder.css'
 
+import {createTheme, ThemeProvider} from '@mui/material'
 import {AppProps} from 'next/app'
 import Head from 'next/head'
 import {FC} from 'react'
 import {CookiesProvider} from 'react-cookie'
 
 import {AuthContainer} from '@/utils/AuthContainer'
+
+const theme = createTheme({
+  typography: {
+    fontFamily: ['Poppins', 'sans-serif'].join(','),
+  },
+})
 
 const MyApp: FC<AppProps> = ({Component, pageProps}) => {
   return (
@@ -21,7 +28,9 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
       </Head>
       <CookiesProvider>
         <AuthContainer.Provider>
-          <Component {...pageProps} />
+          <ThemeProvider theme={theme}>
+            <Component {...pageProps} />
+          </ThemeProvider>
         </AuthContainer.Provider>
       </CookiesProvider>
     </>
