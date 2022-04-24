@@ -41,32 +41,29 @@ const useAuth = () => {
 
         return request
       })
+
+      // interceptor pre 401, ked by sme mali byt authed
+      const responseInterceptor = axios.interceptors.response.use(
+        (response) => response,
+        async (error: AxiosError) => {
+          const status = error.response?.status
+
+          // sessionid moze byt neaktualne alebo vadne - vráti to 401
+          if (status === 401) {
+            // odhlasime usera z UI
+            setIsAuthed(false)
+            resetProfile()
+          }
+
+          return Promise.reject(error)
+        },
+      )
+
+      // useEffect unmount callback
       return () => {
         axios.interceptors.request.eject(requestInterceptor)
+        axios.interceptors.request.eject(responseInterceptor)
       }
-    }
-  }, [isAuthed])
-
-  useEffect(() => {
-    // interceptor pre 401, ked by sme mali byt authed
-    const responseInterceptor = axios.interceptors.response.use(
-      (response) => response,
-      async (error: AxiosError) => {
-        const status = error.response?.status
-
-        // sessionid moze byt neaktualne alebo vadne - vráti to 401
-        if (status === 401 && isAuthed) {
-          // odhlasime usera z UI
-          setIsAuthed(false)
-          resetProfile()
-        }
-
-        return Promise.reject(error)
-      },
-    )
-    // useEffect unmount callback
-    return () => {
-      axios.interceptors.response.eject(responseInterceptor)
     }
   }, [isAuthed, resetProfile])
 
