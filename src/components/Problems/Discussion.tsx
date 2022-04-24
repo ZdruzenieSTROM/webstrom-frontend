@@ -8,6 +8,8 @@ import styles from './Discussion.module.scss'
 import problemStyles from './Problems.module.scss'
 import {SideContainer} from './SideContainer'
 
+// komenty co pridu z BE endpointu 
+//  `/api/competition/problem/${problemId}/comments`
 interface Comments {
   id: number
   edit_allowed: boolean
@@ -15,7 +17,7 @@ interface Comments {
   posted_at: string
   published: boolean
   problem: number
-  posted_by: number
+  posted_by_name: string
 }
 
 interface Comment {
@@ -23,8 +25,7 @@ interface Comment {
   can_edit: boolean
   text: string
   published: boolean
-  posted_by: number
-  name: string
+  posted_by: string
 }
 
 // ToDo: move to the other interfaces
@@ -63,8 +64,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
               can_edit: comment.edit_allowed,
               text: comment.text,
               published: comment.published,
-              posted_by: comment.posted_by, // ToDo: change after api change
-              name: comment.posted_by.toString(), // ToDo: change after api change
+              posted_by: comment.posted_by_name,
             }
           })
 
@@ -155,7 +155,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
                       <br />
                     </>
                   )}
-                  {comment.name}
+                  {comment.posted_by}
                 </div>
                 <div>{comment.text}</div>
                 <div className={styles.commentActions}>
