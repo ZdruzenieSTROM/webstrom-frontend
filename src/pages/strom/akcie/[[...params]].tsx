@@ -84,11 +84,6 @@ export const competitionBasedGetServerSideProps = (
     try {
       const {data} = await axios.get<Competition | undefined>(
         `${process.env.NEXT_PUBLIC_BE_URL}/competition/competition/${requestedUrl}/`,
-        {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        },
       )
       let is_rules = false
       if (query.params.length === 1) {
