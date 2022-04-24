@@ -1,6 +1,6 @@
 import axios, {AxiosError} from 'axios'
 import {useEffect, useState} from 'react'
-import {useCookies} from 'react-cookie'
+import {Cookies} from 'react-cookie'
 import {createContainer} from 'unstated-next'
 
 import {Login, Token} from '@/types/api/generated/user'
@@ -30,10 +30,10 @@ const emptyUser: User = {
   triggerUserUpdate: () => {},
 }
 
+const cookies = new Cookies()
+
 // webstrom token global state
 const useAuth = () => {
-  const [cookies] = useCookies(['csrftoken'])
-
   const [isAuthed, setIsAuthed] = useState(false)
   const [user, setUser] = useState(emptyUser)
 
@@ -43,7 +43,7 @@ const useAuth = () => {
       const {data} = await axios.get<User>(`/api/personal/profiles/myprofile/`)
       setUser({...data, online: true, triggerUserUpdate: fetchUserProfile})
       // ked to necrashlo s errorom, mame spravny sessionid, mozeme zavolat tento optional callback
-      // pouzite pre prihlasenie usera do UI, ak to bol len test request
+      // - pouzite pre prihlasenie usera do UI, ak to bol len test request
       onSuccess?.()
     } catch (e: unknown) {
       const error = e as AxiosError
@@ -66,7 +66,7 @@ const useAuth = () => {
       // interceptor pre auth
       const requestInterceptor = axios.interceptors.request.use((request) => {
         request.withCredentials = true // mozno netreba
-        request.headers['X-CSRFToken'] = cookies.csrftoken
+        request.headers['X-CSRFToken'] = cookies.get('csrftoken')
 
         return request
       })
@@ -74,7 +74,7 @@ const useAuth = () => {
         axios.interceptors.request.eject(requestInterceptor)
       }
     }
-  }, [cookies.csrftoken, isAuthed])
+  }, [isAuthed])
 
   useEffect(() => {
     // interceptor pre 401, ked by sme mali byt authed
