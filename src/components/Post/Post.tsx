@@ -9,8 +9,8 @@ interface IPost {
   short_text: string
   details: string
   added_at: string
-  show_after: string
-  disable_after: string
+  visible_after: string
+  visible_until: string
   sites: number[]
 }
 

@@ -12,6 +12,7 @@ import {FC} from 'react'
 import {CookiesProvider} from 'react-cookie'
 
 import {AuthContainer} from '@/utils/AuthContainer'
+import {ProfileContainer} from '@/utils/ProfileContainer'
 
 const theme = createTheme({
   typography: {
@@ -27,11 +28,13 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <CookiesProvider>
-        <AuthContainer.Provider>
-          <ThemeProvider theme={theme}>
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </AuthContainer.Provider>
+        <ProfileContainer.Provider>
+          <AuthContainer.Provider>
+            <ThemeProvider theme={theme}>
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </AuthContainer.Provider>
+        </ProfileContainer.Provider>
       </CookiesProvider>
     </>
   )

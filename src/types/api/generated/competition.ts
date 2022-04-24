@@ -2,6 +2,7 @@ export interface UnspecifiedPublication {
   id?: number
   name?: string
   file: any
+  publication_type?: any | null
   event?: any | null
 }
 
@@ -25,23 +26,35 @@ export interface RegistrationLink {
 
 export interface Event {
   id?: number
+  can_participate?: any
+  is_registered?: any
   unspecifiedpublication_set: UnspecifiedPublication[]
-  registration_links: RegistrationLink[]
+  registration_link: RegistrationLink
   year?: number
   school_year?: string
+  season_code?: any
   start: string
   end: string
+  additional_name?: string | null
   competition?: any | null
+}
+
+export interface CompetitionType {
+  id?: number
+  name: string
 }
 
 export interface Competition {
   id?: number
-  event_set: Event[]
+  competition_type: CompetitionType
+  upcoming_or_current_event?: any
+  history_events?: any
   name: string
+  slug: string
   start_year?: number
   description?: string
   rules?: string | null
-  competition_type: any
+  who_can_participate?: string
   min_years_until_graduation?: number | null
   sites: any[]
   permission_group?: any[]
@@ -53,15 +66,24 @@ export interface EventRegistration {
   profile: any
 }
 
+export interface ProblemCorrection {
+  corrected_by?: any
+  best_solution?: any
+}
+
 export interface Problem {
   id?: number
+  submitted?: any
   text: string
   order: number
+  image?: any | null
   series?: any
 }
 
 export interface Comment {
   id?: number
+  posted_by_name?: any
+  edit_allowed?: any
   text: string
   posted_at?: string
   published: boolean
@@ -93,7 +115,10 @@ export interface Series {
 
 export interface SeriesWithProblems {
   id?: number
+  can_participate?: any
+  is_registered?: any
   problems: Problem[]
+  can_submit?: any
   order: number
   deadline: string
   complete: boolean
@@ -106,9 +131,10 @@ export interface Semester {
   series_set: Series[]
   year?: number
   school_year?: string
+  season_code?: any
   start: string
   end: string
-  season_code: any
+  additional_name?: string | null
   frozen_results?: string | null
   competition?: any | null
   late_tags?: any[]
@@ -116,14 +142,17 @@ export interface Semester {
 
 export interface SemesterWithProblems {
   id?: number
+  can_participate?: any
+  is_registered?: any
   series_set: SeriesWithProblems[]
   semesterpublication_set: SemesterPublication[]
   unspecifiedpublication_set: UnspecifiedPublication[]
   year?: number
   school_year?: string
+  season_code?: any
   start: string
   end: string
-  season_code: any
+  additional_name?: string | null
   frozen_results?: string | null
   competition?: any | null
   late_tags?: any[]
