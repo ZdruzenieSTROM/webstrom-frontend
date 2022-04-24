@@ -7,16 +7,15 @@ import {Profile} from '@/types/api/generated/personal'
 const useProfile = () => {
   const [profile, setProfile] = useState<Profile>()
 
-  const fetchProfile = async (onSuccess?: () => void) => {
+  const fetchProfile = async () => {
     try {
       const {data} = await axios.get<Profile>(`/api/personal/profiles/myprofile/`)
       setProfile(data)
-      // ked to necrashlo s errorom, mame spravny sessionid, mozeme zavolat tento optional callback
-      // - pouzite pre prihlasenie usera do UI, ak to bol len test request
-      onSuccess?.()
+      return true
     } catch (e: unknown) {
       setProfile(undefined)
-      const error = e as AxiosError
+      console.log((e as AxiosError).response?.data)
+      return false
     }
   }
 

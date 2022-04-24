@@ -7,7 +7,7 @@ import styles from './Footer.module.scss'
 
 export const Footer: FC = () => {
   const {profile} = ProfileContainer.useContainer()
-  const {isAuthed, isLoggedIn} = AuthContainer.useContainer()
+  const {isAuthed} = AuthContainer.useContainer()
 
   return (
     <div className={styles.footer}>
@@ -16,7 +16,6 @@ export const Footer: FC = () => {
         <span>user name: {profile?.first_name + ' ' + profile?.last_name} </span>
         <span>profile loaded: {`${!!profile}`} </span>
         <span>isAuthed: {`${isAuthed}`}</span>
-        <span>isLoggedIn: {`${isLoggedIn}`}</span>
       </div>
     </div>
   )
