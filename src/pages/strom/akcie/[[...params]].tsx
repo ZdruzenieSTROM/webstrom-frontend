@@ -24,7 +24,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
     ) : (
       <>
         <div className={styles.mainText}>
-          <p>Pre koho? {competition.who_can_participate}</p>
+          {competition.who_can_participate && <p>Pre koho? {competition.who_can_participate}</p>}
           <p>{competition.description}</p>
         </div>
         {competition.rules && (
@@ -80,12 +80,6 @@ export const competitionBasedGetServerSideProps = (
   // tento check je hlavne pre typescript - parameter `params` by vzdy mal existovat
   let is_rules = false
   if (query?.params) {
-    if (query.params?.length === 1) {
-      is_rules = false
-    }
-    if (query.params?.length === 2 && query.params[1] === 'pravidla') {
-      is_rules = true
-    }
     const requestedUrl = query.params[0]
     const {data} = await axios.get<Competition | undefined>(
       `${process.env.NEXT_PUBLIC_BE_URL}/competition/competition/${requestedUrl}/`,
@@ -95,6 +89,15 @@ export const competitionBasedGetServerSideProps = (
         },
       },
     )
+    if (query.params?.length === 1) {
+      is_rules = false
+    }
+    if (query.params?.length === 2 && query.params[1] === 'pravidla') {
+      if (!data?.rules) {
+        return {redirect: {destination: `/${seminar}/akcie/${requestedUrl}`, permanent: false}}
+      }
+      is_rules = true
+    }
 
     if (data?.name) {
       return {
