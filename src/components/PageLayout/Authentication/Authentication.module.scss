@@ -6,10 +6,11 @@
   text-align: center;
   color: white;
 
-  > span {
+  > span, > a {
     padding: 0px 10px;
     margin: 0px;
     cursor: pointer;
+    color: white;
   }
 
   > span:not(:first-child) {
@@ -21,7 +22,6 @@
   place-self: center;
   padding: 0px;
   width: 300px;
-  height: 400px;
   color: black;
   background-color: white;
   z-index: 1000;
@@ -49,36 +49,6 @@
   span.underline {
     border-bottom: 4px solid black;
     padding-bottom: 1px;
-  }
-
-  .tabs {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 50% 50%;
-
-    > div {
-      background-color: black;
-      color: white;
-      text-transform: uppercase;
-      font-weight: bold;
-      text-align: center;
-      height: 2.4rem;
-      padding-top: 2px;
-      cursor: pointer;
-
-      span.underline {
-        border-bottom: 4px solid white;
-      }
-    }
-
-    > div.active {
-      background-color: white;
-      color: black;
-
-      span.underline {
-        border-color: black;
-      }
-    }
   }
 
   .content {
