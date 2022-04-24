@@ -5,13 +5,13 @@ import {AuthContainer} from '@/utils/AuthContainer'
 import styles from './Footer.module.scss'
 
 export const Footer: FC = () => {
-  const {isAuthed, user} = AuthContainer.useContainer()
+  const {isAuthed, profile} = AuthContainer.useContainer()
   return (
     <div className={styles.footer}>
       <div>
-        <span>Temp debug info: </span>
-        <span> user-name: {user.first_name + ' ' + user.last_name} </span>
-        <span> user.online: {`${user.online}`} </span>
+        <span>Debug info: </span>
+        <span>user name: {profile?.first_name + ' ' + profile?.last_name} </span>
+        <span>profile loaded: {`${!!profile}`} </span>
         <span>isAuthed: {`${isAuthed}`}</span>
       </div>
     </div>

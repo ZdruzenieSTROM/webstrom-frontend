@@ -3,21 +3,10 @@ import {useEffect, useState} from 'react'
 import {Cookies} from 'react-cookie'
 import {createContainer} from 'unstated-next'
 
+import {Profile} from '@/types/api/generated/personal'
 import {Login, Token} from '@/types/api/generated/user'
 
-interface User {
-  online: boolean
-  first_name: string
-  last_name: string
-  nickname: string
-  school: number
-  phone: string
-  parent_phone: string
-  gdpr: boolean
-  grade: number
-  triggerUserUpdate: () => void
-}
-const emptyUser: User = {
+const emptyProfile: Profile = {
   first_name: '',
   last_name: '',
   nickname: '',
@@ -26,8 +15,6 @@ const emptyUser: User = {
   parent_phone: '',
   gdpr: false,
   grade: 0,
-  online: false,
-  triggerUserUpdate: () => {},
 }
 
 const cookies = new Cookies()
@@ -35,13 +22,13 @@ const cookies = new Cookies()
 // webstrom token global state
 const useAuth = () => {
   const [isAuthed, setIsAuthed] = useState(false)
-  const [user, setUser] = useState(emptyUser)
+  const [profile, setProfile] = useState<Profile>()
 
   const fetchUserProfile = async (onSuccess?: () => void) => {
     try {
-      setUser(emptyUser)
-      const {data} = await axios.get<User>(`/api/personal/profiles/myprofile/`)
-      setUser({...data, online: true, triggerUserUpdate: fetchUserProfile})
+      setProfile(emptyProfile) // treba?
+      const {data} = await axios.get<Profile>(`/api/personal/profiles/myprofile/`)
+      setProfile(data)
       // ked to necrashlo s errorom, mame spravny sessionid, mozeme zavolat tento optional callback
       // - pouzite pre prihlasenie usera do UI, ak to bol len test request
       onSuccess?.()
@@ -89,7 +76,7 @@ const useAuth = () => {
         if (status === 401 && isAuthed) {
           // odhlasime usera z UI
           setIsAuthed(false)
-          setUser(emptyUser)
+          setProfile(emptyProfile)
         }
 
         return Promise.reject(error)
@@ -128,11 +115,11 @@ const useAuth = () => {
       alert(error)
     }
     setIsAuthed(false)
-    setUser(emptyUser)
+    setProfile(emptyProfile)
     // sessionid cookie odstrani server sam
   }
 
-  return {isAuthed, login, logout, user}
+  return {isAuthed, login, logout, profile}
 }
 
 export const AuthContainer = createContainer(useAuth)

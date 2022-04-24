@@ -55,48 +55,6 @@ interface Series {
   semester: number
 }
 
-// ToDo: remove? so far we do not need this semester but maybe later?
-// interface Semester {
-//   id: number
-//   series_set: Series[]
-//   semesterpublication_set: string[]
-//   unspecifiedpublication_set: string[]
-//   year: number
-//   school_year: string
-//   season_code: number
-//   start: string
-//   end: string
-//   frozen_results: string
-//   competition: number
-//   late_tags: string[]
-// }
-
-interface Profile {
-  first_name: string
-  last_name: string
-  nickname: string
-  school: number
-  phone: string
-  parent_phone: string
-  gdpr: boolean
-  grade: number
-}
-// interface CurrentSemester {
-//   id: number
-//   series_set: SeriesList[]
-//   semesterpublication_set: string[]
-//   unspecifiedpublication_set: string[]
-//   year: number
-//   school_year: string
-//   season_code: number
-//   start: string
-//   end: string
-//   frozen_results: string
-//   competition: number
-//   late_tags: string[]
-// }
-// interfaces for dropdown menus
-
 type ProblemsProps = {
   setPageTitle: (title: string) => void
 }
@@ -104,7 +62,7 @@ type ProblemsProps = {
 export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const router = useRouter()
 
-  const {user} = AuthContainer.useContainer()
+  const {isAuthed} = AuthContainer.useContainer()
   // ToDo: initial state false + set value after API update
   const [canRegister, setCanRegister] = useState(true)
   // ToDo: initial state false + set value after API update
@@ -300,7 +258,8 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     } else {
       setProblems([])
     }
-  }, [problemsId, user])
+    // zbehni znovu ked sa isAuthed zmeni - competition/series/ID/ vracia ine data pre prihlaseneho usera
+  }, [problemsId, isAuthed])
 
   const handleRegistrationToSemester = async (id: number) => {
     // ToDo: check user details and use the following request to register the user to semester.
