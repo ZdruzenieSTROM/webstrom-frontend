@@ -13,11 +13,19 @@ export interface PostLink {
 export interface Post {
   id?: number
   links: PostLink[]
+  visible_after: string
+  visible_until: string
   caption: string
   short_text: string
   details?: string
   added_at?: string
-  show_after: string
-  disable_after: string
   sites: any[]
+}
+
+export interface InfoBanner {
+  rendered_message: string
+}
+
+export interface MessageTemplate {
+  message: string
 }

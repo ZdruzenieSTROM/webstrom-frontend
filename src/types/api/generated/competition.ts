@@ -2,6 +2,7 @@ export interface UnspecifiedPublication {
   id?: number
   name?: string
   file: any
+  publication_type?: any | null
   event?: any | null
 }
 
@@ -28,12 +29,13 @@ export interface Event {
   can_participate?: any
   is_registered?: any
   unspecifiedpublication_set: UnspecifiedPublication[]
-  registration_links: RegistrationLink[]
+  registration_link: RegistrationLink
   year?: number
   school_year?: string
   season_code?: any
   start: string
   end: string
+  additional_name?: string | null
   competition?: any | null
 }
 
@@ -44,8 +46,9 @@ export interface CompetitionType {
 
 export interface Competition {
   id?: number
-  event_set: Event[]
   competition_type: CompetitionType
+  upcoming_or_current_event?: any
+  history_events?: any
   name: string
   slug: string
   start_year?: number
@@ -63,11 +66,17 @@ export interface EventRegistration {
   profile: any
 }
 
+export interface ProblemCorrection {
+  corrected_by?: any
+  best_solution?: any
+}
+
 export interface Problem {
   id?: number
   submitted?: any
   text: string
   order: number
+  image?: any | null
   series?: any
 }
 
@@ -125,6 +134,7 @@ export interface Semester {
   season_code?: any
   start: string
   end: string
+  additional_name?: string | null
   frozen_results?: string | null
   competition?: any | null
   late_tags?: any[]
@@ -142,6 +152,7 @@ export interface SemesterWithProblems {
   season_code?: any
   start: string
   end: string
+  additional_name?: string | null
   frozen_results?: string | null
   competition?: any | null
   late_tags?: any[]
