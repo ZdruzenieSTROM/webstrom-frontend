@@ -41,12 +41,13 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
   // ToDo: find out whether the user can publish comments form the api
   const [canPublish, setCanPublish] = useState(true)
   const [reloadComments, setReloadComments] = useState(true)
-  const {user} = AuthContainer.useContainer()
+  const {isAuthed} = AuthContainer.useContainer()
 
   // trigger comments reload whenever problemId changes
   useEffect(() => {
     setReloadComments(true)
-  }, [problemId, user])
+    // zbehni znovu aj ked sa zmeni isAuthed - comments endpoint vracia ine data pre prihlaseneho usera
+  }, [problemId, isAuthed])
 
   // Fetch comments for the problem with id === problemId
   useEffect(() => {

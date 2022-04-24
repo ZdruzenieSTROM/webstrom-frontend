@@ -1,113 +1,85 @@
 import axios, {AxiosError} from 'axios'
 import {useEffect, useState} from 'react'
-import {useCookies} from 'react-cookie'
+import {Cookies} from 'react-cookie'
 import {createContainer} from 'unstated-next'
 
 import {Login, Token} from '@/types/api/generated/user'
 
-interface User {
-  online: boolean
-  first_name: string
-  last_name: string
-  nickname: string
-  school: number
-  phone: string
-  parent_phone: string
-  gdpr: boolean
-  grade: number
-  triggerUserUpdate: () => void
-}
-const emptyUser: User = {
-  first_name: '',
-  last_name: '',
-  nickname: '',
-  school: 0,
-  phone: '',
-  parent_phone: '',
-  gdpr: false,
-  grade: 0,
-  online: false,
-  triggerUserUpdate: () => {},
-}
+import {ProfileContainer} from './ProfileContainer'
 
-// webstrom token global state
+const cookies = new Cookies()
+
 const useAuth = () => {
-  const [cookies] = useCookies(['csrftoken'])
-
+  // stav, ktory napoveda, ci mame sessionid cookie a vieme robit auth requesty
   const [isAuthed, setIsAuthed] = useState(false)
-  const [user, setUser] = useState(emptyUser)
 
-  const fetchUserProfile = async (onSuccess?: () => void) => {
-    try {
-      setUser(emptyUser)
-      const {data} = await axios.get<User>(`/api/personal/profiles/myprofile/`)
-      setUser({...data, online: true, triggerUserUpdate: fetchUserProfile})
-      // ked to necrashlo s errorom, mame spravny sessionid, mozeme zavolat tento optional callback
-      // pouzite pre prihlasenie usera do UI, ak to bol len test request
-      onSuccess?.()
-    } catch (e: unknown) {
-      const error = e as AxiosError
-    }
-  }
+  // kedze vyuzivame ProfieContainer, AuthContainer musi byt child ProfieContaineru v _app.tsx
+  const {fetchProfile, resetProfile} = ProfileContainer.useContainer()
 
-  const testAuthAndLogin = () => {
-    fetchUserProfile(() => setIsAuthed(true))
+  const testAuthAndLogin = async () => {
+    const success = await fetchProfile()
+    success && setIsAuthed(true)
   }
 
   useEffect(() => {
     // zistime, ci ma user platne sessionid - request na nejaky autentikovany endpoint
     testAuthAndLogin()
-    // one-time vec
+
+    // interceptor pre auth
+    axios.interceptors.request.use((request) => {
+      // auth pozostava z comba:
+      // 1. `sessionid` httpOnly cookie ktoru nastavuje aj maze server pri login/logout
+      // 2. tato CSRF hlavicka, ktora ma obsahovat cookie, ktoru nastavuje server
+      request.headers['X-CSRFToken'] = cookies.get('csrftoken')
+
+      return request
+    })
+
+    // one-time vec pri prvom nacitani stranky
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     if (isAuthed) {
-      // interceptor pre auth
-      const requestInterceptor = axios.interceptors.request.use((request) => {
-        request.withCredentials = true // mozno netreba
-        request.headers['X-CSRFToken'] = cookies.csrftoken
+      // interceptor pre 403, ked by sme mali byt authed
+      const responseInterceptor = axios.interceptors.response.use(
+        (response) => response,
+        async (error: AxiosError) => {
+          const status = error.response?.status
 
-        return request
-      })
+          // sessionid moze byt neaktualne alebo vadne - vráti to 403
+          if (status === 403) {
+            // overíme čí nám vypršalo prihlásenie alebo len nemáme práva
+            const success = await fetchProfile()
+
+            if (!success) {
+              // odhlásime usera z UI
+              setIsAuthed(false)
+              resetProfile()
+            }
+          }
+
+          return Promise.reject(error)
+        },
+      )
+
+      // useEffect unmount callback
       return () => {
-        axios.interceptors.request.eject(requestInterceptor)
+        axios.interceptors.request.eject(responseInterceptor)
       }
     }
-  }, [cookies.csrftoken, isAuthed])
-
-  useEffect(() => {
-    // interceptor pre 401, ked by sme mali byt authed
-    const responseInterceptor = axios.interceptors.response.use(
-      (response) => response,
-      async (error: AxiosError) => {
-        const status = error.response?.status
-
-        // sessionid moze byt neaktualne alebo vadne - vráti to 401
-        if (status === 401 && isAuthed) {
-          // odhlasime usera z UI
-          setIsAuthed(false)
-          setUser(emptyUser)
-        }
-
-        return Promise.reject(error)
-      },
-    )
-    // useEffect unmount callback
-    return () => {
-      axios.interceptors.response.eject(responseInterceptor)
-    }
-  }, [isAuthed])
+  }, [fetchProfile, isAuthed, resetProfile])
 
   const login = async (formData: Login, closeOverlay: () => void) => {
     try {
       // the server should set sessionid cookie here automatically
       await axios.post<Token>('/api/user/login/', formData)
 
-      setIsAuthed(true)
       closeOverlay()
 
-      await fetchUserProfile()
+      // fetchProfile ma vlastny error handling, necrashne
+      const success = await fetchProfile()
+      success && setIsAuthed(true)
     } catch (e: unknown) {
       const error = e as AxiosError
       if (error.response?.status === 400) {
@@ -126,11 +98,11 @@ const useAuth = () => {
       alert(error)
     }
     setIsAuthed(false)
-    setUser(emptyUser)
+    resetProfile()
     // sessionid cookie odstrani server sam
   }
 
-  return {isAuthed, login, logout, user}
+  return {isAuthed, login, logout}
 }
 
 export const AuthContainer = createContainer(useAuth)
