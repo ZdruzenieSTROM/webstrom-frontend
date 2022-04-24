@@ -25,8 +25,8 @@ export const PostShow: FC<ShowProps> = (props) => (
           <TextField source="short_text" />
           <TextField source="details" />
           <DateField source="added_at" />
-          <DateField source="show_after" />
-          <DateField source="disable_after" />
+          <DateField source="visible_after" />
+          <DateField source="visible_until" />
           <SitesArrayField source="sites" />
         </SimpleShowLayout>
       </Tab>

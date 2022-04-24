@@ -24,8 +24,8 @@ export const PostEdit: FC<EditProps> = (props) => (
         <TextInput source="short_text" fullWidth validate={required()} />
         <TextInput source="details" fullWidth />
         <MyDateInput source="added_at" fullWidth disabled />
-        <MyDateInput source="show_after" fullWidth validate={required()} />
-        <MyDateInput source="disable_after" fullWidth validate={required()} />
+        <MyDateInput source="visible_after" fullWidth validate={required()} />
+        <MyDateInput source="visible_until" fullWidth validate={required()} />
         <SitesCheckboxInput source="sites" />
       </FormTab>
       <FormTab label="links">
