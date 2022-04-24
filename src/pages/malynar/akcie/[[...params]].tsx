@@ -1,4 +1,4 @@
-import StaticPage, {competitionBasedGetServerSideProps} from '../../strom/sutaze/[[...params]]'
+import StaticPage, {competitionBasedGetServerSideProps} from '../../strom/akcie/[[...params]]'
 
 export default StaticPage
 
