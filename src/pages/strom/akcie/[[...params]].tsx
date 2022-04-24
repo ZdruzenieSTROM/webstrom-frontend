@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {DateTime} from 'luxon'
 import {GetServerSideProps, NextPage} from 'next'
 import {useRouter} from 'next/router'
 import {FC, Fragment} from 'react'
@@ -29,13 +30,49 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
           {competition.who_can_participate && <p>Pre koho? {competition.who_can_participate}</p>}
           <p>{competition.description}</p>
         </div>
-        {competition.rules && (
-          <div className={styles.container}>
-            <div className={styles.actions}>
+        <div className={styles.mainText}>
+          {competition.upcoming_or_current_event ? (
+            <div className={styles.mainText}>
+              <p>
+                <b>Nadchádzajúci ročník:</b>
+              </p>
+              {competition.upcoming_or_current_event.start && (
+                <p>Odkedy? {DateTime.fromISO(competition.upcoming_or_current_event.start).toISODate()} </p>
+              )}
+              {competition.upcoming_or_current_event.end && (
+                <p>Dokedy? {DateTime.fromISO(competition.upcoming_or_current_event.start).toISODate()}</p>
+              )}
+              {competition.upcoming_or_current_event.unspecifiedpublication_set.length > 0 && (
+                <p>Pozvánka: {competition.upcoming_or_current_event.unspecifiedpublication_set[0].name} </p>
+              )}
+              {competition.upcoming_or_current_event.registration_link && (
+                <div>
+                  <p>
+                    Registračný formulár:{' '}
+                    {DateTime.fromISO(competition.upcoming_or_current_event.registration_link.start).toISODate()} -
+                    {DateTime.fromISO(competition.upcoming_or_current_event.registration_link.end).toISODate()}
+                    {competition.upcoming_or_current_event.registration_link.url}
+                  </p>
+
+                  <p>{competition.upcoming_or_current_event.registration_link.additional_info}</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p>
+              <b>Nadchádzajúci ročník:</b> Pripravujeme
+            </p>
+          )}
+        </div>
+
+        <div className={styles.container}>
+          <div className={styles.actions}>
+            <div className={styles.actionButton}>
               <RulesLink />
             </div>
           </div>
-        )}
+        </div>
+
         <div className={styles.h2}>
           <h2>Archív: </h2>
         </div>
