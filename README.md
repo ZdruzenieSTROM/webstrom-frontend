@@ -9,6 +9,7 @@ Po inštalácii potrebných balíkov a vytvorení databázy spusti backend djang
 ```
 python manage.py runserver
 ```
+
 Tento príkaz spustí server na `localhost:8000`, kde sa dá pristupovať k API a k django admin stránke.
 
 ## Spustenie frontendu
@@ -21,21 +22,43 @@ cd webstrom-frontend
 ```
 
 Na nainštalovanie potrebných balíkov je potrebné mať nainštalovaný [node.js](https://nodejs.org/en/) spolu so správcom balíkov [yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable) a potrebné balíky pre projekt sa nainštalujú pomocou:
+
 ```
 yarn install
-````
+```
+
 alebo len
+
 ```
 yarn
 ```
+
 Development server sa spustí pomocou príkazu:
+
 ```
 yarn dev
 ```
+
 Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo frontendovom kóde a automaticky sa reloaduje.
 
+## CSS types
+
+Na pregenerovanie CSS typov, popisujúcich typy pre `styles` z `*.module.css` do súborov `*.module.scss.d.ts` je potrebné spustiť
+
+```
+yarn css-types
+```
+
+Ak chceme aby sa tieto typy generovali automaticky počas vyvvíjania, je tu príkaz
+
+```
+yarn css-types-watch
+```
+
 # IDE setup
+
 Používame VSCode, nainštaluj si doň [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) rozšírenie. V repe máme `.vscode` config, preto sa kód pri uložení automaticky formátuje. Rozšírenie je možné doinštalovať pomocou `Ctrl+P` a spustením:
+
 ```
 ext install dbaeumer.vscode-eslint
 ```

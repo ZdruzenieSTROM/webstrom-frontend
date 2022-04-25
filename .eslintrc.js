@@ -335,5 +335,13 @@ module.exports = {
         'import/no-default-export': 'off',
       },
     },
+
+    // SCSS types use default exports
+    {
+      files: ['src/**/*.module.scss.d.ts'],
+      rules: {
+        'import/no-default-export': 'off',
+      },
+    },
   ],
 }

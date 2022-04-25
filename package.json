@@ -30,7 +30,9 @@
     "dev": "next dev",
     "start": "next start",
     "build": "next build",
-    "test": "jest test"
+    "test": "jest test",
+    "css-types": "typed-scss-modules src --exportType default",
+    "css-types-watch": "typed-scss-modules src --watch --exportType default"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.26.6",
@@ -59,6 +61,7 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unicorn": "^29.0.0",
     "prettier": "^2.1.2",
-    "sass": "^1.49.7"
+    "sass": "^1.49.7",
+    "typed-scss-modules": "^6.2.0"
   }
 }
