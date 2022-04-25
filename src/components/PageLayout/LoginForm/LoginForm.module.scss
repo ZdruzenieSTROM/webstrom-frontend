@@ -1,10 +1,16 @@
 .loginForm {
   display: grid;
-  grid-template-columns: 100%;
-  color: black;
+  gap: 1rem 0;
 
   > button {
-    justify-self: end;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 0px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    justify-self: center;
   }
   
   span.underline {

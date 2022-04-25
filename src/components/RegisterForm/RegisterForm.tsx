@@ -2,14 +2,14 @@ import axios, {AxiosError} from 'axios'
 import {FC, useEffect, useRef, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
+import {FormAutocomplete} from '@/components/FormItems/FormAutocomplete/FormAutocomplete'
+import {FormCheckbox} from '@/components/FormItems/FormCheckbox/FormCheckbox'
+import {FormInput} from '@/components/FormItems/FormInput/FormInput'
+import {FormSelect, SelectOption} from '@/components/FormItems/FormSelect/FormSelect'
 import {IGrade} from '@/types/api/competition'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {ICounty, IDistrict, ISchool} from '@/types/api/personal'
 
-import {FormAutocomplete} from '../FormItems/FormAutocomplete/FormAutocomplete'
-import {FormCheckbox} from '../FormItems/FormCheckbox/FormCheckbox'
-import {FormInput} from '../FormItems/FormInput/FormInput'
-import {FormSelect, SelectOption} from '../FormItems/FormSelect/FormSelect'
 import styles from './RegisterForm.module.scss'
 
 type RegisterFormValues = {
@@ -212,146 +212,144 @@ export const RegisterForm: FC = () => {
       {successfulRegistration ? (
         <p>{successfulRegistration}</p>
       ) : (
-        <>
-          <form className={styles.registerForm}>
+        <form className={styles.registerForm}>
+          <FormInput
+            control={control}
+            name="email"
+            label="Email"
+            rules={{
+              ...requiredRule,
+              pattern: {
+                value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
+                message: '* Vložte správnu emailovú adresu.',
+              },
+            }}
+            fieldError={errors.email}
+          />
+          <FormInput
+            control={control}
+            name="password1"
+            label="Heslo"
+            type="password"
+            rules={{
+              ...requiredRule,
+              minLength: {
+                value: 8,
+                message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
+              },
+            }}
+            fieldError={errors.password1}
+          />
+          <FormInput
+            control={control}
+            name="password2"
+            label="Potvrdenie hesla"
+            type="password"
+            rules={{
+              ...requiredRule,
+              validate: (val) => {
+                if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
+              },
+            }}
+            fieldError={errors.password2}
+          />
+          <FormInput
+            control={control}
+            name="first_name"
+            label="Krstné meno"
+            rules={requiredRule}
+            fieldError={errors.first_name}
+          />
+          <FormInput
+            control={control}
+            name="last_name"
+            label="Priezvisko"
+            rules={requiredRule}
+            fieldError={errors.last_name}
+          />
+          <FormInput control={control} name="nickname" label="Prezývka" />
+          <FormCheckbox
+            control={control}
+            name="without_school"
+            label="Už nie som študent základnej ani strednej školy."
+          />
+          <FormSelect
+            control={control}
+            name="county"
+            label="Kraj školy"
+            options={countyItems}
+            disabled={school_not_found || without_school}
+          />
+          <FormSelect
+            control={control}
+            name="district"
+            label="Okres školy"
+            options={districtItems}
+            disabled={!districtItems.length || school_not_found || without_school}
+          />
+          <FormAutocomplete
+            control={control}
+            name="school"
+            label="Škola"
+            options={schoolItems}
+            disabled={!schoolItems.length || school_not_found || without_school}
+            rules={requiredRule}
+            fieldError={errors.school}
+          />
+          <FormCheckbox
+            control={control}
+            name="school_not_found"
+            label="Moja škola sa v zozname nenachádza."
+            disabled={district === '' || without_school}
+          />
+          {school_not_found && (
             <FormInput
               control={control}
-              name="email"
-              label="Email"
-              rules={{
-                ...requiredRule,
-                pattern: {
-                  value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-                  message: '* Vložte správnu emailovú adresu.',
-                },
-              }}
-              fieldError={errors.email}
+              name="new_school_description"
+              label="povedz nám, kam chodíš na školu, aby sme ti ju mohli dodatočne pridať"
+              rules={school_not_found ? requiredRule : {}}
+              fieldError={errors.new_school_description}
             />
-            <FormInput
-              control={control}
-              name="password1"
-              label="Heslo"
-              type="password"
-              rules={{
-                ...requiredRule,
-                minLength: {
-                  value: 8,
-                  message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
-                },
-              }}
-              fieldError={errors.password1}
-            />
-            <FormInput
-              control={control}
-              name="password2"
-              label="Potvrdenie hesla"
-              type="password"
-              rules={{
-                ...requiredRule,
-                validate: (val) => {
-                  if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
-                },
-              }}
-              fieldError={errors.password2}
-            />
-            <FormInput
-              control={control}
-              name="first_name"
-              label="Krstné meno"
-              rules={requiredRule}
-              fieldError={errors.first_name}
-            />
-            <FormInput
-              control={control}
-              name="last_name"
-              label="Priezvisko"
-              rules={requiredRule}
-              fieldError={errors.last_name}
-            />
-            <FormInput control={control} name="nickname" label="Prezývka" />
-            <FormCheckbox
-              control={control}
-              name="without_school"
-              label="Už nie som študent základnej ani strednej školy."
-            />
-            <FormSelect
-              control={control}
-              name="county"
-              label="Kraj školy"
-              options={countyItems}
-              disabled={school_not_found || without_school}
-            />
-            <FormSelect
-              control={control}
-              name="district"
-              label="Okres školy"
-              options={districtItems}
-              disabled={!districtItems.length || school_not_found || without_school}
-            />
-            <FormAutocomplete
-              control={control}
-              name="school"
-              label="Škola"
-              options={schoolItems}
-              disabled={!schoolItems.length || school_not_found || without_school}
-              rules={requiredRule}
-              fieldError={errors.school}
-            />
-            <FormCheckbox
-              control={control}
-              name="school_not_found"
-              label="Moja škola sa v zozname nenachádza."
-              disabled={district === '' || without_school}
-            />
-            {school_not_found && (
-              <FormInput
-                control={control}
-                name="new_school_description"
-                label="povedz nám, kam chodíš na školu, aby sme ti ju mohli dodatočne pridať"
-                rules={school_not_found ? requiredRule : {}}
-                fieldError={errors.new_school_description}
-              />
-            )}
-            <FormSelect
-              control={control}
-              name="grade"
-              label="Ročník"
-              options={gradeItems}
-              disabled={without_school}
-              rules={requiredRule}
-              fieldError={errors.grade}
-            />
-            <FormInput
-              control={control}
-              name="phone"
-              label="Telefónne číslo"
-              rules={phoneRule}
-              fieldError={errors.phone}
-            />
-            <FormInput
-              control={control}
-              name="parent_phone"
-              label="Telefónne číslo na rodiča"
-              rules={phoneRule}
-              fieldError={errors.parent_phone}
-            />
-            <FormCheckbox
-              control={control}
-              name="gdpr"
-              label="Súhlas so spracovaním osobných údajov"
-              rules={{
-                validate: (val) => {
-                  if (!val) return '* Súhlas so spracovaním osobných údajov je nutnou podmienkou registrácie.'
-                },
-              }}
-              fieldError={errors.gdpr}
-            />
-            <br />
-            <button onClick={handleSubmit(onSubmit)}>
-              <span className={styles.underline}>Registrovať</span>
-            </button>
-          </form>
-        </>
+          )}
+          <FormSelect
+            control={control}
+            name="grade"
+            label="Ročník"
+            options={gradeItems}
+            disabled={without_school}
+            rules={requiredRule}
+            fieldError={errors.grade}
+          />
+          <FormInput
+            control={control}
+            name="phone"
+            label="Telefónne číslo"
+            rules={phoneRule}
+            fieldError={errors.phone}
+          />
+          <FormInput
+            control={control}
+            name="parent_phone"
+            label="Telefónne číslo na rodiča"
+            rules={phoneRule}
+            fieldError={errors.parent_phone}
+          />
+          <FormCheckbox
+            control={control}
+            name="gdpr"
+            label="Súhlas so spracovaním osobných údajov"
+            rules={{
+              validate: (val) => {
+                if (!val) return '* Súhlas so spracovaním osobných údajov je nutnou podmienkou registrácie.'
+              },
+            }}
+            fieldError={errors.gdpr}
+          />
+          <br />
+          <button onClick={handleSubmit(onSubmit)}>
+            <span className={styles.underline}>Registrovať</span>
+          </button>
+        </form>
       )}
     </div>
   )

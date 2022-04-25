@@ -12,24 +12,10 @@ export const Authentication: FC = () => {
   const [displayAuthenticationOverlay, setDisplayAuthenticationOverlay] = useState(false)
   const {logout, isAuthed} = AuthContainer.useContainer()
 
-  const toggleDisplayAuthenticationOverlay = () => {
-    setDisplayAuthenticationOverlay((prevDisplay) => {
-      if (!prevDisplay) {
-        // Ak sa má zobraziť overlay s login formom, input s emailom sa automaticky focusne.
-        const email = document.getElementById('login-email') as HTMLInputElement
-        email.focus()
-      }
-      return !prevDisplay
-    })
+  const toggleDisplayLoginOverlay = () => {
+    setDisplayAuthenticationOverlay(!displayAuthenticationOverlay)
   }
 
-  const closeAuthenticationOverlay = () => {
-    setDisplayAuthenticationOverlay(false)
-  }
-
-  const displayLoginForm = () => {
-    setDisplayAuthenticationOverlay(true)
-  }
   const {seminar} = useSeminarInfo()
 
   if (!isAuthed) {
@@ -41,12 +27,12 @@ export const Authentication: FC = () => {
               <span>Registrovať</span>
             </a>
           </Link>
-          <span onClick={displayLoginForm}>Prihlásiť</span>
+          <span onClick={toggleDisplayLoginOverlay}>Prihlásiť</span>
         </div>
-        <Overlay display={displayAuthenticationOverlay} closeOverlay={closeAuthenticationOverlay}>
+        <Overlay display={displayAuthenticationOverlay} closeOverlay={toggleDisplayLoginOverlay}>
           <div className={styles.authenticationContainer}>
             <div className={styles.content}>
-              <LoginForm closeOverlay={toggleDisplayAuthenticationOverlay} />
+              <LoginForm closeOverlay={toggleDisplayLoginOverlay} />
             </div>
           </div>
         </Overlay>
