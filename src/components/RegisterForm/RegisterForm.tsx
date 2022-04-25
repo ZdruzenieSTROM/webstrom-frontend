@@ -2,6 +2,7 @@ import axios, {AxiosError} from 'axios'
 import {FC, useEffect, useRef, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
+import styles from '@/components/FormItems/Form.module.scss'
 import {FormAutocomplete} from '@/components/FormItems/FormAutocomplete/FormAutocomplete'
 import {FormCheckbox} from '@/components/FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
@@ -9,8 +10,6 @@ import {FormSelect, SelectOption} from '@/components/FormItems/FormSelect/FormSe
 import {IGrade} from '@/types/api/competition'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {ICounty, IDistrict, ISchool} from '@/types/api/personal'
-
-import styles from './RegisterForm.module.scss'
 
 type RegisterFormValues = {
   email?: string
@@ -212,7 +211,7 @@ export const RegisterForm: FC = () => {
       {successfulRegistration ? (
         <p>{successfulRegistration}</p>
       ) : (
-        <form className={styles.registerForm}>
+        <form className={styles.form}>
           <FormInput
             control={control}
             name="email"
@@ -345,7 +344,6 @@ export const RegisterForm: FC = () => {
             }}
             fieldError={errors.gdpr}
           />
-          <br />
           <button onClick={handleSubmit(onSubmit)}>
             <span className={styles.underline}>Registrovať</span>
           </button>

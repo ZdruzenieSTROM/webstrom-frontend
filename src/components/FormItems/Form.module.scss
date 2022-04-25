@@ -1,4 +1,4 @@
-.loginForm {
+.form {
   display: grid;
   gap: 1rem 0;
 
@@ -12,7 +12,7 @@
     text-transform: uppercase;
     justify-self: center;
   }
-  
+
   span.underline {
     border-bottom: 4px solid black;
     padding-bottom: 1px;

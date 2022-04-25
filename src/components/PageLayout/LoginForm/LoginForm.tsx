@@ -1,10 +1,9 @@
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
+import styles from '@/components/FormItems/Form.module.scss'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
-
-import styles from './LoginForm.module.scss'
 
 type LoginFormValues = {
   email: string
@@ -37,7 +36,7 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
 
   return (
-    <form className={styles.loginForm}>
+    <form className={styles.form}>
       <FormInput
         control={control}
         name="email"
@@ -59,7 +58,6 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
         rules={requiredRule}
         fieldError={errors.password}
       />
-
       <button onClick={handleSubmit(onSubmit)}>
         <span className={styles.underline}>Prihlásiť</span>
       </button>
