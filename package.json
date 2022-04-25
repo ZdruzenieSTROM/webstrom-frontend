@@ -31,7 +31,8 @@
     "start": "next start",
     "build": "next build",
     "test": "jest test",
-    "css-types": "typed-scss-modules src --watch --exportType default"
+    "css-types": "typed-scss-modules src --exportType default",
+    "css-types-watch": "typed-scss-modules src --watch --exportType default"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.26.6",
