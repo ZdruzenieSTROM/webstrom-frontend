@@ -1,7 +1,6 @@
 export type Styles = {
-  authenticationContainer: string
-  authenticationDisplayButtons: string
-  content: string
+  form: string
+  underline: string
 }
 
 export type ClassNames = keyof Styles
