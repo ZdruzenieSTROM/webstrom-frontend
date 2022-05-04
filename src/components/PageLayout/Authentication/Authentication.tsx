@@ -10,32 +10,10 @@ import styles from './Authentication.module.scss'
 
 export const Authentication: FC = () => {
   const [displayAuthenticationOverlay, setDisplayAuthenticationOverlay] = useState(false)
-  const [displayLogin, setDisplayLogin] = useState(true) // true -> zobrazí sa login, false -> zobrazí sa registrácia
   const {logout, isAuthed} = AuthContainer.useContainer()
 
-  const toggleDisplayAuthenticationOverlay = () => {
-    setDisplayAuthenticationOverlay((prevDisplay) => {
-      if (!prevDisplay && displayLogin) {
-        // Ak sa má zobraziť overlay s login formom, inpput s emailom sa automaticky focusne.
-        const email = document.getElementById('login-email') as HTMLInputElement
-        email.focus()
-      }
-      return !prevDisplay
-    })
-  }
-
-  const closeAuthenticationOverlay = () => {
-    setDisplayAuthenticationOverlay(false)
-  }
-
-  const displayLoginForm = () => {
-    setDisplayAuthenticationOverlay(true)
-    setDisplayLogin(true)
-  }
-
-  const displayRegistrationForm = () => {
-    setDisplayAuthenticationOverlay(true)
-    setDisplayLogin(false)
+  const toggleDisplayLoginOverlay = () => {
+    setDisplayAuthenticationOverlay((prev) => !prev)
   }
 
   const {seminar} = useSeminarInfo()
@@ -44,38 +22,17 @@ export const Authentication: FC = () => {
     return (
       <>
         <div className={styles.authenticationDisplayButtons}>
-          <span onClick={displayRegistrationForm}>Registrovať</span>
-          <span onClick={displayLoginForm}>Prihlásiť</span>
+          <Link href={`/${seminar}/registracia`}>
+            <a>
+              <span>Registrovať</span>
+            </a>
+          </Link>
+          <span onClick={toggleDisplayLoginOverlay}>Prihlásiť</span>
         </div>
-        <Overlay display={displayAuthenticationOverlay} closeOverlay={closeAuthenticationOverlay}>
+        <Overlay display={displayAuthenticationOverlay} closeOverlay={toggleDisplayLoginOverlay}>
           <div className={styles.authenticationContainer}>
-            <div className={styles.tabs}>
-              <div
-                className={displayLogin ? styles.active : ''}
-                onClick={() => {
-                  setDisplayLogin(true)
-                }}
-              >
-                <span className={styles.underline}>Prihlásiť sa</span>
-              </div>
-              <div
-                className={!displayLogin ? styles.active : ''}
-                onClick={() => {
-                  setDisplayLogin(false)
-                }}
-              >
-                <span className={styles.underline}>Registrovať</span>
-              </div>
-            </div>
             <div className={styles.content}>
-              {displayLogin ? (
-                <LoginForm closeOverlay={toggleDisplayAuthenticationOverlay} />
-              ) : (
-                // Tu by mal byť registračný form od Matúša
-                <Link href={`/${seminar}/registracia`}>
-                  <a>Registrácia</a>
-                </Link>
-              )}
+              <LoginForm closeOverlay={toggleDisplayLoginOverlay} />
             </div>
           </div>
         </Overlay>

@@ -1,4 +1,4 @@
-.registerForm {
+.form {
   display: grid;
   gap: 1rem 0;
 
@@ -6,8 +6,8 @@
     background-color: white;
     border: none;
     cursor: pointer;
-    padding: 5px 0px 5px 15px;
-    font-size: 1.4rem;
+    padding: 5px 0px;
+    font-size: 1.2rem;
     font-weight: bold;
     text-transform: uppercase;
     justify-self: center;

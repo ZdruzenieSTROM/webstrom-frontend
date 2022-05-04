@@ -1,64 +1,64 @@
-import {FC, FormEvent, FormEventHandler, useEffect, useRef, useState} from 'react'
+import {FC} from 'react'
+import {SubmitHandler, useForm} from 'react-hook-form'
 
-import {Login} from '@/types/api/generated/user'
+import styles from '@/components/FormItems/Form.module.scss'
+import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
 
-import styles from './LoginForm.module.scss'
+type LoginFormValues = {
+  email: string
+  password: string
+}
+
+const defaultValues: LoginFormValues = {
+  email: '',
+  password: '',
+}
 
 interface ILoginForm {
   closeOverlay: () => void
 }
 
 export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
-  const [formData, setFormData] = useState<Login>({email: '', password: ''})
-  const emailRef = useRef<HTMLInputElement>(null)
   const {login} = AuthContainer.useContainer()
+  const {
+    handleSubmit,
+    control,
+    formState: {errors},
+  } = useForm<LoginFormValues>({defaultValues})
 
-  useEffect(() => {
-    emailRef.current?.focus()
-  }, [])
-
-  const handleChange = (e: FormEvent<HTMLInputElement>) => {
-    const {name, value} = e.currentTarget
-    setFormData((prevData) => ({...prevData, [name]: value}))
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+    await login(data, closeOverlay)
   }
 
-  const handleLogin: FormEventHandler<HTMLFormElement> = async (e) => {
-    // ak to tu nie je, robi to weird veci- prida to email a password do URL
-    // ako query parametre, refreshne stranku a vobec nestihne pustit nas kod
-    e.preventDefault()
-    await login(formData, closeOverlay)
-  }
+  const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
 
   return (
-    <>
-      <form onSubmit={handleLogin}>
-        <div className={styles.loginForm}>
-          <div>
-            <input
-              ref={emailRef}
-              type="text"
-              name="email"
-              placeholder="e-mail"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              name="password"
-              placeholder="heslo"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
-
-          <button>
-            <span className={styles.underline}>Prihlásiť</span>
-          </button>
-        </div>
-      </form>
-    </>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <FormInput
+        control={control}
+        name="email"
+        label="Email"
+        rules={{
+          ...requiredRule,
+          pattern: {
+            value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
+            message: '* Vložte správnu emailovú adresu.',
+          },
+        }}
+        fieldError={errors.email}
+      />
+      <FormInput
+        control={control}
+        name="password"
+        label="Heslo"
+        type="password"
+        rules={requiredRule}
+        fieldError={errors.password}
+      />
+      <button type="submit">
+        <span className={styles.underline}>Prihlásiť</span>
+      </button>
+    </form>
   )
 }
