@@ -13,7 +13,7 @@ export const Authentication: FC = () => {
   const {logout, isAuthed} = AuthContainer.useContainer()
 
   const toggleDisplayLoginOverlay = () => {
-    setDisplayAuthenticationOverlay(!displayAuthenticationOverlay)
+    setDisplayAuthenticationOverlay((prev) => !prev)
   }
 
   const {seminar} = useSeminarInfo()

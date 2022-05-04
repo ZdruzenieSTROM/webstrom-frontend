@@ -10,7 +10,7 @@ interface OverlayProps {
 export const Overlay: FC<OverlayProps> = ({children, display, closeOverlay}) => {
   const handleClick = (e: MouseEvent) => {
     // Po kliknutí na overlay, mimo akýchkoľvek iných elementov, sa overlay zatvorí.
-    if ((e.target as Element).classList[0]?.includes('overlay')) {
+    if ((e.target as Element).classList.contains(styles.overlay)) {
       closeOverlay()
     }
   }

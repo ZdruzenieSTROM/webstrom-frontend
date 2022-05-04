@@ -211,7 +211,7 @@ export const RegisterForm: FC = () => {
       {successfulRegistration ? (
         <p>{successfulRegistration}</p>
       ) : (
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <FormInput
             control={control}
             name="email"
@@ -344,7 +344,7 @@ export const RegisterForm: FC = () => {
             }}
             fieldError={errors.gdpr}
           />
-          <button onClick={handleSubmit(onSubmit)}>
+          <button type="submit">
             <span className={styles.underline}>Registrovať</span>
           </button>
         </form>

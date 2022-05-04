@@ -28,15 +28,13 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   } = useForm<LoginFormValues>({defaultValues})
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    // ak to tu nie je, robi to weird veci- prida to email a password do URL
-    // ako query parametre, refreshne stranku a vobec nestihne pustit nas kod
     await login(data, closeOverlay)
   }
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
 
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <FormInput
         control={control}
         name="email"
@@ -58,7 +56,7 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
         rules={requiredRule}
         fieldError={errors.password}
       />
-      <button onClick={handleSubmit(onSubmit)}>
+      <button type="submit">
         <span className={styles.underline}>Prihlásiť</span>
       </button>
     </form>
