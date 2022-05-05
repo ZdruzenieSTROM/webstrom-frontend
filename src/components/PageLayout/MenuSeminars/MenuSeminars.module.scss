@@ -15,26 +15,26 @@
   justify-content: flex-end;
 }
 
-.menu_item {
+.menuItem {
   font-size: 1.3rem;
   font-weight: bold;
   padding: 8px;
   margin: 10px;
 }
 
-.menu_item a {
+.menuItem a {
   display: inline-block;
   padding: 0px 5px 3px 5px;
   border-bottom: 0.3rem solid black;
   color: black;
 }
 
-.menu_item.active a {
+.menuItem.active a {
   border-color: white;
   color: white;
 }
 
-.menu_item.active {
+.menuItem.active {
   background-color: black;
 }
 

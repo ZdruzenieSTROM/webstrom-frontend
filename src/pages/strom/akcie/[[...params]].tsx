@@ -5,6 +5,7 @@ import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {FC, Fragment} from 'react'
 
+import menuItemStyles from '@/components/PageLayout/MenuMain/MenuMain.module.scss'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Markdown} from '@/components/StaticSites/Markdown'
 import {Competition, Event} from '@/types/api/generated/competition'
@@ -32,7 +33,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
         </div>
         {competition.rules && (
           <div className={styles.container}>
-            <div className={styles.action}>
+            <div className={styles.actions}>
               <div className={styles.actionButton}>
                 <RulesLink />
               </div>
@@ -43,7 +44,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
           <h2>Archív: </h2>
         </div>
         {competition.competition_type.name === 'Tábor' ? (
-          <div className={styles.archive_camp}>
+          <div className={styles.archiveCamp}>
             {competition.history_events.map((event) => (
               <Fragment key={event.id}>
                 <div>
@@ -114,7 +115,7 @@ const RulesLink: FC = () => {
   const router = useRouter()
   const active = `${router.asPath}/pravidla`
   return (
-    <div className={clsx(styles.menuItem, active && styles.active)}>
+    <div className={clsx(menuItemStyles.menuItem, active && menuItemStyles.active)}>
       <Link href={active}>
         <a>Pravidlá</a>
       </Link>
