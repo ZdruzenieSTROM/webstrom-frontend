@@ -49,4 +49,8 @@
     display: flex;
     justify-content: flex-end;
   }
+
+  & .notPublished {
+    color: gray;
+  }
 }

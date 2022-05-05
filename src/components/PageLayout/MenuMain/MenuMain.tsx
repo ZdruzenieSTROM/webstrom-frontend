@@ -47,7 +47,7 @@ export const MenuMain: FC = () => {
         </div>
       )}
       <div className={styles.menuCloseButton}>
-        <CgIcons.CgClose className={styles.iconCloseMenu} onClick={toggleMenu} />
+        <CgIcons.CgClose className={styles.menuCloseButton} onClick={toggleMenu} />
       </div>
       <div className={styles.menuItems}>
         {menuItems &&
