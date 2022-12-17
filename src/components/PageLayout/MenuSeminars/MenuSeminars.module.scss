@@ -29,13 +29,13 @@
   color: black;
 }
 
-.menuItem.active a {
-  border-color: white;
-  color: white;
-}
-
-.menuItem.active {
+.menuItem.active, .menuItem:hover{
   background-color: black;
+
+  a {
+    border-color: white;
+    color: white;
+  }
 }
 
 .title{
