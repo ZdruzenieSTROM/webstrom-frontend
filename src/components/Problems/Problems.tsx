@@ -360,12 +360,11 @@ const MySolutionButton: FC<{
   problem: Problem
   registered: boolean
 }> = ({problem, registered}) => {
-  if (registered && problem.submitted) {
+  if (registered) {
     return (
-      // TODO: ak neexistuje opravene riesenie, button by mal byt sivy
-      // TODO: pocet bodov zatvorke alebo nieco take
+      // ak neexistuje opravene riesenie, button je sivy
       <a
-        className={clsx(styles.actionButton, !registered && styles.disabled)}
+        className={clsx(styles.actionButton, !problem.submitted && styles.disabled)}
         href={`/api/competition/problem/${problem.id}/corrected-solution/`}
       >
         moje riešenie
@@ -380,11 +379,11 @@ const CorrectedSolutionButton: FC<{
   problem: Problem
   registered: boolean
 }> = ({problem, registered}) => {
-  if (registered && problem.submitted?.corrected_solution) {
+  if (registered) {
     return (
-      // TODO: ak neexistuje uzivatelske riesenie, button by mal byt sivy
+      // ak neexistuje uzivatelske riesenie, button je sivy
       <a
-        className={clsx(styles.actionButton, !registered && styles.disabled)}
+        className={clsx(styles.actionButton, !problem.submitted?.corrected_solution && styles.disabled)}
         href={`/api/competition/problem/${problem.id}/my-solution/`}
       >
         opravené riešenie ({problem.submitted?.score || '?'})

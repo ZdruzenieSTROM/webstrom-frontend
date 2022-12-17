@@ -32,8 +32,10 @@
 
 
   &.disabled{
+    cursor: default;
     color: #CCC;
     border-color: #CCC;
+    pointer-events: none;
   }
 }
 
