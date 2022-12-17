@@ -49,10 +49,10 @@ const ResultsButton: FC<{
   eventSeason: number
 }> = ({eventYear, eventSeason}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
-  const active = `../vysledky/${eventYear}/${season}/1`
+  const url = `../vysledky/${eventYear}/${season}/1`
   return (
     <span className={clsx(styles.actionButton)}>
-      <Link href={active}>
+      <Link href={url}>
         <a>Výsledky</a>
       </Link>
     </span>
@@ -64,10 +64,10 @@ const ProblemsButton: FC<{
   eventSeason: number
 }> = ({eventYear, eventSeason}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
-  const active = `../zadania/${eventYear}/${season}/1`
+  const url = `../zadania/${eventYear}/${season}/1`
   return (
     <span className={clsx(styles.actionButton)}>
-      <Link href={active}>
+      <Link href={url}>
         <a>Zadania</a>
       </Link>
     </span>
