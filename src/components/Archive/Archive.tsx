@@ -1,7 +1,7 @@
+import {Table, TableCell, TableRow} from '@mui/material'
 import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
 import Link from 'next/link'
-import {useRouter} from 'next/router'
 import {FC, Fragment, useEffect, useState} from 'react'
 
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
@@ -23,15 +23,11 @@ interface Event {
   registration_link: any
   year: number
   school_year: string
-  season_code: any
+  season_code: number
   start: string
   end: string
   additional_name: string | null
-  competition: any | null
-}
-
-type ArchiveProps = {
-  setPageTitle: (title: string) => void
+  competition: string | null
 }
 
 const PublicationButton: FC<{
@@ -47,6 +43,7 @@ const PublicationButton: FC<{
   )
 }
 
+// TODO: zmenit nech to prepina na celkove poradie za semester, ked to bude implementovane
 const ResultsButton: FC<{
   eventYear: number
   eventSeason: number
@@ -77,19 +74,20 @@ const ProblemsButton: FC<{
   )
 }
 
-export const Archive: FC<ArchiveProps> = ({setPageTitle}) => {
+export const Archive: FC = () => {
   const {seminarId} = useSeminarInfo()
+
   const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  const [Event, setEvent] = useState<Event[]>([])
+  const [eventList, setEventList] = useState<Event[]>([])
 
   // get list of events from the api
   useEffect(() => {
     const fetchData = async () => {
       try {
         const {data} = await axios.get<Event[]>(`/api/competition/event/?competition=${seminarId}`)
-        setEvent(data)
+        setEventList(data)
       } catch (e: unknown) {
         const ex = e as AxiosError
         const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
@@ -101,29 +99,37 @@ export const Archive: FC<ArchiveProps> = ({setPageTitle}) => {
     fetchData()
   }, [seminarId])
 
+  // TODO: pridat styly pre tu tabulku
   return (
     <div>
       <h2>Archív: </h2>
-      <div className={styles.archive}>
-        {Event.map((event) => (
+      <Table>
+        {eventList.map((event) => (
           <Fragment key={event.id}>
-            <p>
-              {event.year + '. ročník '}
-              {event.season_code === 0 ? 'zimný' : 'letný'}
-              {' semester '}
-              <ResultsButton eventYear={event.year} eventSeason={event.season_code}></ResultsButton>
-              <ProblemsButton eventYear={event.year} eventSeason={event.season_code}></ProblemsButton>
+            <TableRow>
+              <TableCell>
+                {event.year + '. ročník '}
+                {event.season_code === 0 ? 'zimný' : 'letný'}
+                {' semester '}
+              </TableCell>
+              <TableCell>
+                <ResultsButton eventYear={event.year} eventSeason={event.season_code}></ResultsButton>
+              </TableCell>
+              <TableCell>
+                <ProblemsButton eventYear={event.year} eventSeason={event.season_code}></ProblemsButton>
+              </TableCell>
               {event.publication_set.map((publication) => (
-                <PublicationButton
-                  key={publication.id}
-                  publicationId={publication.id}
-                  publicationName={publication.name}
-                ></PublicationButton>
+                <TableCell key={publication.id}>
+                  <PublicationButton
+                    publicationId={publication.id}
+                    publicationName={publication.name}
+                  ></PublicationButton>
+                </TableCell>
               ))}
-            </p>
+            </TableRow>
           </Fragment>
         ))}
-      </div>
+      </Table>
     </div>
   )
 }
