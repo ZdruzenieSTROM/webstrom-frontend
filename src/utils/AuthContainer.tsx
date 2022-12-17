@@ -1,11 +1,11 @@
-import axios, {AxiosError} from 'axios'
-import {useEffect, useState} from 'react'
-import {Cookies} from 'react-cookie'
-import {createContainer} from 'unstated-next'
+import axios, { AxiosError } from 'axios'
+import { useEffect, useState } from 'react'
+import { Cookies } from 'react-cookie'
+import { createContainer } from 'unstated-next'
 
-import {Login, Token} from '@/types/api/generated/user'
+import { Login, Token } from '@/types/api/generated/user'
 
-import {ProfileContainer} from './ProfileContainer'
+import { ProfileContainer } from './ProfileContainer'
 
 const cookies = new Cookies()
 
@@ -14,7 +14,7 @@ const useAuth = () => {
   const [isAuthed, setIsAuthed] = useState(false)
 
   // kedze vyuzivame ProfieContainer, AuthContainer musi byt child ProfieContaineru v _app.tsx
-  const {fetchProfile, resetProfile} = ProfileContainer.useContainer()
+  const { fetchProfile, resetProfile } = ProfileContainer.useContainer()
 
   const testAuthAndLogin = async () => {
     const success = await fetchProfile()
@@ -65,7 +65,7 @@ const useAuth = () => {
 
       // useEffect unmount callback
       return () => {
-        axios.interceptors.request.eject(responseInterceptor)
+        axios.interceptors.response.eject(responseInterceptor)
       }
     }
   }, [fetchProfile, isAuthed, resetProfile])
@@ -102,7 +102,7 @@ const useAuth = () => {
     // sessionid cookie odstrani server sam
   }
 
-  return {isAuthed, login, logout}
+  return { isAuthed, login, logout }
 }
 
 export const AuthContainer = createContainer(useAuth)
