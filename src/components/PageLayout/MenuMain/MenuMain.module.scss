@@ -19,6 +19,7 @@
 }
 
 .menuCloseButton {
+  cursor: pointer;
   height: 50px;
   width: 50px;
   font-size: 2.5rem;
@@ -27,7 +28,14 @@
   color: white;
   z-index: 11;
 }
+
+.menuCloseButton.active, .menuCloseButton:hover{
+  color: black;
+  background-color: white;
+}
+
 .menuOpenButton {
+  cursor: pointer;
   height: 50px;
   width: 50px;
   font-size: 2.5rem;
@@ -37,6 +45,11 @@
   position: fixed;
   top: 0;
   left: 0;
+}
+
+.menuOpenButton.active, .menuOpenButton:hover {
+  color: white;
+  background-color: black;
 }
 
 .menuItems {
@@ -61,11 +74,11 @@
   }
 }
 
-.active {
+.menuItem.active, .menuItem:hover{
   background-color: white;
-  
-  > a {
+
+  a{
     color: black;
-    border-color: black;
+    border-bottom:0.3rem solid black;
   }
 }
