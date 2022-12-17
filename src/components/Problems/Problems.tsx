@@ -4,7 +4,9 @@ import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
+import {useHistory} from 'react-router-dom'
 
+import {Solution} from '@/types/api/generated/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -41,6 +43,7 @@ interface Problem {
   text: string
   order: number
   series: number
+  submitted: Solution
 }
 
 interface Series {
@@ -283,8 +286,8 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
               <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
               <Latex>{problem.text}</Latex>
               <div className={styles.actions}>
-                <CorrectedSolutionButton problemId={problem.id} />
-                <MySolutionButton problemId={problem.id} />
+                <CorrectedSolutionButton problem={problem} registered={registered} />
+                <MySolutionButton problem={problem} registered={registered} />
                 <UploadProblemButton
                   problemId={problem.id}
                   problemNumber={problem.order}
@@ -354,17 +357,41 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 }
 
 const MySolutionButton: FC<{
-  problemId: number
-}> = ({problemId}) => {
-  // TODO: pridat styly aby sme sa nedogrcali
-  return <Link href={`/api/competition/problem/${problemId}/my-solution/`}>moje riesenie</Link>
+  problem: Problem
+  registered: boolean
+}> = ({problem, registered}) => {
+  if (registered) {
+    return (
+      // ak neexistuje opravene riesenie, button je sivy
+      <a
+        className={clsx(styles.actionButton, !problem.submitted && styles.disabled)}
+        href={`/api/competition/problem/${problem.id}/corrected-solution/`}
+      >
+        moje riešenie
+      </a>
+    )
+  } else {
+    return <></>
+  }
 }
 
 const CorrectedSolutionButton: FC<{
-  problemId: number
-}> = ({problemId}) => {
-  // TODO: pridat styly aby sme sa nedogrcali
-  return <Link href={`/api/competition/problem/${problemId}/corrected-solution/`}>opravene riesenie</Link>
+  problem: Problem
+  registered: boolean
+}> = ({problem, registered}) => {
+  if (registered) {
+    return (
+      // ak neexistuje uzivatelske riesenie, button je sivy
+      <a
+        className={clsx(styles.actionButton, !problem.submitted?.corrected_solution && styles.disabled)}
+        href={`/api/competition/problem/${problem.id}/my-solution/`}
+      >
+        opravené riešenie ({problem.submitted?.score || '?'})
+      </a>
+    )
+  } else {
+    return <></>
+  }
 }
 
 const DiscussionButton: FC<{
@@ -390,7 +417,7 @@ const DiscussionButton: FC<{
   }
   return (
     <span onClick={() => handleClick()} className={styles.actionButton}>
-      DISKUSIA - {commentCount}
+      diskusia ({commentCount})
     </span>
   )
 }
@@ -426,7 +453,7 @@ const UploadProblemButton: FC<{
   if (registered || canRegister) {
     return (
       <span onClick={() => handleClick()} className={clsx(styles.actionButton, !registered && styles.disabled)}>
-        ODOVZDAŤ
+        odovzdať
       </span>
     )
   } else {
