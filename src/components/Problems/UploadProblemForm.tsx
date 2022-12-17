@@ -41,7 +41,7 @@ export const UploadProblemForm: FC<{
   }
 
   return (
-    <SideContainer title={'Odovzdať úlohu - ' + problemNumber}>
+    <SideContainer title={'Odovzdať úlohu ' + problemNumber}>
       <div className={styles.container}>
         <div {...getRootProps({className: styles.dropzone})}>
           <input {...getInputProps()} />
