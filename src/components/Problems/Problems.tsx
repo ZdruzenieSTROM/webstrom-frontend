@@ -6,6 +6,7 @@ import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react
 import {useDropzone} from 'react-dropzone'
 import {useHistory} from 'react-router-dom'
 
+import {Solution} from '@/types/api/generated/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -42,6 +43,7 @@ interface Problem {
   text: string
   order: number
   series: number
+  submitted: Solution
 }
 
 interface Series {
@@ -284,8 +286,8 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
               <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
               <Latex>{problem.text}</Latex>
               <div className={styles.actions}>
-                <CorrectedSolutionButton problemId={problem.id} registered={registered} />
-                <MySolutionButton problemId={problem.id} registered={registered} />
+                <CorrectedSolutionButton problem={problem} registered={registered} />
+                <MySolutionButton problem={problem} registered={registered} />
                 <UploadProblemButton
                   problemId={problem.id}
                   problemNumber={problem.order}
@@ -354,19 +356,19 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   )
 }
 
-const CorrectedSolutionButton: FC<{
-  problemId: number
+const MySolutionButton: FC<{
+  problem: Problem
   registered: boolean
-}> = ({problemId, registered}) => {
-  if (registered) {
+}> = ({problem, registered}) => {
+  if (registered && problem.submitted) {
     return (
       // TODO: ak neexistuje opravene riesenie, button by mal byt sivy
       // TODO: pocet bodov zatvorke alebo nieco take
       <a
         className={clsx(styles.actionButton, !registered && styles.disabled)}
-        href={`/api/competition/problem/${problemId}/corrected-solution/`}
+        href={`/api/competition/problem/${problem.id}/corrected-solution/`}
       >
-        opravené riešenie (0)
+        moje riešenie
       </a>
     )
   } else {
@@ -374,18 +376,18 @@ const CorrectedSolutionButton: FC<{
   }
 }
 
-const MySolutionButton: FC<{
-  problemId: number
+const CorrectedSolutionButton: FC<{
+  problem: Problem
   registered: boolean
-}> = ({problemId, registered}) => {
-  if (registered) {
+}> = ({problem, registered}) => {
+  if (registered && problem.submitted?.corrected_solution) {
     return (
       // TODO: ak neexistuje uzivatelske riesenie, button by mal byt sivy
       <a
         className={clsx(styles.actionButton, !registered && styles.disabled)}
-        href={`/api/competition/problem/${problemId}/my-solution/`}
+        href={`/api/competition/problem/${problem.id}/my-solution/`}
       >
-        moje riešenie
+        opravené riešenie ({problem.submitted?.score || '?'})
       </a>
     )
   } else {
