@@ -1,18 +1,9 @@
-export interface UnspecifiedPublication {
+export interface Publication {
   id?: number
   name?: string
   file: any
   publication_type?: any | null
   event?: any | null
-}
-
-export interface SemesterPublication {
-  id?: number
-  name?: string
-  order: number
-  file: any
-  thumbnail?: any
-  semester?: any | null
 }
 
 export interface RegistrationLink {
@@ -28,7 +19,7 @@ export interface Event {
   id?: number
   can_participate?: any
   is_registered?: any
-  unspecifiedpublication_set: UnspecifiedPublication[]
+  publication_set: Publication[]
   registration_link: RegistrationLink
   year?: number
   school_year?: string
@@ -104,6 +95,21 @@ export interface Solution {
   late_tag?: any | null
 }
 
+export interface SolutionAdministration {
+  id?: number
+  corrected_solution?: any
+  vote?: any
+  late_tag?: any | null
+  score?: number | null
+  semester_registration?: EventRegistration
+}
+
+export interface ProblemWithSolutions {
+  solution_set: SolutionAdministration[]
+  text?: string
+  order?: number
+}
+
 export interface Series {
   id?: number
   order: number
@@ -145,8 +151,7 @@ export interface SemesterWithProblems {
   can_participate?: any
   is_registered?: any
   series_set: SeriesWithProblems[]
-  semesterpublication_set: SemesterPublication[]
-  unspecifiedpublication_set: UnspecifiedPublication[]
+  publication_set: Publication[]
   year?: number
   school_year?: string
   season_code?: any

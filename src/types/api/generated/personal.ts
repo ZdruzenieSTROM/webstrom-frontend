@@ -30,15 +30,24 @@ export interface SchoolShort {
   zip_code: string
 }
 
+export interface SchoolProfile {
+  code?: number
+  district: District
+  verbose_name?: any
+}
+
 export interface Profile {
   first_name?: string
   last_name?: string
   nickname?: string
-  school: any
+  school?: SchoolProfile
   phone?: string
   parent_phone?: string
   gdpr?: boolean
   grade: number
+  is_student?: any
+  has_school?: any
+  school_id: number
 }
 
 export interface ProfileCreate {
