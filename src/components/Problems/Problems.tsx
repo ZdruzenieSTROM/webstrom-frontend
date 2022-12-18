@@ -1,6 +1,6 @@
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
-import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react'
+import {Dispatch, FC, SetStateAction, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
@@ -47,6 +47,7 @@ interface Problem {
 interface Series {
   can_participate: boolean
   is_registered: boolean // ToDo: is_registered should be negated !is_registered - api mistake
+  can_submit: boolean
   id: number
   problems: Problem[]
   order: number
@@ -68,7 +69,8 @@ const Problem: FC<{
     }>
   >
   canRegister: boolean
-}> = ({problem, registered, commentCount, setDisplaySideContent, canRegister}) => {
+  canSubmit: boolean
+}> = ({problem, registered, commentCount, setDisplaySideContent, canRegister, canSubmit}) => {
   const handleDiscussionButtonClick = () => {
     setDisplaySideContent((prevState) => {
       if (prevState.type === 'discussion' && prevState.problemId === problem.id) {
@@ -107,7 +109,13 @@ const Problem: FC<{
         <Button onClick={handleDiscussionButtonClick}>
           diskusia ({commentCount === undefined ? 0 : commentCount}){' '}
         </Button>
-        {registered || canRegister ? <Button onClick={handleUploadClick}>odovzdať</Button> : <></>}
+        {registered || canRegister ? (
+          <Button onClick={handleUploadClick} disabled={!canSubmit}>
+            odovzdať
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   )
@@ -126,6 +134,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   // ToDo: initial state false + set value after API update
   const [registered, setRegistered] = useState(false)
   const {seminarId} = useSeminarInfo()
+  const [canSubmit, setCanSubmit] = useState(false)
 
   // List of semesters with their ids and series belonging to them
   const [semesterList, setSemesterList] = useState<SemesterList[]>([])
@@ -292,6 +301,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         const {data} = await axios.get<Series>('/api/competition/series/' + problemsId.id + '/')
         setProblems(data.problems)
         setSemesterId(data.semester)
+        setCanSubmit(data.can_submit)
 
         if (data.can_participate === null) {
           setCanRegister(false)
@@ -343,6 +353,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             commentCount={commentCount[problem.id]}
             setDisplaySideContent={setDisplaySideContent}
             canRegister={canRegister}
+            canSubmit={canSubmit}
           />
         ))}
         <div className={styles.actions}>
