@@ -398,6 +398,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
           <UploadProblemForm
             problemId={displaySideContent.problemId}
             problemNumber={displaySideContent.problemNumber}
+            setDisplaySideContent={setDisplaySideContent}
           />
         )}
       </div>
@@ -405,7 +406,17 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   )
 }
 
-const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({problemId, problemNumber}) => {
+const UploadProblemForm: FC<{
+  problemId: number
+  problemNumber: number
+  setDisplaySideContent: Dispatch<
+    SetStateAction<{
+      type: string
+      problemId: number
+      problemNumber: number
+    }>
+  >
+}> = ({problemId, problemNumber, setDisplaySideContent}) => {
   const {acceptedFiles, getRootProps, getInputProps} = useDropzone()
 
   const handleSubmit = async () => {
@@ -415,9 +426,11 @@ const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({prob
     try {
       const response = await axios.post(`/api/competition/problem/${problemId}/upload-solution/`, formData)
       if (response.status === 201) {
+        setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
         console.log('file uploaded') // ToDo: remove log() and let user know the response! message system? or something else?
       }
     } catch (e: unknown) {
+      console.log(e)
       const ex = e as AxiosError
       const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
     }
