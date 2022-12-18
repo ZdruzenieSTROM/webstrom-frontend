@@ -43,13 +43,12 @@ const PublicationButton: FC<{
   )
 }
 
-// TODO: zmenit nech to prepina na celkove poradie za semester, ked to bude implementovane
 const ResultsButton: FC<{
   eventYear: number
   eventSeason: number
 }> = ({eventYear, eventSeason}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
-  const url = `../vysledky/${eventYear}/${season}/1`
+  const url = `../vysledky/${eventYear}/${season}`
   return (
     <span className={clsx(styles.actionButton)}>
       <Link href={url}>
