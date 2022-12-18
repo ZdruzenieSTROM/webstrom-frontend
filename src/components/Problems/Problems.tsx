@@ -303,7 +303,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         setSemesterId(data.semester)
         setCanSubmit(data.can_submit)
 
-        if (data.can_participate === null) {
+        if (!data.can_participate || !data.can_submit) {
           setCanRegister(false)
         } else {
           setCanRegister(data.can_participate)
