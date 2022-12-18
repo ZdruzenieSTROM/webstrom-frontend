@@ -63,7 +63,7 @@ export interface ProblemCorrection {
 }
 
 export interface Problem {
-  id?: number
+  id: number
   submitted?: any
   text: string
   order: number
