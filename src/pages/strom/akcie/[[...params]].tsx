@@ -1,11 +1,9 @@
 import axios from 'axios'
-import clsx from 'clsx'
 import {GetServerSideProps, NextPage} from 'next'
-import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {FC, Fragment} from 'react'
 
-import menuItemStyles from '@/components/PageLayout/MenuMain/MenuMain.module.scss'
+import {Link} from '@/components/Clickable/Clickable'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Markdown} from '@/components/StaticSites/Markdown'
 import {Competition, Event} from '@/types/api/generated/competition'
@@ -34,9 +32,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
         {competition.rules && (
           <div className={styles.container}>
             <div className={styles.actions}>
-              <div className={styles.actionButton}>
-                <RulesLink />
-              </div>
+              <RulesLink />
             </div>
           </div>
         )}
@@ -114,11 +110,5 @@ export const getServerSideProps = competitionBasedGetServerSideProps('strom')
 const RulesLink: FC = () => {
   const router = useRouter()
   const active = `${router.asPath}/pravidla`
-  return (
-    <div className={clsx(menuItemStyles.menuItem, active && menuItemStyles.active)}>
-      <Link href={active}>
-        <a>Pravidlá</a>
-      </Link>
-    </div>
-  )
+  return <Link href={active}>Pravidlá</Link>
 }
