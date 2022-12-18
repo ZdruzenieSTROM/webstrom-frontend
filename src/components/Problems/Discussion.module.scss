@@ -10,6 +10,7 @@
   > div.comments{
     overflow-y: scroll;
     overscroll-behavior-y: contain;
+    word-break: break-word
   }
 
   > div.textArea{
