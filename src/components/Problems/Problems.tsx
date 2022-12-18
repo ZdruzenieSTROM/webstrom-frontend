@@ -6,6 +6,7 @@ import {useDropzone} from 'react-dropzone'
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Solution} from '@/types/api/generated/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
+import {niceBytes} from '@/utils/NiceBytes'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
@@ -428,6 +429,7 @@ const UploadProblemForm: FC<{
       if (response.status === 201) {
         setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
         console.log('file uploaded') // ToDo: remove log() and let user know the response! message system? or something else?
+        // TODO: ked sa uploadne, tak button "moje riesenie" je stale sivy, lebo nie su natahane `problems` znova. asi nejaky hook(?)
       }
     } catch (e: unknown) {
       console.log(e)
@@ -446,7 +448,7 @@ const UploadProblemForm: FC<{
         <h4>Files</h4>
         {acceptedFiles[0]?.name && (
           <span>
-            {acceptedFiles[0].name} - {acceptedFiles[0].size} bytes
+            {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
           </span>
         )}
       </aside>
@@ -455,8 +457,6 @@ const UploadProblemForm: FC<{
       </div>
     </SideContainer>
   )
-
-  // return UploadProblemForm - {problemNumber}
 }
 
 const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({
