@@ -5,12 +5,12 @@ import styles from './Clickable.module.scss'
 
 interface ButtonProps {
   onClick?: () => void
-  active?: boolean
+  disabled?: boolean
 }
 
-export const Button: FC<ButtonProps> = ({children, onClick, active}) => {
+export const Button: FC<ButtonProps> = ({children, onClick, disabled}) => {
   return (
-    <span onClick={onClick} className={clsx(styles.actionButton, active && styles.disabled)}>
+    <span onClick={onClick} className={clsx(styles.actionButton, disabled && styles.disabled)}>
       {children}
     </span>
   )
@@ -18,12 +18,12 @@ export const Button: FC<ButtonProps> = ({children, onClick, active}) => {
 
 interface LinkProps {
   href: string
-  active?: boolean
+  disabled?: boolean
 }
 
-export const Link: FC<LinkProps> = ({children, href, active}) => {
+export const Link: FC<LinkProps> = ({children, href, disabled}) => {
   return (
-    <a href={href} className={clsx(styles.actionButton, active && styles.disabled)}>
+    <a href={href} className={clsx(styles.actionButton, disabled && styles.disabled)}>
       {children}
     </a>
   )
