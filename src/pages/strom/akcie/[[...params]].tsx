@@ -42,11 +42,9 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
         {competition.competition_type.name === 'Tábor' ? (
           <div className={styles.archiveCamp}>
             {competition.history_events.map((event) => (
-              <Fragment key={event.id}>
-                <div>
-                  {competition.name + ' '} {event.school_year}
-                </div>
-              </Fragment>
+              <div key={event.id}>
+                {competition.name} {event.school_year}
+              </div>
             ))}
           </div>
         ) : (
@@ -54,12 +52,10 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
             {competition.history_events.map((event) => (
               <Fragment key={event.id}>
                 <div>
-                  {competition.name + ' '} {event.school_year}
+                  {competition.name} {event.school_year}
                 </div>
-                {event.unspecifiedpublication_set.map((publication) => (
-                  <Fragment key={publication.id}>
-                    <div> {publication.name}</div>
-                  </Fragment>
+                {event.publication_set.map((publication) => (
+                  <div key={publication.id}> {publication.name}</div>
                 ))}
               </Fragment>
             ))}

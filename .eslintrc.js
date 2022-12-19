@@ -109,6 +109,9 @@ module.exports = {
     // naming conventions
     '@typescript-eslint/naming-convention': ['warn', ...namingConventions],
 
+    // additional React rules not included in recommended set
+    'react/self-closing-comp': 'error',
+
     // Rules coming @typescript-eslint/recommended, but with level adjusted to warning
     '@typescript-eslint/adjacent-overload-signatures': 'warn',
     '@typescript-eslint/ban-ts-comment': 'warn',

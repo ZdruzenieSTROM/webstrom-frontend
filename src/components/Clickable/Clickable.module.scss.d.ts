@@ -1,6 +1,5 @@
 export type Styles = {
   actionButton: string
-  commentActions: string
   disabled: string
 }
 
