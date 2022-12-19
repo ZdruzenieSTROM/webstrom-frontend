@@ -6,7 +6,7 @@ import {useDropzone} from 'react-dropzone'
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Solution} from '@/types/api/generated/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
-import {niceBytes} from '@/utils/NiceBytes'
+import {niceBytes} from '@/utils/niceBytes'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
