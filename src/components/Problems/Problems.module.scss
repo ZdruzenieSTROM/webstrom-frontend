@@ -1,26 +1,27 @@
-
 .container {
-    display: grid;
-    grid-gap: 0px;
-    margin: -20px;
-    padding-top: 80px;
+  display: grid;
+  grid-gap: 0px;
+  margin: -20px;
+  padding-top: 80px;
 }
 
 .problem {
-    padding: 20px;
-    .problemTitle {
-        font-weight: bold;
-    }
+  padding: 20px;
+
+  .problemTitle {
+    font-weight: bold;
+  }
 }
 
-.actions{
-  margin-top: .5rem;  
+.actions {
+  margin-top: .5rem;
   display: flex;
   justify-content: flex-end;
+  column-gap: 20px;
 }
 
 
-.sideContainer{
+.sideContainer {
   display: none;
   position: absolute;
   margin: 1rem 0px;
@@ -34,7 +35,7 @@
   right: 20px;
   width: calc(25vw - 40px);
 
-  > .registerButton{
+  >.registerButton {
     background-color: black;
     color: white;
     height: 2rem;
@@ -52,7 +53,7 @@
 }
 
 
-.dropzone{
+.dropzone {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,25 +64,24 @@
   background-color: #EEE;
 }
 
-.notPublished{
+.notPublished {
   background-color: #EEE;
 }
 
 
 .menu {
-    position: fixed;
-    top: 5rem;
-    right: 0px;
-    width: 25vw;
-    height: 5rem;
-    z-index: 1000;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  position: fixed;
+  top: 5rem;
+  right: 0px;
+  width: 25vw;
+  height: 5rem;
+  z-index: 1000;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-.problemSubmission{
+.problemSubmission {
   border: 1px solid red;
 }
-
