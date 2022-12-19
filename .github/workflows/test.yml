@@ -1,0 +1,17 @@
+name: branch test
+run-name: Branch test of ${{ github.ref_name }} (${{ github.actor }}'s PR)
+on: [pull_request, workflow_dispatch]
+jobs:
+  branch-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: yarn
+      - name: Check whether all possible CSS types are generated
+        run: yarn css-types:check
+      - name: Run typecheck
+        run: yarn tsc
+      - name: Run ESLint
+        run: yarn lint

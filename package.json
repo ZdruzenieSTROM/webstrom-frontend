@@ -30,9 +30,11 @@
     "dev": "next dev",
     "start": "next start",
     "build": "next build",
-    "test": "jest test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "css-types": "typed-scss-modules src --exportType default",
-    "css-types-watch": "typed-scss-modules src --watch --exportType default"
+    "css-types:check": "yarn css-types --listDifferent",
+    "css-types:watch": "yarn css-types --watch"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.26.6",
