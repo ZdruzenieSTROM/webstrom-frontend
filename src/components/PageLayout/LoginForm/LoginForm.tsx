@@ -59,7 +59,6 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
       />
       <button type="submit">
         <Button>Prihlásiť</Button>
-        {/* <span className={styles.underline}>Prihlásiť</span> */}
       </button>
     </form>
   )
