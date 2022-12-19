@@ -100,17 +100,14 @@ export const Archive: FC = () => {
                 {' semester '}
               </TableCell>
               <TableCell>
-                <ResultsButton eventYear={event.year} eventSeason={event.season_code}></ResultsButton>
+                <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
               </TableCell>
               <TableCell>
-                <ProblemsButton eventYear={event.year} eventSeason={event.season_code}></ProblemsButton>
+                <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
               </TableCell>
               {event.publication_set.map((publication) => (
                 <TableCell key={publication.id}>
-                  <PublicationButton
-                    publicationId={publication.id}
-                    publicationName={publication.name}
-                  ></PublicationButton>
+                  <PublicationButton publicationId={publication.id} publicationName={publication.name} />
                 </TableCell>
               ))}
             </TableRow>
