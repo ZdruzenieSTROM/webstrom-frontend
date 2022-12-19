@@ -1,11 +1,12 @@
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
-import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react'
+import {Dispatch, FC, SetStateAction, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Solution} from '@/types/api/generated/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
+import {niceBytes} from '@/utils/niceBytes'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
@@ -47,6 +48,7 @@ interface Problem {
 interface Series {
   can_participate: boolean
   is_registered: boolean // ToDo: is_registered should be negated !is_registered - api mistake
+  can_submit: boolean
   id: number
   problems: Problem[]
   order: number
@@ -68,7 +70,8 @@ const Problem: FC<{
     }>
   >
   canRegister: boolean
-}> = ({problem, registered, commentCount, setDisplaySideContent, canRegister}) => {
+  canSubmit: boolean
+}> = ({problem, registered, commentCount, setDisplaySideContent, canRegister, canSubmit}) => {
   const handleDiscussionButtonClick = () => {
     setDisplaySideContent((prevState) => {
       if (prevState.type === 'discussion' && prevState.problemId === problem.id) {
@@ -107,7 +110,13 @@ const Problem: FC<{
         <Button onClick={handleDiscussionButtonClick}>
           diskusia ({commentCount === undefined ? 0 : commentCount}){' '}
         </Button>
-        {registered || canRegister ? <Button onClick={handleUploadClick}>odovzdať</Button> : <></>}
+        {registered || canRegister ? (
+          <Button onClick={handleUploadClick} disabled={!canSubmit}>
+            odovzdať
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   )
@@ -126,6 +135,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   // ToDo: initial state false + set value after API update
   const [registered, setRegistered] = useState(false)
   const {seminarId} = useSeminarInfo()
+  const [canSubmit, setCanSubmit] = useState(false)
 
   // List of semesters with their ids and series belonging to them
   const [semesterList, setSemesterList] = useState<SemesterList[]>([])
@@ -292,8 +302,9 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         const {data} = await axios.get<Series>('/api/competition/series/' + problemsId.id + '/')
         setProblems(data.problems)
         setSemesterId(data.semester)
+        setCanSubmit(data.can_submit)
 
-        if (data.can_participate === null) {
+        if (!data.can_participate || !data.can_submit) {
           setCanRegister(false)
         } else {
           setCanRegister(data.can_participate)
@@ -343,6 +354,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             commentCount={commentCount[problem.id]}
             setDisplaySideContent={setDisplaySideContent}
             canRegister={canRegister}
+            canSubmit={canSubmit}
           />
         ))}
         <div className={styles.actions}>
@@ -387,6 +399,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
           <UploadProblemForm
             problemId={displaySideContent.problemId}
             problemNumber={displaySideContent.problemNumber}
+            setDisplaySideContent={setDisplaySideContent}
           />
         )}
       </div>
@@ -394,7 +407,17 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   )
 }
 
-const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({problemId, problemNumber}) => {
+const UploadProblemForm: FC<{
+  problemId: number
+  problemNumber: number
+  setDisplaySideContent: Dispatch<
+    SetStateAction<{
+      type: string
+      problemId: number
+      problemNumber: number
+    }>
+  >
+}> = ({problemId, problemNumber, setDisplaySideContent}) => {
   const {acceptedFiles, getRootProps, getInputProps} = useDropzone()
 
   const handleSubmit = async () => {
@@ -404,9 +427,12 @@ const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({prob
     try {
       const response = await axios.post(`/api/competition/problem/${problemId}/upload-solution/`, formData)
       if (response.status === 201) {
+        setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
         console.log('file uploaded') // ToDo: remove log() and let user know the response! message system? or something else?
+        // TODO: ked sa uploadne, tak button "moje riesenie" je stale sivy, lebo nie su natahane `problems` znova. asi nejaky hook(?)
       }
     } catch (e: unknown) {
+      console.log(e)
       const ex = e as AxiosError
       const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
     }
@@ -422,7 +448,7 @@ const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({prob
         <h4>Files</h4>
         {acceptedFiles[0]?.name && (
           <span>
-            {acceptedFiles[0].name} - {acceptedFiles[0].size} bytes
+            {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
           </span>
         )}
       </aside>
@@ -431,8 +457,6 @@ const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({prob
       </div>
     </SideContainer>
   )
-
-  // return UploadProblemForm - {problemNumber}
 }
 
 const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({

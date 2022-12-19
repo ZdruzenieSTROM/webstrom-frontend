@@ -35,6 +35,10 @@
   right: 20px;
   width: calc(25vw - 40px);
 
+  aside {
+    overflow-wrap: break-word;
+  }
+
   >.registerButton {
     background-color: black;
     color: white;
@@ -54,6 +58,7 @@
 
 
 .dropzone {
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,6 +67,10 @@
   text-transform: uppercase;
   color: #BBB;
   background-color: #EEE;
+}
+
+.dropzone:hover {
+  background-color: #DDD;
 }
 
 .notPublished {
