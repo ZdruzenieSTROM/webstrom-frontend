@@ -1,9 +1,6 @@
 export type Styles = {
-  actionButton: string
   actions: string
-  commentActions: string
   container: string
-  disabled: string
   dropzone: string
   menu: string
   notPublished: string
