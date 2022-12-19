@@ -1,12 +1,10 @@
 import {Table, TableCell, TableRow} from '@mui/material'
 import axios, {AxiosError} from 'axios'
-import clsx from 'clsx'
-import {FC, Fragment, useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Link} from '../Clickable/Clickable'
-import styles from './Archive.module.scss'
 
 interface Publication {
   id: number
@@ -34,13 +32,7 @@ const PublicationButton: FC<{
   publicationId: number
   publicationName: string
 }> = ({publicationId, publicationName}) => {
-  return (
-    <span className={clsx(styles.actionButton)}>
-      <Link href={`/api/competition/publication/${publicationId}/download/`}>
-        <a>{publicationName + ' '}</a>
-      </Link>
-    </span>
-  )
+  return <Link href={`/api/competition/publication/${publicationId}/download/`}>{publicationName}</Link>
 }
 
 const ResultsButton: FC<{
@@ -88,30 +80,27 @@ export const Archive: FC = () => {
 
   // TODO: pridat styly pre tu tabulku
   return (
-    <div>
-      <h2>Archív: </h2>
-      <Table>
-        {eventList.map((event) => (
-          <TableRow key={event.id}>
-            <TableCell>
-              {event.year + '. ročník '}
-              {event.season_code === 0 ? 'zimný' : 'letný'}
-              {' semester '}
+    <Table>
+      {eventList.map((event) => (
+        <TableRow key={event.id}>
+          <TableCell>
+            {event.year + '. ročník '}
+            {event.season_code === 0 ? 'zimný' : 'letný'}
+            {' semester '}
+          </TableCell>
+          <TableCell>
+            <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
+          </TableCell>
+          <TableCell>
+            <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
+          </TableCell>
+          {event.publication_set.map((publication) => (
+            <TableCell key={publication.id}>
+              <PublicationButton publicationId={publication.id} publicationName={publication.name} />
             </TableCell>
-            <TableCell>
-              <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
-            </TableCell>
-            <TableCell>
-              <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
-            </TableCell>
-            {event.publication_set.map((publication) => (
-              <TableCell key={publication.id}>
-                <PublicationButton publicationId={publication.id} publicationName={publication.name} />
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </Table>
-    </div>
+          ))}
+        </TableRow>
+      ))}
+    </Table>
   )
 }
