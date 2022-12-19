@@ -1,0 +1,23 @@
+.actionButton {
+  cursor: pointer;
+  font-size: .8rem;
+  font-style: italic;
+  font-weight: bold;
+  border-bottom: 0.2rem solid black;
+  user-select: none;
+  text-transform: uppercase;
+  color: black;
+
+
+  &.disabled {
+    cursor: default;
+    color: #CCC;
+    border-color: #CCC;
+    pointer-events: none;
+  }
+}
+
+.actionButton:hover {
+  background-color: black;
+  color: white;
+}

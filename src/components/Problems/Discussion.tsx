@@ -4,8 +4,8 @@ import {FC, useEffect, useState} from 'react'
 
 import {AuthContainer} from '@/utils/AuthContainer'
 
+import {Button} from '../Clickable/Clickable'
 import styles from './Discussion.module.scss'
-import problemStyles from './Problems.module.scss'
 import {SideContainer} from './SideContainer'
 
 // komenty co pridu z BE endpointu
@@ -163,33 +163,33 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
                   {!comment.published && (
                     <>
                       {canPublish && (
-                        <span
+                        <Button
                           onClick={() => {
                             publishComment(comment.id)
                           }}
                         >
                           Publish
-                        </span>
+                        </Button>
                       )}
-                      <span
+                      <Button
                         onClick={() => {
                           deleteComment(comment.id)
                         }}
                       >
                         Delete
-                      </span>
+                      </Button>
                     </>
                   )}
                   {comment.published && (
                     <>
                       {canPublish && (
-                        <span
+                        <Button
                           onClick={() => {
                             hideComment(comment.id)
                           }}
                         >
                           Hide
-                        </span>
+                        </Button>
                       )}
                     </>
                   )}
@@ -199,9 +199,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
         </div>
         <div className={styles.textArea}>
           <textarea value={commentText} onChange={handleCommentChange} />
-          <span onClick={() => handleCommentSubmit()} className={problemStyles.actionButton}>
-            Odoslať
-          </span>
+          <Button onClick={() => handleCommentSubmit()}>Odoslať</Button>
         </div>
       </div>
     </SideContainer>

@@ -2,6 +2,8 @@
 import axios, {AxiosError} from 'axios'
 import {FC, useEffect, useState} from 'react'
 
+import {Link} from '../Clickable/Clickable'
+
 interface IPost {
   id: number
   links: {id: number; caption: string; url: string}[]
@@ -47,7 +49,7 @@ export const Posts: FC<{seminarId: number}> = ({seminarId}) => {
         {links.map(({id, url, caption}) => (
           <p key={id}>
             <h3>
-              <a href={url}>{caption}</a>
+              <Link href={url}>{caption}</Link>
             </h3>
           </p>
         ))}

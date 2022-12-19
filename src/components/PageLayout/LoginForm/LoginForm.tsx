@@ -1,6 +1,7 @@
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
+import {Button} from '@/components/Clickable/Clickable'
 import styles from '@/components/FormItems/Form.module.scss'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
@@ -57,7 +58,7 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
         fieldError={errors.password}
       />
       <button type="submit">
-        <span className={styles.underline}>Prihlásiť</span>
+        <Button>Prihlásiť</Button>
       </button>
     </form>
   )

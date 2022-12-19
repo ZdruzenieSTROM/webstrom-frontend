@@ -1,11 +1,9 @@
 import axios, {AxiosError} from 'axios'
-import clsx from 'clsx'
-import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
-import {useHistory} from 'react-router-dom'
 
+import {Button, Link} from '@/components/Clickable/Clickable'
 import {Solution} from '@/types/api/generated/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
@@ -56,6 +54,63 @@ interface Series {
   complete: boolean
   frozen_results: string
   semester: number
+}
+
+const Problem: FC<{
+  problem: Problem
+  registered: boolean
+  commentCount: number
+  setDisplaySideContent: Dispatch<
+    SetStateAction<{
+      type: string
+      problemId: number
+      problemNumber: number
+    }>
+  >
+  canRegister: boolean
+}> = ({problem, registered, commentCount, setDisplaySideContent, canRegister}) => {
+  const handleDiscussionButtonClick = () => {
+    setDisplaySideContent((prevState) => {
+      if (prevState.type === 'discussion' && prevState.problemId === problem.id) {
+        return {type: '', problemId: -1, problemNumber: -1}
+      } else {
+        return {type: 'discussion', problemId: problem.id, problemNumber: problem.order}
+      }
+    })
+  }
+  const handleUploadClick = () => {
+    if (registered) {
+      setDisplaySideContent((prevState) => {
+        if (prevState.type === 'uploadProblemForm' && prevState.problemId === problem.id) {
+          return {type: '', problemId: -1, problemNumber: -1}
+        } else {
+          return {type: 'uploadProblemForm', problemId: problem.id, problemNumber: problem.order}
+        }
+      })
+    } else {
+      alert('Najprv sa zaregistruj do série klikom na CHCEM RIEŠIŤ.')
+    }
+  }
+  return (
+    <div className={styles.problem}>
+      <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
+      <Latex>{problem.text}</Latex>
+      <div className={styles.actions}>
+        {registered ? <Link href={`/api/competition/problem/${problem.id}/my-solution/`}>moje riešenie</Link> : <></>}
+        {registered ? (
+          <Link href={`/api/competition/problem/${problem.id}/corrected-solution/`}>
+            opravené riešenie ({problem.submitted?.score || '?'})
+          </Link>
+        ) : (
+          <></>
+        )}
+        <Button onClick={handleDiscussionButtonClick}>
+          diskusia ({commentCount === undefined ? 0 : commentCount}){' '}
+        </Button>
+        {registered || canRegister ? <Button onClick={handleUploadClick}>odovzdať</Button> : <></>}
+      </div>
+    </div>
+  )
 }
 
 type ProblemsProps = {
@@ -282,51 +337,35 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         <Menu semesterList={semesterList} selectedId={problemsId} />
         {problems.map((problem) => (
           <Fragment key={problem.id}>
-            <div className={styles.problem}>
-              <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
-              <Latex>{problem.text}</Latex>
-              <div className={styles.actions}>
-                <CorrectedSolutionButton problem={problem} registered={registered} />
-                <MySolutionButton problem={problem} registered={registered} />
-                <UploadProblemButton
-                  problemId={problem.id}
-                  problemNumber={problem.order}
-                  registered={registered}
-                  canRegister={canRegister}
-                  setDisplaySideContent={setDisplaySideContent}
-                />
-                <DiscussionButton
-                  problemId={problem.id}
-                  problemNumber={problem.order}
-                  commentCount={commentCount[problem.order] === undefined ? 0 : commentCount[problem.order]}
-                  setDisplaySideContent={setDisplaySideContent}
-                />
-              </div>
-            </div>
+            <Problem
+              problem={problem}
+              registered={registered}
+              commentCount={commentCount[problem.id]}
+              setDisplaySideContent={setDisplaySideContent}
+              canRegister={canRegister}
+            />
           </Fragment>
         ))}
         <div className={styles.actions}>
           debug row:
-          <span
+          <Button
             onClick={() => {
               setRegistered((prevState) => {
                 return !prevState
               })
             }}
-            className={clsx(styles.actionButton)}
           >
             Toggle registered: <span style={{color: '#A00'}}>{registered ? 'true' : 'false'}</span>
-          </span>
-          <span
+          </Button>
+          <Button
             onClick={() => {
               setCanRegister((prevState) => {
                 return !prevState
               })
             }}
-            className={clsx(styles.actionButton)}
           >
             Toggle canRegister: <span style={{color: '#A00'}}>{canRegister ? 'true' : 'false'}</span>
-          </span>
+          </Button>
         </div>
       </div>
 
@@ -354,111 +393,6 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
       </div>
     </>
   )
-}
-
-const MySolutionButton: FC<{
-  problem: Problem
-  registered: boolean
-}> = ({problem, registered}) => {
-  if (registered) {
-    return (
-      // ak neexistuje opravene riesenie, button je sivy
-      <a
-        className={clsx(styles.actionButton, !problem.submitted && styles.disabled)}
-        href={`/api/competition/problem/${problem.id}/corrected-solution/`}
-      >
-        moje riešenie
-      </a>
-    )
-  } else {
-    return <></>
-  }
-}
-
-const CorrectedSolutionButton: FC<{
-  problem: Problem
-  registered: boolean
-}> = ({problem, registered}) => {
-  if (registered) {
-    return (
-      // ak neexistuje uzivatelske riesenie, button je sivy
-      <a
-        className={clsx(styles.actionButton, !problem.submitted?.corrected_solution && styles.disabled)}
-        href={`/api/competition/problem/${problem.id}/my-solution/`}
-      >
-        opravené riešenie ({problem.submitted?.score || '?'})
-      </a>
-    )
-  } else {
-    return <></>
-  }
-}
-
-const DiscussionButton: FC<{
-  problemId: number
-  problemNumber: number
-  commentCount: number
-  setDisplaySideContent: Dispatch<
-    SetStateAction<{
-      type: string
-      problemId: number
-      problemNumber: number
-    }>
-  >
-}> = ({problemId, problemNumber, commentCount, setDisplaySideContent}) => {
-  const handleClick = () => {
-    setDisplaySideContent((prevState) => {
-      if (prevState.type === 'discussion' && prevState.problemId === problemId) {
-        return {type: '', problemId: -1, problemNumber: -1}
-      } else {
-        return {type: 'discussion', problemId: problemId, problemNumber: problemNumber}
-      }
-    })
-  }
-  return (
-    <span onClick={() => handleClick()} className={styles.actionButton}>
-      diskusia ({commentCount})
-    </span>
-  )
-}
-
-const UploadProblemButton: FC<{
-  problemId: number
-  problemNumber: number
-  registered: boolean
-  canRegister: boolean
-  setDisplaySideContent: Dispatch<
-    SetStateAction<{
-      type: string
-      problemId: number
-      problemNumber: number
-    }>
-  >
-}> = ({problemId, problemNumber, registered, canRegister, setDisplaySideContent}) => {
-  const handleClick = () => {
-    if (registered) {
-      setDisplaySideContent((prevState) => {
-        if (prevState.type === 'uploadProblemForm' && prevState.problemId === problemId) {
-          return {type: '', problemId: -1, problemNumber: -1}
-        } else {
-          return {type: 'uploadProblemForm', problemId: problemId, problemNumber: problemNumber}
-        }
-      })
-    } else {
-      // ToDo: implement what happens when when the user is not registered
-      // probably something like display a message somewhere.
-    }
-  }
-
-  if (registered || canRegister) {
-    return (
-      <span onClick={() => handleClick()} className={clsx(styles.actionButton, !registered && styles.disabled)}>
-        odovzdať
-      </span>
-    )
-  } else {
-    return <></>
-  }
 }
 
 const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({problemId, problemNumber}) => {
@@ -494,9 +428,7 @@ const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({prob
         )}
       </aside>
       <div className={styles.actions} style={{padding: '5px'}}>
-        <span className={styles.actionButton} onClick={handleSubmit}>
-          Odovzdať
-        </span>
+        <Button onClick={handleSubmit}>Odovzdať</Button>
       </div>
     </SideContainer>
   )
