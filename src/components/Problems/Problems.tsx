@@ -108,7 +108,7 @@ const Problem: FC<{
         <Button onClick={handleDiscussionButtonClick}>
           diskusia ({commentCount === undefined ? 0 : commentCount}){' '}
         </Button>
-        {registered || canRegister ? <Button onClick={handleUploadClick}>odovdzdať</Button> : <></>}
+        {registered || canRegister ? <Button onClick={handleUploadClick}>odovzdať</Button> : <></>}
       </div>
     </div>
   )
