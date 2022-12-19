@@ -1,5 +1,4 @@
 import axios, {AxiosError} from 'axios'
-import clsx from 'clsx'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, Fragment, SetStateAction, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
@@ -349,26 +348,24 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         ))}
         <div className={styles.actions}>
           debug row:
-          <span
+          <Button
             onClick={() => {
               setRegistered((prevState) => {
                 return !prevState
               })
             }}
-            className={clsx(styles.actionButton)}
           >
             Toggle registered: <span style={{color: '#A00'}}>{registered ? 'true' : 'false'}</span>
-          </span>
-          <span
+          </Button>
+          <Button
             onClick={() => {
               setCanRegister((prevState) => {
                 return !prevState
               })
             }}
-            className={clsx(styles.actionButton)}
           >
             Toggle canRegister: <span style={{color: '#A00'}}>{canRegister ? 'true' : 'false'}</span>
-          </span>
+          </Button>
         </div>
       </div>
 
@@ -431,9 +428,7 @@ const UploadProblemForm: FC<{problemId: number; problemNumber: number}> = ({prob
         )}
       </aside>
       <div className={styles.actions} style={{padding: '5px'}}>
-        <span className={styles.actionButton} onClick={handleSubmit}>
-          Odovzdať
-        </span>
+        <Button onClick={handleSubmit}>Odovzdať</Button>
       </div>
     </SideContainer>
   )
