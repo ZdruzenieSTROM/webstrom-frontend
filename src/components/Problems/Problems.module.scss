@@ -36,7 +36,7 @@
   width: calc(25vw - 40px);
 
   aside {
-    word-break: break-all;
+    overflow-wrap: break-word;
   }
 
   >.registerButton {
