@@ -92,26 +92,24 @@ export const Archive: FC = () => {
       <h2>Archív: </h2>
       <Table>
         {eventList.map((event) => (
-          <Fragment key={event.id}>
-            <TableRow>
-              <TableCell>
-                {event.year + '. ročník '}
-                {event.season_code === 0 ? 'zimný' : 'letný'}
-                {' semester '}
+          <TableRow key={event.id}>
+            <TableCell>
+              {event.year + '. ročník '}
+              {event.season_code === 0 ? 'zimný' : 'letný'}
+              {' semester '}
+            </TableCell>
+            <TableCell>
+              <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
+            </TableCell>
+            <TableCell>
+              <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
+            </TableCell>
+            {event.publication_set.map((publication) => (
+              <TableCell key={publication.id}>
+                <PublicationButton publicationId={publication.id} publicationName={publication.name} />
               </TableCell>
-              <TableCell>
-                <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
-              </TableCell>
-              <TableCell>
-                <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
-              </TableCell>
-              {event.publication_set.map((publication) => (
-                <TableCell key={publication.id}>
-                  <PublicationButton publicationId={publication.id} publicationName={publication.name} />
-                </TableCell>
-              ))}
-            </TableRow>
-          </Fragment>
+            ))}
+          </TableRow>
         ))}
       </Table>
     </div>

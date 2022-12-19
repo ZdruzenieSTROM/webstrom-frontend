@@ -336,15 +336,14 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
       <div className={styles.container}>
         <Menu semesterList={semesterList} selectedId={problemsId} />
         {problems.map((problem) => (
-          <Fragment key={problem.id}>
-            <Problem
-              problem={problem}
-              registered={registered}
-              commentCount={commentCount[problem.id]}
-              setDisplaySideContent={setDisplaySideContent}
-              canRegister={canRegister}
-            />
-          </Fragment>
+          <Problem
+            key={problem.id}
+            problem={problem}
+            registered={registered}
+            commentCount={commentCount[problem.id]}
+            setDisplaySideContent={setDisplaySideContent}
+            canRegister={canRegister}
+          />
         ))}
         <div className={styles.actions}>
           debug row:
@@ -380,7 +379,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             Chcem riešiť!
           </div>
         )}
-        {(registered || !canRegister) && <div></div>}
+        {(registered || !canRegister) && <div />}
         {displaySideContent.type === 'discussion' && (
           <Discussion problemId={displaySideContent.problemId} problemNumber={displaySideContent.problemNumber} />
         )}
