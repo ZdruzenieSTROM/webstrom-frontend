@@ -1,11 +1,11 @@
 import {Table, TableCell, TableRow} from '@mui/material'
 import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
-import Link from 'next/link'
 import {FC, Fragment, useEffect, useState} from 'react'
 
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
+import {Link} from '../Clickable/Clickable'
 import styles from './Archive.module.scss'
 
 interface Publication {
@@ -49,13 +49,7 @@ const ResultsButton: FC<{
 }> = ({eventYear, eventSeason}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
   const url = `../vysledky/${eventYear}/${season}`
-  return (
-    <span className={clsx(styles.actionButton)}>
-      <Link href={url}>
-        <a>Výsledky</a>
-      </Link>
-    </span>
-  )
+  return <Link href={url}>Výsledky</Link>
 }
 
 const ProblemsButton: FC<{
@@ -64,13 +58,7 @@ const ProblemsButton: FC<{
 }> = ({eventYear, eventSeason}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
   const url = `../zadania/${eventYear}/${season}/1`
-  return (
-    <span className={clsx(styles.actionButton)}>
-      <Link href={url}>
-        <a>Zadania</a>
-      </Link>
-    </span>
-  )
+  return <Link href={url}>Zadania</Link>
 }
 
 export const Archive: FC = () => {

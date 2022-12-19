@@ -1,20 +1,4 @@
-  .h2{
-      padding-top: 40px;
-      padding: 20px;
-  }
-
-  .actionButton, .commentActions>span{
-    cursor: pointer;
-    font-size: .8rem;
-    font-style: italic;
-    font-weight: bold;
-    margin-left: 20px;
-    border-bottom: 5px solid black;
-    user-select: none;
-    text-transform: uppercase;
-  
-    &.disabled{
-      color: #CCC;
-      border-color: #CCC;
-    }
+  .h2 {
+    padding-top: 40px;
+    padding: 20px;
   }
