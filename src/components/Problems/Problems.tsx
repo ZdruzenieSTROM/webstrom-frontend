@@ -79,7 +79,7 @@ const Problem: FC<{
     })
   }
   const handleUploadClick = () => {
-    if (canRegister) {
+    if (registered) {
       setDisplaySideContent((prevState) => {
         if (prevState.type === 'uploadProblemForm' && prevState.problemId === problem.id) {
           return {type: '', problemId: -1, problemNumber: -1}
@@ -88,7 +88,7 @@ const Problem: FC<{
         }
       })
     } else {
-      // ToDo handle if not register
+      alert('Najprv sa zaregistruj do série klikom na CHCEM RIEŠIŤ.')
     }
   }
   return (
