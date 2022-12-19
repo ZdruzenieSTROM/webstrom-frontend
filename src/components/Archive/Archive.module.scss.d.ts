@@ -1,6 +1,5 @@
 export type Styles = {
-  actionButton: string
-  disabled: string
+  h2: string
 }
 
 export type ClassNames = keyof Styles
