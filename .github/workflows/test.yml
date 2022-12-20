@@ -1,5 +1,5 @@
 name: branch test
-run-name: Branch test of ${{ github.ref_name }} (${{ github.actor }}'s PR)
+run-name: Branch test of ${{ github.head_ref || github.ref_name }} (${{ github.actor }}'s PR)
 on:
   push:
     branches: master
