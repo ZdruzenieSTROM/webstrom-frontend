@@ -9,7 +9,7 @@ const handleClick = (e: MouseEvent<HTMLElement>) => {
 export const StromLogo: FC = () => {
   return (
     <div className={styles.container}>
-      <div className={styles.tree} onClick={handleClick}></div>
+      <div className={styles.tree} onClick={handleClick} />
     </div>
   )
 }

@@ -1,0 +1,26 @@
+name: branch test
+run-name: Branch test of ${{ github.ref_name }} (${{ github.actor }}'s PR)
+on:
+  push:
+    branches: master
+  pull_request:
+  workflow_dispatch:
+jobs:
+  branch-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch code
+        uses: actions/checkout@v3
+      - name: Setup Node.js with Yarn cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+      - name: Install dependencies
+        run: yarn
+      - name: Check whether all possible CSS types are generated
+        run: yarn css-types:check
+      - name: Run typecheck
+        run: yarn tsc
+      - name: Run ESLint
+        run: yarn lint
