@@ -1,6 +1,6 @@
 import {MathComponentProps} from 'mathjax-react/dist/components/MathComponent'
 import dynamic from 'next/dynamic'
-import {FC} from 'react'
+import {FC, Fragment} from 'react'
 
 import styles from './Latex.module.scss'
 
@@ -33,7 +33,7 @@ export const Latex: FC<{children: string}> = ({children}) => {
 
   for (const m of matches) {
     result.push(
-      children.slice(currentPosition, m.index),
+      <span>{children.slice(currentPosition, m.index)}</span>,
       <MathComponent tex={trim(m[0])} display={m[0].slice(0, 2) === '\\[' || m[0].slice(0, 2) === '$$'} />,
     )
 
@@ -42,7 +42,7 @@ export const Latex: FC<{children: string}> = ({children}) => {
     }
   }
 
-  result.push(children.slice(Math.max(0, currentPosition)))
+  result.push(<span>{children.slice(Math.max(0, currentPosition))}</span>)
 
   return (
     // nas globalny CSS reset nastavuje SVGcka na display:block, tak to tu resetneme nazad na inline
@@ -50,7 +50,7 @@ export const Latex: FC<{children: string}> = ({children}) => {
     <div className={styles.inlineSvgs}>
       {result.map((child, index) => (
         // kazdy element listu potrebuje key, inak mame react warning
-        <span key={index}>{child}</span>
+        <Fragment key={index}>{child}</Fragment>
       ))}
     </div>
   )
