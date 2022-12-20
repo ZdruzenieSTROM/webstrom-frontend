@@ -1,4 +1,6 @@
 export type Styles = {
+  next: string
+  root: string
   tooltip: string
   tooltiptext: string
 }
