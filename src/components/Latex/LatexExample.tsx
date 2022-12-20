@@ -1,7 +1,8 @@
-// import './LatexExample.css'
 import {ChangeEvent, FC, useState} from 'react'
 
+import {Link} from '../Clickable/Clickable'
 import {Latex} from './Latex'
+import styles from './LatexExample.module.scss'
 
 export const LatexExample: FC = () => {
   const [tex, setTex] = useState('')
@@ -10,7 +11,10 @@ export const LatexExample: FC = () => {
   }
 
   return (
-    <div className="latex-example-container">
+    <div className={styles.latexExampleContainer}>
+      <div>
+        <Link href="/test">{'< Back to examples'}</Link>
+      </div>
       <textarea value={tex} onChange={handleInputChange} />
       <Latex>{tex}</Latex>
     </div>

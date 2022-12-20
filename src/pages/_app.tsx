@@ -1,8 +1,4 @@
 import '../index.scss'
-import '@/components/Latex/LatexExample.css'
-import '@/components/Marquee/Marquee.scss'
-import '@/components/Post/Post.css'
-import '@/components/PagePlaceholder/PagePlaceholder.css'
 
 import {createTheme, ThemeProvider} from '@mui/material'
 import {AppProps} from 'next/app'

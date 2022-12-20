@@ -1,4 +1,4 @@
-.marquee-container {
+.marqueeContainer {
   overflow-x: hidden !important;
   display: flex !important;
   flex-direction: row !important;
@@ -59,6 +59,7 @@
     0% {
       transform: translateX(0);
     }
+
     100% {
       transform: translateX(calc(-100% - var(--margin-right)));
     }

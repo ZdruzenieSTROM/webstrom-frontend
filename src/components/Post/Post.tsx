@@ -1,8 +1,8 @@
-// import './Post.css'
 import axios, {AxiosError} from 'axios'
 import {FC, useEffect, useState} from 'react'
 
 import {Link} from '../Clickable/Clickable'
+import styles from './Post.module.scss'
 
 interface IPost {
   id: number
@@ -58,8 +58,8 @@ export const Posts: FC<{seminarId: number}> = ({seminarId}) => {
     )
 
   return (
-    <div className="posts">
-      <ul className="post">{posts.map((post) => returnPost(post))}</ul>
+    <div className={styles.posts}>
+      <ul className={styles.post}>{posts.map((post) => returnPost(post))}</ul>
       {error && <p className="error">{error}</p>}
     </div>
   )
