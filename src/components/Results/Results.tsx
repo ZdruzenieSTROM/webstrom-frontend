@@ -413,7 +413,7 @@ const Dropdown: FC<{title: string; selectedId: number; options: DropdownOption[]
 
   return (
     <div className={styles.dropdown} onClick={handleClick} onMouseLeave={handleMouseLeave}>
-      {title} <div className={styles.arrow}></div>
+      {title} <div className={styles.arrow} />
       <div className={clsx(styles.options, display && styles.displayOptions)}>
         {options.map((option) => {
           return (
