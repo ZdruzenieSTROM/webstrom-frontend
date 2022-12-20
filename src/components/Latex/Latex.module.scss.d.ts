@@ -1,8 +1,5 @@
 export type Styles = {
-  next: string
-  root: string
-  tooltip: string
-  tooltiptext: string
+  inlineSvgs: string
 }
 
 export type ClassNames = keyof Styles

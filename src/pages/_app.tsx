@@ -1,5 +1,4 @@
 import '../index.scss'
-import '@/components/Latex/Latex.css'
 import '@/components/Latex/LatexExample.css'
 import '@/components/Marquee/Marquee.scss'
 import '@/components/Post/Post.css'
