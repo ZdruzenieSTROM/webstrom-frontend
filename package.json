@@ -2,6 +2,16 @@
   "name": "webstrom-frontend",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "build": "next build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "css-types": "typed-scss-modules src --exportType default",
+    "css-types:check": "yarn css-types --listDifferent",
+    "css-types:watch": "yarn css-types --watch"
+  },
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -25,16 +35,6 @@
     "react-markdown": "^8.0.0",
     "typescript": "^4.3.4",
     "unstated-next": "^1.1.0"
-  },
-  "scripts": {
-    "dev": "next dev",
-    "start": "next start",
-    "build": "next build",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "css-types": "typed-scss-modules src --exportType default",
-    "css-types:check": "yarn css-types --listDifferent",
-    "css-types:watch": "yarn css-types --watch"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.26.6",
