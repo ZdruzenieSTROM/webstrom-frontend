@@ -1,5 +1,7 @@
-// import './Marquee.scss'
+import clsx from 'clsx'
 import {FC, useEffect, useRef, useState} from 'react'
+
+import styles from './Marquee.module.scss'
 
 interface MarqueeProps {
   /**
@@ -131,7 +133,7 @@ export const Marquee: FC<MarqueeProps> = ({
             ['--pause-on-hover' as string]: pauseOnHover ? 'paused' : 'running',
             ['--pause-on-click' as string]: pauseOnClick ? 'paused' : 'running',
           }}
-          className={className + ' marquee-container'}
+          className={clsx(className, styles.marqueeContainer)}
         >
           {gradient && (
             <div
@@ -140,7 +142,7 @@ export const Marquee: FC<MarqueeProps> = ({
                 ['--gradient-width' as string]:
                   typeof gradientWidth === 'number' ? `${gradientWidth}px` : gradientWidth,
               }}
-              className="overlay"
+              className={styles.overlay}
             />
           )}
           <div
@@ -152,7 +154,7 @@ export const Marquee: FC<MarqueeProps> = ({
               ['--delay' as string]: `${delay}s`,
               ['--margin-right' as string]: `${marqueeWidth < containerWidth ? containerWidth - marqueeWidth : 0}px`,
             }}
-            className="marquee"
+            className={styles.marquee}
           >
             {children}
           </div>
@@ -164,7 +166,7 @@ export const Marquee: FC<MarqueeProps> = ({
               ['--delay' as string]: `${delay}s`,
               ['--margin-right' as string]: `${marqueeWidth < containerWidth ? containerWidth - marqueeWidth : 0}px`,
             }}
-            className="marquee"
+            className={styles.marquee}
           >
             {children}
           </div>
