@@ -1,6 +1,10 @@
 name: branch test
 run-name: Branch test of ${{ github.ref_name }} (${{ github.actor }}'s PR)
-on: [pull_request, workflow_dispatch]
+on:
+  push:
+    branches: master
+  pull_request:
+  workflow_dispatch:
 jobs:
   branch-test:
     runs-on: ubuntu-latest
