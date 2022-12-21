@@ -1,3 +1,4 @@
+import {CircularProgress} from '@mui/material'
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
@@ -248,6 +249,11 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   return (
     <>
       <div className={styles.container}>
+        {(semesterListIsLoading || currentSeriesIsLoading || seriesIsLoading) && (
+          <div className={styles.loading}>
+            <CircularProgress color="inherit" />
+          </div>
+        )}
         <Menu semesterList={semesterList} selectedSeriesId={seriesId} />
         {problems.map((problem) => (
           <Problem

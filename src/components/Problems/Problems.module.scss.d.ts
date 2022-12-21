@@ -2,6 +2,7 @@ export type Styles = {
   actions: string
   container: string
   dropzone: string
+  loading: string
   menu: string
   notPublished: string
   problem: string

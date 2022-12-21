@@ -5,6 +5,13 @@
   padding-top: 80px;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  // vyska elementu je 40px. toto ho vytiahne vyssie do toho 80px bieleho miesta
+  margin-top: -40px;
+}
+
 .problem {
   padding: 20px;
 
