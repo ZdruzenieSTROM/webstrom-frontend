@@ -1,7 +1,8 @@
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
-import {Dispatch, FC, SetStateAction, useEffect, useState} from 'react'
+import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
+import {useQuery} from 'react-query'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Solution} from '@/types/api/generated/competition'
@@ -130,59 +131,38 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const router = useRouter()
 
   const {isAuthed} = AuthContainer.useContainer()
-  // ToDo: initial state false + set value after API update
-  const [canRegister, setCanRegister] = useState(true)
-  // ToDo: initial state false + set value after API update
-  const [registered, setRegistered] = useState(false)
+
   const {seminarId} = useSeminarInfo()
-  const [canSubmit, setCanSubmit] = useState(false)
-
-  // List of semesters with their ids and series belonging to them
-  const [semesterList, setSemesterList] = useState<SemesterList[]>([])
-
-  // Id of results to be fetched
-  const [problemsId, setProblemsId] = useState({semester: true, id: -1})
-
-  // Id of the current semester
-  const [currentSeriesId, setCurrentSeriesId] = useState(-1)
-
-  const [problems, setProblems] = useState<Problem[]>([])
-  const [semesterId, setSemesterId] = useState(-1)
 
   const [displaySideContent, setDisplaySideContent] = useState({type: '', problemId: -1, problemNumber: -1}) // todo: use to display discussions and file upload boxes
   const [commentCount, setCommentCount] = useState<number[]>([]) // ToDo: implement it somehow, probably need some api point for that?
 
-  const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
+  const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery(
+    ['competition', 'semester-list', {competition: seminarId}],
+    () => axios.get<SemesterList[]>(`/api/competition/semester-list?competition=${seminarId}`),
+  )
+  // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
+  const semesterList = useMemo(() => semesterListData?.data || [], [semesterListData])
 
-  // Fetch list of semesters from the api
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<SemesterList[]>(`/api/competition/semester-list/?competition=${seminarId}`)
-        setSemesterList(data)
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [seminarId])
+  const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery(
+    ['competition', 'series', 'current', seminarId],
+    () => axios.get<Series>(`/api/competition/series/current/` + seminarId),
+  )
+  const currentSeriesId = currentSeriesData?.data.id ?? -1
 
-  // Set problemsId from url.
-  // If series is not specified, set semesterId.semester to true and find semester id using year and semesterCode from the url.
-  // If series is specifies, set semesterId.semester to false and find series id using year, semesterCode, and series number from the url.
+  // Set seriesId from url.
+  // If series is not specified, set seriesId.semester to true and find semester id using year and semesterCode from the url.
+  // If series is specified, set seriesId.semester to false and find series id using year, semesterCode, and series number from the url.
+  const seriesId = useMemo(() => {
+    if (!semesterList.length) return {semester: true, id: -1}
 
-  useEffect(() => {
     const {params} = router.query
 
     const getIdFromUrl = (params: string | string[] | undefined): {semester: boolean; id: number} => {
       if (params === undefined || params?.length === 0 || params?.length === 1) {
         return {semester: false, id: currentSeriesId}
       }
+
       if (params?.length === 2) {
         const year = getNumber(params[0])
         let seasonCode = -1
@@ -209,6 +189,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
           return {semester: false, id: id}
         }
       }
+
       if (params?.length >= 3) {
         const year = getNumber(params[0])
         let seasonCode = -1
@@ -242,33 +223,18 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
       return {semester: false, id: currentSeriesId}
     }
 
-    setProblemsId(getIdFromUrl(params))
+    return getIdFromUrl(params)
   }, [router.query, semesterList, currentSeriesId])
 
-  // Set currentSeriesId from competition/semester/current/seminarId/ api point
+  // Update site title if seriesId changes
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<Series>(`/api/competition/series/current/` + seminarId)
-        setCurrentSeriesId(data.id)
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [seminarId])
+    if (!semesterList.length) return
 
-  // Update site title if resultsId changes
-  useEffect(() => {
     let title = ''
 
     for (let i = 0; i < semesterList.length; i++) {
-      if (problemsId.semester === true) {
-        if (problemsId.id === semesterList[i].id) {
+      if (seriesId.semester === true) {
+        if (seriesId.id === semesterList[i].id) {
           title =
             '' +
             semesterList[i].year +
@@ -278,7 +244,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         }
       } else {
         for (let j = 0; j < semesterList[i].series_set.length; j++) {
-          if (problemsId.id === semesterList[i].series_set[j].id) {
+          if (seriesId.id === semesterList[i].series_set[j].id) {
             title =
               '' +
               semesterList[i].year +
@@ -293,42 +259,27 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     }
 
     setPageTitle(title)
-  }, [problemsId, semesterList, setPageTitle])
+  }, [seriesId, semesterList, setPageTitle])
 
-  // Fetch problems from the api using series id
+  const [overrideCanRegister, setOverrideCanRegister] = useState(false)
+  const [overrideIsRegistered, setOverrideIsRegistered] = useState(false)
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<Series>('/api/competition/series/' + problemsId.id + '/')
-        setProblems(data.problems)
-        setSemesterId(data.semester)
-        setCanSubmit(data.can_submit)
+    // TODO: refetch competition/series/ID/ - vracia to ine data pre prihlaseneho usera
+  }, [isAuthed])
 
-        if (!data.can_participate || !data.can_submit) {
-          setCanRegister(false)
-        } else {
-          setCanRegister(data.can_participate)
-        }
-        if (data.is_registered === null) {
-          setRegistered(false)
-        } else {
-          setRegistered(data.is_registered)
-        }
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    if (problemsId.id !== -1 && problemsId.semester === false) {
-      fetchData()
-    } else {
-      setProblems([])
-    }
-    // zbehni znovu ked sa isAuthed zmeni - competition/series/ID/ vracia ine data pre prihlaseneho usera
-  }, [problemsId, isAuthed])
+  const {data: seriesData, isLoading: seriesIsLoading} = useQuery(
+    ['competition', 'series', seriesId.id],
+    () => axios.get<Series>(`/api/competition/series/${seriesId.id}`),
+    {enabled: seriesId.id !== -1 && seriesId.semester === false},
+  )
+  const series = seriesData?.data
+  const problems = series?.problems ?? []
+  const semesterId = series?.semester ?? -1
+  const canSubmit = series?.can_submit ?? false
+
+  const canRegister = (overrideCanRegister || (series?.can_participate && series?.can_submit)) ?? false
+  const isRegistered = (overrideIsRegistered || series?.is_registered) ?? false
 
   const handleRegistrationToSemester = async (id: number) => {
     // ToDo: check user details and use the following request to register the user to semester.
@@ -339,18 +290,18 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
       const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
       console.log('Error while registering to semester: ', error)
     }
-    setRegistered(true)
+    setOverrideIsRegistered(true)
   }
 
   return (
     <>
       <div className={styles.container}>
-        <Menu semesterList={semesterList} selectedId={problemsId} />
+        <Menu semesterList={semesterList} selectedId={seriesId} />
         {problems.map((problem) => (
           <Problem
             key={problem.id}
             problem={problem}
-            registered={registered}
+            registered={isRegistered}
             commentCount={commentCount[problem.id]}
             setDisplaySideContent={setDisplaySideContent}
             canRegister={canRegister}
@@ -359,29 +310,17 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         ))}
         <div className={styles.actions}>
           debug row:
-          <Button
-            onClick={() => {
-              setRegistered((prevState) => {
-                return !prevState
-              })
-            }}
-          >
-            Toggle registered: <span style={{color: '#A00'}}>{registered ? 'true' : 'false'}</span>
+          <Button onClick={() => setOverrideIsRegistered((prevState) => !prevState)}>
+            Toggle registered: <span style={{color: '#A00'}}>{isRegistered ? 'true' : 'false'}</span>
           </Button>
-          <Button
-            onClick={() => {
-              setCanRegister((prevState) => {
-                return !prevState
-              })
-            }}
-          >
+          <Button onClick={() => setOverrideCanRegister((prevState) => !prevState)}>
             Toggle canRegister: <span style={{color: '#A00'}}>{canRegister ? 'true' : 'false'}</span>
           </Button>
         </div>
       </div>
 
       <div className={styles.sideContainer}>
-        {!registered && canRegister && (
+        {!isRegistered && canRegister && (
           <div
             onClick={() => {
               handleRegistrationToSemester(semesterId)
@@ -391,7 +330,6 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             Chcem riešiť!
           </div>
         )}
-        {(registered || !canRegister) && <div />}
         {displaySideContent.type === 'discussion' && (
           <Discussion problemId={displaySideContent.problemId} problemNumber={displaySideContent.problemNumber} />
         )}
@@ -435,6 +373,7 @@ const UploadProblemForm: FC<{
       console.log(e)
       const ex = e as AxiosError
       const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+      alert(error)
     }
   }
 
