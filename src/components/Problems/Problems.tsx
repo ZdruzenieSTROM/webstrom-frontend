@@ -154,73 +154,42 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   // If series is not specified, set seriesId.semester to true and find semester id using year and semesterCode from the url.
   // If series is specified, set seriesId.semester to false and find series id using year, semesterCode, and series number from the url.
   const seriesId = useMemo(() => {
-    if (!semesterList.length) return {semester: true, id: -1}
+    if (!semesterList.length) return -1
 
     const {params} = router.query
 
-    const getIdFromUrl = (params: string | string[] | undefined): {semester: boolean; id: number} => {
-      if (params === undefined || params?.length === 0 || params?.length === 1) {
-        return {semester: false, id: currentSeriesId}
+    const getIdFromUrl = (params: string | string[] | undefined): number => {
+      if (params === undefined || params.length === 0 || params.length === 1) {
+        return currentSeriesId
       }
 
-      if (params?.length === 2) {
-        const year = getNumber(params[0])
-        let seasonCode = -1
-        let id = -1
+      // get year from the first URL param
+      const seriesYear = getNumber(params[0])
 
-        if (params[1] === 'zima') {
-          seasonCode = 0
-        }
-        if (params[1] === 'leto') {
-          seasonCode = 1
-        }
+      // get season from the second URL param
+      let seasonCode = -1
+      if (params[1] === 'zima') seasonCode = 0
+      if (params[1] === 'leto') seasonCode = 1
 
-        for (let i = 0; i < semesterList.length; i++) {
-          if (semesterList[i].year === year && semesterList[i].season_code === seasonCode) {
-            if (semesterList[i].series_set.length > 0) {
-              id = semesterList[i].series_set[0].id
-            }
+      const semester = semesterList.find(({year, season_code}) => year === seriesYear && season_code === seasonCode)
+
+      if (semester) {
+        if (params.length === 2) {
+          if (semester.series_set.length > 0) {
+            return semester.series_set[0].id
           }
         }
 
-        if (id === -1) {
-          return {semester: false, id: currentSeriesId}
-        } else {
-          return {semester: false, id: id}
+        if (params.length >= 3) {
+          // get series from the second URL param
+          const seriesOrder = getNumber(params[2])
+          const series = semester.series_set.find(({order}) => order === seriesOrder)
+
+          if (series) return series.id
         }
       }
 
-      if (params?.length >= 3) {
-        const year = getNumber(params[0])
-        let seasonCode = -1
-        let id = -1
-
-        if (params[1] === 'zima') {
-          seasonCode = 0
-        }
-        if (params[1] === 'leto') {
-          seasonCode = 1
-        }
-
-        for (let i = 0; i < semesterList.length; i++) {
-          if (semesterList[i].year === year && semesterList[i].season_code === seasonCode) {
-            const order = getNumber(params[2])
-            for (let j = 0; j < semesterList[i].series_set.length; j++) {
-              if (semesterList[i].series_set[j].order === order) {
-                id = semesterList[i].series_set[j].id
-              }
-            }
-          }
-        }
-
-        if (id === -1) {
-          return {semester: false, id: currentSeriesId}
-        } else {
-          return {semester: false, id: id}
-        }
-      }
-
-      return {semester: false, id: currentSeriesId}
+      return currentSeriesId
     }
 
     return getIdFromUrl(params)
@@ -230,35 +199,18 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   useEffect(() => {
     if (!semesterList.length) return
 
-    let title = ''
+    for (const semester of semesterList) {
+      const series = semester.series_set.find(({id}) => id === seriesId)
 
-    for (let i = 0; i < semesterList.length; i++) {
-      if (seriesId.semester === true) {
-        if (seriesId.id === semesterList[i].id) {
-          title =
-            '' +
-            semesterList[i].year +
-            '. ročník - ' +
-            (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
-            ' semester'
-        }
-      } else {
-        for (let j = 0; j < semesterList[i].series_set.length; j++) {
-          if (seriesId.id === semesterList[i].series_set[j].id) {
-            title =
-              '' +
-              semesterList[i].year +
-              '. ročník - ' +
-              (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
-              ' semester - ' +
-              semesterList[i].series_set[j].order +
-              '. séria'
-          }
-        }
+      if (series) {
+        setPageTitle(
+          `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester${
+            series.order ? ` - ${series.order}. séria` : ''
+          }`,
+        )
+        return
       }
     }
-
-    setPageTitle(title)
   }, [seriesId, semesterList, setPageTitle])
 
   const [overrideCanRegister, setOverrideCanRegister] = useState(false)
@@ -269,9 +221,9 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   }, [isAuthed])
 
   const {data: seriesData, isLoading: seriesIsLoading} = useQuery(
-    ['competition', 'series', seriesId.id],
-    () => axios.get<Series>(`/api/competition/series/${seriesId.id}`),
-    {enabled: seriesId.id !== -1 && seriesId.semester === false},
+    ['competition', 'series', seriesId],
+    () => axios.get<Series>(`/api/competition/series/${seriesId}`),
+    {enabled: seriesId !== -1},
   )
   const series = seriesData?.data
   const problems = series?.problems ?? []
@@ -296,7 +248,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   return (
     <>
       <div className={styles.container}>
-        <Menu semesterList={semesterList} selectedId={seriesId} />
+        <Menu semesterList={semesterList} selectedSeriesId={seriesId} />
         {problems.map((problem) => (
           <Problem
             key={problem.id}
@@ -320,15 +272,13 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
       </div>
 
       <div className={styles.sideContainer}>
-        {!isRegistered && canRegister && (
-          <div
-            onClick={() => {
-              handleRegistrationToSemester(semesterId)
-            }}
-            className={styles.registerButton}
-          >
+        {!isRegistered && canRegister ? (
+          <div onClick={() => handleRegistrationToSemester(semesterId)} className={styles.registerButton}>
             Chcem riešiť!
           </div>
+        ) : (
+          // sideCointainer grid rata s tymto childom, aj ked prazdnym
+          <div />
         )}
         {displaySideContent.type === 'discussion' && (
           <Discussion problemId={displaySideContent.problemId} problemNumber={displaySideContent.problemNumber} />
@@ -398,14 +348,10 @@ const UploadProblemForm: FC<{
   )
 }
 
-const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({
-  semesterList,
-  selectedId,
-}) => {
+const Menu: FC<{semesterList: SemesterList[]; selectedSeriesId: number}> = ({semesterList, selectedSeriesId}) => {
   const {seminar} = useSeminarInfo()
 
   let selectedSemesterId = -1
-  let selectedSeriesId = -1
 
   const dropdownSemesterList = semesterList.map((semester) => {
     return {
@@ -418,32 +364,18 @@ const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id
   let dropdownSeriesList: DropdownOption[] = []
 
   for (let i = 0; i < semesterList.length; i++) {
-    if (selectedId.semester === true && selectedId.id === semesterList[i].id) {
-      selectedSemesterId = selectedId.id
-      dropdownSeriesList = semesterList[i].series_set.map((series) => {
-        return {
-          id: series.id,
-          text: `${series.order}. séria`,
-          link: `/${seminar}/zadania/${semesterList[i].year}/${semesterList[i].season_code === 0 ? 'zima' : 'leto'}/${
-            series.order
-          }/`,
-        }
-      })
-    } else if (selectedId.semester === false) {
-      for (let j = 0; j < semesterList[i].series_set.length; j++) {
-        if (semesterList[i].series_set[j].id === selectedId.id) {
-          selectedSemesterId = semesterList[i].id
-          selectedSeriesId = selectedId.id
-          dropdownSeriesList = semesterList[i].series_set.map((series) => {
-            return {
-              id: series.id,
-              text: `${series.order}. séria`,
-              link: `/${seminar}/zadania/${semesterList[i].year}/${
-                semesterList[i].season_code === 0 ? 'zima' : 'leto'
-              }/${series.order}/`,
-            }
-          })
-        }
+    for (let j = 0; j < semesterList[i].series_set.length; j++) {
+      if (semesterList[i].series_set[j].id === selectedSeriesId) {
+        selectedSemesterId = semesterList[i].id
+        dropdownSeriesList = semesterList[i].series_set.map((series) => {
+          return {
+            id: series.id,
+            text: `${series.order}. séria`,
+            link: `/${seminar}/zadania/${semesterList[i].year}/${semesterList[i].season_code === 0 ? 'zima' : 'leto'}/${
+              series.order
+            }/`,
+          }
+        })
       }
     }
   }
