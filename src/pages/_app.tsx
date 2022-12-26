@@ -1,12 +1,12 @@
 import '../index.scss'
 
 import {createTheme, ThemeProvider} from '@mui/material'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import {AppProps} from 'next/app'
 import Head from 'next/head'
 import {FC} from 'react'
 import {CookiesProvider} from 'react-cookie'
-import {QueryClient, QueryClientProvider} from 'react-query'
-import {ReactQueryDevtools} from 'react-query/devtools'
 
 import {AuthContainer} from '@/utils/AuthContainer'
 import {ProfileContainer} from '@/utils/ProfileContainer'

@@ -1,9 +1,9 @@
 import {CircularProgress} from '@mui/material'
+import {useQuery} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
-import {useQuery} from 'react-query'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Solution} from '@/types/api/generated/competition'
