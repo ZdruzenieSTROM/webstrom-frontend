@@ -1,5 +1,5 @@
 import {CircularProgress} from '@mui/material'
-import {useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
@@ -234,17 +234,15 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const canRegister = (overrideCanRegister || (series?.can_participate && series?.can_submit)) ?? false
   const isRegistered = (overrideIsRegistered || series?.is_registered) ?? false
 
-  const handleRegistrationToSemester = async (id: number) => {
-    // ToDo: check user details and use the following request to register the user to semester.
-    try {
+  const {mutate: registerToSemester} = useMutation({
+    mutationFn: async (id: number) => {
       await axios.post(`/api/competition/event/${id}/register`)
-    } catch (e: unknown) {
-      const ex = e as AxiosError
-      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-      console.log('Error while registering to semester: ', error)
-    }
-    setOverrideIsRegistered(true)
-  }
+    },
+    onSuccess: () => {
+      // TODO: rather than setting this ourselves we could refetch the semester info with this data
+      setOverrideIsRegistered(true)
+    },
+  })
 
   return (
     <>
@@ -279,7 +277,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 
       <div className={styles.sideContainer}>
         {!isRegistered && canRegister ? (
-          <div onClick={() => handleRegistrationToSemester(semesterId)} className={styles.registerButton}>
+          <div onClick={() => registerToSemester(semesterId)} className={styles.registerButton}>
             Chcem riešiť!
           </div>
         ) : (
