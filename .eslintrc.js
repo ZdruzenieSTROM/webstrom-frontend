@@ -346,5 +346,13 @@ module.exports = {
         'import/no-default-export': 'off',
       },
     },
+
+    // generated types contain many `any`s
+    {
+      files: ['src/types/api/generated/**/*.ts'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+      },
+    },
   ],
 }
