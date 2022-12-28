@@ -60,22 +60,6 @@
 }
 
 
-.dropzone {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 5rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #BBB;
-  background-color: #EEE;
-}
-
-.dropzone:hover {
-  background-color: #DDD;
-}
-
 .notPublished {
   background-color: #EEE;
 }

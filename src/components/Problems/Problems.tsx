@@ -1,21 +1,19 @@
 import {CircularProgress} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
+import axios from 'axios'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
-import {useDropzone} from 'react-dropzone'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Solution} from '@/types/api/generated/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
-import {niceBytes} from '@/utils/niceBytes'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
 import {Discussion} from './Discussion'
 import {Dropdown, DropdownOption} from './Dropdown'
 import styles from './Problems.module.scss'
-import {SideContainer} from './SideContainer'
+import {UploadProblemForm} from './UploadProblemForm'
 
 interface SeriesList {
   id: number
@@ -304,59 +302,6 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         )}
       </div>
     </>
-  )
-}
-
-const UploadProblemForm: FC<{
-  problemId: number
-  problemNumber: number
-  setDisplaySideContent: Dispatch<
-    SetStateAction<{
-      type: string
-      problemId: number
-      problemNumber: number
-    }>
-  >
-}> = ({problemId, problemNumber, setDisplaySideContent}) => {
-  const {acceptedFiles, getRootProps, getInputProps} = useDropzone()
-
-  const handleSubmit = async () => {
-    const formData = new FormData()
-    formData.append('file', acceptedFiles[0])
-
-    try {
-      const response = await axios.post(`/api/competition/problem/${problemId}/upload-solution/`, formData)
-      if (response.status === 201) {
-        setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
-        console.log('file uploaded') // ToDo: remove log() and let user know the response! message system? or something else?
-        // TODO: ked sa uploadne, tak button "moje riesenie" je stale sivy, lebo nie su natahane `problems` znova. asi nejaky hook(?)
-      }
-    } catch (e: unknown) {
-      console.log(e)
-      const ex = e as AxiosError
-      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-      alert(error)
-    }
-  }
-
-  return (
-    <SideContainer title={'Odovzdať úlohu - ' + problemNumber}>
-      <div {...getRootProps({className: styles.dropzone})}>
-        <input {...getInputProps()} />
-        <p>DROP pdf</p>
-      </div>
-      <aside>
-        <h4>Files</h4>
-        {acceptedFiles[0]?.name && (
-          <span>
-            {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
-          </span>
-        )}
-      </aside>
-      <div className={styles.actions} style={{padding: '5px'}}>
-        <Button onClick={handleSubmit}>Odovzdať</Button>
-      </div>
-    </SideContainer>
   )
 }
 
