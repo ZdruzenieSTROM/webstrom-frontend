@@ -114,19 +114,19 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const [displaySideContent, setDisplaySideContent] = useState({type: '', problemId: -1, problemNumber: -1}) // todo: use to display discussions and file upload boxes
   const [commentCount, setCommentCount] = useState<number[]>([]) // ToDo: implement it somehow, probably need some api point for that?
 
-  const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery(
-    ['competition', 'semester-list', {competition: seminarId}],
-    () => axios.get<SemesterList[]>(`/api/competition/semester-list?competition=${seminarId}`),
-  )
+  const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery({
+    queryKey: ['competition', 'semester-list', {competition: seminarId}],
+    queryFn: () => axios.get<SemesterList[]>(`/api/competition/semester-list?competition=${seminarId}`),
+  })
   // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
   const semesterList = useMemo(() => semesterListData?.data || [], [semesterListData])
 
   // z tejto query sa vyuziva len `currentSeriesId` a len vtedy, ked nemame uplnu URL
   // - napr. prideme na `/zadania` cez menu, nie na `/zadania/44/leto/2`
-  const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery(
-    ['competition', 'series', 'current', seminarId],
-    () => axios.get<Series>(`/api/competition/series/current/` + seminarId),
-  )
+  const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery({
+    queryKey: ['competition', 'series', 'current', seminarId],
+    queryFn: () => axios.get<Series>(`/api/competition/series/current/` + seminarId),
+  })
   const currentSeriesId = currentSeriesData?.data.id ?? -1
 
   // Set seriesId from url.
@@ -192,11 +192,11 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     }
   }, [seriesId, semesterList, setPageTitle])
 
-  const {data: seriesData, isLoading: seriesIsLoading} = useQuery(
-    ['competition', 'series', seriesId],
-    () => axios.get<Series>(`/api/competition/series/${seriesId}`),
-    {enabled: seriesId !== -1},
-  )
+  const {data: seriesData, isLoading: seriesIsLoading} = useQuery({
+    queryKey: ['competition', 'series', seriesId],
+    queryFn: () => axios.get<Series>(`/api/competition/series/${seriesId}`),
+    enabled: seriesId !== -1,
+  })
   const series = seriesData?.data
   const problems = series?.problems ?? []
   const semesterId = series?.semester ?? -1
@@ -219,9 +219,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   }, [isAuthed])
 
   const {mutate: registerToSemester} = useMutation({
-    mutationFn: async (id: number) => {
-      await axios.post(`/api/competition/event/${id}/register`)
-    },
+    mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),
     onSuccess: () => {
       // refetch semestra, nech sa aktualizuje is_registered
       queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
