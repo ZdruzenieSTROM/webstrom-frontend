@@ -2,10 +2,7 @@ export type Styles = {
   actions: string
   container: string
   loading: string
-  menu: string
-  notPublished: string
   problem: string
-  problemSubmission: string
   problemTitle: string
   registerButton: string
   sideContainer: string
