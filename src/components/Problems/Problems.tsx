@@ -1,6 +1,8 @@
+import {CircularProgress} from '@mui/material'
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
-import {Dispatch, FC, SetStateAction, useEffect, useState} from 'react'
+import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
@@ -130,227 +132,140 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const router = useRouter()
 
   const {isAuthed} = AuthContainer.useContainer()
-  // ToDo: initial state false + set value after API update
-  const [canRegister, setCanRegister] = useState(true)
-  // ToDo: initial state false + set value after API update
-  const [registered, setRegistered] = useState(false)
+
   const {seminarId} = useSeminarInfo()
-  const [canSubmit, setCanSubmit] = useState(false)
-
-  // List of semesters with their ids and series belonging to them
-  const [semesterList, setSemesterList] = useState<SemesterList[]>([])
-
-  // Id of results to be fetched
-  const [problemsId, setProblemsId] = useState({semester: true, id: -1})
-
-  // Id of the current semester
-  const [currentSeriesId, setCurrentSeriesId] = useState(-1)
-
-  const [problems, setProblems] = useState<Problem[]>([])
-  const [semesterId, setSemesterId] = useState(-1)
 
   const [displaySideContent, setDisplaySideContent] = useState({type: '', problemId: -1, problemNumber: -1}) // todo: use to display discussions and file upload boxes
   const [commentCount, setCommentCount] = useState<number[]>([]) // ToDo: implement it somehow, probably need some api point for that?
 
-  const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
+  const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery(
+    ['competition', 'semester-list', {competition: seminarId}],
+    () => axios.get<SemesterList[]>(`/api/competition/semester-list?competition=${seminarId}`),
+  )
+  // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
+  const semesterList = useMemo(() => semesterListData?.data || [], [semesterListData])
 
-  // Fetch list of semesters from the api
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<SemesterList[]>(`/api/competition/semester-list/?competition=${seminarId}`)
-        setSemesterList(data)
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [seminarId])
+  // z tejto query sa vyuziva len `currentSeriesId` a len vtedy, ked nemame uplnu URL
+  // - napr. prideme na `/zadania` cez menu, nie na `/zadania/44/leto/2`
+  const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery(
+    ['competition', 'series', 'current', seminarId],
+    () => axios.get<Series>(`/api/competition/series/current/` + seminarId),
+  )
+  const currentSeriesId = currentSeriesData?.data.id ?? -1
 
-  // Set problemsId from url.
-  // If series is not specified, set semesterId.semester to true and find semester id using year and semesterCode from the url.
-  // If series is specifies, set semesterId.semester to false and find series id using year, semesterCode, and series number from the url.
+  // Set seriesId from url.
+  // If series is not specified, set seriesId.semester to true and find semester id using year and semesterCode from the url.
+  // If series is specified, set seriesId.semester to false and find series id using year, semesterCode, and series number from the url.
+  const seriesId = useMemo(() => {
+    if (!semesterList.length) return -1
 
-  useEffect(() => {
     const {params} = router.query
 
-    const getIdFromUrl = (params: string | string[] | undefined): {semester: boolean; id: number} => {
-      if (params === undefined || params?.length === 0 || params?.length === 1) {
-        return {semester: false, id: currentSeriesId}
+    const getIdFromUrl = (params: string | string[] | undefined): number => {
+      if (params === undefined || params.length === 0 || params.length === 1) {
+        return currentSeriesId
       }
-      if (params?.length === 2) {
-        const year = getNumber(params[0])
-        let seasonCode = -1
-        let id = -1
 
-        if (params[1] === 'zima') {
-          seasonCode = 0
-        }
-        if (params[1] === 'leto') {
-          seasonCode = 1
-        }
+      // get year from the first URL param
+      const seriesYear = getNumber(params[0])
 
-        for (let i = 0; i < semesterList.length; i++) {
-          if (semesterList[i].year === year && semesterList[i].season_code === seasonCode) {
-            if (semesterList[i].series_set.length > 0) {
-              id = semesterList[i].series_set[0].id
-            }
+      // get season from the second URL param
+      let seasonCode = -1
+      if (params[1] === 'zima') seasonCode = 0
+      if (params[1] === 'leto') seasonCode = 1
+
+      const semester = semesterList.find(({year, season_code}) => year === seriesYear && season_code === seasonCode)
+
+      if (semester) {
+        if (params.length === 2) {
+          if (semester.series_set.length > 0) {
+            return semester.series_set[0].id
           }
         }
 
-        if (id === -1) {
-          return {semester: false, id: currentSeriesId}
-        } else {
-          return {semester: false, id: id}
-        }
-      }
-      if (params?.length >= 3) {
-        const year = getNumber(params[0])
-        let seasonCode = -1
-        let id = -1
+        if (params.length >= 3) {
+          // get series from the second URL param
+          const seriesOrder = getNumber(params[2])
+          const series = semester.series_set.find(({order}) => order === seriesOrder)
 
-        if (params[1] === 'zima') {
-          seasonCode = 0
-        }
-        if (params[1] === 'leto') {
-          seasonCode = 1
-        }
-
-        for (let i = 0; i < semesterList.length; i++) {
-          if (semesterList[i].year === year && semesterList[i].season_code === seasonCode) {
-            const order = getNumber(params[2])
-            for (let j = 0; j < semesterList[i].series_set.length; j++) {
-              if (semesterList[i].series_set[j].order === order) {
-                id = semesterList[i].series_set[j].id
-              }
-            }
-          }
-        }
-
-        if (id === -1) {
-          return {semester: false, id: currentSeriesId}
-        } else {
-          return {semester: false, id: id}
+          if (series) return series.id
         }
       }
 
-      return {semester: false, id: currentSeriesId}
+      return currentSeriesId
     }
 
-    setProblemsId(getIdFromUrl(params))
+    return getIdFromUrl(params)
   }, [router.query, semesterList, currentSeriesId])
 
-  // Set currentSeriesId from competition/semester/current/seminarId/ api point
+  // Update site title if seriesId changes
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<Series>(`/api/competition/series/current/` + seminarId)
-        setCurrentSeriesId(data.id)
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
+    if (!semesterList.length) return
+
+    for (const semester of semesterList) {
+      const series = semester.series_set.find(({id}) => id === seriesId)
+
+      if (series) {
+        setPageTitle(
+          `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester${
+            series.order ? ` - ${series.order}. séria` : ''
+          }`,
+        )
+        return
       }
     }
-    fetchData()
-  }, [seminarId])
+  }, [seriesId, semesterList, setPageTitle])
 
-  // Update site title if resultsId changes
+  const {data: seriesData, isLoading: seriesIsLoading} = useQuery(
+    ['competition', 'series', seriesId],
+    () => axios.get<Series>(`/api/competition/series/${seriesId}`),
+    {enabled: seriesId !== -1},
+  )
+  const series = seriesData?.data
+  const problems = series?.problems ?? []
+  const semesterId = series?.semester ?? -1
+  const canSubmit = series?.can_submit ?? false
+
+  const [overrideCanRegister, setOverrideCanRegister] = useState(false)
+  const [overrideIsRegistered, setOverrideIsRegistered] = useState(false)
+
+  const canRegister = (overrideCanRegister || (series?.can_participate && series?.can_submit)) ?? false
+  const isRegistered = (overrideIsRegistered || series?.is_registered) ?? false
+
+  const queryClient = useQueryClient()
+
+  // ked sa prihlasime alebo odhlasime, treba refetchnut semestre, lebo obsahuju aj user-specific data (can_submit, can_participate, is_registered)
+  // TODO: zvazit, ci to chceme presunut na ine (globalne) miesto, kde budeme invalidovat vsetky user-specific queries spolocne
   useEffect(() => {
-    let title = ''
+    queryClient.invalidateQueries({queryKey: ['competition', 'series']})
+    // nechceme manualne invalidovat, ked sa zmeni nieco ine ako `isAuthed`
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthed])
 
-    for (let i = 0; i < semesterList.length; i++) {
-      if (problemsId.semester === true) {
-        if (problemsId.id === semesterList[i].id) {
-          title =
-            '' +
-            semesterList[i].year +
-            '. ročník - ' +
-            (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
-            ' semester'
-        }
-      } else {
-        for (let j = 0; j < semesterList[i].series_set.length; j++) {
-          if (problemsId.id === semesterList[i].series_set[j].id) {
-            title =
-              '' +
-              semesterList[i].year +
-              '. ročník - ' +
-              (semesterList[i].season_code === 0 ? 'zimný' : 'letný') +
-              ' semester - ' +
-              semesterList[i].series_set[j].order +
-              '. séria'
-          }
-        }
-      }
-    }
-
-    setPageTitle(title)
-  }, [problemsId, semesterList, setPageTitle])
-
-  // Fetch problems from the api using series id
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<Series>('/api/competition/series/' + problemsId.id + '/')
-        setProblems(data.problems)
-        setSemesterId(data.semester)
-        setCanSubmit(data.can_submit)
-
-        if (!data.can_participate || !data.can_submit) {
-          setCanRegister(false)
-        } else {
-          setCanRegister(data.can_participate)
-        }
-        if (data.is_registered === null) {
-          setRegistered(false)
-        } else {
-          setRegistered(data.is_registered)
-        }
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    if (problemsId.id !== -1 && problemsId.semester === false) {
-      fetchData()
-    } else {
-      setProblems([])
-    }
-    // zbehni znovu ked sa isAuthed zmeni - competition/series/ID/ vracia ine data pre prihlaseneho usera
-  }, [problemsId, isAuthed])
-
-  const handleRegistrationToSemester = async (id: number) => {
-    // ToDo: check user details and use the following request to register the user to semester.
-    try {
+  const {mutate: registerToSemester} = useMutation({
+    mutationFn: async (id: number) => {
       await axios.post(`/api/competition/event/${id}/register`)
-    } catch (e: unknown) {
-      const ex = e as AxiosError
-      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-      console.log('Error while registering to semester: ', error)
-    }
-    setRegistered(true)
-  }
+    },
+    onSuccess: () => {
+      // refetch semestra, nech sa aktualizuje is_registered
+      queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
+    },
+  })
 
   return (
     <>
       <div className={styles.container}>
-        <Menu semesterList={semesterList} selectedId={problemsId} />
+        {(semesterListIsLoading || currentSeriesIsLoading || seriesIsLoading) && (
+          <div className={styles.loading}>
+            <CircularProgress color="inherit" />
+          </div>
+        )}
+        <Menu semesterList={semesterList} selectedSeriesId={seriesId} />
         {problems.map((problem) => (
           <Problem
             key={problem.id}
             problem={problem}
-            registered={registered}
+            registered={isRegistered}
             commentCount={commentCount[problem.id]}
             setDisplaySideContent={setDisplaySideContent}
             canRegister={canRegister}
@@ -359,39 +274,24 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         ))}
         <div className={styles.actions}>
           debug row:
-          <Button
-            onClick={() => {
-              setRegistered((prevState) => {
-                return !prevState
-              })
-            }}
-          >
-            Toggle registered: <span style={{color: '#A00'}}>{registered ? 'true' : 'false'}</span>
+          <Button onClick={() => setOverrideIsRegistered((prevState) => !prevState)}>
+            Toggle registered: <span style={{color: '#A00'}}>{isRegistered ? 'true' : 'false'}</span>
           </Button>
-          <Button
-            onClick={() => {
-              setCanRegister((prevState) => {
-                return !prevState
-              })
-            }}
-          >
+          <Button onClick={() => setOverrideCanRegister((prevState) => !prevState)}>
             Toggle canRegister: <span style={{color: '#A00'}}>{canRegister ? 'true' : 'false'}</span>
           </Button>
         </div>
       </div>
 
       <div className={styles.sideContainer}>
-        {!registered && canRegister && (
-          <div
-            onClick={() => {
-              handleRegistrationToSemester(semesterId)
-            }}
-            className={styles.registerButton}
-          >
+        {!isRegistered && canRegister ? (
+          <div onClick={() => registerToSemester(semesterId)} className={styles.registerButton}>
             Chcem riešiť!
           </div>
+        ) : (
+          // sideCointainer grid rata s tymto childom, aj ked prazdnym
+          <div />
         )}
-        {(registered || !canRegister) && <div />}
         {displaySideContent.type === 'discussion' && (
           <Discussion problemId={displaySideContent.problemId} problemNumber={displaySideContent.problemNumber} />
         )}
@@ -435,6 +335,7 @@ const UploadProblemForm: FC<{
       console.log(e)
       const ex = e as AxiosError
       const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
+      alert(error)
     }
   }
 
@@ -459,14 +360,10 @@ const UploadProblemForm: FC<{
   )
 }
 
-const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({
-  semesterList,
-  selectedId,
-}) => {
+const Menu: FC<{semesterList: SemesterList[]; selectedSeriesId: number}> = ({semesterList, selectedSeriesId}) => {
   const {seminar} = useSeminarInfo()
 
   let selectedSemesterId = -1
-  let selectedSeriesId = -1
 
   const dropdownSemesterList = semesterList.map((semester) => {
     return {
@@ -479,32 +376,18 @@ const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id
   let dropdownSeriesList: DropdownOption[] = []
 
   for (let i = 0; i < semesterList.length; i++) {
-    if (selectedId.semester === true && selectedId.id === semesterList[i].id) {
-      selectedSemesterId = selectedId.id
-      dropdownSeriesList = semesterList[i].series_set.map((series) => {
-        return {
-          id: series.id,
-          text: `${series.order}. séria`,
-          link: `/${seminar}/zadania/${semesterList[i].year}/${semesterList[i].season_code === 0 ? 'zima' : 'leto'}/${
-            series.order
-          }/`,
-        }
-      })
-    } else if (selectedId.semester === false) {
-      for (let j = 0; j < semesterList[i].series_set.length; j++) {
-        if (semesterList[i].series_set[j].id === selectedId.id) {
-          selectedSemesterId = semesterList[i].id
-          selectedSeriesId = selectedId.id
-          dropdownSeriesList = semesterList[i].series_set.map((series) => {
-            return {
-              id: series.id,
-              text: `${series.order}. séria`,
-              link: `/${seminar}/zadania/${semesterList[i].year}/${
-                semesterList[i].season_code === 0 ? 'zima' : 'leto'
-              }/${series.order}/`,
-            }
-          })
-        }
+    for (let j = 0; j < semesterList[i].series_set.length; j++) {
+      if (semesterList[i].series_set[j].id === selectedSeriesId) {
+        selectedSemesterId = semesterList[i].id
+        dropdownSeriesList = semesterList[i].series_set.map((series) => {
+          return {
+            id: series.id,
+            text: `${series.order}. séria`,
+            link: `/${seminar}/zadania/${semesterList[i].year}/${semesterList[i].season_code === 0 ? 'zima' : 'leto'}/${
+              series.order
+            }/`,
+          }
+        })
       }
     }
   }

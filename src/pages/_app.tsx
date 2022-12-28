@@ -1,6 +1,8 @@
 import '../index.scss'
 
 import {createTheme, ThemeProvider} from '@mui/material'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import {AppProps} from 'next/app'
 import Head from 'next/head'
 import {FC} from 'react'
@@ -15,6 +17,8 @@ const theme = createTheme({
   },
 })
 
+const queryClient = new QueryClient()
+
 const MyApp: FC<AppProps> = ({Component, pageProps}) => {
   return (
     <>
@@ -22,15 +26,18 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
         <title>React App</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <CookiesProvider>
-        <ProfileContainer.Provider>
-          <AuthContainer.Provider>
-            <ThemeProvider theme={theme}>
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </AuthContainer.Provider>
-        </ProfileContainer.Provider>
-      </CookiesProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <CookiesProvider>
+          <ProfileContainer.Provider>
+            <AuthContainer.Provider>
+              <ThemeProvider theme={theme}>
+                <Component {...pageProps} />
+              </ThemeProvider>
+            </AuthContainer.Provider>
+          </ProfileContainer.Provider>
+        </CookiesProvider>
+      </QueryClientProvider>
     </>
   )
 }

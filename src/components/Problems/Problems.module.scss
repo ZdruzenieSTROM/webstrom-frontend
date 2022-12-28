@@ -5,6 +5,13 @@
   padding-top: 80px;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  // vyska elementu je 40px. toto ho vytiahne vyssie do toho 80px bieleho miesta
+  margin-top: -40px;
+}
+
 .problem {
   padding: 20px;
 
@@ -34,22 +41,22 @@
   bottom: 2rem;
   right: 20px;
   width: calc(25vw - 40px);
+}
 
-  >.registerButton {
-    background-color: black;
-    color: white;
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    text-transform: uppercase;
-    font-size: .8rem;
-    font-style: italic;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
+.registerButton {
+  background-color: black;
+  color: white;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  text-transform: uppercase;
+  font-size: .8rem;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
 
