@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import NextLink from 'next/link'
 import {FC} from 'react'
 
 import styles from './Clickable.module.scss'
@@ -23,8 +24,8 @@ interface LinkProps {
 
 export const Link: FC<LinkProps> = ({children, href, disabled}) => {
   return (
-    <a href={href} className={clsx(styles.actionButton, disabled && styles.disabled)}>
+    <NextLink href={href} className={clsx(styles.actionButton, disabled && styles.disabled)}>
       {children}
-    </a>
+    </NextLink>
   )
 }

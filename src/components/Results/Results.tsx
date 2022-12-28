@@ -1,11 +1,11 @@
 import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
-import Link from 'next/link'
 import {useRouter} from 'next/router'
-import {FC, MouseEvent, useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
+import {Dropdown, DropdownOption} from '../Problems/Dropdown'
 import styles from './Results.module.scss'
 
 interface Registration {
@@ -329,13 +329,6 @@ export const Results: FC<ResultsProps> = ({setPageTitle}) => {
   )
 }
 
-// interfaces for dropdown menus
-interface DropdownOption {
-  id: number
-  text: string
-  link: string
-}
-
 const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id: number}}> = ({
   semesterList,
   selectedId,
@@ -393,40 +386,6 @@ const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id
     <div className={styles.menu}>
       <Dropdown title={'Séria'} selectedId={selectedSeriesId} options={dropdownSeriesList} />
       <Dropdown title={'Semester'} selectedId={selectedSemesterId} options={dropdownSemesterList} />
-    </div>
-  )
-}
-
-const Dropdown: FC<{title: string; selectedId: number; options: DropdownOption[]}> = ({title, selectedId, options}) => {
-  const [display, setDisplay] = useState(false)
-
-  const handleClick = (event: MouseEvent) => {
-    event.preventDefault()
-    setDisplay((prevDisplay) => {
-      return !prevDisplay
-    })
-  }
-
-  const handleMouseLeave = () => {
-    setDisplay(false)
-  }
-
-  return (
-    <div className={styles.dropdown} onClick={handleClick} onMouseLeave={handleMouseLeave}>
-      {title} <div className={styles.arrow} />
-      <div className={clsx(styles.options, display && styles.displayOptions)}>
-        {options.map((option) => {
-          return (
-            <Link href={option.link} key={option.id}>
-              <a>
-                <div className={clsx(styles.option, selectedId === option.id && styles.selectedOption)}>
-                  {option.text}
-                </div>
-              </a>
-            </Link>
-          )
-        })}
-      </div>
     </div>
   )
 }

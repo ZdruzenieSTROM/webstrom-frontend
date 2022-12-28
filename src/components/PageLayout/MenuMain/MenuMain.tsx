@@ -74,9 +74,7 @@ const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
 
   return (
     <div className={clsx(styles.menuItem, active && styles.active)}>
-      <Link href={url}>
-        <a>{caption}</a>
-      </Link>
+      <Link href={url}>{caption}</Link>
     </div>
   )
 }
