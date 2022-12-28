@@ -1,11 +1,8 @@
 export type Styles = {
-  actions: string
+  bottomAction: string
   container: string
-  loading: string
-  problem: string
-  problemTitle: string
-  registerButton: string
-  sideContainer: string
+  dropzone: string
+  files: string
 }
 
 export type ClassNames = keyof Styles

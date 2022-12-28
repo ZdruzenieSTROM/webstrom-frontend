@@ -29,8 +29,6 @@
 
 
 .sideContainer {
-  display: none;
-  position: absolute;
   margin: 1rem 0px;
   height: auto;
   display: grid;
@@ -57,43 +55,4 @@
   font-style: italic;
   font-weight: bold;
   margin-bottom: 1rem;
-}
-
-
-.dropzone {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 5rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #BBB;
-  background-color: #EEE;
-}
-
-.dropzone:hover {
-  background-color: #DDD;
-}
-
-.notPublished {
-  background-color: #EEE;
-}
-
-
-.menu {
-  position: fixed;
-  top: 5rem;
-  right: 0px;
-  width: 25vw;
-  height: 5rem;
-  z-index: 1000;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.problemSubmission {
-  border: 1px solid red;
 }

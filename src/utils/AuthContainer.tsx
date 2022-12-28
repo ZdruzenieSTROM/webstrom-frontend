@@ -26,13 +26,14 @@ const useAuth = () => {
     testAuthAndLogin()
 
     // interceptor pre auth
-    axios.interceptors.request.use((request) => {
+    axios.interceptors.request.use((config) => {
+      config.headers = config.headers ?? {}
       // auth pozostava z comba:
       // 1. `sessionid` httpOnly cookie ktoru nastavuje aj maze server pri login/logout
       // 2. tato CSRF hlavicka, ktora ma obsahovat cookie, ktoru nastavuje server
-      request.headers['X-CSRFToken'] = cookies.get('csrftoken')
+      config.headers['X-CSRFToken'] = cookies.get('csrftoken')
 
-      return request
+      return config
     })
 
     // one-time vec pri prvom nacitani stranky

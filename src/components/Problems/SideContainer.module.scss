@@ -1,12 +1,14 @@
-.sideContentContainer {
+.container {
   border: 8px solid black;
   background-color: white;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  // potrebne, aby sa dodrzali parent hranice komponentu, aj ked tu bude vela contentu.
+  // ratame s tym, ze si overflow ten content (napr. div s komentarmi) ohandli sam scrollbarom.
+  overflow: hidden;
 }
 
-.sideContentContainer > div.title {
+.title {
   background-color: black;
   color: white;
   font-weight: bold;

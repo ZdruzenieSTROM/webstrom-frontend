@@ -1,6 +1,5 @@
 export type Styles = {
-  container: string
-  title: string
+  menu: string
 }
 
 export type ClassNames = keyof Styles
