@@ -145,6 +145,8 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
   const semesterList = useMemo(() => semesterListData?.data || [], [semesterListData])
 
+  // z tejto query sa vyuziva len `currentSeriesId` a len vtedy, ked nemame uplnu URL
+  // - napr. prideme na `/zadania` cez menu, nie na `/zadania/44/leto/2`
   const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery(
     ['competition', 'series', 'current', seminarId],
     () => axios.get<Series>(`/api/competition/series/current/` + seminarId),
