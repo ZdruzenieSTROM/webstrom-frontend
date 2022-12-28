@@ -214,10 +214,6 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     }
   }, [seriesId, semesterList, setPageTitle])
 
-  useEffect(() => {
-    // TODO: refetch competition/series/ID/ - vracia to ine data pre prihlaseneho usera
-  }, [isAuthed])
-
   const {data: seriesData, isLoading: seriesIsLoading} = useQuery(
     ['competition', 'series', seriesId],
     () => axios.get<Series>(`/api/competition/series/${seriesId}`),
@@ -235,6 +231,14 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const isRegistered = (overrideIsRegistered || series?.is_registered) ?? false
 
   const queryClient = useQueryClient()
+
+  // ked sa prihlasime alebo odhlasime, treba refetchnut semestre, lebo obsahuju aj user-specific data (can_submit, can_participate, is_registered)
+  // TODO: zvazit, ci to chceme presunut na ine (globalne) miesto, kde budeme invalidovat vsetky user-specific queries spolocne
+  useEffect(() => {
+    queryClient.invalidateQueries({queryKey: ['competition', 'series']})
+    // nechceme manualne invalidovat, ked sa zmeni nieco ine ako `isAuthed`
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthed])
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: async (id: number) => {
