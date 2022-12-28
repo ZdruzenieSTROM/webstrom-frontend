@@ -39,7 +39,7 @@ export const SemesterPicker: FC<{semesterList: SemesterList[]; selectedSeriesId:
     return {
       id: semester.id,
       text: `${semester.year}. Ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
-      link: `/${seminar}/zadania/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/`,
+      link: `/${seminar}/zadania/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
     }
   })
 
@@ -55,7 +55,7 @@ export const SemesterPicker: FC<{semesterList: SemesterList[]; selectedSeriesId:
             text: `${series.order}. séria`,
             link: `/${seminar}/zadania/${semesterList[i].year}/${semesterList[i].season_code === 0 ? 'zima' : 'leto'}/${
               series.order
-            }/`,
+            }`,
           }
         })
       }

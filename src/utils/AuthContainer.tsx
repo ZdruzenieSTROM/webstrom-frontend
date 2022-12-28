@@ -99,7 +99,7 @@ const useAuth = () => {
   const logout = async () => {
     // Funkcia, ktorá zavolá logout API point, ktorý zmaže token na BE a odstráni sessionid cookie.
     try {
-      await axios.post('/api/user/logout/')
+      await axios.post('/api/user/logout')
     } catch (e: unknown) {
       const ex = e as AxiosError
       const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'

@@ -24,7 +24,7 @@ export const Posts: FC<{seminarId: number}> = ({seminarId}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const {data} = await axios.get<IPost[]>('/api/cms/post/visible/', {
+        const {data} = await axios.get<IPost[]>('/api/cms/post/visible', {
           headers: {
             'Content-type': 'application/json',
           },

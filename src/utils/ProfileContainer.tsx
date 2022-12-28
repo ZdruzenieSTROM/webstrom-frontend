@@ -12,7 +12,7 @@ const useProfile = () => {
 
   const fetchProfile = async () => {
     try {
-      const {data} = await profileAxios.get<Profile>(`/api/personal/profiles/myprofile/`)
+      const {data} = await profileAxios.get<Profile>(`/api/personal/profiles/myprofile`)
       setProfile(data)
       return true
     } catch (e: unknown) {

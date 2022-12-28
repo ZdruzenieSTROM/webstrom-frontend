@@ -56,9 +56,9 @@ const Problem: FC<{
       <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
       <Latex>{problem.text}</Latex>
       <div className={styles.actions}>
-        {registered ? <Link href={`/api/competition/problem/${problem.id}/my-solution/`}>moje riešenie</Link> : <></>}
+        {registered ? <Link href={`/api/competition/problem/${problem.id}/my-solution`}>moje riešenie</Link> : <></>}
         {registered ? (
-          <Link href={`/api/competition/problem/${problem.id}/corrected-solution/`}>
+          <Link href={`/api/competition/problem/${problem.id}/corrected-solution`}>
             opravené riešenie ({problem.submitted?.score || '?'})
           </Link>
         ) : (

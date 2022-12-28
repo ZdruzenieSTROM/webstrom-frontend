@@ -81,7 +81,7 @@ export const competitionBasedGetServerSideProps = (
 
     try {
       const {data} = await axios.get<OurCompetition | undefined>(
-        `${process.env.NEXT_PUBLIC_BE_URL}/competition/competition/${requestedUrl}/`,
+        `${process.env.NEXT_PUBLIC_BE_URL}/competition/competition/${requestedUrl}`,
       )
       if (!data) return redirectToSeminar
 

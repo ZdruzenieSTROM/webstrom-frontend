@@ -28,7 +28,7 @@ export const seminarBasedGetServerSideProps = (seminar: Seminar): GetServerSideP
   if (query?.page && typeof query.page === 'string') {
     const requestedUrl = query.page
     const {data} = await axios.get<FlatPage | undefined>(
-      `${process.env.NEXT_PUBLIC_BE_URL}/base/flat-page/by-url/${requestedUrl}/`,
+      `${process.env.NEXT_PUBLIC_BE_URL}/base/flat-page/by-url/${requestedUrl}`,
     )
     // ked stranka neexistuje, vrati sa `content: ""`. teraz renderujeme stranku len ked je content neprazdny a server rovno vrati redirect.
     // druha moznost by bola nechat prazdny content handlovat clienta - napriklad zobrazit custom error, ale nechat usera na neplatnej stranke.
