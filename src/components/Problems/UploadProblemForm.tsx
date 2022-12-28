@@ -26,7 +26,7 @@ export const UploadProblemForm: FC<{
     formData.append('file', acceptedFiles[0])
 
     try {
-      const response = await axios.post(`/api/competition/problem/${problemId}/upload-solution/`, formData)
+      const response = await axios.post(`/api/competition/problem/${problemId}/upload-solution`, formData)
       if (response.status === 201) {
         setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
         console.log('file uploaded') // ToDo: remove log() and let user know the response! message system? or something else?
@@ -42,18 +42,22 @@ export const UploadProblemForm: FC<{
 
   return (
     <SideContainer title={'Odovzdať úlohu - ' + problemNumber}>
-      <div {...getRootProps({className: styles.dropzone})}>
-        <input {...getInputProps()} />
-        <p>DROP pdf</p>
-      </div>
-      <h4>Files</h4>
-      {acceptedFiles[0]?.name && (
-        <span>
-          {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
-        </span>
-      )}
-      <div className={styles.bottomAction}>
-        <Button onClick={handleSubmit}>Odovzdať</Button>
+      <div className={styles.container}>
+        <div {...getRootProps({className: styles.dropzone})}>
+          <input {...getInputProps()} />
+          <p>DROP PDF</p>
+        </div>
+        <div className={styles.files}>
+          <h4>Súbor:</h4>
+          {acceptedFiles[0]?.name && (
+            <span>
+              {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
+            </span>
+          )}
+        </div>
+        <div className={styles.bottomAction}>
+          <Button onClick={handleSubmit}>Odovzdať</Button>
+        </div>
       </div>
     </SideContainer>
   )

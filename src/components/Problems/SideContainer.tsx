@@ -4,7 +4,7 @@ import styles from './SideContainer.module.scss'
 
 export const SideContainer: FC<{title: string}> = ({title, children}) => {
   return (
-    <aside className={styles.sideContentContainer}>
+    <aside className={styles.container}>
       <div className={styles.title}>{title}</div>
       {children}
     </aside>

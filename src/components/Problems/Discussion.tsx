@@ -142,7 +142,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
 
   return (
     <SideContainer title={'Diskusia - úloha ' + problemNumber}>
-      <div className={styles.discussionBox}>
+      <div className={styles.container}>
         <div className={styles.comments}>
           {/* ToDo: replace by loading component that does not exist yet */}
           {/* {loading && <div>Loading...</div>} */}

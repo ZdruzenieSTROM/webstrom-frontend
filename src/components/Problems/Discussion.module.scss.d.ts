@@ -2,7 +2,7 @@ export type Styles = {
   comment: string
   commentActions: string
   comments: string
-  discussionBox: string
+  container: string
   notPublished: string
   textArea: string
   title: string

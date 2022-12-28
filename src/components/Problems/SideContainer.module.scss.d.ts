@@ -1,5 +1,5 @@
 export type Styles = {
-  sideContentContainer: string
+  container: string
   title: string
 }
 
