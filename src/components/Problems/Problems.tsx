@@ -283,8 +283,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getNumber = (n: any) => {
+const getNumber = (n: string) => {
   if (Number.isNaN(Number(n))) {
     return -1
   } else {
