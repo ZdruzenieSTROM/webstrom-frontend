@@ -32,12 +32,12 @@ export const Dropdown: FC<{title: string; selectedId: number; options: DropdownO
       <div className={clsx(styles.options, display && styles.displayOptions)}>
         {options.map((option) => {
           return (
-            <Link href={option.link} key={option.id}>
-              <a>
-                <div className={clsx(styles.option, selectedId === option.id && styles.selectedOption)}>
-                  {option.text}
-                </div>
-              </a>
+            <Link
+              href={option.link}
+              key={option.id}
+              className={clsx(styles.option, selectedId === option.id && styles.selectedOption)}
+            >
+              {option.text}
             </Link>
           )
         })}

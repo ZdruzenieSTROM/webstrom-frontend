@@ -22,11 +22,7 @@ export const Authentication: FC = () => {
     return (
       <>
         <div className={styles.authenticationDisplayButtons}>
-          <Link href={`/${seminar}/registracia`}>
-            <a>
-              <span>Registrovať</span>
-            </a>
-          </Link>
+          <Link href={`/${seminar}/registracia`}>Registrovať</Link>
           <span onClick={toggleDisplayLoginOverlay}>Prihlásiť</span>
         </div>
         <Overlay display={displayAuthenticationOverlay} closeOverlay={toggleDisplayLoginOverlay}>
