@@ -341,7 +341,7 @@ module.exports = {
 
     // SCSS types use default exports
     {
-      files: ['src/**/*.module.scss.d.ts'],
+      files: ['src/index.scss.d.ts', 'src/**/*.module.scss.d.ts'],
       rules: {
         'import/no-default-export': 'off',
       },
