@@ -1,5 +1,5 @@
 import {CircularProgress} from '@mui/material'
-import {useMutation, useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
@@ -214,9 +214,6 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     }
   }, [seriesId, semesterList, setPageTitle])
 
-  const [overrideCanRegister, setOverrideCanRegister] = useState(false)
-  const [overrideIsRegistered, setOverrideIsRegistered] = useState(false)
-
   useEffect(() => {
     // TODO: refetch competition/series/ID/ - vracia to ine data pre prihlaseneho usera
   }, [isAuthed])
@@ -231,16 +228,21 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
 
+  const [overrideCanRegister, setOverrideCanRegister] = useState(false)
+  const [overrideIsRegistered, setOverrideIsRegistered] = useState(false)
+
   const canRegister = (overrideCanRegister || (series?.can_participate && series?.can_submit)) ?? false
   const isRegistered = (overrideIsRegistered || series?.is_registered) ?? false
+
+  const queryClient = useQueryClient()
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: async (id: number) => {
       await axios.post(`/api/competition/event/${id}/register`)
     },
     onSuccess: () => {
-      // TODO: rather than setting this ourselves we could refetch the semester info with this data
-      setOverrideIsRegistered(true)
+      // refetch semestra, nech sa aktualizuje is_registered
+      queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
     },
   })
 
