@@ -10,7 +10,7 @@ export const VerifyEmail: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await axios.post('/api/user/registration/verify-email/', {key: verificationKey})
+        const data = await axios.post('/api/user/registration/verify-email', {key: verificationKey})
         const response =
           data.status === 200 ? 'Email successfully verified' : 'An unexpected response status code has occurred'
         setResponse(response)

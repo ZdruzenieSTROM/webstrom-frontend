@@ -198,7 +198,7 @@ export const Results: FC<ResultsProps> = ({setPageTitle}) => {
     const fetchData = async () => {
       try {
         const {data} = await axios.get<Result[]>(
-          '/api/competition/' + (resultsId.semester === true ? 'semester/' : 'series/') + resultsId.id + '/results/',
+          '/api/competition/' + (resultsId.semester === true ? 'semester/' : 'series/') + resultsId.id + '/results',
           {
             headers: {
               'Content-type': 'application/json',
@@ -352,7 +352,7 @@ const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id
     return {
       id: semester.id,
       text: `${semester.year}. Ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
-      link: `/${seminar}/vysledky/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/`,
+      link: `/${seminar}/vysledky/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
     }
   })
 
@@ -367,7 +367,7 @@ const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id
           text: `${series.order}. séria`,
           link: `/${seminar}/vysledky/${semesterList[i].year}/${semesterList[i].season_code === 0 ? 'zima' : 'leto'}/${
             series.order
-          }/`,
+          }`,
         }
       })
     } else if (selectedId.semester === false) {
@@ -381,7 +381,7 @@ const Menu: FC<{semesterList: SemesterList[]; selectedId: {semester: boolean; id
               text: `${series.order}. séria`,
               link: `/${seminar}/vysledky/${semesterList[i].year}/${
                 semesterList[i].season_code === 0 ? 'zima' : 'leto'
-              }/${series.order}/`,
+              }/${series.order}`,
             }
           })
         }

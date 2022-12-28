@@ -30,7 +30,7 @@ export const MenuMain: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const {data} = await axios.get<MenuItemInterface[]>(`/api/cms/menu-item/on-site/${seminarId}/`)
+        const {data} = await axios.get<MenuItemInterface[]>(`/api/cms/menu-item/on-site/${seminarId}`)
         setMenuItems(data)
       } catch {
         return

@@ -32,7 +32,7 @@ const PublicationButton: FC<{
   publicationId: number
   publicationName: string
 }> = ({publicationId, publicationName}) => {
-  return <Link href={`/api/competition/publication/${publicationId}/download/`}>{publicationName}</Link>
+  return <Link href={`/api/competition/publication/${publicationId}/download`}>{publicationName}</Link>
 }
 
 const ResultsButton: FC<{

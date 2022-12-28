@@ -79,7 +79,7 @@ export const RegisterForm: FC = () => {
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   useEffect(() => {
     const fetchData = async () => {
-      const grades = await axios.get<IGrade[]>(`/api/competition/grade/`)
+      const grades = await axios.get<IGrade[]>(`/api/competition/grade`)
       setGradeItems(grades.data.map(({id, name}) => ({id, label: name})))
     }
     fetchData()
@@ -99,7 +99,7 @@ export const RegisterForm: FC = () => {
   // načítanie krajov z BE, ktorými vyplníme FormSelect s krajmi
   useEffect(() => {
     const fetchData = async () => {
-      const counties = await axios.get<ICounty[]>(`/api/personal/counties/`)
+      const counties = await axios.get<ICounty[]>(`/api/personal/counties`)
       setCountyItems(counties.data.map(({code, name}) => ({id: code, label: name})))
     }
     fetchData()
@@ -189,7 +189,7 @@ export const RegisterForm: FC = () => {
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     try {
-      const response = await axios.post<IGeneralPostResponse>(`/api/user/registration/`, transformFormData(data))
+      const response = await axios.post<IGeneralPostResponse>(`/api/user/registration`, transformFormData(data))
       setSuccessfulRegistration(response.data.detail)
     } catch (error: unknown) {
       // TODO: error handling
