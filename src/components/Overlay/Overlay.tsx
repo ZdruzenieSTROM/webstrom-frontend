@@ -1,10 +1,11 @@
-import {FC, MouseEvent} from 'react'
+import {FC, MouseEvent, ReactNode} from 'react'
 
 import styles from './Overlay.module.scss'
 
 interface OverlayProps {
   display: boolean
   closeOverlay: () => void
+  children: ReactNode
 }
 
 export const Overlay: FC<OverlayProps> = ({children, display, closeOverlay}) => {

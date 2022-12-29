@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import {FC} from 'react'
+import {FC, ReactNode} from 'react'
 
 import {Banner} from './Banner/Banner'
 import {Footer} from './Footer/Footer'
@@ -11,6 +11,7 @@ import {StromLogo} from './StromLogo/StromLogo'
 type PageLayoutProps = {
   contentWidth?: number
   title?: string
+  children: ReactNode
 }
 
 // pre pouzitie len na seminarovych strankach a podstrankach - `/matik(/*)`

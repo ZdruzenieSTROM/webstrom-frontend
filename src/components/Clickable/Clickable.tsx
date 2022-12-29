@@ -1,12 +1,13 @@
 import clsx from 'clsx'
 import NextLink from 'next/link'
-import {FC} from 'react'
+import {FC, ReactNode} from 'react'
 
 import styles from './Clickable.module.scss'
 
 interface ButtonProps {
   onClick?: () => void
   disabled?: boolean
+  children: ReactNode
 }
 
 export const Button: FC<ButtonProps> = ({children, onClick, disabled}) => {
@@ -20,6 +21,7 @@ export const Button: FC<ButtonProps> = ({children, onClick, disabled}) => {
 interface LinkProps {
   href: string
   disabled?: boolean
+  children: ReactNode
 }
 
 export const Link: FC<LinkProps> = ({children, href, disabled}) => {
