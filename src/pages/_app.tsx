@@ -3,7 +3,7 @@ import '../index.scss'
 import {createTheme, ThemeProvider} from '@mui/material'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
-import axios from 'axios'
+import {isAxiosError} from 'axios'
 import {AppProps} from 'next/app'
 import Head from 'next/head'
 import {FC} from 'react'
@@ -22,7 +22,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     mutations: {
       onError: (error) => {
-        if (axios.isAxiosError(error)) {
+        if (isAxiosError(error)) {
           alert(error.response?.data.detail || error)
         } else {
           alert(error)

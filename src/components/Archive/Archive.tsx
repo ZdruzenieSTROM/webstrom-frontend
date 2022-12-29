@@ -2,30 +2,19 @@ import {Table, TableCell, TableRow} from '@mui/material'
 import axios, {AxiosError} from 'axios'
 import {FC, useEffect, useState} from 'react'
 
+import {Event, Publication} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Link} from '../Clickable/Clickable'
 
-interface Publication {
-  id: number
+// TODO: check whether we can safely assume presence of these and either update it on BE so it gets generated that way, or update it in our `types/api/competition`
+type MyPublication = Publication & {
   name: string
-  file: any
-  event: string
 }
-
-interface Event {
-  id: number
-  can_participate: any
-  is_registered: any
-  publication_set: Publication[]
-  registration_link: any
+type MyEvent = Omit<Event, 'publication_set'> & {
   year: number
   school_year: string
-  season_code: number
-  start: string
-  end: string
-  additional_name: string | null
-  competition: string | null
+  publication_set: MyPublication[]
 }
 
 const PublicationButton: FC<{
@@ -59,13 +48,13 @@ export const Archive: FC = () => {
   const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  const [eventList, setEventList] = useState<Event[]>([])
+  const [eventList, setEventList] = useState<MyEvent[]>([])
 
   // get list of events from the api
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const {data} = await axios.get<Event[]>(`/api/competition/event/?competition=${seminarId}`)
+        const {data} = await axios.get<MyEvent[]>(`/api/competition/event/?competition=${seminarId}`)
         setEventList(data)
       } catch (e: unknown) {
         const ex = e as AxiosError

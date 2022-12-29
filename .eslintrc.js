@@ -84,7 +84,6 @@ module.exports = {
 
     // Detect common patterns that can lead to security issues
     'plugin:security/recommended',
-    'plugin:security-node/recommended',
 
     // Run Prettier as an ESLint plugin (not separately after ESLint)
     'plugin:prettier/recommended',
