@@ -11,6 +11,7 @@ const MathComponent = dynamic<MathComponentProps>(
 )
 
 // toto je regex, ktory matchuje LaTeX matematiku: $$.$$ \[.\] $.$ \(.\)
+// eslint-disable-next-line security/detect-unsafe-regex
 const re = /((?<!(\\|\$))\$(?!\$).+?(?<!(\\|\$))\$(?!\$))|(\$\$.+?\$\$)|(\\\[.+?\\\])|(\\\(.+?\\\))/gsu
 
 const trim = (str: string) => {

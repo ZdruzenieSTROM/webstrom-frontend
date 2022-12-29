@@ -84,10 +84,12 @@ module.exports = {
 
     // Detect common patterns that can lead to security issues
     'plugin:security/recommended',
-    'plugin:security-node/recommended',
 
     // Run Prettier as an ESLint plugin (not separately after ESLint)
     'plugin:prettier/recommended',
+
+    // @tanstack/react-query recommended rules: https://tanstack.com/query/v4/docs/react/eslint/eslint-plugin-query
+    'plugin:@tanstack/eslint-plugin-query/recommended',
 
     // React-specific rules - not needed, included in 'next'
     // 'plugin:react/recommended',
@@ -341,9 +343,17 @@ module.exports = {
 
     // SCSS types use default exports
     {
-      files: ['src/**/*.module.scss.d.ts'],
+      files: ['src/index.scss.d.ts', 'src/**/*.module.scss.d.ts'],
       rules: {
         'import/no-default-export': 'off',
+      },
+    },
+
+    // generated types contain many `any`s
+    {
+      files: ['src/types/api/generated/**/*.ts'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
       },
     },
   ],
