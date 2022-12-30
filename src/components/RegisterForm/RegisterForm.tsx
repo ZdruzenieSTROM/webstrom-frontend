@@ -11,6 +11,8 @@ import {IGrade} from '@/types/api/competition'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {ICounty, IDistrict, ISchool} from '@/types/api/personal'
 
+import {Button} from '../Clickable/Clickable'
+
 type RegisterFormValues = {
   email?: string
   password1?: string
@@ -344,9 +346,7 @@ export const RegisterForm: FC = () => {
             }}
             fieldError={errors.gdpr}
           />
-          <button type="submit">
-            <span className={styles.underline}>Registrovať</span>
-          </button>
+          <Button type="submit">Registrovať</Button>
         </form>
       )}
     </div>

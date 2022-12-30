@@ -2,19 +2,8 @@
   display: grid;
   gap: 1rem 0;
 
-  > button {
-    background-color: white;
-    border: none;
-    cursor: pointer;
-    padding: 5px 0px;
+  >button {
     font-size: 1.2rem;
-    font-weight: bold;
-    text-transform: uppercase;
     justify-self: center;
-  }
-
-  span.underline {
-    border-bottom: 4px solid black;
-    padding-bottom: 1px;
   }
 }

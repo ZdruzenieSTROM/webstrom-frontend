@@ -57,9 +57,7 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
         rules={requiredRule}
         fieldError={errors.password}
       />
-      <button type="submit">
-        <Button>Prihlásiť</Button>
-      </button>
+      <Button type="submit">Prihlásiť</Button>
     </form>
   )
 }
