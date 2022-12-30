@@ -31,8 +31,10 @@ interface LinkProps {
 }
 
 export const Link: FC<LinkProps> = ({children, href, disabled}) => {
-  return (
-    <NextLink href={href} className={clsx(styles.actionButton, disabled && styles.disabled)}>
+  return disabled ? (
+    <span className={clsx(styles.actionButton, styles.disabled)}>{children}</span>
+  ) : (
+    <NextLink href={href} className={clsx(styles.actionButton)}>
       {children}
     </NextLink>
   )
