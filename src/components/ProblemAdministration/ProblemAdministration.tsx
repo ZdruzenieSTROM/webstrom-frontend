@@ -2,8 +2,9 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
 import {useRouter} from 'next/router'
-import {createRef, FC, Fragment, useEffect, useState} from 'react'
+import React, {createRef, FC, Fragment, useCallback, useEffect, useState} from 'react'
 import {FormInput} from 'react-admin'
+import {useDropzone} from 'react-dropzone'
 
 import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competition'
 
@@ -21,20 +22,6 @@ export const ProblemAdministration: FC<{problemId: number}> = ({problemId}) => {
   useEffect(() => {
     setSolutions(problemData?.data?.solution_set)
   }, [problemData])
-  // const handleZipSubmit = async () => {
-  //   const formData = new FormData()
-  //   formData.append('file', acceptedFiles[0])
-
-  //   try {
-  //     const response = await axios.post(`/api/competition/problem/${problemId}/upload-corrected/`, formData)
-  //     if (response.status === 201) {
-  //       console.log('file uploaded') // ToDo: remove log() and let user know the response! message system? or something else?
-  //     }
-  //   } catch (e: unknown) {
-  //     const ex = e as AxiosError
-  //     const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-  //   }
-  // }
 
   const handleSavePoints = () => {
     const data = problemData?.data?.solution_set
@@ -50,13 +37,28 @@ export const ProblemAdministration: FC<{problemId: number}> = ({problemId}) => {
     setSolutions(data)
   }
 
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      const formData = new FormData()
+      formData.append('file', acceptedFiles[0])
+      const response = axios.post(`/competition/problem/${problemId}/corrected-solution/`, formData)
+      removeCachedProblem()
+    },
+    [problemId],
+  )
+
+  const {getRootProps, getInputProps} = useDropzone({onDrop})
+
   return (
     <>
       <h2>Opravovanie {problemData?.data?.order}. úlohy</h2>
       <Latex>{problemData?.data?.text ?? 'Načítavam...'}</Latex>
       <div className={styles.actions}>
-        <Button>Nahrať opravené riešenia</Button>
         <Link href={`/api/competition/problem/${problemId}/download-solutions/`}>Stiahnuť riešenia</Link>
+      </div>
+      <div {...getRootProps({className: styles.dropzone})}>
+        <input {...getInputProps()} />
+        <p>Vlož opravené riešenia</p>
       </div>
       <div>Opravovatelia: </div>
       <div>Najkrajšie riešenia:</div>
