@@ -1,13 +1,9 @@
 import axios, {AxiosError} from 'axios'
-import clsx from 'clsx'
-import Link from 'next/Link'
-import {useRouter} from 'next/router'
-import {FC, Fragment, useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 
 import {SeriesWithProblems} from '@/types/api/generated/competition'
 
-import {Latex} from '../Latex/Latex'
-import styles from '../Problems/Problems.module.scss'
+import {Link} from '../Clickable/Clickable'
 
 export const SeriesAdministration: FC<{seriesIdInitial: number}> = ({seriesIdInitial}) => {
   const [seriesId, setSeriesId] = useState(seriesIdInitial)
@@ -34,22 +30,11 @@ export const SeriesAdministration: FC<{seriesIdInitial: number}> = ({seriesIdIni
           return (
             <>
               Úloha {problem.order}
-              <CorrectionLink problemId={problem.id} />
+              <Link href={`../opravit-ulohu/${problem.id}`} />
             </>
           )
         })}
       </div>
     </>
-  )
-}
-
-const CorrectionLink: FC<{problemId: number}> = ({problemId}) => {
-  const active = `../opravit-ulohu/${problemId}`
-  return (
-    <div className={clsx(styles.actionButton)}>
-      <Link href={active}>
-        <a>Opravovanie</a>
-      </Link>
-    </div>
   )
 }
