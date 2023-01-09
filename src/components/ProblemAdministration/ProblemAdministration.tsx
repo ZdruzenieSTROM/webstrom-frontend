@@ -60,9 +60,15 @@ export const ProblemAdministration: FC<{problemId: number}> = ({problemId}) => {
         <input {...getInputProps()} />
         <p>Vlož opravené riešenia</p>
       </div>
-      <div>Opravovatelia: </div>
-      <div>Najkrajšie riešenia:</div>
       <form>
+        <div>
+          Opravovatelia: <input type="text" />
+        </div>
+        <div>
+          Najkrajšie riešenia:
+          <input type="text" />
+        </div>
+
         <table>
           <tr>
             <th>Riešiteľ</th>
