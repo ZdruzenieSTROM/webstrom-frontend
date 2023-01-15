@@ -28,8 +28,8 @@ export const ProblemAdministration: FC<{problemId: number}> = ({problemId}) => {
     const response = axios.post(`/api/competition/problem-administration/${problemId}/upload-points`, {
       solution_set: data,
     })
-    removeCachedProblem()
     setSolutions(data)
+    removeCachedProblem()
   }
   const updatePoints = (index: number, newPoints: number) => {
     const data = [...(solutions ?? [])]
