@@ -1,11 +1,11 @@
 import {NextPage} from 'next'
 
 import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {SeriesAdministration as SeriesAdministrationComponent} from '@/components/SeriesAdministration/SeriesAdministration'
+import {SemesterAdministration as SemesterAdministrationComponent} from '@/components/SemesterAdministration/SemesterAdministration'
 
 const Matboj: NextPage = () => (
   <PageLayout contentWidth={2} title="Opravovanie série">
-    <SeriesAdministrationComponent seriesIdInitial={1} />
+    <SemesterAdministrationComponent semesterIdInitial={1} />
   </PageLayout>
 )
 

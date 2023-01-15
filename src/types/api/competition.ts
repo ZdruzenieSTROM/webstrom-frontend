@@ -117,6 +117,7 @@ export interface ProblemWithSolutions {
   solution_set: SolutionAdministration[]
   text?: string
   order?: number
+  correction?: ProblemCorrection
 }
 
 export interface Series {
