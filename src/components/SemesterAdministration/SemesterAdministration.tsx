@@ -1,5 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
+import {useRouter} from 'next/router'
 import {FC, useEffect, useRef, useState} from 'react'
 
 import {SemesterWithProblems, SeriesWithProblems} from '@/types/api/generated/competition'
@@ -8,8 +9,24 @@ import {Button, Link} from '../Clickable/Clickable'
 import styles from '../Problems/Problems.module.scss'
 import {Result} from '../Results/Results'
 
-export const SemesterAdministration: FC<{semesterIdInitial: number}> = ({semesterIdInitial}) => {
-  const [semesterId, setSemesterId] = useState(semesterIdInitial)
+interface PostalCard {
+  code: number
+  name: string
+  abbreviation: string
+  street: string
+  city: string
+  zip_code: string
+  email: string
+}
+
+export const SemesterAdministration: FC = () => {
+  const router = useRouter()
+  const {params} = router.query
+  const [semesterId, setSemesterId] = useState(params ? params[0] : 1)
+  useEffect(() => {
+    const {params} = router.query
+    setSemesterId(params ? params[0] : 1)
+  }, [router.query])
   const [textareaContent, setTextareaContent] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -43,23 +60,14 @@ export const SemesterAdministration: FC<{semesterIdInitial: number}> = ({semeste
     )
   }
 
-  interface PostalCard {
-    code: number
-    name: string
-    abbreviation: string
-    street: string
-    city: string
-    zip_code: string
-    email: string
-  }
-
-  const getPostalCards = async () => {
-    const {data} = await axios.get<PostalCard[]>(`/api/competition/semester/${semesterId}/schools`)
-    setTextareaContent('')
+  const getPostalCards = async (offline_only: boolean) => {
+    const {data} = await axios.get<PostalCard[]>(
+      `/api/competition/semester/${semesterId}/${offline_only ? 'offline-schools' : 'schools'}`,
+    )
     setTextareaContent(
       data
         .map((result: PostalCard) => {
-          return `\\stitok{` + result.name + `}{${result.city}}{${result.zip_code}}{${result.street}}`
+          return `\\stitok{${result.name}}{${result.city}}{${result.zip_code}}{${result.street}}`
         })
         .join('\n'),
     )
@@ -73,19 +81,13 @@ export const SemesterAdministration: FC<{semesterIdInitial: number}> = ({semeste
       Administrácia semestra pre opravovateľov.
       <div className={styles.actions}>
         <Button onClick={getSemesterResults}>Poradie série</Button>
-        <Button>Pozvánky pre školy</Button>
-        <Button>Pozvánky pre účastníkov</Button>
-      </div>
-      <div className={styles.actions}>
-        <Button onClick={getPostalCards}>Štítky na školy</Button>
-        <Button>Štítky na školy (iba papierové riešenia)</Button>
+        <Button onClick={() => getPostalCards(false)}>Štítky na školy</Button>
+        <Button onClick={() => getPostalCards(true)}>Štítky na školy (iba papierové riešenia)</Button>
         <Button>Zoznam riešiteľov</Button>
       </div>
       {textareaContent ? (
         <div>
-          <textarea ref={textareaRef} cols={100} rows={10}>
-            {textareaContent}
-          </textarea>
+          <textarea ref={textareaRef} cols={100} rows={10} value={textareaContent} readOnly />
           <div className={styles.actions}>
             <Button
               onClick={() => {

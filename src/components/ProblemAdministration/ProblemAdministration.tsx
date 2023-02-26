@@ -1,3 +1,4 @@
+import {} from '@mui/icons-material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import clsx from 'clsx'
@@ -12,7 +13,14 @@ import {Button, Link} from '../Clickable/Clickable'
 import {Latex} from '../Latex/Latex'
 import styles from '../Problems/Problems.module.scss'
 
-export const ProblemAdministration: FC<{problemId: number}> = ({problemId}) => {
+export const ProblemAdministration: FC = () => {
+  const router = useRouter()
+  const {params} = router.query
+  const [problemId, setProblemId] = useState(params ? params[0] : 1)
+  useEffect(() => {
+    const {params} = router.query
+    setProblemId(params ? params[0] : 1)
+  }, [router.query])
   const {data: problemData, isLoading: problemIsLoading, remove: removeCachedProblem} = useQuery(
     ['competition', 'problem-administration', problemId],
     () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}/`),
@@ -52,6 +60,7 @@ export const ProblemAdministration: FC<{problemId: number}> = ({problemId}) => {
   return (
     <>
       <h2>Opravovanie {problemData?.data?.order}. úlohy</h2>
+      <Link href={`/strom/opravovanie/1`}>Späť na semester</Link>
       <Latex>{problemData?.data?.text ?? 'Načítavam...'}</Latex>
       <div className={styles.actions}>
         <Link href={`/api/competition/problem/${problemId}/download-solutions/`}>Stiahnuť riešenia</Link>

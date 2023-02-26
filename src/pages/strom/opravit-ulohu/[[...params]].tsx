@@ -5,7 +5,7 @@ import {ProblemAdministration as ProblemAdministrationComponent} from '@/compone
 
 const Matboj: NextPage = () => (
   <PageLayout contentWidth={2} title="Opravovanie série">
-    <ProblemAdministrationComponent problemId={1} />
+    <ProblemAdministrationComponent />
   </PageLayout>
 )
 

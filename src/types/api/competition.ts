@@ -107,10 +107,12 @@ export interface Solution {
 export interface SolutionAdministration {
   id: number
   corrected_solution?: string | null
+  solution?: string | null
   vote: number | null
   late_tag: number | null
   score: number | null
   semester_registration?: EventRegistration
+  is_online: boolean
 }
 
 export interface ProblemWithSolutions {
