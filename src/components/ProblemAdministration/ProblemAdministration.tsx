@@ -58,7 +58,7 @@ export const ProblemAdministration: FC = () => {
   return (
     <>
       <h2>Opravovanie {problemData?.data?.order}. úlohy</h2>
-      <Link href={`/strom/opravovanie/1`}>Späť na semester</Link>
+      <Link href={`/strom/opravovanie/${problemData?.data.series.semester}`}>Späť na semester</Link>
       <Latex>{problemData?.data?.text ?? 'Načítavam...'}</Latex>
       <div className={styles.actions}>
         <Link href={`/api/competition/problem/${problemId}/download-solutions/`}>Stiahnuť riešenia</Link>

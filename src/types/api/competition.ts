@@ -120,6 +120,7 @@ export interface ProblemWithSolutions {
   text?: string
   order?: number
   correction?: ProblemCorrection
+  series: Series
 }
 
 export interface Series {
