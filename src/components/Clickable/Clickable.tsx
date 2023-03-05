@@ -41,12 +41,15 @@ interface FileUploaderProps {
 }
 
 export const FileUploader: FC<FileUploaderProps> = ({uploadLink, removeCache}) => {
-  const onDrop = useCallback((acceptedFiles) => {
-    const formData = new FormData()
-    formData.append('file', acceptedFiles[0])
-    const response = axios.post(uploadLink, formData)
-    removeCache()
-  }, [])
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      const formData = new FormData()
+      formData.append('file', acceptedFiles[0])
+      axios.post(uploadLink, formData)
+      removeCache()
+    },
+    [removeCache, uploadLink],
+  )
 
   const {getRootProps, getInputProps} = useDropzone({onDrop})
 

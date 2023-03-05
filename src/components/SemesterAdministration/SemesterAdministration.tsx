@@ -1,9 +1,9 @@
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
+import {useQuery} from '@tanstack/react-query'
+import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useRef, useState} from 'react'
 
-import {SemesterWithProblems, SeriesWithProblems} from '@/types/api/generated/competition'
+import {SemesterWithProblems} from '@/types/api/generated/competition'
 
 import {Button, Link} from '../Clickable/Clickable'
 import styles from '../Problems/Problems.module.scss'
@@ -30,7 +30,7 @@ export const SemesterAdministration: FC = () => {
   const [textareaContent, setTextareaContent] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  const {data: semesterData, isLoading: semesterIsLoading} = useQuery(['competition', 'semester', semesterId], () =>
+  const {data: semesterData} = useQuery(['competition', 'semester', semesterId], () =>
     axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
   )
 

@@ -1,4 +1,4 @@
-import {FormatAlignJustify, Grading, Upload} from '@mui/icons-material'
+import {FormatAlignJustify, Grading} from '@mui/icons-material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -19,7 +19,7 @@ export const ProblemAdministration: FC = () => {
     const {params} = router.query
     setProblemId(params ? params[0] : 1)
   }, [router.query])
-  const {data: problemData, isLoading: problemIsLoading, remove: removeCachedProblem} = useQuery(
+  const {data: problemData, remove: removeCachedProblem} = useQuery(
     ['competition', 'problem-administration', problemId],
     () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}/`),
   )
@@ -31,7 +31,7 @@ export const ProblemAdministration: FC = () => {
 
   const handleSavePoints = () => {
     const data = problemData?.data?.solution_set
-    const response = axios.post(`/api/competition/problem-administration/${problemId}/upload-points`, {
+    axios.post(`/api/competition/problem-administration/${problemId}/upload-points`, {
       solution_set: data,
     })
     setSolutions(data)
@@ -47,10 +47,10 @@ export const ProblemAdministration: FC = () => {
     (acceptedFiles) => {
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      const response = axios.post(`/competition/problem/${problemId}/corrected-solution/`, formData)
+      axios.post(`/competition/problem/${problemId}/corrected-solution/`, formData)
       removeCachedProblem()
     },
-    [problemId],
+    [problemId, removeCachedProblem],
   )
 
   const {getRootProps, getInputProps} = useDropzone({onDrop})
