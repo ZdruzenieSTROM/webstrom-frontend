@@ -1,6 +1,9 @@
+import {Upload} from '@mui/icons-material'
+import axios from 'axios'
 import clsx from 'clsx'
 import NextLink from 'next/link'
-import {FC, ReactNode} from 'react'
+import {FC, ReactNode, useCallback} from 'react'
+import {useDropzone} from 'react-dropzone'
 
 import styles from './Clickable.module.scss'
 
@@ -29,5 +32,30 @@ export const Link: FC<LinkProps> = ({children, href, disabled}) => {
     <NextLink href={href} className={clsx(styles.actionButton, disabled && styles.disabled)}>
       {children}
     </NextLink>
+  )
+}
+
+interface FileUploaderProps {
+  uploadLink: string
+  removeCache: CallableFunction
+}
+
+export const FileUploader: FC<FileUploaderProps> = ({uploadLink, removeCache}) => {
+  const onDrop = useCallback((acceptedFiles) => {
+    const formData = new FormData()
+    formData.append('file', acceptedFiles[0])
+    const response = axios.post(uploadLink, formData)
+    removeCache()
+  }, [])
+
+  const {getRootProps, getInputProps} = useDropzone({onDrop})
+
+  return (
+    <>
+      <div {...getRootProps()}>
+        <input {...getInputProps()} />
+        <Upload />
+      </div>
+    </>
   )
 }

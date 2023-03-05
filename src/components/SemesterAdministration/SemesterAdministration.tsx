@@ -79,28 +79,6 @@ export const SemesterAdministration: FC = () => {
         {semesterData?.data?.year}. ročník ({semesterData?.data.school_year})
       </h2>
       Administrácia semestra pre opravovateľov.
-      <div className={styles.actions}>
-        <Button onClick={getSemesterResults}>Poradie série</Button>
-        <Button onClick={() => getPostalCards(false)}>Štítky na školy</Button>
-        <Button onClick={() => getPostalCards(true)}>Štítky na školy (iba papierové riešenia)</Button>
-        <Button>Zoznam riešiteľov</Button>
-      </div>
-      {textareaContent ? (
-        <div>
-          <textarea ref={textareaRef} cols={100} rows={10} value={textareaContent} readOnly />
-          <div className={styles.actions}>
-            <Button
-              onClick={() => {
-                navigator.clipboard.writeText(textareaRef.current?.value ?? '')
-              }}
-            >
-              kopírovať
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
       {semesterData?.data.series_set.map((series) => {
         return (
           <div key={series.id}>
@@ -126,6 +104,33 @@ export const SemesterAdministration: FC = () => {
           </div>
         )
       })}
+      <h3>Generovanie dát</h3>
+      <div className={styles.actions}>
+        <Button onClick={getSemesterResults}>Poradie série</Button>
+        <Button onClick={() => getPostalCards(false)}>Štítky na školy</Button>
+        <Button onClick={() => getPostalCards(true)}>Štítky na školy (iba papierové riešenia)</Button>
+        <Button>Zoznam riešiteľov</Button>
+      </div>
+      <div className={styles.actions}>
+        <Button>Pozvánky pre školy</Button>
+        <Button>Pozvánky pre účastníkov</Button>
+      </div>
+      {textareaContent ? (
+        <div>
+          <textarea ref={textareaRef} cols={100} rows={10} value={textareaContent} readOnly />
+          <div className={styles.actions}>
+            <Button
+              onClick={() => {
+                navigator.clipboard.writeText(textareaRef.current?.value ?? '')
+              }}
+            >
+              kopírovať
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   )
 }

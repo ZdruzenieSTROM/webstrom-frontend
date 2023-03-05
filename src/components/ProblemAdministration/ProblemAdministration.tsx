@@ -1,15 +1,13 @@
-import {} from '@mui/icons-material'
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
-import clsx from 'clsx'
+import {FormatAlignJustify, Grading, Upload} from '@mui/icons-material'
+import {useQuery} from '@tanstack/react-query'
+import axios from 'axios'
 import {useRouter} from 'next/router'
-import React, {createRef, FC, Fragment, useCallback, useEffect, useState} from 'react'
-import {FormInput} from 'react-admin'
+import React, {FC, useCallback, useEffect, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
-import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competition'
+import {ProblemWithSolutions} from '@/types/api/competition'
 
-import {Button, Link} from '../Clickable/Clickable'
+import {Button, FileUploader, Link} from '../Clickable/Clickable'
 import {Latex} from '../Latex/Latex'
 import styles from '../Problems/Problems.module.scss'
 
@@ -79,28 +77,56 @@ export const ProblemAdministration: FC = () => {
         </div>
 
         <table>
-          <tr>
-            <th>Riešiteľ</th>
-            <th>Body</th>
-          </tr>
-          {solutions?.map((solution, index) => {
-            return (
-              <tr key={solution.id}>
-                <td>
-                  {solution.semester_registration?.profile.first_name}{' '}
-                  {solution.semester_registration?.profile.last_name}
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    pattern="[0-9]"
-                    value={solution.score ?? ''}
-                    onChange={(event) => updatePoints(index, Number.parseInt(event.target.value))}
-                  />
-                </td>
-              </tr>
-            )
-          })}
+          <tbody>
+            <tr>
+              <th>Riešiteľ</th>
+              <th>Body</th>
+              <th>Riešenie</th>
+              <th>Opravené</th>
+            </tr>
+            {solutions?.map((solution, index) => {
+              return (
+                <tr key={solution.id}>
+                  <td>
+                    {solution.semester_registration?.profile.first_name}{' '}
+                    {solution.semester_registration?.profile.last_name}
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      pattern="[0-9]"
+                      value={solution.score ?? ''}
+                      onChange={(event) => updatePoints(index, Number.parseInt(event.target.value))}
+                    />
+                  </td>
+                  <td>
+                    {solution.solution ? (
+                      <a href={solution?.solution} target="_blank" rel="noreferrer">
+                        <FormatAlignJustify />
+                      </a>
+                    ) : (
+                      <FileUploader
+                        uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
+                        removeCache={removeCachedProblem}
+                      />
+                    )}
+                  </td>
+                  <td>
+                    {solution.corrected_solution ? (
+                      <a href={solution?.corrected_solution} target="_blank" rel="noreferrer">
+                        <Grading />
+                      </a>
+                    ) : (
+                      <FileUploader
+                        uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
+                        removeCache={removeCachedProblem}
+                      />
+                    )}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
         </table>
         <Button onClick={handleSavePoints}>Uložiť body</Button>
       </form>
