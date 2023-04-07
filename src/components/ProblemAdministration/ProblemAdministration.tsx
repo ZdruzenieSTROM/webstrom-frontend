@@ -3,13 +3,14 @@ import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
 import React, {FC, useCallback, useEffect, useState} from 'react'
-import {useDropzone} from 'react-dropzone'
+import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {ProblemWithSolutions} from '@/types/api/competition'
 
 import {Button, FileUploader, Link} from '../Clickable/Clickable'
 import {Latex} from '../Latex/Latex'
 import styles from '../Problems/Problems.module.scss'
+import uploadProblemFormStyles from '../Problems/UploadProblemForm.module.scss'
 
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
@@ -43,7 +44,7 @@ export const ProblemAdministration: FC = () => {
     setSolutions(data)
   }
 
-  const onDrop = useCallback(
+  const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
     (acceptedFiles) => {
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
@@ -63,7 +64,7 @@ export const ProblemAdministration: FC = () => {
       <div className={styles.actions}>
         <Link href={`/api/competition/problem/${problemId}/download-solutions/`}>Stiahnuť riešenia</Link>
       </div>
-      <div {...getRootProps({className: styles.dropzone})}>
+      <div {...getRootProps({className: uploadProblemFormStyles.dropzone})}>
         <input {...getInputProps()} />
         <p>Vlož opravené riešenia</p>
       </div>

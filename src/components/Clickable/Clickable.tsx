@@ -3,7 +3,7 @@ import axios from 'axios'
 import clsx from 'clsx'
 import NextLink from 'next/link'
 import {FC, ReactNode, useCallback} from 'react'
-import {useDropzone} from 'react-dropzone'
+import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import styles from './Clickable.module.scss'
 
@@ -41,7 +41,7 @@ interface FileUploaderProps {
 }
 
 export const FileUploader: FC<FileUploaderProps> = ({uploadLink, removeCache}) => {
-  const onDrop = useCallback(
+  const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
     (acceptedFiles) => {
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
