@@ -30,9 +30,10 @@ export const SemesterAdministration: FC = () => {
   const [textareaContent, setTextareaContent] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  const {data: semesterData} = useQuery(['competition', 'semester', semesterId], () =>
-    axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
-  )
+  const {data: semesterData} = useQuery({
+    queryKey: ['competition', 'semester', semesterId],
+    queryFn: () => axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
+  })
 
   const getSemesterResults = async () => {
     const {data} = await axios.get<Result[]>(`/api/competition/semester/${semesterId}/results`)

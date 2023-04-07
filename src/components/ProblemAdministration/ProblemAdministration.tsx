@@ -19,10 +19,10 @@ export const ProblemAdministration: FC = () => {
     const {params} = router.query
     setProblemId(params ? params[0] : 1)
   }, [router.query])
-  const {data: problemData, remove: removeCachedProblem} = useQuery(
-    ['competition', 'problem-administration', problemId],
-    () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}/`),
-  )
+  const {data: problemData, remove: removeCachedProblem} = useQuery({
+    queryKey: ['competition', 'problem-administration', problemId],
+    queryFn: () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}/`),
+  })
   const [solutions, setSolutions] = useState(problemData?.data?.solution_set)
 
   useEffect(() => {
