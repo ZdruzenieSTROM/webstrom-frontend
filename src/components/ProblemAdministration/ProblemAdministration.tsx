@@ -20,7 +20,7 @@ export const ProblemAdministration: FC = () => {
 
   const {data: problemData, remove: removeCachedProblem} = useQuery({
     queryKey: ['competition', 'problem-administration', problemId],
-    queryFn: () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}/`),
+    queryFn: () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym problemId
     enabled: problemId !== undefined,
   })
@@ -49,7 +49,7 @@ export const ProblemAdministration: FC = () => {
     (acceptedFiles) => {
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      axios.post(`/competition/problem/${problemId}/corrected-solution/`, formData)
+      axios.post(`/competition/problem/${problemId}/corrected-solution`, formData)
       removeCachedProblem()
     },
     [problemId, removeCachedProblem],
@@ -63,7 +63,7 @@ export const ProblemAdministration: FC = () => {
       <Link href={`/strom/opravovanie/${problemData?.data.series.semester}`}>Späť na semester</Link>
       <Latex>{problemData?.data.text ?? 'Načítavam...'}</Latex>
       <div className={styles.actions}>
-        <Link href={`/api/competition/problem/${problemId}/download-solutions/`}>Stiahnuť riešenia</Link>
+        <Link href={`/api/competition/problem/${problemId}/download-solutions`}>Stiahnuť riešenia</Link>
       </div>
       <div {...getRootProps({className: uploadProblemFormStyles.dropzone})}>
         <input {...getInputProps()} />
