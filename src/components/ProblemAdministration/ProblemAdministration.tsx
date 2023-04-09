@@ -5,7 +5,7 @@ import {useRouter} from 'next/router'
 import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
-import {ProblemWithSolutions} from '@/types/api/competition'
+import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competition'
 
 import {Button, FileUploader, Link} from '../Clickable/Clickable'
 import {Latex} from '../Latex/Latex'
@@ -15,16 +15,17 @@ import uploadProblemFormStyles from '../Problems/UploadProblemForm.module.scss'
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
   const {params} = router.query
-  const [problemId, setProblemId] = useState(params ? params[0] : 1)
-  useEffect(() => {
-    const {params} = router.query
-    setProblemId(params ? params[0] : 1)
-  }, [router.query])
+
+  const problemId = params && params[0]
+
   const {data: problemData, remove: removeCachedProblem} = useQuery({
     queryKey: ['competition', 'problem-administration', problemId],
     queryFn: () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}/`),
+    // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym problemId
+    enabled: problemId !== undefined,
   })
-  const [solutions, setSolutions] = useState(problemData?.data?.solution_set)
+
+  const [solutions, setSolutions] = useState<SolutionAdministration[]>()
 
   useEffect(() => {
     setSolutions(problemData?.data?.solution_set)

@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
-import {FC, useEffect, useRef, useState} from 'react'
+import {FC, useRef, useState} from 'react'
 
 import {SemesterWithProblems} from '@/types/api/generated/competition'
 
@@ -22,18 +22,18 @@ interface PostalCard {
 export const SemesterAdministration: FC = () => {
   const router = useRouter()
   const {params} = router.query
-  const [semesterId, setSemesterId] = useState(params ? params[0] : 1)
-  useEffect(() => {
-    const {params} = router.query
-    setSemesterId(params ? params[0] : 1)
-  }, [router.query])
-  const [textareaContent, setTextareaContent] = useState('')
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const semesterId = params && params[0]
 
   const {data: semesterData} = useQuery({
     queryKey: ['competition', 'semester', semesterId],
     queryFn: () => axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
+    // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
+    enabled: semesterId !== undefined,
   })
+
+  const [textareaContent, setTextareaContent] = useState('')
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const getSemesterResults = async () => {
     const {data} = await axios.get<Result[]>(`/api/competition/semester/${semesterId}/results`)
