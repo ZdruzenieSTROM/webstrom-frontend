@@ -25,14 +25,16 @@ export const ProblemAdministration: FC = () => {
     enabled: problemId !== undefined,
   })
 
+  const problem = problemData?.data
+
   const [solutions, setSolutions] = useState<SolutionAdministration[]>()
 
   useEffect(() => {
-    setSolutions(problemData?.data.solution_set)
-  }, [problemData])
+    setSolutions(problem?.solution_set)
+  }, [problem])
 
   const handleSavePoints = () => {
-    const data = problemData?.data.solution_set
+    const data = problem?.solution_set
     axios.post(`/api/competition/problem-administration/${problemId}/upload-points`, {
       solution_set: data,
     })
@@ -59,9 +61,9 @@ export const ProblemAdministration: FC = () => {
 
   return (
     <>
-      <h2>Opravovanie {problemData?.data.order}. úlohy</h2>
-      <Link href={`/strom/opravovanie/${problemData?.data.series.semester}`}>Späť na semester</Link>
-      <Latex>{problemData?.data.text ?? 'Načítavam...'}</Latex>
+      <h2>Opravovanie {problem?.order}. úlohy</h2>
+      <Link href={`/strom/opravovanie/${problem?.series.semester}`}>Späť na semester</Link>
+      <Latex>{problem?.text ?? 'Načítavam...'}</Latex>
       <div className={styles.actions}>
         <Link href={`/api/competition/problem/${problemId}/download-solutions`}>Stiahnuť riešenia</Link>
       </div>
