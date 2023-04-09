@@ -31,6 +31,7 @@ export const SemesterAdministration: FC = () => {
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
     enabled: semesterId !== undefined,
   })
+  const semester = semesterData?.data
 
   const [textareaContent, setTextareaContent] = useState('')
 
@@ -70,10 +71,10 @@ export const SemesterAdministration: FC = () => {
   return (
     <>
       <h2>
-        {semesterData?.data.year}. ročník ({semesterData?.data.school_year})
+        {semester?.year}. ročník ({semester?.school_year})
       </h2>
       Administrácia semestra pre opravovateľov.
-      {semesterData?.data.series_set.map((series) => (
+      {semester?.series_set.map((series) => (
         <div key={series.id}>
           <h3>{series.order}. séria</h3>
           <table>
