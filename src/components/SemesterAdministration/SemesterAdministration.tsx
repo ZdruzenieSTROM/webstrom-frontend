@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
-import {FC, useRef, useState} from 'react'
+import {FC, useState} from 'react'
 
 import {SemesterWithProblems} from '@/types/api/generated/competition'
 
@@ -33,7 +33,6 @@ export const SemesterAdministration: FC = () => {
   })
 
   const [textareaContent, setTextareaContent] = useState('')
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const getSemesterResults = async () => {
     const {data} = await axios.get<Result[]>(`/api/competition/semester/${semesterId}/results`)
@@ -110,9 +109,9 @@ export const SemesterAdministration: FC = () => {
       </div>
       {textareaContent ? (
         <div>
-          <textarea ref={textareaRef} cols={100} rows={10} value={textareaContent} readOnly />
+          <textarea cols={100} rows={10} value={textareaContent} readOnly />
           <div className={styles.actions}>
-            <Button onClick={() => navigator.clipboard.writeText(textareaRef.current?.value ?? '')}>kopírovať</Button>
+            <Button onClick={() => navigator.clipboard.writeText(textareaContent)}>kopírovať</Button>
           </div>
         </div>
       ) : (
