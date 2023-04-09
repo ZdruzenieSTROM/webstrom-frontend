@@ -28,11 +28,11 @@ export const ProblemAdministration: FC = () => {
   const [solutions, setSolutions] = useState<SolutionAdministration[]>()
 
   useEffect(() => {
-    setSolutions(problemData?.data?.solution_set)
+    setSolutions(problemData?.data.solution_set)
   }, [problemData])
 
   const handleSavePoints = () => {
-    const data = problemData?.data?.solution_set
+    const data = problemData?.data.solution_set
     axios.post(`/api/competition/problem-administration/${problemId}/upload-points`, {
       solution_set: data,
     })
@@ -59,9 +59,9 @@ export const ProblemAdministration: FC = () => {
 
   return (
     <>
-      <h2>Opravovanie {problemData?.data?.order}. úlohy</h2>
+      <h2>Opravovanie {problemData?.data.order}. úlohy</h2>
       <Link href={`/strom/opravovanie/${problemData?.data.series.semester}`}>Späť na semester</Link>
-      <Latex>{problemData?.data?.text ?? 'Načítavam...'}</Latex>
+      <Latex>{problemData?.data.text ?? 'Načítavam...'}</Latex>
       <div className={styles.actions}>
         <Link href={`/api/competition/problem/${problemId}/download-solutions/`}>Stiahnuť riešenia</Link>
       </div>
@@ -86,48 +86,46 @@ export const ProblemAdministration: FC = () => {
               <th>Riešenie</th>
               <th>Opravené</th>
             </tr>
-            {solutions?.map((solution, index) => {
-              return (
-                <tr key={solution.id}>
-                  <td>
-                    {solution.semester_registration?.profile.first_name}{' '}
-                    {solution.semester_registration?.profile.last_name}
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      pattern="[0-9]"
-                      value={solution.score ?? ''}
-                      onChange={(event) => updatePoints(index, Number.parseInt(event.target.value))}
+            {solutions?.map((solution, index) => (
+              <tr key={solution.id}>
+                <td>
+                  {solution.semester_registration?.profile.first_name}{' '}
+                  {solution.semester_registration?.profile.last_name}
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    pattern="[0-9]"
+                    value={solution.score ?? ''}
+                    onChange={(event) => updatePoints(index, Number.parseInt(event.target.value))}
+                  />
+                </td>
+                <td>
+                  {solution.solution ? (
+                    <a href={solution?.solution} target="_blank" rel="noreferrer">
+                      <FormatAlignJustify />
+                    </a>
+                  ) : (
+                    <FileUploader
+                      uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
+                      removeCache={removeCachedProblem}
                     />
-                  </td>
-                  <td>
-                    {solution.solution ? (
-                      <a href={solution?.solution} target="_blank" rel="noreferrer">
-                        <FormatAlignJustify />
-                      </a>
-                    ) : (
-                      <FileUploader
-                        uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
-                        removeCache={removeCachedProblem}
-                      />
-                    )}
-                  </td>
-                  <td>
-                    {solution.corrected_solution ? (
-                      <a href={solution?.corrected_solution} target="_blank" rel="noreferrer">
-                        <Grading />
-                      </a>
-                    ) : (
-                      <FileUploader
-                        uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
-                        removeCache={removeCachedProblem}
-                      />
-                    )}
-                  </td>
-                </tr>
-              )
-            })}
+                  )}
+                </td>
+                <td>
+                  {solution.corrected_solution ? (
+                    <a href={solution?.corrected_solution} target="_blank" rel="noreferrer">
+                      <Grading />
+                    </a>
+                  ) : (
+                    <FileUploader
+                      uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
+                      removeCache={removeCachedProblem}
+                    />
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <Button onClick={handleSavePoints}>Uložiť body</Button>
