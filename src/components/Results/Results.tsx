@@ -25,7 +25,7 @@ interface Registration {
   }
 }
 
-interface Result {
+export interface Result {
   rank_start: number
   rank_end: number
   rank_changed: boolean

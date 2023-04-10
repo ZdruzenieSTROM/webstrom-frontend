@@ -45,7 +45,7 @@ export const UploadProblemForm: FC<{
       <div className={styles.container}>
         <div {...getRootProps({className: styles.dropzone})}>
           <input {...getInputProps()} />
-          <p>DROP PDF</p>
+          <p>Vlož riešenie</p>
         </div>
         <div className={styles.files}>
           <h4>Súbor:</h4>

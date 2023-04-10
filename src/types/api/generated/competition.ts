@@ -63,7 +63,7 @@ export interface ProblemCorrection {
 }
 
 export interface Problem {
-  id?: number
+  id: number
   submitted?: any
   text: string
   order: number
@@ -96,7 +96,7 @@ export interface Solution {
 }
 
 export interface SolutionAdministration {
-  id?: number
+  id: number
   corrected_solution?: any
   vote?: any
   late_tag?: any | null
