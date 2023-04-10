@@ -18,7 +18,7 @@ export const ProblemAdministration: FC = () => {
 
   const problemId = params && params[0]
 
-  const {data: problemData, remove: removeCachedProblem} = useQuery({
+  const {data: problemData, remove: removeCachedProblem, refetch: refetchProblem} = useQuery({
     queryKey: ['competition', 'problem-administration', problemId],
     queryFn: () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym problemId
@@ -30,20 +30,25 @@ export const ProblemAdministration: FC = () => {
   const [solutions, setSolutions] = useState<SolutionAdministration[]>()
 
   useEffect(() => {
-    setSolutions(problem?.solution_set)
+    // TODO: asi to nechceme updatovat vzdy pri zmene dat zo serveru, moze nam to prepisovat lokalny stav...
+    // netreba robit novy array, podstatne je spravne ohandlit zmeny
+    if (problem) setSolutions(problem.solution_set)
   }, [problem])
 
-  const handleSavePoints = () => {
-    const data = problem?.solution_set
-    axios.post(`/api/competition/problem-administration/${problemId}/upload-points`, {
-      solution_set: data,
+  const handleSavePoints = async () => {
+    // TODO: error handling - ked toto failne, urcite chceme ukazat, ze bacha, body neboli ulozene
+    await axios.post(`/api/competition/problem-administration/${problemId}/upload-points`, {
+      solution_set: solutions,
     })
-    setSolutions(data)
-    removeCachedProblem()
+    // TODO: pri errore POSTu vyssie nechceme pustit refetch (alebo nechceme bezat useEffect), lebo sa nam prepisu lokalne body
+    await refetchProblem()
   }
+
   const updatePoints = (index: number, newPoints: number) => {
+    // array v javascripte je objekt s referenciou, pre skopirovanie odpojene od originalneho objektu treba vytvorit novy array
     const data = [...(solutions ?? [])]
-    data[index].score = newPoints
+    // nie je to ale "deep copy" - data[index] je tiez referencia na povodny objekt, treba ho skopirovat
+    data[index] = {...data[index], score: newPoints}
     setSolutions(data)
   }
 
@@ -99,7 +104,9 @@ export const ProblemAdministration: FC = () => {
                     type="text"
                     pattern="[0-9]"
                     value={solution.score ?? ''}
-                    onChange={(event) => updatePoints(index, Number.parseInt(event.target.value))}
+                    onChange={(event) =>
+                      updatePoints(index, /* TODO: moze byt NaN */ Number.parseInt(event.target.value))
+                    }
                   />
                 </td>
                 <td>
