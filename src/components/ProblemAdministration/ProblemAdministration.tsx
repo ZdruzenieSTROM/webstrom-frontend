@@ -44,11 +44,14 @@ export const ProblemAdministration: FC = () => {
     await refetchProblem()
   }
 
-  const updatePoints = (index: number, newPoints: number) => {
+  const updatePoints = (index: number, newPointsInput: string) => {
+    const newPoints = Number.parseInt(newPointsInput)
+    // nevalidny input spravi NaN
+    const newScore = Number.isNaN(newPoints) ? null : newPoints
     // array v javascripte je objekt s referenciou, pre skopirovanie odpojene od originalneho objektu treba vytvorit novy array
     const data = [...(solutions ?? [])]
     // nie je to ale "deep copy" - data[index] je tiez referencia na povodny objekt, treba ho skopirovat
-    data[index] = {...data[index], score: newPoints}
+    data[index] = {...data[index], score: newScore}
     setSolutions(data)
   }
 
@@ -104,9 +107,7 @@ export const ProblemAdministration: FC = () => {
                     type="text"
                     pattern="[0-9]"
                     value={solution.score ?? ''}
-                    onChange={(event) =>
-                      updatePoints(index, /* TODO: moze byt NaN */ Number.parseInt(event.target.value))
-                    }
+                    onChange={(event) => updatePoints(index, event.target.value)}
                   />
                 </td>
                 <td>
