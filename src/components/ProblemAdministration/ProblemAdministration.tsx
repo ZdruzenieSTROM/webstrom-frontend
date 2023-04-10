@@ -7,7 +7,8 @@ import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competition'
 
-import {Button, FileUploader, Link} from '../Clickable/Clickable'
+import {Button, Link} from '../Clickable/Clickable'
+import {FileUploader} from '../FileUploader/FileUploader'
 import {Latex} from '../Latex/Latex'
 import styles from '../Problems/Problems.module.scss'
 import uploadProblemFormStyles from '../Problems/UploadProblemForm.module.scss'
