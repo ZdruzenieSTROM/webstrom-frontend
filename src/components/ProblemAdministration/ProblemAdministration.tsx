@@ -59,7 +59,7 @@ export const ProblemAdministration: FC = () => {
     (acceptedFiles) => {
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      axios.post(`/competition/problem/${problemId}/corrected-solution`, formData)
+      axios.post(`/api/competition/problem/${problemId}/upload-corrected`, formData)
       removeCachedProblem()
     },
     [problemId, removeCachedProblem],
