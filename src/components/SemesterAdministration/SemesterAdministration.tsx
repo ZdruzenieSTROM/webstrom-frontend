@@ -71,7 +71,7 @@ export const SemesterAdministration: FC = () => {
   return (
     <>
       <h2>
-        {semester?.year}. ročník ({semester?.school_year})
+        {semester?.year}. ročník ({semester?.school_year}) - {semester?.season_code === 0 ? 'zima' : 'leto'}
       </h2>
       Administrácia semestra pre opravovateľov.
       {semester?.series_set.map((series) => (
