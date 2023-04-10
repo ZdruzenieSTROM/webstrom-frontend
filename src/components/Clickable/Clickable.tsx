@@ -37,18 +37,18 @@ export const Link: FC<LinkProps> = ({children, href, disabled}) => {
 
 interface FileUploaderProps {
   uploadLink: string
-  removeCache: CallableFunction
+  refetch: () => void
 }
 
-export const FileUploader: FC<FileUploaderProps> = ({uploadLink, removeCache}) => {
+export const FileUploader: FC<FileUploaderProps> = ({uploadLink, refetch}) => {
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
-    (acceptedFiles) => {
+    async (acceptedFiles) => {
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      axios.post(uploadLink, formData)
-      removeCache()
+      await axios.post(uploadLink, formData)
+      await refetch()
     },
-    [removeCache, uploadLink],
+    [refetch, uploadLink],
   )
 
   const {getRootProps, getInputProps} = useDropzone({onDrop})

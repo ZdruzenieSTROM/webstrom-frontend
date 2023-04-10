@@ -18,7 +18,7 @@ export const ProblemAdministration: FC = () => {
 
   const problemId = params && params[0]
 
-  const {data: problemData, remove: removeCachedProblem, refetch: refetchProblem} = useQuery({
+  const {data: problemData, refetch: refetchProblem} = useQuery({
     queryKey: ['competition', 'problem-administration', problemId],
     queryFn: () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym problemId
@@ -56,13 +56,13 @@ export const ProblemAdministration: FC = () => {
   }
 
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
-    (acceptedFiles) => {
+    async (acceptedFiles) => {
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      axios.post(`/api/competition/problem/${problemId}/upload-corrected`, formData)
-      removeCachedProblem()
+      await axios.post(`/api/competition/problem/${problemId}/upload-corrected`, formData)
+      await refetchProblem()
     },
-    [problemId, removeCachedProblem],
+    [problemId, refetchProblem],
   )
 
   const {getRootProps, getInputProps} = useDropzone({onDrop})
@@ -118,7 +118,7 @@ export const ProblemAdministration: FC = () => {
                   ) : (
                     <FileUploader
                       uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
-                      removeCache={removeCachedProblem}
+                      refetch={refetchProblem}
                     />
                   )}
                 </td>
@@ -130,7 +130,7 @@ export const ProblemAdministration: FC = () => {
                   ) : (
                     <FileUploader
                       uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
-                      removeCache={removeCachedProblem}
+                      refetch={refetchProblem}
                     />
                   )}
                 </td>
