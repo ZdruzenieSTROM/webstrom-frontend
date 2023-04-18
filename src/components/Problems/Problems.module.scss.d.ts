@@ -1,5 +1,6 @@
 export type Styles = {
   actions: string
+  adminSection: string
   container: string
   loading: string
   problem: string
