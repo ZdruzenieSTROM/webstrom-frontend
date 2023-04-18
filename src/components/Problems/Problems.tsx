@@ -6,6 +6,7 @@ import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
+import {useIsAdmin} from '@/utils/useIsAdmin'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
@@ -85,9 +86,9 @@ type ProblemsProps = {
 export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const router = useRouter()
 
-  const {seminarId} = useSeminarInfo()
+  const {seminarId, seminar} = useSeminarInfo()
 
-  const [displaySideContent, setDisplaySideContent] = useState({type: '', problemId: -1, problemNumber: -1}) // todo: use to display discussions and file upload boxes
+  const [displaySideContent, setDisplaySideContent] = useState({type: '', problemId: -1, problemNumber: -1})
   const [commentCount, setCommentCount] = useState<number[]>([]) // ToDo: implement it somehow, probably need some api point for that?
 
   const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery({
@@ -194,6 +195,8 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     },
   })
 
+  const {isAdmin} = useIsAdmin()
+
   return (
     <>
       <div className={styles.container}>
@@ -203,6 +206,11 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
           </div>
         )}
         <SemesterPicker semesterList={semesterList} selectedSeriesId={seriesId} />
+        {isAdmin && (
+          <div className={styles.adminSection}>
+            <Link href={`/${seminar}/opravovanie/${semesterId}`}>Admin: Opravovanie</Link>
+          </div>
+        )}
         {problems.map((problem) => (
           <Problem
             key={problem.id}
