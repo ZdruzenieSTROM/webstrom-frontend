@@ -1,13 +1,11 @@
 .footer {
-  display: grid;
-  background-color: black;
-  height: 2rem;
-  grid-column: 1 / -1;
-  grid-row: 4;
-  color: white;
-  align-items: flex-end;
-}
+  grid-column: 2 / -1;
+  grid-row: -1;
 
-.footer > div > span {
-  margin-right: 40px;
+  background-color: black;
+  color: white;
+
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
 }

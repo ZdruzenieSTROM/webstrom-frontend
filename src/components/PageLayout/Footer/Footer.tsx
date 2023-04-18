@@ -11,12 +11,9 @@ export const Footer: FC = () => {
 
   return (
     <div className={styles.footer}>
-      <div>
-        <span>Debug info: </span>
-        <span>user name: {profile?.first_name + ' ' + profile?.last_name} </span>
-        <span>profile loaded: {`${!!profile}`} </span>
-        <span>isAuthed: {`${isAuthed}`}</span>
-      </div>
+      <span>Debug info: </span>
+      <span>user name: {profile?.first_name + ' ' + profile?.last_name} </span>
+      <span>isAuthed: {`${isAuthed}`}</span>
     </div>
   )
 }
