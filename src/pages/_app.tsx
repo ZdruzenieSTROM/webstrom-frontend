@@ -10,7 +10,6 @@ import {FC} from 'react'
 import {CookiesProvider} from 'react-cookie'
 
 import {AuthContainer} from '@/utils/AuthContainer'
-import {ProfileContainer} from '@/utils/ProfileContainer'
 
 const theme = createTheme({
   typography: {
@@ -42,13 +41,11 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <CookiesProvider>
-          <ProfileContainer.Provider>
-            <AuthContainer.Provider>
-              <ThemeProvider theme={theme}>
-                <Component {...pageProps} />
-              </ThemeProvider>
-            </AuthContainer.Provider>
-          </ProfileContainer.Provider>
+          <AuthContainer.Provider>
+            <ThemeProvider theme={theme}>
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </AuthContainer.Provider>
         </CookiesProvider>
       </QueryClientProvider>
     </>

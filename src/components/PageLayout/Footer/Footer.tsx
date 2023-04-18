@@ -1,22 +1,26 @@
+import {useQuery} from '@tanstack/react-query'
+import axios from 'axios'
 import {FC} from 'react'
 
+import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
-import {ProfileContainer} from '@/utils/ProfileContainer'
 
 import styles from './Footer.module.scss'
 
 export const Footer: FC = () => {
-  const {profile} = ProfileContainer.useContainer()
+  const {data} = useQuery({
+    queryKey: ['personal', 'profiles', 'myprofile'],
+    queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
+  })
+  const profile = data?.data
+
   const {isAuthed} = AuthContainer.useContainer()
 
   return (
     <div className={styles.footer}>
-      <div>
-        <span>Debug info: </span>
-        <span>user name: {profile?.first_name + ' ' + profile?.last_name} </span>
-        <span>profile loaded: {`${!!profile}`} </span>
-        <span>isAuthed: {`${isAuthed}`}</span>
-      </div>
+      <span>Debug info: </span>
+      <span>user name: {profile?.first_name + ' ' + profile?.last_name} </span>
+      <span>isAuthed: {`${isAuthed}`}</span>
     </div>
   )
 }

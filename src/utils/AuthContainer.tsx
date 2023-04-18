@@ -5,8 +5,21 @@ import {Cookies} from 'react-cookie'
 import {createContainer} from 'unstated-next'
 
 import {Login, Token} from '@/types/api/generated/user'
+import {Profile} from '@/types/api/personal'
 
-import {ProfileContainer} from './ProfileContainer'
+// special axios instance to prevent interceptors
+const specialAxios = axios.create()
+
+// call na lubovolny "auth" endpoint ako test prihlasenia, vracia true/false podla uspesnosti
+const testAuth = async () => {
+  try {
+    await specialAxios.get<Profile>(`/api/personal/profiles/myprofile`)
+    return true
+  } catch (e: unknown) {
+    console.log((e as AxiosError).response?.data)
+    return false
+  }
+}
 
 const cookies = new Cookies()
 
@@ -14,17 +27,12 @@ const useAuth = () => {
   // stav, ktory napoveda, ci mame sessionid cookie a vieme robit auth requesty
   const [isAuthed, setIsAuthed] = useState(false)
 
-  // kedze vyuzivame ProfieContainer, AuthContainer musi byt child ProfieContaineru v _app.tsx
-  const {fetchProfile, resetProfile} = ProfileContainer.useContainer()
-
-  const testAuthAndLogin = async () => {
-    const success = await fetchProfile()
-    success && setIsAuthed(true)
-  }
-
   useEffect(() => {
     // zistime, ci ma user platne sessionid - request na nejaky autentikovany endpoint
-    testAuthAndLogin()
+    ;(async () => {
+      const success = await testAuth()
+      success && setIsAuthed(true)
+    })()
 
     // interceptor pre auth
     axios.interceptors.request.use((config) => {
@@ -38,7 +46,6 @@ const useAuth = () => {
     })
 
     // one-time vec pri prvom nacitani stranky
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // 403 (Forbidden) mozeme dostat, ked pristupujeme k niecomu, na co:
@@ -56,13 +63,12 @@ const useAuth = () => {
           if (status === 403) {
             // bud nemame prava, alebo nam vyprsala auth
             // auth requestom na profil zistime, co z toho
-            const success = await fetchProfile()
+            const success = await testAuth()
 
             // ak zlyha, tak nam vyprsala auth
             if (!success) {
               // odhlásime usera z UI
               setIsAuthed(false)
-              resetProfile()
             }
             // ak prejde, tak sme len requestovali resource, na ktory nemame prava, ale sme stale validne prihlaseni,
             // tak netreba robit nic. appka nam snad da vediet, ze sa hrabeme, kam nemame
@@ -77,7 +83,7 @@ const useAuth = () => {
         axios.interceptors.response.eject(responseInterceptor)
       }
     }
-  }, [fetchProfile, isAuthed, resetProfile])
+  }, [isAuthed])
 
   const login = async (formData: Login, closeOverlay: () => void) => {
     try {
@@ -87,7 +93,7 @@ const useAuth = () => {
       closeOverlay()
 
       // fetchProfile ma vlastny error handling, necrashne
-      const success = await fetchProfile()
+      const success = await testAuth()
       success && setIsAuthed(true)
     } catch (e: unknown) {
       const error = e as AxiosError
@@ -107,7 +113,6 @@ const useAuth = () => {
       alert(error)
     }
     setIsAuthed(false)
-    resetProfile()
     // sessionid cookie odstrani server sam
   }
 
@@ -120,6 +125,8 @@ const useAuth = () => {
     queryClient.invalidateQueries({queryKey: ['competition', 'series']})
     // problemy obsahuju komentare a tie maju flagy ako edit_allowed
     queryClient.invalidateQueries({queryKey: ['competition', 'problem']})
+    // cely profil je user-specific
+    queryClient.invalidateQueries({queryKey: ['personal', 'profiles', 'myprofile']})
 
     // nechceme manualne invalidovat, ked sa zmeni nieco ine ako `isAuthed` (aj ked `queryClient` by sa menit nemal)
     // eslint-disable-next-line react-hooks/exhaustive-deps

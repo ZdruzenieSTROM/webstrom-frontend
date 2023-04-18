@@ -127,7 +127,6 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/no-extra-non-null-assertion': 'warn',
     'no-extra-semi': 'off',
-    '@typescript-eslint/no-extra-semi': 'warn',
     '@typescript-eslint/no-inferrable-types': 'warn',
     '@typescript-eslint/no-misused-new': 'warn',
     '@typescript-eslint/no-namespace': 'warn',

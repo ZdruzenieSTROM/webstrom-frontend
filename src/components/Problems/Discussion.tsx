@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import {FC, useState} from 'react'
 
 import {Comment} from '@/types/api/competition'
+import {useIsAdmin} from '@/utils/useIsAdmin'
 
 import {Button} from '../Clickable/Clickable'
 import styles from './Discussion.module.scss'
@@ -17,8 +18,6 @@ interface DiscussionProps {
 
 export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
   const [commentText, setCommentText] = useState('')
-  // TODO: get this from the comments endpoint - task for BE
-  const [canPublish, setCanPublish] = useState(true)
 
   const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
     queryKey: ['competition', 'problem', problemId, 'comments'],
@@ -31,6 +30,8 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
     published: comment.published,
     posted_by: comment.posted_by_name,
   }))
+
+  const {isAdmin} = useIsAdmin()
 
   const queryClient = useQueryClient()
 
@@ -92,13 +93,11 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
                 <div className={styles.commentActions}>
                   {!comment.published && (
                     <>
-                      {canPublish && <Button onClick={() => publishComment(comment.id)}>Publish</Button>}
+                      {isAdmin && <Button onClick={() => publishComment(comment.id)}>Publish</Button>}
                       <Button onClick={() => deleteComment(comment.id)}>Delete</Button>
                     </>
                   )}
-                  {comment.published && (
-                    <>{canPublish && <Button onClick={() => hideComment(comment.id)}>Hide</Button>}</>
-                  )}
+                  {comment.published && <>{isAdmin && <Button onClick={() => hideComment(comment.id)}>Hide</Button>}</>}
                 </div>
               </div>
             ))}
