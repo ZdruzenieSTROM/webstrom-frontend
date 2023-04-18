@@ -2,10 +2,9 @@ import {CircularProgress} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
-import {FC, useEffect, useState} from 'react'
+import {FC, useState} from 'react'
 
 import {Comment} from '@/types/api/competition'
-import {AuthContainer} from '@/utils/AuthContainer'
 
 import {Button} from '../Clickable/Clickable'
 import styles from './Discussion.module.scss'
@@ -20,15 +19,6 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
   const [commentText, setCommentText] = useState('')
   // TODO: get this from the comments endpoint - task for BE
   const [canPublish, setCanPublish] = useState(true)
-  const {isAuthed} = AuthContainer.useContainer()
-
-  // ked sa prihlasime alebo odhlasime, treba refetchnut komentare, lebo obsahuju aj user-specific data
-  // TODO: zvazit, ci to chceme presunut na ine (globalne) miesto, kde budeme invalidovat vsetky user-specific queries spolocne
-  useEffect(() => {
-    queryClient.invalidateQueries({queryKey: ['competition', 'problem', problemId, 'comments']})
-    // nechceme manualne invalidovat, ked sa zmeni nieco ine ako `isAuthed`
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthed])
 
   const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
     queryKey: ['competition', 'problem', problemId, 'comments'],

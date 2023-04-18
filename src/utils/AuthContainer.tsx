@@ -1,3 +1,4 @@
+import {useQueryClient} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useEffect, useState} from 'react'
 import {Cookies} from 'react-cookie'
@@ -109,6 +110,20 @@ const useAuth = () => {
     resetProfile()
     // sessionid cookie odstrani server sam
   }
+
+  const queryClient = useQueryClient()
+
+  // globalne miesto na invalidaciu (refetch) dat pri prihlaseni alebo odhlaseni
+  // - treba refetchnut vsetky queries, kto obsahuju user-specific data
+  useEffect(() => {
+    // semestre obsahuju can_submit, can_participate, is_registered
+    queryClient.invalidateQueries({queryKey: ['competition', 'series']})
+    // problemy obsahuju komentare a tie maju flagy ako edit_allowed
+    queryClient.invalidateQueries({queryKey: ['competition', 'problem']})
+
+    // nechceme manualne invalidovat, ked sa zmeni nieco ine ako `isAuthed` (aj ked `queryClient` by sa menit nemal)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthed])
 
   return {isAuthed, login, logout}
 }

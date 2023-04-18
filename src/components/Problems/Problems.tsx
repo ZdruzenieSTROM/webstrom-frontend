@@ -6,7 +6,6 @@ import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
-import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
@@ -85,8 +84,6 @@ type ProblemsProps = {
 
 export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const router = useRouter()
-
-  const {isAuthed} = AuthContainer.useContainer()
 
   const {seminarId} = useSeminarInfo()
 
@@ -188,14 +185,6 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const isRegistered = (overrideIsRegistered || series?.is_registered) ?? false
 
   const queryClient = useQueryClient()
-
-  // ked sa prihlasime alebo odhlasime, treba refetchnut semestre, lebo obsahuju aj user-specific data (can_submit, can_participate, is_registered)
-  // TODO: zvazit, ci to chceme presunut na ine (globalne) miesto, kde budeme invalidovat vsetky user-specific queries spolocne
-  useEffect(() => {
-    queryClient.invalidateQueries({queryKey: ['competition', 'series']})
-    // nechceme manualne invalidovat, ked sa zmeni nieco ine ako `isAuthed`
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthed])
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),
