@@ -48,11 +48,8 @@ const Problem: FC<{
   }
 
   // TODO BE: https://github.com/ZdruzenieSTROM/webstrom-backend/issues/186
-  // TODO BE: https://github.com/ZdruzenieSTROM/webstrom-backend/issues/187
-  // pre kazdu ulohu potrebujeme info, ci to clovek uz odovzdal, ci to ma opravene, a pocet komentarov
-  const commentCount = 0
-  const hasSolution = false
-  const hasCorrectedSolution = false
+  // pre kazdu ulohu potrebujeme pocet komentarov
+  const commentCount = 'TODO: pocet'
 
   return (
     <div className={styles.problem}>
@@ -61,17 +58,18 @@ const Problem: FC<{
       <div className={styles.actions}>
         {registered && (
           <>
-            <Link href={`/api/competition/problem/${problem.id}/my-solution`} disabled={!hasSolution}>
+            <Link href={`/api/competition/problem/${problem.id}/my-solution`} disabled={!problem.submitted}>
               moje riešenie
             </Link>
-            <Link href={`/api/competition/problem/${problem.id}/corrected-solution`} disabled={!hasCorrectedSolution}>
-              opravené riešenie ({problem.submitted?.score || '?'})
+            <Link
+              href={`/api/competition/problem/${problem.id}/corrected-solution`}
+              disabled={!problem.submitted?.corrected_solution}
+            >
+              opravené riešenie{!!problem.submitted?.corrected_solution && ` (${problem.submitted.score || '?'})`}
             </Link>
           </>
         )}
-        <Button onClick={handleDiscussionButtonClick}>
-          diskusia ({commentCount === undefined ? 0 : commentCount}){' '}
-        </Button>
+        <Button onClick={handleDiscussionButtonClick}>diskusia ({commentCount}) </Button>
         {registered && (
           <Button onClick={handleUploadClick} disabled={!canSubmit}>
             odovzdať
@@ -198,11 +196,13 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 
   const queryClient = useQueryClient()
 
+  const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
+
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),
     onSuccess: () => {
       // refetch semestra, nech sa aktualizuje is_registered
-      queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
+      invalidateSeriesQuery()
     },
   })
 
@@ -270,6 +270,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             problemId={displaySideContent.problemId}
             problemNumber={displaySideContent.problemNumber}
             setDisplaySideContent={setDisplaySideContent}
+            invalidateSeriesQuery={invalidateSeriesQuery}
           />
         )}
       </div>

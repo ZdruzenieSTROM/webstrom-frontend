@@ -20,9 +20,16 @@ const theme = createTheme({
 const queryClient = new QueryClient({
   defaultOptions: {
     mutations: {
+      // globalny error handler requestov cez useMutation
+      // notes:
+      // - axios vzdy sam loguje error do konzole, my nemusime
+      // - specifikovanim `onError` na nejakej `useMutation` sa tento handler prepise, tak sa tomu vyhybajme
+      // - ak nemame vlastny message v `.detail`, ukazeme userovi kludne original anglicku hlasku z `error` - aspon nam potom bude vediet povedat, co presne sa deje
       onError: (error) => {
         if (isAxiosError(error)) {
-          alert(error.response?.data.detail || error)
+          const data = error.response?.data
+          const detail = typeof data === 'object' && data && 'detail' in data && data.detail
+          alert(typeof detail === 'string' ? detail : error)
         } else {
           alert(error)
         }
