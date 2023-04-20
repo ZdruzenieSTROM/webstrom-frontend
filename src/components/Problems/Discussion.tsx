@@ -92,7 +92,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
                       <Button onClick={() => deleteComment(comment.id)}>Delete</Button>
                     </>
                   )}
-                  {comment.published && isAdmin && <Button onClick={() => hideComment(comment.id)}>Hide</Button>}
+                  {comment.published && isAdmin && <Button onClick={() => hideComment(comment.id)}>Unpublish</Button>}
                 </div>
               </div>
             ))}
