@@ -196,11 +196,13 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 
   const queryClient = useQueryClient()
 
+  const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
+
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),
     onSuccess: () => {
       // refetch semestra, nech sa aktualizuje is_registered
-      queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
+      invalidateSeriesQuery()
     },
   })
 
@@ -268,6 +270,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             problemId={displaySideContent.problemId}
             problemNumber={displaySideContent.problemNumber}
             setDisplaySideContent={setDisplaySideContent}
+            invalidateSeriesQuery={invalidateSeriesQuery}
           />
         )}
       </div>

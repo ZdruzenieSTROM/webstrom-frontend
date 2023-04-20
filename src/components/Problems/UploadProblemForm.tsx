@@ -1,4 +1,5 @@
-import axios, {AxiosError} from 'axios'
+import {useMutation} from '@tanstack/react-query'
+import axios from 'axios'
 import {Dispatch, FC, SetStateAction} from 'react'
 import {useDropzone} from 'react-dropzone'
 
@@ -18,26 +19,32 @@ export const UploadProblemForm: FC<{
       problemNumber: number
     }>
   >
-}> = ({problemId, problemNumber, setDisplaySideContent}) => {
+  invalidateSeriesQuery: () => Promise<void>
+}> = ({problemId, problemNumber, setDisplaySideContent, invalidateSeriesQuery}) => {
+  const {mutate: uploadSolution} = useMutation({
+    mutationFn: (formData: FormData) => axios.post(`/api/competition/problem/${problemId}/upload-solution`, formData),
+    onSuccess: (response) => {
+      if (response.status === 201) {
+        setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
+        // refetch serie, nech sa aktualizuje problem.submitted
+        invalidateSeriesQuery()
+        alert('Riešenie úspešne nahrané.')
+      } else {
+        console.warn(response)
+        alert(
+          'Niečo sa ASI pokazilo, skontroluj, či bolo riešenie nahrané, a ak si technický typ, môžeš pozrieť chybu v konzole.',
+        )
+      }
+    },
+  })
+
   const {acceptedFiles, getRootProps, getInputProps} = useDropzone()
 
   const handleSubmit = async () => {
     const formData = new FormData()
     formData.append('file', acceptedFiles[0])
 
-    try {
-      const response = await axios.post(`/api/competition/problem/${problemId}/upload-solution`, formData)
-      if (response.status === 201) {
-        setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
-        console.log('file uploaded') // ToDo: remove log() and let user know the response! message system? or something else?
-        // TODO: ked sa uploadne, tak button "moje riesenie" je stale sivy, lebo nie su natahane `problems` znova. asi nejaky hook(?)
-      }
-    } catch (e: unknown) {
-      console.log(e)
-      const ex = e as AxiosError
-      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-      alert(error)
-    }
+    await uploadSolution(formData)
   }
 
   return (
