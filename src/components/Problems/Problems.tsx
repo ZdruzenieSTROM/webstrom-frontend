@@ -17,8 +17,6 @@ import {UploadProblemForm} from './UploadProblemForm'
 
 const Problem: FC<{
   problem: Problem
-  registered: boolean
-  commentCount: number
   setDisplaySideContent: Dispatch<
     SetStateAction<{
       type: string
@@ -26,9 +24,10 @@ const Problem: FC<{
       problemNumber: number
     }>
   >
+  registered: boolean
   canRegister: boolean
   canSubmit: boolean
-}> = ({problem, registered, commentCount, setDisplaySideContent, canRegister, canSubmit}) => {
+}> = ({problem, registered, setDisplaySideContent, canSubmit}) => {
   const handleDiscussionButtonClick = () => {
     setDisplaySideContent((prevState) => {
       if (prevState.type === 'discussion' && prevState.problemId === problem.id) {
@@ -39,44 +38,54 @@ const Problem: FC<{
     })
   }
   const handleUploadClick = () => {
-    if (registered) {
-      setDisplaySideContent((prevState) => {
-        if (prevState.type === 'uploadProblemForm' && prevState.problemId === problem.id) {
-          return {type: '', problemId: -1, problemNumber: -1}
-        } else {
-          return {type: 'uploadProblemForm', problemId: problem.id, problemNumber: problem.order}
-        }
-      })
-    } else {
-      alert('Najprv sa zaregistruj do série klikom na CHCEM RIEŠIŤ.')
-    }
+    setDisplaySideContent((prevState) => {
+      if (prevState.type === 'uploadProblemForm' && prevState.problemId === problem.id) {
+        return {type: '', problemId: -1, problemNumber: -1}
+      } else {
+        return {type: 'uploadProblemForm', problemId: problem.id, problemNumber: problem.order}
+      }
+    })
   }
+
+  // TODO BE: https://github.com/ZdruzenieSTROM/webstrom-backend/issues/186
+  // TODO BE: https://github.com/ZdruzenieSTROM/webstrom-backend/issues/187
+  // pre kazdu ulohu potrebujeme info, ci to clovek uz odovzdal, ci to ma opravene, a pocet komentarov
+  const commentCount = 0
+  const hasSolution = false
+  const hasCorrectedSolution = false
+
   return (
     <div className={styles.problem}>
       <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
       <Latex>{problem.text}</Latex>
       <div className={styles.actions}>
-        {registered ? <Link href={`/api/competition/problem/${problem.id}/my-solution`}>moje riešenie</Link> : <></>}
-        {registered ? (
-          <Link href={`/api/competition/problem/${problem.id}/corrected-solution`}>
-            opravené riešenie ({problem.submitted?.score || '?'})
-          </Link>
-        ) : (
-          <></>
+        {registered && (
+          <>
+            <Link href={`/api/competition/problem/${problem.id}/my-solution`} disabled={!hasSolution}>
+              moje riešenie
+            </Link>
+            <Link href={`/api/competition/problem/${problem.id}/corrected-solution`} disabled={!hasCorrectedSolution}>
+              opravené riešenie ({problem.submitted?.score || '?'})
+            </Link>
+          </>
         )}
         <Button onClick={handleDiscussionButtonClick}>
           diskusia ({commentCount === undefined ? 0 : commentCount}){' '}
         </Button>
-        {registered || canRegister ? (
+        {registered && (
           <Button onClick={handleUploadClick} disabled={!canSubmit}>
             odovzdať
           </Button>
-        ) : (
-          <></>
         )}
       </div>
     </div>
   )
+}
+
+const overrideCycle = (prev: boolean | undefined) => {
+  if (prev === undefined) return true
+  if (prev === true) return false
+  return undefined
 }
 
 type ProblemsProps = {
@@ -88,8 +97,8 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 
   const {seminarId, seminar} = useSeminarInfo()
 
+  // used to display discussions and file upload boxes
   const [displaySideContent, setDisplaySideContent] = useState({type: '', problemId: -1, problemNumber: -1})
-  const [commentCount, setCommentCount] = useState<number[]>([]) // ToDo: implement it somehow, probably need some api point for that?
 
   const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery({
     queryKey: ['competition', 'semester-list', {competition: seminarId}],
@@ -179,11 +188,13 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
 
-  const [overrideCanRegister, setOverrideCanRegister] = useState(false)
-  const [overrideIsRegistered, setOverrideIsRegistered] = useState(false)
+  const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
+  const [overrideIsRegistered, setOverrideIsRegistered] = useState<boolean>()
+  const toggleCanRegister = () => setOverrideCanRegister((prevState) => overrideCycle(prevState))
+  const toggleIsRegistered = () => setOverrideIsRegistered((prevState) => overrideCycle(prevState))
 
-  const canRegister = (overrideCanRegister || (series?.can_participate && series?.can_submit)) ?? false
-  const isRegistered = (overrideIsRegistered || series?.is_registered) ?? false
+  const canRegister = overrideCanRegister ?? series?.can_participate ?? false
+  const isRegistered = overrideIsRegistered ?? series?.is_registered ?? false
 
   const queryClient = useQueryClient()
 
@@ -215,21 +226,30 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
           <Problem
             key={problem.id}
             problem={problem}
-            registered={isRegistered}
-            commentCount={commentCount[problem.id]}
             setDisplaySideContent={setDisplaySideContent}
+            registered={isRegistered}
             canRegister={canRegister}
             canSubmit={canSubmit}
           />
         ))}
-        <div className={styles.actions}>
-          debug row:
-          <Button onClick={() => setOverrideIsRegistered((prevState) => !prevState)}>
-            Toggle registered: <span style={{color: '#A00'}}>{isRegistered ? 'true' : 'false'}</span>
-          </Button>
-          <Button onClick={() => setOverrideCanRegister((prevState) => !prevState)}>
-            Toggle canRegister: <span style={{color: '#A00'}}>{canRegister ? 'true' : 'false'}</span>
-          </Button>
+
+        {/* TODO: odstranit z produkcie */}
+        <div className={styles.debug}>
+          <span>debug sekcia:</span>
+          <div>
+            <Button onClick={toggleIsRegistered}>Override isRegistered:</Button>
+            <span style={{color: '#A00', fontWeight: 600}}>
+              {' '}
+              {overrideIsRegistered === undefined ? 'no override' : overrideIsRegistered ? 'on' : 'off'}
+            </span>
+          </div>
+          <div>
+            <Button onClick={toggleCanRegister}>Override canRegister:</Button>
+            <span style={{color: '#A00', fontWeight: 600}}>
+              {' '}
+              {overrideCanRegister === undefined ? 'no override' : overrideCanRegister ? 'on' : 'off'}
+            </span>
+          </div>
         </div>
       </div>
 

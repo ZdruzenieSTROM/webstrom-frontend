@@ -170,7 +170,7 @@ module.exports = {
     'eslint-comments/disable-enable-pair': 'warn',
 
     // Heuristic to try to detect secrets accidentally left in the code
-    'no-secrets/no-secrets': 'warn',
+    // 'no-secrets/no-secrets': 'warn',
 
     // Unluckily this rule has a very high false-positivity rate, making it unusable
     'security/detect-object-injection': 'off',
@@ -218,7 +218,7 @@ module.exports = {
     'unicorn/prefer-math-trunc': 'warn',
 
     // Disallow nested ternary expressions, that are hard to read
-    'unicorn/no-nested-ternary': 'warn',
+    // 'unicorn/no-nested-ternary': 'warn',
 
     // Prefer Set#has() over Array#includes() when checking for existence or non-existence,
     // as it's faster

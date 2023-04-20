@@ -2,6 +2,7 @@ export type Styles = {
   actions: string
   adminSection: string
   container: string
+  debug: string
   loading: string
   problem: string
   problemTitle: string

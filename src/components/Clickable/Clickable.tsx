@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import NextLink from 'next/link'
-import {FC, ReactNode} from 'react'
+import {ButtonHTMLAttributes, FC, ReactNode} from 'react'
 
 import styles from './Clickable.module.scss'
 
@@ -8,13 +8,19 @@ interface ButtonProps {
   onClick?: () => void
   disabled?: boolean
   children: ReactNode
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
 }
 
-export const Button: FC<ButtonProps> = ({children, onClick, disabled}) => {
+export const Button: FC<ButtonProps> = ({children, onClick, disabled, type}) => {
   return (
-    <span onClick={onClick} className={clsx(styles.actionButton, disabled && styles.disabled)}>
+    <button
+      onClick={onClick}
+      className={clsx(styles.actionButton, disabled && styles.disabled)}
+      disabled={disabled}
+      type={type}
+    >
       {children}
-    </span>
+    </button>
   )
 }
 
@@ -25,8 +31,10 @@ interface LinkProps {
 }
 
 export const Link: FC<LinkProps> = ({children, href, disabled}) => {
-  return (
-    <NextLink href={href} className={clsx(styles.actionButton, disabled && styles.disabled)}>
+  return disabled ? (
+    <span className={clsx(styles.actionButton, styles.disabled)}>{children}</span>
+  ) : (
+    <NextLink href={href} className={clsx(styles.actionButton)}>
       {children}
     </NextLink>
   )
