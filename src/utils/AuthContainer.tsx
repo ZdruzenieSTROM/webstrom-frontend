@@ -1,4 +1,4 @@
-import {useQueryClient} from '@tanstack/react-query'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useEffect, useState} from 'react'
 import {Cookies} from 'react-cookie'
@@ -85,36 +85,25 @@ const useAuth = () => {
     }
   }, [isAuthed])
 
-  const login = async (formData: Login, closeOverlay: () => void) => {
-    try {
-      // the server should set sessionid cookie here automatically
-      await axios.post<Token>('/api/user/login/', formData)
+  const {mutate: login} = useMutation({
+    mutationFn: ({data}: {data: Login; onSuccess: () => void}) => axios.post<Token>('/api/user/login/', data),
+    onSuccess: async (_, {onSuccess}) => {
+      onSuccess()
 
-      closeOverlay()
-
-      // fetchProfile ma vlastny error handling, necrashne
+      // testAuth ma vlastny error handling, necrashne
       const success = await testAuth()
       success && setIsAuthed(true)
-    } catch (e: unknown) {
-      const error = e as AxiosError
-      if (error.response?.status === 400) {
-        alert('Neplatné prihlasovacie údaje')
-      }
-    }
-  }
+    },
+  })
 
-  const logout = async () => {
-    // Funkcia, ktorá zavolá logout API point, ktorý zmaže token na BE a odstráni sessionid cookie.
-    try {
-      await axios.post('/api/user/logout')
-    } catch (e: unknown) {
-      const ex = e as AxiosError
-      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-      alert(error)
-    }
-    setIsAuthed(false)
-    // sessionid cookie odstrani server sam
-  }
+  // zavoláme logout API point, ktorý zmaže token na BE a odstráni sessionid cookie.
+  const {mutate: logout} = useMutation({
+    mutationFn: () => axios.post('/api/user/logout'),
+    onSettled: () => {
+      setIsAuthed(false)
+      // sessionid cookie odstrani server sam
+    },
+  })
 
   const queryClient = useQueryClient()
 
