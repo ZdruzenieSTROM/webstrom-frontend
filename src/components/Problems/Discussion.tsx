@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import {FC, useState} from 'react'
 
 import {Comment} from '@/types/api/competition'
+import {AuthContainer} from '@/utils/AuthContainer'
 import {useIsAdmin} from '@/utils/useIsAdmin'
 
 import {Button} from '../Clickable/Clickable'
@@ -32,6 +33,8 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
   }))
 
   const {isAdmin} = useIsAdmin()
+
+  const {isAuthed} = AuthContainer.useContainer()
 
   const queryClient = useQueryClient()
 
@@ -99,7 +102,9 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
         </div>
         <div className={styles.textArea}>
           <textarea value={commentText} onChange={handleCommentChange} />
-          <Button onClick={addComment}>Odoslať</Button>
+          <Button disabled={!isAuthed} onClick={addComment}>
+            Odoslať
+          </Button>
         </div>
       </div>
     </SideContainer>
