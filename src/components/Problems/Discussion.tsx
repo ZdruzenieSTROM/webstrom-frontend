@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import {FC, useState} from 'react'
 
 import {Comment} from '@/types/api/competition'
+import {AuthContainer} from '@/utils/AuthContainer'
 import {useIsAdmin} from '@/utils/useIsAdmin'
 
 import {Button} from '../Clickable/Clickable'
@@ -32,6 +33,8 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
   }))
 
   const {isAdmin} = useIsAdmin()
+
+  const {isAuthed} = AuthContainer.useContainer()
 
   const queryClient = useQueryClient()
 
@@ -81,13 +84,8 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
             comments.map((comment) => (
               <div className={clsx(styles.comment, !comment.published && styles.notPublished)} key={comment.id}>
                 <div className={styles.title}>
-                  {!comment.published && (
-                    <>
-                      (not published)
-                      <br />
-                    </>
-                  )}
-                  {comment.posted_by}
+                  {!comment.published && <div>(not published)</div>}
+                  <div>{comment.posted_by}</div>
                 </div>
                 <div>{comment.text}</div>
                 <div className={styles.commentActions}>
@@ -97,14 +95,16 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
                       <Button onClick={() => deleteComment(comment.id)}>Delete</Button>
                     </>
                   )}
-                  {comment.published && <>{isAdmin && <Button onClick={() => hideComment(comment.id)}>Hide</Button>}</>}
+                  {comment.published && isAdmin && <Button onClick={() => hideComment(comment.id)}>Unpublish</Button>}
                 </div>
               </div>
             ))}
         </div>
         <div className={styles.textArea}>
           <textarea value={commentText} onChange={handleCommentChange} />
-          <Button onClick={addComment}>Odoslať</Button>
+          <Button disabled={!isAuthed} onClick={addComment}>
+            Odoslať
+          </Button>
         </div>
       </div>
     </SideContainer>
