@@ -29,7 +29,7 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   } = useForm<LoginFormValues>({defaultValues})
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    await login(data, closeOverlay)
+    await login({data, onSuccess: closeOverlay})
   }
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
