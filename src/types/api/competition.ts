@@ -73,7 +73,7 @@ export interface ProblemCorrection {
 
 export interface Problem {
   id: number
-  submitted: Solution
+  submitted?: Solution
   text: string
   order: number
   image: string | null

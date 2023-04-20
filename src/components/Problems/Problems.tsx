@@ -48,11 +48,8 @@ const Problem: FC<{
   }
 
   // TODO BE: https://github.com/ZdruzenieSTROM/webstrom-backend/issues/186
-  // TODO BE: https://github.com/ZdruzenieSTROM/webstrom-backend/issues/187
-  // pre kazdu ulohu potrebujeme info, ci to clovek uz odovzdal, ci to ma opravene, a pocet komentarov
+  // pre kazdu ulohu potrebujeme pocet komentarov
   const commentCount = 0
-  const hasSolution = false
-  const hasCorrectedSolution = false
 
   return (
     <div className={styles.problem}>
@@ -61,11 +58,14 @@ const Problem: FC<{
       <div className={styles.actions}>
         {registered && (
           <>
-            <Link href={`/api/competition/problem/${problem.id}/my-solution`} disabled={!hasSolution}>
+            <Link href={`/api/competition/problem/${problem.id}/my-solution`} disabled={!problem.submitted}>
               moje riešenie
             </Link>
-            <Link href={`/api/competition/problem/${problem.id}/corrected-solution`} disabled={!hasCorrectedSolution}>
-              opravené riešenie ({problem.submitted?.score || '?'})
+            <Link
+              href={`/api/competition/problem/${problem.id}/corrected-solution`}
+              disabled={!problem.submitted?.corrected_solution}
+            >
+              opravené riešenie{!!problem.submitted?.corrected_solution && ` (${problem.submitted.score || '?'})`}
             </Link>
           </>
         )}
