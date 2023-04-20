@@ -49,7 +49,7 @@ const Problem: FC<{
 
   // TODO BE: https://github.com/ZdruzenieSTROM/webstrom-backend/issues/186
   // pre kazdu ulohu potrebujeme pocet komentarov
-  const commentCount = 0
+  const commentCount = 'TODO: pocet'
 
   return (
     <div className={styles.problem}>
@@ -69,9 +69,7 @@ const Problem: FC<{
             </Link>
           </>
         )}
-        <Button onClick={handleDiscussionButtonClick}>
-          diskusia ({commentCount === undefined ? 0 : commentCount}){' '}
-        </Button>
+        <Button onClick={handleDiscussionButtonClick}>diskusia ({commentCount}) </Button>
         {registered && (
           <Button onClick={handleUploadClick} disabled={!canSubmit}>
             odovzdať
