@@ -81,13 +81,8 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
             comments.map((comment) => (
               <div className={clsx(styles.comment, !comment.published && styles.notPublished)} key={comment.id}>
                 <div className={styles.title}>
-                  {!comment.published && (
-                    <>
-                      (not published)
-                      <br />
-                    </>
-                  )}
-                  {comment.posted_by}
+                  {!comment.published && <div>(not published)</div>}
+                  <div>{comment.posted_by}</div>
                 </div>
                 <div>{comment.text}</div>
                 <div className={styles.commentActions}>
@@ -97,7 +92,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
                       <Button onClick={() => deleteComment(comment.id)}>Delete</Button>
                     </>
                   )}
-                  {comment.published && <>{isAdmin && <Button onClick={() => hideComment(comment.id)}>Hide</Button>}</>}
+                  {comment.published && isAdmin && <Button onClick={() => hideComment(comment.id)}>Hide</Button>}
                 </div>
               </div>
             ))}
