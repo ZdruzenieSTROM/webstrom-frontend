@@ -37,7 +37,7 @@ export const Authentication: FC = () => {
   } else {
     return (
       <div className={styles.authenticationDisplayButtons}>
-        <span onClick={logout}>Odhlásiť</span>
+        <span onClick={() => logout()}>Odhlásiť</span>
       </div>
     )
   }

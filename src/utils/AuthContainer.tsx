@@ -96,18 +96,14 @@ const useAuth = () => {
     },
   })
 
-  const logout = async () => {
-    // Funkcia, ktorá zavolá logout API point, ktorý zmaže token na BE a odstráni sessionid cookie.
-    try {
-      await axios.post('/api/user/logout')
-    } catch (e: unknown) {
-      const ex = e as AxiosError
-      const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-      alert(error)
-    }
-    setIsAuthed(false)
-    // sessionid cookie odstrani server sam
-  }
+  // zavoláme logout API point, ktorý zmaže token na BE a odstráni sessionid cookie.
+  const {mutate: logout} = useMutation({
+    mutationFn: () => axios.post('/api/user/logout'),
+    onSettled: () => {
+      setIsAuthed(false)
+      // sessionid cookie odstrani server sam
+    },
+  })
 
   const queryClient = useQueryClient()
 
