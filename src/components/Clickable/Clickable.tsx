@@ -31,8 +31,11 @@ interface LinkProps {
 }
 
 export const Link: FC<LinkProps> = ({children, href, disabled}) => {
+  // https://a11y-guidelines.orange.com/en/articles/disable-elements/#disable-a-link
   return disabled ? (
-    <span className={clsx(styles.actionButton, styles.disabled)}>{children}</span>
+    <a className={clsx(styles.actionButton, styles.disabled)} aria-disabled role="link">
+      {children}
+    </a>
   ) : (
     <NextLink href={href} className={clsx(styles.actionButton)}>
       {children}
