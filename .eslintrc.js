@@ -218,7 +218,7 @@ module.exports = {
     'unicorn/prefer-math-trunc': 'warn',
 
     // Disallow nested ternary expressions, that are hard to read
-    'unicorn/no-nested-ternary': 'warn',
+    // 'unicorn/no-nested-ternary': 'warn',
 
     // Prefer Set#has() over Array#includes() when checking for existence or non-existence,
     // as it's faster

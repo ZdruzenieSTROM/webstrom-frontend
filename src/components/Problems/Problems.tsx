@@ -82,6 +82,12 @@ const Problem: FC<{
   )
 }
 
+const overrideCycle = (prev: boolean | undefined) => {
+  if (prev === undefined) return true
+  if (prev === true) return false
+  return undefined
+}
+
 type ProblemsProps = {
   setPageTitle: (title: string) => void
 }
@@ -182,11 +188,13 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
 
-  const [overrideCanRegister, setOverrideCanRegister] = useState(false)
-  const [overrideIsRegistered, setOverrideIsRegistered] = useState(false)
+  const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
+  const [overrideIsRegistered, setOverrideIsRegistered] = useState<boolean>()
+  const toggleCanRegister = () => setOverrideCanRegister((prevState) => overrideCycle(prevState))
+  const toggleIsRegistered = () => setOverrideIsRegistered((prevState) => overrideCycle(prevState))
 
-  const canRegister = (overrideCanRegister || series?.can_participate) ?? false
-  const isRegistered = (overrideIsRegistered || series?.is_registered) ?? false
+  const canRegister = overrideCanRegister ?? series?.can_participate ?? false
+  const isRegistered = overrideIsRegistered ?? series?.is_registered ?? false
 
   const queryClient = useQueryClient()
 
@@ -224,14 +232,24 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             canSubmit={canSubmit}
           />
         ))}
-        <div className={styles.actions}>
-          debug row:
-          <Button onClick={() => setOverrideIsRegistered((prevState) => !prevState)}>
-            Toggle registered: <span style={{color: '#A00'}}>{isRegistered ? 'true' : 'false'}</span>
-          </Button>
-          <Button onClick={() => setOverrideCanRegister((prevState) => !prevState)}>
-            Toggle canRegister: <span style={{color: '#A00'}}>{canRegister ? 'true' : 'false'}</span>
-          </Button>
+
+        {/* TODO: odstranit z produkcie */}
+        <div className={styles.debug}>
+          <span>debug sekcia:</span>
+          <div>
+            <Button onClick={toggleIsRegistered}>Override isRegistered:</Button>
+            <span style={{color: '#A00', fontWeight: 600}}>
+              {' '}
+              {overrideIsRegistered === undefined ? 'no override' : overrideIsRegistered ? 'on' : 'off'}
+            </span>
+          </div>
+          <div>
+            <Button onClick={toggleCanRegister}>Override canRegister:</Button>
+            <span style={{color: '#A00', fontWeight: 600}}>
+              {' '}
+              {overrideCanRegister === undefined ? 'no override' : overrideCanRegister ? 'on' : 'off'}
+            </span>
+          </div>
         </div>
       </div>
 
