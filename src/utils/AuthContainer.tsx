@@ -126,7 +126,8 @@ const useAuth = () => {
     // problemy obsahuju komentare a tie maju flagy ako edit_allowed
     queryClient.invalidateQueries({queryKey: ['competition', 'problem']})
     // cely profil je user-specific
-    queryClient.invalidateQueries({queryKey: ['personal', 'profiles', 'myprofile']})
+    // nestaci invalidate - ten by nechal stare data aktivne, kym sa podari fetchnut nove, ale tato query v non-auth stave zlyha
+    queryClient.removeQueries({queryKey: ['personal', 'profiles', 'myprofile']})
 
     // nechceme manualne invalidovat, ked sa zmeni nieco ine ako `isAuthed` (aj ked `queryClient` by sa menit nemal)
     // eslint-disable-next-line react-hooks/exhaustive-deps
