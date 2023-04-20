@@ -22,14 +22,33 @@ const queryClient = new QueryClient({
     mutations: {
       // globalny error handler requestov cez useMutation
       // notes:
-      // - axios vzdy sam loguje error do konzole, my nemusime
+      // - useMutation vzdy sam loguje error do konzoly, my nemusime
       // - specifikovanim `onError` na nejakej `useMutation` sa tento handler prepise, tak sa tomu vyhybajme
-      // - ak nemame vlastny message v `.detail`, ukazeme userovi kludne original anglicku hlasku z `error` - aspon nam potom bude vediet povedat, co presne sa deje
       onError: (error) => {
         if (isAxiosError(error)) {
-          const data = error.response?.data
-          const detail = typeof data === 'object' && data && 'detail' in data && data.detail
-          alert(typeof detail === 'string' ? detail : error)
+          const data = error.response?.data as unknown
+          if (typeof data === 'object' && data) {
+            // ak mame vlastny message v `.detail`, ukazeme userovi ten
+            const detail = 'detail' in data && data.detail
+            if (typeof detail === 'string') {
+              alert(detail)
+              return
+            }
+
+            // ak nie, ale mame message v `.non_field_errors`, ukazeme ten
+            const nonFieldErrors = 'non_field_errors' in data && data.non_field_errors
+            const nonFieldError = Array.isArray(nonFieldErrors) && (nonFieldErrors as unknown[])[0]
+            if (typeof nonFieldError === 'string') {
+              alert(nonFieldError)
+              return
+            }
+
+            // TODO: handle field errors (napr. na password) - nealertovat usera, ale zobrazit v UI? alebo alert s prvym field errorom
+
+            // ak nie, ukazeme kludne original anglicku hlasku z `error`u
+            alert(error)
+            return
+          }
         } else {
           alert(error)
         }
