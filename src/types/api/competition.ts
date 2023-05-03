@@ -78,6 +78,7 @@ export interface Problem {
   order: number
   image: string | null
   series: number
+  num_comments: number
 }
 
 export interface Comment {
