@@ -67,5 +67,6 @@
     "prettier": "^2.1.2",
     "sass": "^1.49.7",
     "typed-scss-modules": "^6.2.0"
-  }
+  },
+  "packageManager": "yarn@3.5.1"
 }
