@@ -1,5 +1,5 @@
 import {stringify} from 'querystring'
-import {DataProvider, fetchUtils, Record as RARecord} from 'react-admin'
+import {DataProvider, fetchUtils, RaRecord} from 'react-admin'
 import {Cookies} from 'react-cookie'
 
 // potencialne TODO: ak BE bude mat pagination, filter alebo sort, upravime a pouzijeme tento kod.
@@ -36,7 +36,7 @@ const authFetchJson = (url: string, options?: Record<string, unknown>) => {
 
 const dynamicSort = (key: string, order: string) => {
   const orderValue = order === 'ASC' ? 1 : -1
-  return (a: RARecord, b: RARecord) => {
+  return (a: RaRecord, b: RaRecord) => {
     if (a[key] > b[key]) return orderValue
     if (a[key] < b[key]) return -orderValue
     return 0

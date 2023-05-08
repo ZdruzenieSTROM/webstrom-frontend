@@ -20,4 +20,7 @@ export const MyArrayField: FC<MyArrayFieldProps> = ({record, source, formatNumbe
     </>
   )
 }
-MyArrayField.defaultProps = {addLabel: true}
+
+{
+  /* <Labeled label="Author"></Labeled> ? */
+}

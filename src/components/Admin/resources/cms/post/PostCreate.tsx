@@ -14,10 +14,8 @@ import {MyDateInput} from '@/components/Admin/custom/MyDateInput'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
 export const PostCreate: FC<CreateProps> = (props) => (
-  <Create {...props}>
-    <TabbedForm redirect="show">
-      {/* TODO: upgrade react-admin so it has new React 18 types */}
-      {/* @ts-ignore */}
+  <Create redirect="show" {...props}>
+    <TabbedForm>
       <FormTab label="general">
         {/* <NumberInput source="id" fullWidth disabled /> */}
         <TextInput source="caption" fullWidth validate={required()} />
@@ -28,10 +26,8 @@ export const PostCreate: FC<CreateProps> = (props) => (
         <MyDateInput source="visible_until" fullWidth validate={required()} />
         <SitesCheckboxInput source="sites" />
       </FormTab>
-      {/* @ts-ignore */}
       <FormTab label="links">
-        <ArrayInput source="links" initialValue={[]}>
-          {/* @ts-ignore */}
+        <ArrayInput source="links" defaultValue={[]}>
           <SimpleFormIterator>
             {/* <NumberInput source="id" fullWidth disabled /> */}
             <TextInput source="caption" fullWidth validate={required()} />
