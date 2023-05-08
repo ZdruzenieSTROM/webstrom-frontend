@@ -1,24 +1,40 @@
 import {Autocomplete, TextField, TextFieldProps} from '@mui/material'
-import {FC} from 'react'
-import {Controller, ControllerProps, FieldError} from 'react-hook-form'
+import {Controller, ControllerProps, FieldError, FieldErrorsImpl, FieldPath, FieldValues, Merge} from 'react-hook-form'
 
 import {SelectOption} from '../FormSelect/FormSelect'
 import {formItemStyle} from '../styles'
 
-export const FormAutocomplete: FC<
-  TextFieldProps &
-    Pick<ControllerProps<'input'>, 'name' | 'control' | 'rules'> & {
-      options: SelectOption[]
-      disabled?: boolean
-      fieldError?: FieldError
-    }
-> = ({label, name, options, control, disabled, rules, fieldError}) => (
+export const FormAutocomplete = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  label,
+  name,
+  options,
+  control,
+  disabled,
+  rules,
+  fieldError,
+}: TextFieldProps &
+  Pick<ControllerProps<TFieldValues, TName>, 'name' | 'control' | 'rules'> & {
+    options: SelectOption[]
+    disabled?: boolean
+    fieldError?:
+      | Merge<
+          FieldError,
+          FieldErrorsImpl<{
+            id: number
+            label: string
+          }>
+        >
+      | undefined
+  }) => (
   <>
     <Controller
       name={name}
       control={control}
       rules={rules}
-      render={({value, ...props}) => (
+      render={({field: {value, ...props}}) => (
         <Autocomplete
           {...props}
           id={name}

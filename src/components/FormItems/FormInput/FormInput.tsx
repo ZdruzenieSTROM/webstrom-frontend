@@ -1,13 +1,23 @@
 import {TextField, TextFieldProps} from '@mui/material'
-import {FC} from 'react'
-import {Controller, ControllerProps, FieldError} from 'react-hook-form'
+import {Controller, ControllerProps, FieldError, FieldPath, FieldValues} from 'react-hook-form'
 
 import {formItemStyle} from '../styles'
 
-export const FormInput: FC<
-  TextFieldProps &
-    Pick<ControllerProps<'input'>, 'name' | 'control' | 'rules'> & {label: string; fieldError?: FieldError}
-> = ({control, name, label, type, rules, fieldError}) => (
+export const FormInput = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  control,
+  name,
+  label,
+  type,
+  rules,
+  fieldError,
+}: TextFieldProps &
+  Pick<ControllerProps<TFieldValues, TName>, 'name' | 'control' | 'rules'> & {
+    label: string
+    fieldError?: FieldError
+  }) => (
   <Controller
     name={name}
     control={control}

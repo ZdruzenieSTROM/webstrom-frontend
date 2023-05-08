@@ -33,7 +33,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
-    "react-hook-form": "^6.15.8",
+    "react-hook-form": "^7.43.9",
     "react-icons": "^3.11.0",
     "react-markdown": "^8.0.7",
     "typescript": "^5.0.4",

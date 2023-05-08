@@ -26,7 +26,7 @@ type RegisterFormValues = {
   without_school: boolean
   county: number | ''
   district: number | ''
-  school: SelectOption | null
+  school?: SelectOption | null
   school_not_found: boolean
   grade: number | ''
   gdpr: boolean
@@ -60,7 +60,7 @@ export const RegisterForm: FC = () => {
     getValues,
     formState: {errors},
   } = useForm<RegisterFormValues>({defaultValues})
-  const {county, district, school_not_found, without_school} = watch([
+  const [county, district, school_not_found, without_school] = watch([
     'county',
     'district',
     'school_not_found',
@@ -202,8 +202,8 @@ export const RegisterForm: FC = () => {
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   const phoneRule = {
-    validate: (val: string) => {
-      if (val && !/^(\+\d{10,12})$/u.test(val.replace(/\s+/gu, '')))
+    validate: (val?: string) => {
+      if (val && !/^(\+\d{10,12})$/u.test(val.replaceAll(/\s+/gu, '')))
         return '* Zadaj telefónne číslo vo formáte validnom formáte +421 123 456 789 alebo +421123456789.'
     },
   }
