@@ -88,9 +88,6 @@ module.exports = {
     // Run Prettier as an ESLint plugin (not separately after ESLint)
     'plugin:prettier/recommended',
 
-    // @tanstack/react-query recommended rules: https://tanstack.com/query/v4/docs/react/eslint/eslint-plugin-query
-    'plugin:@tanstack/eslint-plugin-query/recommended',
-
     // React-specific rules - not needed, included in 'next'
     // 'plugin:react/recommended',
     // 'plugin:react-hooks/recommended',

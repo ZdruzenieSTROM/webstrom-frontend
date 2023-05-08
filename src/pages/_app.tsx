@@ -2,14 +2,21 @@ import '../index.scss'
 
 import {createTheme, ThemeProvider} from '@mui/material'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import {isAxiosError} from 'axios'
 import {AppProps} from 'next/app'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import {FC} from 'react'
 import {CookiesProvider} from 'react-cookie'
 
 import {AuthContainer} from '@/utils/AuthContainer'
+
+const ReactQueryDevtools = dynamic(
+  () => import('@tanstack/react-query-devtools').then(({ReactQueryDevtools}) => ReactQueryDevtools),
+  {
+    ssr: false,
+  },
+)
 
 const theme = createTheme({
   typography: {
@@ -65,7 +72,7 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools />
         <CookiesProvider>
           <AuthContainer.Provider>
             <ThemeProvider theme={theme}>
