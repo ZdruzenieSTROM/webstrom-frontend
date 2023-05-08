@@ -1,19 +1,27 @@
 import {MenuItem, TextField, TextFieldProps} from '@mui/material'
-import {FC} from 'react'
-import {Controller, ControllerProps, FieldError} from 'react-hook-form'
+import {Controller, ControllerProps, FieldError, FieldPath, FieldValues} from 'react-hook-form'
 
 import {formItemStyle} from '../styles'
 
 export type SelectOption = {id: number; label: string}
 
-export const FormSelect: FC<
-  TextFieldProps &
-    Pick<ControllerProps<'input'>, 'name' | 'control' | 'rules'> & {
-      options: SelectOption[]
-      disabled?: boolean
-      fieldError?: FieldError
-    }
-> = ({label, name, options, control, disabled, rules, fieldError}) => (
+export const FormSelect = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  label,
+  name,
+  options,
+  control,
+  disabled,
+  rules,
+  fieldError,
+}: TextFieldProps &
+  Pick<ControllerProps<TFieldValues, TName>, 'name' | 'control' | 'rules'> & {
+    options: SelectOption[]
+    disabled?: boolean
+    fieldError?: FieldError
+  }) => (
   <Controller
     name={name}
     control={control}
