@@ -956,10 +956,10 @@
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.0.0-alpha.26.tgz#d9021cce016a4d913df4e233a2e2c9d81531f555"
   integrity sha512-vppYnb31rY8e6fBUuZ/VjuIpiaS3mkjFoD1u8gvdynmG0eHZOysJ1IbcKNEAT5QC9eJRsTHVqfitO9pKkZch4w==
 
-"@tanstack/query-devtools@5.0.0-alpha.27":
-  version "5.0.0-alpha.27"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-devtools/-/query-devtools-5.0.0-alpha.27.tgz#4812bb12c3c9ecb0c0eda879846fabbbd1a8d4e6"
-  integrity sha512-e11KC9SA3NYArf9K3Q6IUTygE1xWKTRE6S338+tlpUyY/IssvmdrTya6lGUD4Q8Q0jbgTz40Pz2MkgHJR4iFGA==
+"@tanstack/query-devtools@5.0.0-alpha.30":
+  version "5.0.0-alpha.30"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-devtools/-/query-devtools-5.0.0-alpha.30.tgz#25ae643b37a9d5d8b72ca4c622d0fe5451c52bd5"
+  integrity sha512-6px+9bqt2+/4xGtuCCwkUYllI6MyIv8WtR+pATtz0UsiaTUU2lhsdPfmeiYl0Yt5+/k0MCtu7q2U66pmT1ODJw==
   dependencies:
     "@emotion/css" "^11.10.5"
     "@solid-primitives/keyed" "^1.1.4"
@@ -970,12 +970,12 @@
     solid-transition-group "^0.2.2"
     superjson "^1.12.1"
 
-"@tanstack/react-query-devtools@5.0.0-alpha.27":
-  version "5.0.0-alpha.27"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-5.0.0-alpha.27.tgz#b7e8502369e975a6fb3355496fac1627902e4308"
-  integrity sha512-JAp/kT5ih8V915cJlqKjx723jz1rTUq9WZNsAd0gIr9cNxAoVjkEPmuDuw181VcGSYMUHmURVLJR+JE+AAB5bg==
+"@tanstack/react-query-devtools@5.0.0-alpha.30":
+  version "5.0.0-alpha.30"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-5.0.0-alpha.30.tgz#b80c969f73455b458f4f7dda182aceac6547d72b"
+  integrity sha512-xRZtJ96tVQiH3I++bBclP/W8n9woE3eJNtaAJHm3XrUw3Ku7cYKOc9osLqgXRDYPukzlwB+vEGH4U5owc3UCGg==
   dependencies:
-    "@tanstack/query-devtools" "5.0.0-alpha.27"
+    "@tanstack/query-devtools" "5.0.0-alpha.30"
 
 "@tanstack/react-query@5.0.0-alpha.26":
   version "5.0.0-alpha.26"
