@@ -1,44 +1,6 @@
-// ESLint config - most of this file is taken from the config on Riso's current project (Unleashed Capital bank) in Vacuumlabs.
+// ESLint config - most of this file is taken from the config on one of Riso's previous projects in Vacuumlabs.
 
 const restrictedGlobals = require('confusing-browser-globals')
-
-// Basic naming conventions for all types of files.
-// More specific cases are listed further down in the rule definitions.
-// docs: https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/naming-convention.md
-const namingConventions = [
-  // Unless specified otherwise, all names are camelCased
-  {
-    selector: 'default',
-    format: ['camelCase'],
-  },
-
-  // For parameters and properties, allow PascalCase for passed/destructured components as parameters and allow snake_case for BE parameters
-  {
-    selector: ['variable', 'parameter', 'property'],
-    format: ['PascalCase', 'camelCase', 'snake_case'],
-  },
-
-  // For constants declared at top level, allow using CONSTANT_NAME and allow component names in PascalCase
-  {
-    selector: 'variable',
-    modifiers: ['global', 'const'],
-    format: ['PascalCase', 'camelCase', 'UPPER_CASE'],
-  },
-
-  // Require a leading underscore for unused function parameter names
-  {
-    selector: 'parameter',
-    modifiers: ['unused'],
-    format: ['camelCase'],
-    leadingUnderscore: 'require',
-  },
-
-  // For classes, interfaces, type aliases, enums/enum members and type parameters, use PascalCase
-  {
-    selector: ['typeLike', 'enumMember'],
-    format: ['PascalCase'],
-  },
-]
 
 module.exports = {
   env: {
@@ -105,8 +67,6 @@ module.exports = {
     'react/prop-types': 'off',
     // restrict usage of confusing global variables
     'no-restricted-globals': ['error', ...restrictedGlobals],
-    // naming conventions
-    '@typescript-eslint/naming-convention': ['warn', ...namingConventions],
 
     // additional React rules not included in recommended set
     'react/self-closing-comp': 'error',
