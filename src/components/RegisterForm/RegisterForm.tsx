@@ -52,14 +52,7 @@ const defaultValues: RegisterFormValues = {
 }
 
 export const RegisterForm: FC = () => {
-  const {
-    handleSubmit,
-    control,
-    watch,
-    setValue,
-    getValues,
-    formState: {errors},
-  } = useForm<RegisterFormValues>({defaultValues})
+  const {handleSubmit, control, watch, setValue, getValues} = useForm<RegisterFormValues>({defaultValues})
   const [county, district, school_not_found, without_school] = watch([
     'county',
     'district',
@@ -225,7 +218,6 @@ export const RegisterForm: FC = () => {
                 message: '* Vložte správnu emailovú adresu.',
               },
             }}
-            fieldError={errors.email}
           />
           <FormInput
             control={control}
@@ -239,7 +231,6 @@ export const RegisterForm: FC = () => {
                 message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
               },
             }}
-            fieldError={errors.password1}
           />
           <FormInput
             control={control}
@@ -252,22 +243,9 @@ export const RegisterForm: FC = () => {
                 if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
               },
             }}
-            fieldError={errors.password2}
           />
-          <FormInput
-            control={control}
-            name="first_name"
-            label="Krstné meno"
-            rules={requiredRule}
-            fieldError={errors.first_name}
-          />
-          <FormInput
-            control={control}
-            name="last_name"
-            label="Priezvisko"
-            rules={requiredRule}
-            fieldError={errors.last_name}
-          />
+          <FormInput control={control} name="first_name" label="Krstné meno" rules={requiredRule} />
+          <FormInput control={control} name="last_name" label="Priezvisko" rules={requiredRule} />
           <FormInput control={control} name="nickname" label="Prezývka" />
           <FormCheckbox
             control={control}
@@ -295,7 +273,6 @@ export const RegisterForm: FC = () => {
             options={schoolItems}
             disabled={!schoolItems.length || school_not_found || without_school}
             rules={requiredRule}
-            fieldError={errors.school}
           />
           <FormCheckbox
             control={control}
@@ -309,7 +286,6 @@ export const RegisterForm: FC = () => {
               name="new_school_description"
               label="povedz nám, kam chodíš na školu, aby sme ti ju mohli dodatočne pridať"
               rules={school_not_found ? requiredRule : {}}
-              fieldError={errors.new_school_description}
             />
           )}
           <FormSelect
@@ -319,22 +295,9 @@ export const RegisterForm: FC = () => {
             options={gradeItems}
             disabled={without_school}
             rules={requiredRule}
-            fieldError={errors.grade}
           />
-          <FormInput
-            control={control}
-            name="phone"
-            label="Telefónne číslo"
-            rules={phoneRule}
-            fieldError={errors.phone}
-          />
-          <FormInput
-            control={control}
-            name="parent_phone"
-            label="Telefónne číslo na rodiča"
-            rules={phoneRule}
-            fieldError={errors.parent_phone}
-          />
+          <FormInput control={control} name="phone" label="Telefónne číslo" rules={phoneRule} />
+          <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" rules={phoneRule} />
           <FormCheckbox
             control={control}
             name="gdpr"
@@ -344,7 +307,6 @@ export const RegisterForm: FC = () => {
                 if (!val) return '* Súhlas so spracovaním osobných údajov je nutnou podmienkou registrácie.'
               },
             }}
-            fieldError={errors.gdpr}
           />
           <Button type="submit">Registrovať</Button>
         </form>

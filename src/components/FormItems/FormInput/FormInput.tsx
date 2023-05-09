@@ -1,5 +1,5 @@
 import {TextField, TextFieldProps} from '@mui/material'
-import {Controller, ControllerProps, FieldError, FieldPath, FieldValues} from 'react-hook-form'
+import {Controller, ControllerProps, FieldPath, FieldValues} from 'react-hook-form'
 
 import {formItemStyle} from '../styles'
 
@@ -12,25 +12,23 @@ export const FormInput = <
   label,
   type,
   rules,
-  fieldError,
 }: TextFieldProps &
   Pick<ControllerProps<TFieldValues, TName>, 'name' | 'control' | 'rules'> & {
     label: string
-    fieldError?: FieldError
   }) => (
   <Controller
     name={name}
     control={control}
     rules={rules}
-    render={(props) => (
+    render={({field, fieldState: {error}}) => (
       <TextField
-        {...props}
+        {...field}
         id={name}
         label={label}
         type={type}
         variant="outlined"
         fullWidth
-        helperText={fieldError?.message}
+        helperText={error?.message}
         focused={false}
         sx={formItemStyle}
       />
