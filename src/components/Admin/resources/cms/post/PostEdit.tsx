@@ -16,10 +16,8 @@ import {MyEditActions} from '@/components/Admin/custom/MyEditActions'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
 export const PostEdit: FC<EditProps> = (props) => (
-  <Edit {...props} actions={<MyEditActions />} undoable={false}>
-    <TabbedForm redirect="show">
-      {/* TODO: upgrade react-admin so it has new React 18 types */}
-      {/* @ts-ignore */}
+  <Edit {...props} actions={<MyEditActions />} redirect="show" mutationMode="undoable">
+    <TabbedForm>
       <FormTab label="general">
         <NumberInput source="id" fullWidth disabled />
         <TextInput source="caption" fullWidth validate={required()} />
@@ -30,10 +28,8 @@ export const PostEdit: FC<EditProps> = (props) => (
         <MyDateInput source="visible_until" fullWidth validate={required()} />
         <SitesCheckboxInput source="sites" />
       </FormTab>
-      {/* @ts-ignore */}
       <FormTab label="links">
-        <ArrayInput source="links" initialValue={[]}>
-          {/* @ts-ignore */}
+        <ArrayInput source="links" defaultValue={[]}>
           <SimpleFormIterator>
             <NumberInput source="id" fullWidth disabled />
             <TextInput source="caption" fullWidth validate={required()} />

@@ -10,13 +10,14 @@ import {Profile} from '@/types/api/personal'
 // special axios instance to prevent interceptors
 const specialAxios = axios.create()
 
+export const testAuthRequest = async () => specialAxios.get<Profile>(`/api/personal/profiles/myprofile`)
+
 // call na lubovolny "auth" endpoint ako test prihlasenia, vracia true/false podla uspesnosti
-const testAuth = async () => {
+export const testAuth = async () => {
   try {
-    await specialAxios.get<Profile>(`/api/personal/profiles/myprofile`)
+    await testAuthRequest()
     return true
   } catch (e: unknown) {
-    console.log((e as AxiosError).response?.data)
     return false
   }
 }
@@ -62,7 +63,7 @@ const useAuth = () => {
 
           if (status === 403) {
             // bud nemame prava, alebo nam vyprsala auth
-            // auth requestom na profil zistime, co z toho
+            // auth requestom zistime, co z toho
             const success = await testAuth()
 
             // ak zlyha, tak nam vyprsala auth
@@ -85,10 +86,10 @@ const useAuth = () => {
     }
   }, [isAuthed])
 
-  const {mutate: login} = useMutation({
-    mutationFn: ({data}: {data: Login; onSuccess: () => void}) => axios.post<Token>('/api/user/login/', data),
+  const {mutate: login, mutateAsync: loginAsync} = useMutation({
+    mutationFn: ({data}: {data: Login; onSuccess?: () => void}) => axios.post<Token>('/api/user/login', data),
     onSuccess: async (_, {onSuccess}) => {
-      onSuccess()
+      onSuccess?.()
 
       // testAuth ma vlastny error handling, necrashne
       const success = await testAuth()
@@ -122,7 +123,7 @@ const useAuth = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthed])
 
-  return {isAuthed, login, logout}
+  return {isAuthed, login, logout, /* for react admin - this one can throw */ loginAsync}
 }
 
 export const AuthContainer = createContainer(useAuth)
