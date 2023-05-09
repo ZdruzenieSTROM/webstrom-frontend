@@ -22,11 +22,7 @@ interface ILoginForm {
 
 export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const {login} = AuthContainer.useContainer()
-  const {
-    handleSubmit,
-    control,
-    formState: {errors},
-  } = useForm<LoginFormValues>({defaultValues})
+  const {handleSubmit, control} = useForm<LoginFormValues>({defaultValues})
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     await login({data, onSuccess: closeOverlay})
@@ -47,16 +43,8 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
             message: '* Vložte správnu emailovú adresu.',
           },
         }}
-        fieldError={errors.email}
       />
-      <FormInput
-        control={control}
-        name="password"
-        label="Heslo"
-        type="password"
-        rules={requiredRule}
-        fieldError={errors.password}
-      />
+      <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
       <Button type="submit">Prihlásiť</Button>
     </form>
   )

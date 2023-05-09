@@ -1,5 +1,5 @@
 import {Checkbox, CheckboxProps, FormControl, FormControlLabel, FormHelperText} from '@mui/material'
-import {Controller, ControllerProps, FieldError, FieldPath, FieldValues} from 'react-hook-form'
+import {Controller, ControllerProps, FieldPath, FieldValues} from 'react-hook-form'
 
 import {formItemStyle} from '../styles'
 
@@ -12,25 +12,23 @@ export const FormCheckbox = <
   label,
   disabled,
   rules,
-  fieldError,
 }: CheckboxProps &
   Pick<ControllerProps<TFieldValues, TName>, 'name' | 'control' | 'rules'> & {
     label: string
-    fieldError?: FieldError
   }) => (
-  <FormControl fullWidth sx={formItemStyle}>
-    <Controller
-      name={name}
-      control={control}
-      rules={rules}
-      render={({field: {onChange, value}}) => (
+  <Controller
+    name={name}
+    control={control}
+    rules={rules}
+    render={({field: {onChange, value}, fieldState: {error}}) => (
+      <FormControl fullWidth sx={formItemStyle}>
         <FormControlLabel
           control={<Checkbox onChange={(e) => onChange(e.target.checked)} checked={value} />}
           label={label}
           disabled={disabled}
         />
-      )}
-    />
-    <FormHelperText>{fieldError?.message}</FormHelperText>
-  </FormControl>
+        <FormHelperText>{error?.message}</FormHelperText>
+      </FormControl>
+    )}
+  />
 )
