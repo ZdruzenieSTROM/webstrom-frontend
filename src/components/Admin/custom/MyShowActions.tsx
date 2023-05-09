@@ -17,7 +17,7 @@ export const MyShowActions: FC = () => {
   return (
     <TopToolbar>
       <EditButton to={to} />
-      <ListButton />
+      <ListButton label="Back to list" />
     </TopToolbar>
   )
 }

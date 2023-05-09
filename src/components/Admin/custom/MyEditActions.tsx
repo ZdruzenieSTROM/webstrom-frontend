@@ -17,7 +17,7 @@ export const MyEditActions: FC<EditActionsProps> = () => {
   return (
     <TopToolbar>
       <ShowButton to={to} />
-      <ListButton />
+      <ListButton label="Back to list" />
     </TopToolbar>
   )
 }
