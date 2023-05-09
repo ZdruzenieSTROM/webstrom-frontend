@@ -70,14 +70,14 @@ export const dataProvider: DataProvider = {
     }
   },
   getOne: async (resource, params) => {
-    const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}/`)
+    const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}`)
 
     return {
       data: json,
     }
   },
   getMany: async (resource, params) => {
-    const data = await Promise.all(params.ids.map((id) => authFetchJson(`${apiUrl}/${resource}/${id}/`)))
+    const data = await Promise.all(params.ids.map((id) => authFetchJson(`${apiUrl}/${resource}/${id}`)))
 
     return {
       data: data.map(({json}) => json),
@@ -96,7 +96,7 @@ export const dataProvider: DataProvider = {
     }
   },
   update: async (resource, params) => {
-    const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}/`, {
+    const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}`, {
       method: 'PATCH',
       body: JSON.stringify(params.data),
     })
@@ -106,7 +106,7 @@ export const dataProvider: DataProvider = {
   updateMany: async (resource, params) => {
     const data = await Promise.all(
       params.ids.map((id) =>
-        authFetchJson(`${apiUrl}/${resource}/${id}/`, {
+        authFetchJson(`${apiUrl}/${resource}/${id}`, {
           method: 'PATCH',
           body: JSON.stringify(params.data),
         }),
@@ -118,7 +118,7 @@ export const dataProvider: DataProvider = {
     }
   },
   create: async (resource, params) => {
-    const {json} = await authFetchJson(`${apiUrl}/${resource}/`, {
+    const {json} = await authFetchJson(`${apiUrl}/${resource}`, {
       method: 'POST',
       body: JSON.stringify(params.data),
     })
@@ -128,7 +128,7 @@ export const dataProvider: DataProvider = {
     }
   },
   delete: async (resource, params) => {
-    const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}/`, {
+    const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}`, {
       method: 'DELETE',
     })
 
@@ -139,7 +139,7 @@ export const dataProvider: DataProvider = {
   deleteMany: async (resource, params) => {
     const data = await Promise.all(
       params.ids.map((id) =>
-        authFetchJson(`${apiUrl}/${resource}/${id}/`, {
+        authFetchJson(`${apiUrl}/${resource}/${id}`, {
           method: 'DELETE',
         }),
       ),
