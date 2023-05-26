@@ -74,7 +74,7 @@ const Problem: FC<{
         <Button onClick={handleDiscussionButtonClick}>diskusia ({problem.num_comments}) </Button>
         {registered && (
           <Button onClick={handleUploadClick} disabled={!canSubmit}>
-            ;
+            odovzdať
           </Button>
         )}
       </div>
