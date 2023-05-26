@@ -43,7 +43,12 @@ const Problem: FC<{
       if (prevState.type === 'uploadProblemForm' && prevState.problemId === problem.id) {
         return {type: '', problemId: -1, problemNumber: -1}
       } else {
-        return {type: 'uploadProblemForm', problemId: problem.id, problemNumber: problem.order, problemSubmitted: !!problem.submitted}
+        return {
+          type: 'uploadProblemForm',
+          problemId: problem.id,
+          problemNumber: problem.order,
+          problemSubmitted: !!problem.submitted,
+        }
       }
     })
   }
@@ -69,7 +74,7 @@ const Problem: FC<{
         <Button onClick={handleDiscussionButtonClick}>diskusia ({problem.num_comments}) </Button>
         {registered && (
           <Button onClick={handleUploadClick} disabled={!canSubmit}>
-            odovzdať
+            ;
           </Button>
         )}
       </div>
@@ -94,9 +99,9 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 
   // used to display discussions and file upload boxes
   const [displaySideContent, setDisplaySideContent] = useState<{
-    type: string,
-    problemId: number,
-    problemNumber: number,
+    type: string
+    problemId: number
+    problemNumber: number
     problemSubmitted?: boolean
   }>({type: '', problemId: -1, problemNumber: -1, problemSubmitted: false})
 

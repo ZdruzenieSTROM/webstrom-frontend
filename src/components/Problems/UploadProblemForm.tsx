@@ -44,7 +44,7 @@ export const UploadProblemForm: FC<{
     multiple: false,
     accept: {
       'application/pdf': ['.pdf'],
-    }
+    },
   })
 
   const handleSubmit = async () => {
@@ -57,9 +57,7 @@ export const UploadProblemForm: FC<{
   return (
     <SideContainer title={'Odovzdať úlohu - ' + problemNumber}>
       <div className={styles.container}>
-        {problemSubmitted && (<p>
-          Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.
-        </p>)}
+        {problemSubmitted && <p>Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.</p>}
         <div {...getRootProps({className: styles.dropzone})}>
           <input {...getInputProps()} />
           <p>Vlož riešenie</p>
@@ -71,11 +69,7 @@ export const UploadProblemForm: FC<{
               {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
             </span>
           )}
-          {fileRejections.length > 0 && (
-            <span className="error">
-              Nahraný súbor musí byť vo formáte pdf.
-            </span>
-          )}
+          {fileRejections.length > 0 && <span className="error">Nahraný súbor musí byť vo formáte pdf.</span>}
         </div>
         <div className={styles.bottomAction}>
           <Button onClick={handleSubmit}>Odovzdať</Button>
