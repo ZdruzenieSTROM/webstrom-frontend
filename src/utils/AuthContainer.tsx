@@ -5,12 +5,12 @@ import {Cookies} from 'react-cookie'
 import {createContainer} from 'unstated-next'
 
 import {Login, Token} from '@/types/api/generated/user'
-import {Profile} from '@/types/api/personal'
+import {MyPermissions} from '@/types/api/personal'
 
 // special axios instance to prevent interceptors
 const specialAxios = axios.create()
 
-export const testAuthRequest = async () => specialAxios.get<Profile>(`/api/personal/profiles/myprofile`)
+export const testAuthRequest = async () => specialAxios.get<MyPermissions>('/api/personal/profiles/mypermissions')
 
 // call na lubovolny "auth" endpoint ako test prihlasenia, vracia true/false podla uspesnosti
 export const testAuth = async () => {

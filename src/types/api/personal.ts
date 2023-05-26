@@ -73,6 +73,11 @@ export interface Profile {
   school_id: number
 }
 
+export interface MyPermissions {
+  is_staff: boolean
+  competition_permissions: number[]
+}
+
 export interface ProfileCreate {
   first_name: string
   last_name: string
