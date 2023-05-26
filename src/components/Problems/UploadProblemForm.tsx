@@ -38,7 +38,9 @@ export const UploadProblemForm: FC<{
     },
   })
 
-  const {acceptedFiles, getRootProps, getInputProps} = useDropzone()
+  const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
+    multiple: false,
+  })
 
   const handleSubmit = async () => {
     const formData = new FormData()
