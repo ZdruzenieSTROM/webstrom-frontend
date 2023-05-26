@@ -12,15 +12,17 @@ import styles from './UploadProblemForm.module.scss'
 export const UploadProblemForm: FC<{
   problemId: number
   problemNumber: number
+  problemSubmitted?: boolean
   setDisplaySideContent: Dispatch<
     SetStateAction<{
       type: string
       problemId: number
       problemNumber: number
+      problemSubmitted?: boolean
     }>
   >
   invalidateSeriesQuery: () => Promise<void>
-}> = ({problemId, problemNumber, setDisplaySideContent, invalidateSeriesQuery}) => {
+}> = ({problemId, problemNumber, problemSubmitted, setDisplaySideContent, invalidateSeriesQuery}) => {
   const {mutate: uploadSolution} = useMutation({
     mutationFn: (formData: FormData) => axios.post(`/api/competition/problem/${problemId}/upload-solution`, formData),
     onSuccess: (response) => {
@@ -55,6 +57,9 @@ export const UploadProblemForm: FC<{
   return (
     <SideContainer title={'Odovzdať úlohu - ' + problemNumber}>
       <div className={styles.container}>
+        {problemSubmitted && (<p>
+          Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.
+        </p>)}
         <div {...getRootProps({className: styles.dropzone})}>
           <input {...getInputProps()} />
           <p>Vlož riešenie</p>
