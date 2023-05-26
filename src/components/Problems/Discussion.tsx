@@ -80,19 +80,19 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
             comments.map((comment) => (
               <div className={clsx(styles.comment, !comment.published && styles.notPublished)} key={comment.id}>
                 <div className={styles.title}>
-                  {!comment.published && <div>(not published)</div>}
+                  {!comment.published && <div>(nezverejnený)(čaká na schválenie)</div>}
                   <div>{comment.posted_by}</div>
                 </div>
                 <div>{comment.text}</div>
                 <div className={styles.commentActions}>
                   {!comment.published && (
                     <>
-                      {hasPermissions && <Button onClick={() => publishComment(comment.id)}>Publish</Button>}
-                      <Button onClick={() => deleteComment(comment.id)}>Delete</Button>
+                      {hasPermissions && <Button onClick={() => publishComment(comment.id)}>Zverejniť</Button>}
+                      <Button onClick={() => deleteComment(comment.id)}>Odstrániť</Button>
                     </>
                   )}
                   {comment.published && hasPermissions && (
-                    <Button onClick={() => hideComment(comment.id)}>Unpublish</Button>
+                    <Button onClick={() => hideComment(comment.id)}>Skryť</Button>
                   )}
                 </div>
               </div>
