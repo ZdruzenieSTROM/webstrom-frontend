@@ -38,8 +38,11 @@ export const UploadProblemForm: FC<{
     },
   })
 
-  const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
+  const {acceptedFiles, fileRejections, getRootProps, getInputProps} = useDropzone({
     multiple: false,
+    accept: {
+      'application/pdf': ['.pdf'],
+    }
   })
 
   const handleSubmit = async () => {
@@ -61,6 +64,11 @@ export const UploadProblemForm: FC<{
           {acceptedFiles[0]?.name && (
             <span>
               {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
+            </span>
+          )}
+          {fileRejections.length > 0 && (
+            <span className="error">
+              Nahraný súbor musí byť vo formáte pdf.
             </span>
           )}
         </div>
