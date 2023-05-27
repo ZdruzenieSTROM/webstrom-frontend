@@ -61,6 +61,8 @@ export const RegisterForm: FC = () => {
   const otherSchoolItem = useRef<SelectOption>()
   const withoutSchoolItem = useRef<SelectOption>()
 
+  const router = useRouter()
+
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   useEffect(() => {
     const fetchData = async () => {
@@ -132,7 +134,8 @@ export const RegisterForm: FC = () => {
   const {mutate: submitFormData, data: registrationResponseData} = useMutation({
     mutationFn: (data: RegisterFormValues) => {
       return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
-    },
+    }, 
+    onSuccess: () => router.push(`${router.asPath}/../verifikacia`) 
   })
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
@@ -146,12 +149,10 @@ export const RegisterForm: FC = () => {
         return '* Zadaj telefónne číslo vo formáte validnom formáte +421 123 456 789 alebo +421123456789.'
     },
   }
-
   return (
     <div>
       {registrationResponseData?.data.detail ? (
-        <p>{registrationResponseData?.data.detail}
-         useRouter().push(`${useRouter().asPath}/../verifikacia`) </p>
+         <p> </p>
       ) : (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <FormInput
