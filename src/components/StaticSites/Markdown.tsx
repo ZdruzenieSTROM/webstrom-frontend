@@ -6,8 +6,7 @@ import rehypeKatex from 'rehype-katex'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 
-import {Link} from '../Clickable/Clickable'
-import {Table, Td, Th} from './Texts'
+import {MarkdownLink, Table, Td, Th} from './Texts'
 
 type MarkdownProps = {
   content: string
@@ -20,7 +19,7 @@ export const Markdown: FC<MarkdownProps> = ({content}) => (
     components={{
       th: Th,
       td: Td,
-      a: Link,
+      a: MarkdownLink,
       table: Table,
     }}
   >
