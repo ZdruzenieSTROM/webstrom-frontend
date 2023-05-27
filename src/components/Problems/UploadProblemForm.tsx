@@ -55,7 +55,12 @@ export const UploadProblemForm: FC<{
   }
 
   return (
-    <SideContainer title={'Odovzdať úlohu - ' + problemNumber}>
+    <SideContainer
+      title={'Odovzdať úlohu - ' + problemNumber}
+      onClose={() => {
+        setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
+      }}
+    >
       <div className={styles.container}>
         {problemSubmitted && <p>Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.</p>}
         <div {...getRootProps({className: styles.dropzone})}>

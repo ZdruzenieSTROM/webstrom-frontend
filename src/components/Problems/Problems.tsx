@@ -266,7 +266,11 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
           <div />
         )}
         {displaySideContent.type === 'discussion' && (
-          <Discussion problemId={displaySideContent.problemId} problemNumber={displaySideContent.problemNumber} />
+          <Discussion
+            problemId={displaySideContent.problemId}
+            problemNumber={displaySideContent.problemNumber}
+            closeDiscussion={() => setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})}
+          />
         )}
         {displaySideContent.type === 'uploadProblemForm' && (
           <UploadProblemForm

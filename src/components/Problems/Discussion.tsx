@@ -15,9 +15,10 @@ import {SideContainer} from './SideContainer'
 interface DiscussionProps {
   problemId: number
   problemNumber: number
+  closeDiscussion: () => void
 }
 
-export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
+export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, closeDiscussion}) => {
   const [commentText, setCommentText] = useState('')
 
   const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
@@ -72,7 +73,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
   }
 
   return (
-    <SideContainer title={'Diskusia - úloha ' + problemNumber}>
+    <SideContainer title={'Diskusia - úloha ' + problemNumber} onClose={closeDiscussion}>
       <div className={styles.container}>
         <div className={styles.comments}>
           {commentsIsLoading && <Loading />}
