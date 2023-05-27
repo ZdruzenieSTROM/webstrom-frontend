@@ -11,6 +11,7 @@ import {FormSelect, SelectOption} from '@/components/FormItems/FormSelect/FormSe
 import {IGrade} from '@/types/api/competition'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {ICounty, IDistrict, ISchool} from '@/types/api/personal'
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Clickable'
 
@@ -164,6 +165,8 @@ export const RegisterForm: FC = () => {
     }
   }, [school_not_found, without_school, setValue])
 
+  const {seminar} = useSeminarInfo()
+
   const transformFormData = (data: RegisterFormValues) => ({
     email: data.email,
     password1: data.password1,
@@ -183,7 +186,7 @@ export const RegisterForm: FC = () => {
 
   const {mutate: submitFormData, data: registrationResponseData} = useMutation({
     mutationFn: (data: RegisterFormValues) => {
-      return axios.post<IGeneralPostResponse>(`/api/user/registration`, transformFormData(data))
+      return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
     },
   })
 
