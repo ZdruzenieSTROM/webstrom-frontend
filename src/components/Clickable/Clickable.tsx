@@ -25,7 +25,7 @@ export const Button: FC<ButtonProps> = ({children, onClick, disabled, type}) => 
 }
 
 interface LinkProps {
-  href: string
+  href?: string
   disabled?: boolean
   children: ReactNode
 }
@@ -37,7 +37,7 @@ export const Link: FC<LinkProps> = ({children, href, disabled}) => {
       {children}
     </a>
   ) : (
-    <NextLink href={href} className={clsx(styles.actionButton)}>
+    <NextLink href={href ?? ''} className={clsx(styles.actionButton)}>
       {children}
     </NextLink>
   )

@@ -16,7 +16,7 @@ type PageLayoutProps = {
 
 // pre pouzitie len na seminarovych strankach a podstrankach - `/matik(/*)`
 // ked budeme potrebovat top-level stranky ako `/ina-stranka`, budeme musiet upravit, ako sa pracuje s `useSeminarInfo`
-export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 3, title = '', children}) => {
+export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', children}) => {
   return (
     <div className={styles.pageContainer}>
       <MenuSeminars title={title} />
