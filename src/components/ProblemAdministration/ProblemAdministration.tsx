@@ -1,5 +1,4 @@
 import {FormatAlignJustify, Grading} from '@mui/icons-material'
-import {CircularProgress, Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -12,6 +11,7 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 import {Button, Link} from '../Clickable/Clickable'
 import {FileUploader} from '../FileUploader/FileUploader'
 import {Latex} from '../Latex/Latex'
+import {Loading} from '../Loading/Loading'
 import problemStyles from '../Problems/Problems.module.scss'
 import uploadProblemFormStyles from '../Problems/UploadProblemForm.module.scss'
 import styles from './ProblemAdministration.module.scss'
@@ -72,12 +72,7 @@ export const ProblemAdministration: FC = () => {
 
   const {getRootProps, getInputProps} = useDropzone({onDrop})
 
-  if (permissionsIsLoading)
-    return (
-      <Stack alignItems="center">
-        <CircularProgress color="inherit" />
-      </Stack>
-    )
+  if (permissionsIsLoading) return <Loading />
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
 
   return (

@@ -1,4 +1,3 @@
-import {CircularProgress, Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -8,6 +7,7 @@ import {SemesterWithProblems} from '@/types/api/generated/competition'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button, Link} from '../Clickable/Clickable'
+import {Loading} from '../Loading/Loading'
 import styles from '../Problems/Problems.module.scss'
 import {Result} from '../Results/Results'
 
@@ -72,12 +72,7 @@ export const SemesterAdministration: FC = () => {
     )
   }
 
-  if (permissionsIsLoading)
-    return (
-      <Stack alignItems="center">
-        <CircularProgress color="inherit" />
-      </Stack>
-    )
+  if (permissionsIsLoading) return <Loading />
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
 
   return (

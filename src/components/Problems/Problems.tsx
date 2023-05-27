@@ -1,4 +1,3 @@
-import {CircularProgress} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -10,6 +9,7 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
+import {Loading} from '../Loading/Loading'
 import {Discussion} from './Discussion'
 import styles from './Problems.module.scss'
 import {SemesterList, SemesterPicker} from './SemesterPicker'
@@ -218,11 +218,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   return (
     <>
       <div className={styles.container}>
-        {(semesterListIsLoading || currentSeriesIsLoading || seriesIsLoading || permissionsIsLoading) && (
-          <div className={styles.loading}>
-            <CircularProgress color="inherit" />
-          </div>
-        )}
+        {(semesterListIsLoading || currentSeriesIsLoading || seriesIsLoading || permissionsIsLoading) && <Loading />}
         <SemesterPicker semesterList={semesterList} selectedSeriesId={seriesId} />
         {hasPermissions && (
           <div className={styles.adminSection}>

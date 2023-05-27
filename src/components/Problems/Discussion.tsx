@@ -1,4 +1,3 @@
-import {CircularProgress} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
@@ -9,6 +8,7 @@ import {AuthContainer} from '@/utils/AuthContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button} from '../Clickable/Clickable'
+import {Loading} from '../Loading/Loading'
 import styles from './Discussion.module.scss'
 import {SideContainer} from './SideContainer'
 
@@ -75,11 +75,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
     <SideContainer title={'Diskusia - úloha ' + problemNumber}>
       <div className={styles.container}>
         <div className={styles.comments}>
-          {commentsIsLoading && (
-            <div className={styles.loading}>
-              <CircularProgress color="inherit" />
-            </div>
-          )}
+          {commentsIsLoading && <Loading />}
           {comments &&
             comments.map((comment) => (
               <div className={clsx(styles.comment, !comment.published && styles.notPublished)} key={comment.id}>
