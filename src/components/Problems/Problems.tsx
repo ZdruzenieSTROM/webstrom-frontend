@@ -28,7 +28,8 @@ const Problem: FC<{
   registered: boolean
   canRegister: boolean
   canSubmit: boolean
-}> = ({problem, registered, setDisplaySideContent, canSubmit}) => {
+  invalidateSeriesQuery: () => Promise<void>
+}> = ({problem, registered, setDisplaySideContent, canSubmit, invalidateSeriesQuery}) => {
   const handleDiscussionButtonClick = () => {
     setDisplaySideContent((prevState) => {
       if (prevState.type === 'discussion' && prevState.problemId === problem.id) {
@@ -39,46 +40,51 @@ const Problem: FC<{
     })
   }
   const handleUploadClick = () => {
-    setDisplaySideContent((prevState) => {
-      if (prevState.type === 'uploadProblemForm' && prevState.problemId === problem.id) {
-        return {type: '', problemId: -1, problemNumber: -1}
-      } else {
-        return {
-          type: 'uploadProblemForm',
-          problemId: problem.id,
-          problemNumber: problem.order,
-          problemSubmitted: !!problem.submitted,
-        }
-      }
-    })
+    setDisplayProblemUploadForm((prevState) => !prevState)
+    setDisplayActions(false)
   }
+
+  const [displayProblemUploadForm, setDisplayProblemUploadForm] = useState<boolean>(false)
+  const [displayActions, setDisplayActions] = useState(true)
 
   return (
     <div className={styles.problem}>
       <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
       <Latex>{problem.text}</Latex>
-      <div className={styles.actions}>
-        {problem.solution_pdf && <Link href={problem.solution_pdf}>vzorové riešenie</Link>}
-        {registered && (
-          <>
-            <Link href={`/api/competition/problem/${problem.id}/my-solution`} disabled={!problem.submitted}>
-              moje riešenie
-            </Link>
-            <Link
-              href={`/api/competition/problem/${problem.id}/corrected-solution`}
-              disabled={!problem.submitted?.corrected_solution}
-            >
-              opravené riešenie{!!problem.submitted?.corrected_solution && ` (${problem.submitted.score || '?'})`}
-            </Link>
-          </>
-        )}
-        <Button onClick={handleDiscussionButtonClick}>diskusia ({problem.num_comments}) </Button>
-        {registered && (
-          <Button onClick={handleUploadClick} disabled={!canSubmit}>
-            odovzdať
-          </Button>
-        )}
-      </div>
+      {displayProblemUploadForm && (
+        <UploadProblemForm
+          problemId={problem.id}
+          setDisplayProblemUploadForm={setDisplayProblemUploadForm}
+          // problemNumber={problem.order}
+          problemSubmitted={!!problem.submitted}
+          invalidateSeriesQuery={invalidateSeriesQuery}
+          setDisplayActions={setDisplayActions}
+        />
+      )}
+      {displayActions && (
+        <div className={styles.actions}>
+          {problem.solution_pdf && <Link href={problem.solution_pdf}>vzorové riešenie</Link>}
+          {registered && (
+            <>
+              <Link href={`/api/competition/problem/${problem.id}/my-solution`} disabled={!problem.submitted}>
+                moje riešenie
+              </Link>
+              <Link
+                href={`/api/competition/problem/${problem.id}/corrected-solution`}
+                disabled={!problem.submitted?.corrected_solution}
+              >
+                opravené riešenie{!!problem.submitted?.corrected_solution && ` (${problem.submitted.score || '?'})`}
+              </Link>
+            </>
+          )}
+          <Button onClick={handleDiscussionButtonClick}>diskusia ({problem.num_comments}) </Button>
+          {registered && (
+            <Button onClick={handleUploadClick} disabled={!canSubmit}>
+              odovzdať
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
@@ -98,7 +104,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 
   const {seminarId, seminar} = useSeminarInfo()
 
-  // used to display discussions and file upload boxes
+  // used to display discussions
   const [displaySideContent, setDisplaySideContent] = useState<{
     type: string
     problemId: number
@@ -234,6 +240,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             registered={isRegistered}
             canRegister={canRegister}
             canSubmit={canSubmit}
+            invalidateSeriesQuery={invalidateSeriesQuery}
           />
         ))}
 
@@ -273,7 +280,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             closeDiscussion={() => setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})}
           />
         )}
-        {displaySideContent.type === 'uploadProblemForm' && (
+        {/* {displaySideContent.type === 'uploadProblemForm' && (
           <UploadProblemForm
             problemId={displaySideContent.problemId}
             problemNumber={displaySideContent.problemNumber}
@@ -281,7 +288,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
             setDisplaySideContent={setDisplaySideContent}
             invalidateSeriesQuery={invalidateSeriesQuery}
           />
-        )}
+        )} */}
       </div>
     </>
   )
