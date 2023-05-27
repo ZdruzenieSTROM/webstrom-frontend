@@ -88,7 +88,7 @@ export const ProblemAdministration: FC = () => {
       </div>
       <div {...getRootProps({className: uploadProblemFormStyles.dropzone})}>
         <input {...getInputProps()} />
-        <p>Vlož opravené riešenia</p>
+        <p>Vlož opravené riešenia vo formáte zip</p>
       </div>
       <form>
         <div>
