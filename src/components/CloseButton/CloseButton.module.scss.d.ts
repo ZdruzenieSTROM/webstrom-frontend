@@ -1,8 +1,8 @@
 export type Styles = {
   active: string
   closeButton: string
-  closeButton__left: string
-  closeButton__right: string
+  closeButtonLeft: string
+  closeButtonRight: string
 }
 
 export type ClassNames = keyof Styles

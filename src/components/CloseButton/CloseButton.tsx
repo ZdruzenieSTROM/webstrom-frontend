@@ -10,8 +10,8 @@ interface CloseButtonProps {
 }
 
 const alignClass: {[key: string]: string} = {
-  left: styles.closeButton__left,
-  right: styles.closeButton__right,
+  left: styles.closeButtonLeft,
+  right: styles.closeButtonRight,
 }
 
 export const CloseButton: FC<CloseButtonProps> = ({onClick, align}) => {
