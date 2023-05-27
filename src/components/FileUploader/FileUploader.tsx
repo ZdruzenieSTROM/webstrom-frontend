@@ -12,14 +12,12 @@ interface FileUploaderProps {
 
 export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats, refetch}) => {
   const {mutate: fileUpload} = useMutation({
-    mutationFn: (formData: FormData) => {
-      return axios.post(uploadLink, formData)
-    },
+    mutationFn: (formData: FormData) => axios.post(uploadLink, formData),
     onSuccess: () => refetch(),
   })
 
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
-    async (acceptedFiles, fileRejections) => {
+    (acceptedFiles, fileRejections) => {
       if (fileRejections.length > 0) {
         return
       }

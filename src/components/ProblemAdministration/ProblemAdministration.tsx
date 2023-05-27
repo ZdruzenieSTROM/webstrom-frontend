@@ -46,9 +46,7 @@ export const ProblemAdministration: FC = () => {
         solution_set: solutions,
       })
     },
-    onSuccess: () => {
-      refetchProblem()
-    },
+    onSuccess: () => refetchProblem(),
   })
 
   const handleSavePoints = async () => {
@@ -67,22 +65,21 @@ export const ProblemAdministration: FC = () => {
   }
 
   const {mutate: uploadZipFile} = useMutation({
-    mutationFn: (data: FormData) => {
-      return axios.post(`/api/competition/problem/${problemId}/upload-corrected`, data)
-    },
+    mutationFn: ({data, problemId}: {data: FormData; problemId?: string}) =>
+      axios.post(`/api/competition/problem/${problemId}/upload-corrected`, data),
     onSuccess: () => refetchProblem(),
   })
 
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
-    async (acceptedFiles, fileRejections) => {
+    (acceptedFiles, fileRejections) => {
       if (fileRejections.length > 0) {
         return
       }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      uploadZipFile(formData)
+      uploadZipFile({data: formData, problemId: problemId})
     },
-    [uploadZipFile],
+    [problemId, uploadZipFile],
   )
 
   const {getRootProps, getInputProps} = useDropzone({
