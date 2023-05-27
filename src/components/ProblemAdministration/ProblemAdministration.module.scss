@@ -32,7 +32,6 @@
 .tableHeader {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  // background-color: #f2f2f2;
   text-transform: uppercase;
   font-weight: bold;
   padding: 10px;
@@ -59,4 +58,5 @@
 
 .row {
   display: flex;
+  gap: 8px;
 }

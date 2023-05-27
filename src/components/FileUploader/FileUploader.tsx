@@ -36,7 +36,7 @@ export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats
 
   return (
     <>
-      <div {...getRootProps()}>
+      <div {...getRootProps({style: {cursor: 'pointer'}})}>
         <input {...getInputProps()} />
         <Upload />
       </div>
