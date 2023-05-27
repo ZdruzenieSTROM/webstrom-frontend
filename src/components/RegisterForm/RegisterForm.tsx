@@ -22,7 +22,6 @@ type RegisterFormValues = {
   password2?: string
   first_name?: string
   last_name?: string
-  nickname?: string
   phone?: string
   parent_phone?: string
   new_school_description?: string
@@ -39,7 +38,6 @@ const defaultValues: RegisterFormValues = {
   password2: '',
   first_name: '',
   last_name: '',
-  nickname: '',
   phone: '',
   parent_phone: '',
   new_school_description: '',
@@ -121,7 +119,6 @@ export const RegisterForm: FC = () => {
     profile: {
       first_name: data.first_name,
       last_name: data.last_name,
-      nickname: data.nickname,
       school: data.school?.id,
       phone: data.phone,
       parent_phone: data.parent_phone,
@@ -191,7 +188,6 @@ export const RegisterForm: FC = () => {
         />
         <FormInput control={control} name="first_name" label="Krstné meno" rules={requiredRule} />
         <FormInput control={control} name="last_name" label="Priezvisko" rules={requiredRule} />
-        <FormInput control={control} name="nickname" label="Prezývka" />
         <FormCheckbox
           control={control}
           name="without_school"
