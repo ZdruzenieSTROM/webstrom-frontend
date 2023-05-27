@@ -50,7 +50,7 @@ export const MenuMain: FC = () => {
       <div className={styles.menuItems}>
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {
-            // url je vo formate `/matik/vysledky/`
+            // url je vo formate `/matik/vysledky`
             return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
           })}
       </div>

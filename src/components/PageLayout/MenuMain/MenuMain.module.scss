@@ -41,17 +41,18 @@
 }
 
 .menuItem {
-  font-size: 1.3rem;
-  font-weight: bold;
+  font-size: 1.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
   background-color: transparent;
-  margin: 10px 40px;
+  margin: 0px 40px;
   padding: 8px 0px;
   display: grid;
   place-items: center;
 
   a {
     display: inline-block;
-    padding: 0px 5px 3px 5px;
+    padding: 0px 5px;
     border-bottom: 0.3rem solid white;
     color: white;
     text-align: center;
