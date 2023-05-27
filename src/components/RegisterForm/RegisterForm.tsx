@@ -14,6 +14,7 @@ import {ISchool} from '@/types/api/personal'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Clickable'
+import { useRouter } from 'next/router'
 
 type RegisterFormValues = {
   email?: string
@@ -149,7 +150,8 @@ export const RegisterForm: FC = () => {
   return (
     <div>
       {registrationResponseData?.data.detail ? (
-        <p>{registrationResponseData?.data.detail}</p>
+        <p>{registrationResponseData?.data.detail}
+         useRouter().push(`${useRouter().asPath}/../verifikacia`) </p>
       ) : (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <FormInput
