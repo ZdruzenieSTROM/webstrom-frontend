@@ -40,7 +40,7 @@ export const MenuMain: FC = () => {
   }, [seminarId])
 
   return (
-    <div className={isVisible ? `${styles.menu} ${styles.visible}` : styles.menu}>
+    <div className={clsx(styles.menu, isVisible && styles.visible)}>
       {!isVisible && (
         <div className={styles.menuOpenButton}>
           <FaIcons.FaBars onClick={toggleMenu} />
@@ -50,7 +50,7 @@ export const MenuMain: FC = () => {
       <div className={styles.menuItems}>
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {
-            // url je vo formate `/matik/vysledky/`
+            // url je vo formate `/matik/vysledky`
             return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
           })}
       </div>

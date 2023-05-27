@@ -22,16 +22,18 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
       <MenuSeminars title={title} />
       <Banner />
       <MenuMain />
-      <StromLogo />
-      <div
-        className={clsx(
-          styles.mainContent,
-          contentWidth === 1 && styles.col1,
-          contentWidth === 2 && styles.col2,
-          contentWidth === 3 && styles.col3,
-        )}
-      >
-        {children}
+      <div className={styles.grid}>
+        <StromLogo />
+        <div
+          className={clsx(
+            styles.mainContent,
+            contentWidth === 1 && styles.col1,
+            contentWidth === 2 && styles.col2,
+            contentWidth === 3 && styles.col3,
+          )}
+        >
+          {children}
+        </div>
       </div>
       <Footer />
     </div>

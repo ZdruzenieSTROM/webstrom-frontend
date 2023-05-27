@@ -1,6 +1,8 @@
 .footer {
-  grid-column: 2 / -1;
-  grid-row: -1;
+  position: fixed;
+  left: 25%;
+  right: 0;
+  bottom: 0;
 
   background-color: black;
   color: white;
