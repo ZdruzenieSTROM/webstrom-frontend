@@ -43,10 +43,10 @@ export const MenuMain: FC = () => {
     <div className={isVisible ? `${styles.menu} ${styles.visible}` : styles.menu}>
       {!isVisible && (
         <div className={styles.menuOpenButton}>
-          <FaIcons.FaBars className="icon-bars" onClick={toggleMenu} />
+          <FaIcons.FaBars onClick={toggleMenu} />
         </div>
       )}
-      <CloseButton onClick={toggleMenu} align="left" />
+      <CloseButton onClick={toggleMenu} size={50} />
       <div className={styles.menuItems}>
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {

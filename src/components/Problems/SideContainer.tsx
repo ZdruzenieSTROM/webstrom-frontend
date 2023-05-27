@@ -11,8 +11,8 @@ export const SideContainer: FC<{title: string; children: ReactNode; onClose: () 
   return (
     <aside className={styles.container}>
       <div className={styles.title}>
-        <CloseButton onClick={onClose} align="right" />
-        {title}
+        <CloseButton onClick={onClose} alignRight />
+        <span>{title}</span>
       </div>
       {children}
     </aside>
