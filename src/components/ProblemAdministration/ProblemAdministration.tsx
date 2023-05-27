@@ -1,5 +1,5 @@
 import {FormatAlignJustify, Grading} from '@mui/icons-material'
-import {useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
 import React, {FC, useCallback, useEffect, useState} from 'react'
@@ -40,13 +40,19 @@ export const ProblemAdministration: FC = () => {
     if (problem) setSolutions(problem.solution_set)
   }, [problem])
 
+  const {mutate: uploadPoints} = useMutation({
+    mutationFn: (id: string) => {
+      return axios.post(`/api/competition/problem-administration/${id}/upload-points`, {
+        solution_set: solutions,
+      })
+    },
+    onSuccess: () => {
+      refetchProblem()
+    },
+  })
+
   const handleSavePoints = async () => {
-    // TODO: error handling - ked toto failne, urcite chceme ukazat, ze bacha, body neboli ulozene
-    await axios.post(`/api/competition/problem-administration/${problemId}/upload-points`, {
-      solution_set: solutions,
-    })
-    // TODO: pri errore POSTu vyssie nechceme pustit refetch (alebo nechceme bezat useEffect), lebo sa nam prepisu lokalne body
-    await refetchProblem()
+    problemId && uploadPoints(problemId)
   }
 
   const updatePoints = (index: number, newPointsInput: string) => {
@@ -60,6 +66,13 @@ export const ProblemAdministration: FC = () => {
     setSolutions(data)
   }
 
+  const {mutate: uploadZipFile} = useMutation({
+    mutationFn: (data: FormData) => {
+      return axios.post(`/api/competition/problem/${problemId}/upload-corrected`, data)
+    },
+    onSuccess: () => refetchProblem(),
+  })
+
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
     async (acceptedFiles, fileRejections) => {
       if (fileRejections.length > 0) {
@@ -67,10 +80,9 @@ export const ProblemAdministration: FC = () => {
       }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      await axios.post(`/api/competition/problem/${problemId}/upload-corrected`, formData)
-      await refetchProblem()
+      uploadZipFile(formData)
     },
-    [problemId, refetchProblem],
+    [uploadZipFile],
   )
 
   const {getRootProps, getInputProps} = useDropzone({

@@ -1,4 +1,5 @@
 import {Upload} from '@mui/icons-material'
+import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC, useCallback} from 'react'
 import {Accept, DropzoneOptions, useDropzone} from 'react-dropzone'
@@ -10,6 +11,13 @@ interface FileUploaderProps {
 }
 
 export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats, refetch}) => {
+  const {mutate: fileUpload} = useMutation({
+    mutationFn: (formData: FormData) => {
+      return axios.post(uploadLink, formData)
+    },
+    onSuccess: () => refetch(),
+  })
+
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
     async (acceptedFiles, fileRejections) => {
       if (fileRejections.length > 0) {
@@ -17,10 +25,9 @@ export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats
       }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      await axios.post(uploadLink, formData)
-      await refetch()
+      fileUpload(formData)
     },
-    [refetch, uploadLink],
+    [fileUpload],
   )
 
   const {getRootProps, getInputProps} = useDropzone({
