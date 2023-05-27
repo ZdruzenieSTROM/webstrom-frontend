@@ -5,12 +5,18 @@ import styles from './CloseButton.module.scss'
 
 interface CloseButtonProps {
   onClick: () => void
+  align: string
 }
 
-export const CloseButton: FC<CloseButtonProps> = ({onClick}) => {
+const alignClass: {[key: string]: string} = {
+  left: styles.closeButton__left,
+  right: styles.closeButton__right,
+}
+
+export const CloseButton: FC<CloseButtonProps> = ({onClick, align}) => {
   return (
-    <div className={styles.menuCloseButton}>
-      <CgIcons.CgClose className={styles.menuCloseButton} onClick={onClick} />
+    <div className={`${styles.closeButton} ${alignClass[align]}`}>
+      <CgIcons.CgClose onClick={onClick} />
     </div>
   )
 }

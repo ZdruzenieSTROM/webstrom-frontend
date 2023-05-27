@@ -46,7 +46,7 @@ export const MenuMain: FC = () => {
           <FaIcons.FaBars className="icon-bars" onClick={toggleMenu} />
         </div>
       )}
-      <CloseButton onClick={toggleMenu} />
+      <CloseButton onClick={toggleMenu} align="left" />
       <div className={styles.menuItems}>
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {
