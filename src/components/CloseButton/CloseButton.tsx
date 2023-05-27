@@ -1,4 +1,5 @@
-import {FC, useEffect, useState} from 'react'
+import clsx from 'clsx'
+import {FC} from 'react'
 import * as CgIcons from 'react-icons/cg'
 
 import styles from './CloseButton.module.scss'
@@ -15,7 +16,7 @@ const alignClass: {[key: string]: string} = {
 
 export const CloseButton: FC<CloseButtonProps> = ({onClick, align}) => {
   return (
-    <div className={`${styles.closeButton} ${alignClass[align]}`}>
+    <div className={clsx(styles.closeButton, alignClass[align])}>
       <CgIcons.CgClose onClick={onClick} />
     </div>
   )
