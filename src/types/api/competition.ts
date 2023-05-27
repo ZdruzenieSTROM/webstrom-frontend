@@ -81,13 +81,19 @@ export interface Problem {
   num_comments: number
 }
 
+export enum CommentState {
+  WaitingForReview = 1,
+  Published = 2,
+  Hidden = 3,
+}
 export interface Comment {
   id: number
   posted_by_name: string
   edit_allowed: boolean
   text: string
   posted_at: string
-  published: boolean
+  state: CommentState
+  hidden_response: string | null
   problem: number
   posted_by: number
 }
