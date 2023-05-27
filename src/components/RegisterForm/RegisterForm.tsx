@@ -10,7 +10,7 @@ import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {FormSelect, SelectOption} from '@/components/FormItems/FormSelect/FormSelect'
 import {IGrade} from '@/types/api/competition'
 import {IGeneralPostResponse} from '@/types/api/general'
-import {ICounty, IDistrict, ISchool} from '@/types/api/personal'
+import {ISchool} from '@/types/api/personal'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Clickable'
@@ -26,8 +26,6 @@ type RegisterFormValues = {
   parent_phone?: string
   new_school_description?: string
   without_school: boolean
-  county: number | ''
-  district: number | ''
   school?: SelectOption | null
   school_not_found: boolean
   grade: number | ''
@@ -45,8 +43,6 @@ const defaultValues: RegisterFormValues = {
   parent_phone: '',
   new_school_description: '',
   without_school: false,
-  county: '',
-  district: '',
   school: null,
   school_not_found: false,
   grade: '',
@@ -55,19 +51,12 @@ const defaultValues: RegisterFormValues = {
 
 export const RegisterForm: FC = () => {
   const {handleSubmit, control, watch, setValue, getValues} = useForm<RegisterFormValues>({defaultValues})
-  const [county, district, school_not_found, without_school] = watch([
-    'county',
-    'district',
-    'school_not_found',
-    'without_school',
-  ])
+  const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
   const [gradeItems, setGradeItems] = useState<SelectOption[]>([])
   const [schoolItems, setSchoolItems] = useState<SelectOption[]>([])
-  const [districtItems, setDistrictItems] = useState<SelectOption[]>([])
-  const [countyItems, setCountyItems] = useState<SelectOption[]>([])
+  const [emptySchoolItems, setEmptySchoolItems] = useState<SelectOption[]>([])
 
-  const emptySchoolItems = useRef<SelectOption[]>([])
   const otherSchoolItem = useRef<SelectOption>()
   const withoutSchoolItem = useRef<SelectOption>()
 
@@ -80,90 +69,45 @@ export const RegisterForm: FC = () => {
     fetchData()
   }, [])
 
-  // iniciálne načítanie škôl z BE, ktorými vyplníme FormAutocomplete so školami v istych prípadoch
+  // inicialne načítanie škôl z BE, pre prvotné vyplnenie FormAutocomplete so školami
   useEffect(() => {
     const fetchData = async () => {
-      const schools = await axios.get<ISchool[]>(`/api/personal/schools/?district=0`)
-      emptySchoolItems.current = schools.data.map(({code, name}) => ({id: code, label: name}))
-      otherSchoolItem.current = emptySchoolItems.current.find((opt) => opt.id === 0)
-      withoutSchoolItem.current = emptySchoolItems.current.find((opt) => opt.id === 1)
+      const schools = await axios.get<ISchool[]>(`/api/personal/schools/`)
+      const schoolItems = schools.data.map(({code, city, name, street}) => ({
+        id: code,
+        label: city ? `${name} ${street}, ${city}` : name,
+      }))
+      otherSchoolItem.current = schoolItems.find((opt) => opt.id === 0)
+      withoutSchoolItem.current = schoolItems.find((opt) => opt.id === 1)
+      setEmptySchoolItems(schoolItems.filter(({id}) => [0, 1].includes(id)))
+      setSchoolItems(schoolItems.filter(({id}) => ![0, 1].includes(id)))
     }
     fetchData()
   }, [])
 
-  // načítanie krajov z BE, ktorými vyplníme FormSelect s krajmi
+  // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre užívateľa po škole
   useEffect(() => {
-    const fetchData = async () => {
-      const counties = await axios.get<ICounty[]>(`/api/personal/counties`)
-      setCountyItems(counties.data.map(({code, name}) => ({id: code, label: name})))
-    }
-    fetchData()
-  }, [])
-
-  // načítanie okresov a škôl z BE, po zmene hodnoty v číselníku s krajom
-  useEffect(() => {
-    const fetchData = async () => {
-      if (county !== '') {
-        const districts = await axios.get<IDistrict[]>(`/api/personal/districts/?county=${county}`)
-        setDistrictItems(districts.data.map(({code, name}) => ({id: code, label: name})))
-      } else {
-        setDistrictItems([])
-      }
-      if (county === 0) {
-        // neznamy kraj, takze vyplname neznamy okres, atd...
-        setValue('district', 0)
-      } else {
-        // vyplnili sme novy kraj, nie je defaultny okres
-        setValue('district', '')
-        if (county !== '') {
-          // chceme naplnit aj Autocomplete so skolami
-          const schools = await axios.get<ISchool[]>(`/api/personal/schools/?county=${county}`)
-          setSchoolItems(
-            schools.data.map(({code, city, name, street}) => ({
-              id: code,
-              label: city ? `${name} ${street}, ${city}` : name,
-            })),
-          )
-        }
-      }
-    }
-    fetchData()
-  }, [county, setValue])
-
-  // načítanie škôl z BE, ktorými vyplníme FormSelect so školami (naviazené na zmenu číselníku s okresmi)
-  useEffect(() => {
-    const fetchData = async () => {
-      if (district !== '') {
-        const schools = await axios.get<ISchool[]>(`/api/personal/schools/?district=${district}`)
-        setSchoolItems(
-          schools.data.map(({code, city, name, street}) => ({
-            id: code,
-            label: city ? `${name} ${street}, ${city}` : name,
-          })),
-        )
-      } else {
-        setSchoolItems([])
-      }
-      district === 0 ? setValue('school', withoutSchoolItem.current) : setValue('school', null)
-    }
-    fetchData()
-  }, [district, setValue])
-
-  // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxov pre neznámu školu/užívateľa po škole
-  useEffect(() => {
-    if (school_not_found) {
-      setSchoolItems(emptySchoolItems.current)
-      setValue('school', otherSchoolItem.current)
-    } else if (without_school) {
-      setValue('county', 0)
+    if (without_school) {
+      setValue('school', withoutSchoolItem.current)
       setValue('grade', 13)
+      setValue('school_not_found', false)
     } else {
-      setValue('county', '')
-      setValue('district', '')
       setValue('school', null)
       setValue('grade', '')
     }
-  }, [school_not_found, without_school, setValue])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [without_school])
+
+  // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre neznámu školu
+  useEffect(() => {
+    if (school_not_found) {
+      setValue('school', otherSchoolItem.current)
+    } else if (!without_school) {
+      setValue('school', null)
+      setValue('grade', '')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [school_not_found])
 
   const {seminar} = useSeminarInfo()
 
@@ -253,25 +197,11 @@ export const RegisterForm: FC = () => {
             name="without_school"
             label="Už nie som študent základnej ani strednej školy."
           />
-          <FormSelect
-            control={control}
-            name="county"
-            label="Kraj školy"
-            options={countyItems}
-            disabled={school_not_found || without_school}
-          />
-          <FormSelect
-            control={control}
-            name="district"
-            label="Okres školy"
-            options={districtItems}
-            disabled={!districtItems.length || school_not_found || without_school}
-          />
           <FormAutocomplete
             control={control}
             name="school"
             label="Škola"
-            options={schoolItems}
+            options={school_not_found || without_school ? emptySchoolItems : schoolItems}
             disabled={!schoolItems.length || school_not_found || without_school}
             rules={requiredRule}
           />
@@ -279,7 +209,7 @@ export const RegisterForm: FC = () => {
             control={control}
             name="school_not_found"
             label="Moja škola sa v zozname nenachádza."
-            disabled={district === '' || without_school}
+            disabled={without_school}
           />
           {school_not_found && (
             <FormInput
@@ -293,7 +223,7 @@ export const RegisterForm: FC = () => {
             control={control}
             name="grade"
             label="Ročník"
-            options={gradeItems}
+            options={gradeItems.filter(({id}) => id !== 13 || without_school)}
             disabled={without_school}
             rules={requiredRule}
           />
