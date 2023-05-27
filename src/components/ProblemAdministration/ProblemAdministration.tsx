@@ -103,13 +103,7 @@ export const ProblemAdministration: FC = () => {
       <Latex>{problem?.text ?? 'Načítavam...'}</Latex>
 
       <form className={styles.container}>
-        <div>
-          Opravovatelia: <input type="text" />
-        </div>
-        <div>
-          Najkrajšie riešenia: <input type="text" />
-        </div>
-        <div>
+        <div className={styles.row}>
           Vzorové riešenie:
           {problem?.solution_pdf ? (
             <a href={problem?.solution_pdf} target="_blank" rel="noreferrer" className={styles.icon}>

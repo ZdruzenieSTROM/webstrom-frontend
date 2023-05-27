@@ -11,9 +11,9 @@ export type Styles = {
   rank: string
   results: string
   rowWrapper: string
-  school: string
   score: string
   selectedOption: string
+  school: string
   subtotal: string
   totalScore: string
   votes: string
