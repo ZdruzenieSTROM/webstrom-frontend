@@ -1,16 +1,20 @@
 import {Upload} from '@mui/icons-material'
 import axios from 'axios'
 import {FC, useCallback} from 'react'
-import {DropzoneOptions, useDropzone} from 'react-dropzone'
+import {Accept, DropzoneOptions, useDropzone} from 'react-dropzone'
 
 interface FileUploaderProps {
   uploadLink: string
+  acceptedFormats?: Accept
   refetch: () => void
 }
 
-export const FileUploader: FC<FileUploaderProps> = ({uploadLink, refetch}) => {
+export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats, refetch}) => {
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
-    async (acceptedFiles) => {
+    async (acceptedFiles, fileRejections) => {
+      if (fileRejections.length > 0) {
+        return
+      }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
       await axios.post(uploadLink, formData)
@@ -19,7 +23,11 @@ export const FileUploader: FC<FileUploaderProps> = ({uploadLink, refetch}) => {
     [refetch, uploadLink],
   )
 
-  const {getRootProps, getInputProps} = useDropzone({onDrop})
+  const {getRootProps, getInputProps} = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: acceptedFormats ?? {},
+  })
 
   return (
     <>

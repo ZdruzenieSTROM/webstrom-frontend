@@ -65,7 +65,7 @@ export const UploadProblemForm: FC<{
         {problemSubmitted && <p>Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.</p>}
         <div {...getRootProps({className: styles.dropzone})}>
           <input {...getInputProps()} />
-          <p>Vlož riešenie</p>
+          <p>Vlož riešenie vo formáte pdf</p>
         </div>
         <div className={styles.files}>
           <h4>Súbor:</h4>

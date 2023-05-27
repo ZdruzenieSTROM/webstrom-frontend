@@ -61,7 +61,10 @@ export const ProblemAdministration: FC = () => {
   }
 
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
-    async (acceptedFiles) => {
+    async (acceptedFiles, fileRejections) => {
+      if (fileRejections.length > 0) {
+        return
+      }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
       await axios.post(`/api/competition/problem/${problemId}/upload-corrected`, formData)
@@ -70,7 +73,13 @@ export const ProblemAdministration: FC = () => {
     [problemId, refetchProblem],
   )
 
-  const {getRootProps, getInputProps} = useDropzone({onDrop})
+  const {getRootProps, getInputProps} = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: {
+      'application/zip': ['.zip'],
+    },
+  })
 
   if (permissionsIsLoading) return <Loading />
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
@@ -85,7 +94,7 @@ export const ProblemAdministration: FC = () => {
       </div>
       <div {...getRootProps({className: uploadProblemFormStyles.dropzone})}>
         <input {...getInputProps()} />
-        <p>Vlož opravené riešenia</p>
+        <p>Vlož opravené riešenia vo formáte zip</p>
       </div>
       <form>
         <div>
@@ -127,6 +136,9 @@ export const ProblemAdministration: FC = () => {
                     )}
                     <FileUploader
                       uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
+                      acceptedFormats={{
+                        'application/pdf': ['.pdf'],
+                      }}
                       refetch={refetchProblem}
                     />
                   </div>
@@ -140,6 +152,9 @@ export const ProblemAdministration: FC = () => {
                     )}
                     <FileUploader
                       uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
+                      acceptedFormats={{
+                        'application/pdf': ['.pdf'],
+                      }}
                       refetch={refetchProblem}
                     />
                   </div>
