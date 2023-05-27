@@ -1,5 +1,6 @@
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
+import {useRouter} from 'next/router'
 import {FC, useEffect, useRef, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
@@ -14,7 +15,6 @@ import {ISchool} from '@/types/api/personal'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Clickable'
-import { useRouter } from 'next/router'
 
 type RegisterFormValues = {
   email?: string
@@ -134,8 +134,8 @@ export const RegisterForm: FC = () => {
   const {mutate: submitFormData, data: registrationResponseData} = useMutation({
     mutationFn: (data: RegisterFormValues) => {
       return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
-    }, 
-    onSuccess: () => router.push(`${router.asPath}/../verifikacia`) 
+    },
+    onSuccess: () => router.push(`${router.asPath}/../verifikacia`),
   })
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
@@ -152,7 +152,7 @@ export const RegisterForm: FC = () => {
   return (
     <div>
       {registrationResponseData?.data.detail ? (
-         <p> </p>
+        <p> </p>
       ) : (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <FormInput
