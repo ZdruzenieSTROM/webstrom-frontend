@@ -9,6 +9,7 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 import {Button, Link} from '../Clickable/Clickable'
 import {Loading} from '../Loading/Loading'
 import styles from '../Problems/Problems.module.scss'
+import {PublicationUploader} from '../PublicationUploader/PublicationUploader'
 import {Result} from '../Results/ResultsRow'
 
 interface PostalCard {
@@ -125,6 +126,31 @@ export const SemesterAdministration: FC = () => {
       ) : (
         <></>
       )}
+      <h3>Nahrávanie časopisov</h3>
+      1. časopis:
+      <PublicationUploader
+        uploadLink={'/api/competition/publication/upload/'}
+        publication_type={'Časopisy'}
+        event={`${semesterId}`}
+        order={'1'}
+        refetch={() => {}}
+      />
+      2. časopis:
+      <PublicationUploader
+        uploadLink={'/api/competition/publication/upload/'}
+        publication_type={'Časopisy'}
+        event={`${semesterId}`}
+        order={'2'}
+        refetch={() => {}}
+      />
+      3. časopis:
+      <PublicationUploader
+        uploadLink={'/api/competition/publication/upload/'}
+        publication_type={'Časopisy'}
+        event={`${semesterId}`}
+        order={'3'}
+        refetch={() => {}}
+      />
     </>
   )
 }
