@@ -3,9 +3,9 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
-import * as CgIcons from 'react-icons/cg'
 import * as FaIcons from 'react-icons/fa'
 
+import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Authentication} from '../Authentication/Authentication'
@@ -43,12 +43,10 @@ export const MenuMain: FC = () => {
     <div className={isVisible ? `${styles.menu} ${styles.visible}` : styles.menu}>
       {!isVisible && (
         <div className={styles.menuOpenButton}>
-          <FaIcons.FaBars className="icon-bars" onClick={toggleMenu} />
+          <FaIcons.FaBars onClick={toggleMenu} />
         </div>
       )}
-      <div className={styles.menuCloseButton}>
-        <CgIcons.CgClose className={styles.menuCloseButton} onClick={toggleMenu} />
-      </div>
+      <CloseButton onClick={toggleMenu} size={50} />
       <div className={styles.menuItems}>
         {menuItems &&
           menuItems.map((menuItem: MenuItemInterface) => {
