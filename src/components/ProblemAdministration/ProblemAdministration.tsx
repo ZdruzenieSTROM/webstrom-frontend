@@ -109,6 +109,22 @@ export const ProblemAdministration: FC = () => {
         <div>
           Najkrajšie riešenia: <input type="text" />
         </div>
+        <div>
+          Vzorové riešenie:
+          {problem?.solution_pdf ? (
+            <a href={problem?.solution_pdf} target="_blank" rel="noreferrer" className={styles.icon}>
+              <FormatAlignJustify />
+            </a>
+          ) : (
+            <div className={styles.iconDisabled}>
+              <FormatAlignJustify />
+            </div>
+          )}
+          <FileUploader
+            uploadLink={`/api/competition/problem/${problemId}/upload-model-solution`}
+            refetch={refetchProblem}
+          />
+        </div>
 
         <div className={styles.rightButton}>
           <Link href={`/api/competition/problem/${problemId}/download-solutions`}>Stiahnuť riešenia</Link>

@@ -129,6 +129,7 @@ export interface ProblemWithSolutions {
   order?: number
   correction?: ProblemCorrection
   series: Series
+  solution_pdf: string | null
 }
 
 export interface Series {
