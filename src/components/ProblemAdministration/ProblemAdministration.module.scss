@@ -1,10 +1,58 @@
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+}
+
+.rightButton{
+  display: flex;
+  justify-content: flex-end;
+}
+
 .icon {
   color: black;
 }
 
-.buttonsCell {
+.iconDisabled {
+  color: #CCC;;
+}
+
+.input {
+  width: 30px;
+  text-align: center;
+}
+
+.table {
+  display: grid;
+  grid-gap: 10px;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  // background-color: #f2f2f2;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.tableBody {
+  display: grid;
+  grid-gap: 10px;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 10px;
+}
+
+.centerCell {
+  place-self: center;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-around;
   gap: 8px;
 }

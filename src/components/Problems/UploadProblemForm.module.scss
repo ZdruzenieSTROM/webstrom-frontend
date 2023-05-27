@@ -5,23 +5,6 @@
   flex-direction: column;
 }
 
-.dropzone {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 5rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #BBB;
-  background-color: #EEE;
-  border: 2px dashed black;
-}
-
-.dropzone:hover {
-  background-color: #DDD;
-}
-
 .files {
   margin-top: 8px;
 }

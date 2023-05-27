@@ -3,7 +3,7 @@ import axios from 'axios'
 import clsx from 'clsx'
 import {FC, useState} from 'react'
 
-import {Comment} from '@/types/api/competition'
+import {Comment, CommentState} from '@/types/api/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
@@ -20,6 +20,8 @@ interface DiscussionProps {
 
 export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, closeDiscussion}) => {
   const [commentText, setCommentText] = useState('')
+  const [hiddenResponseText, setHiddenResponseText] = useState('')
+  const [hiddenResponseDialogId, sethiddenResponseDialogId] = useState(-1)
 
   const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
     queryKey: ['competition', 'problem', problemId, 'comments'],
@@ -29,7 +31,8 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
     id: comment.id,
     can_edit: comment.edit_allowed,
     text: comment.text,
-    published: comment.published,
+    state: comment.state,
+    hidden_response: comment.hidden_response,
     posted_by: comment.posted_by_name,
   }))
 
@@ -55,9 +58,12 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
   })
 
   const {mutate: hideComment} = useMutation({
-    mutationFn: (id: number) => axios.post(`/api/competition/comment/${id}/hide`),
+    mutationFn: ({id, hiddenResponseText}: {id: number; hiddenResponseText: string}) =>
+      axios.post(`/api/competition/comment/${id}/hide`, {hidden_response: hiddenResponseText}),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['competition', 'problem', problemId, 'comments']})
+      sethiddenResponseDialogId(-1)
+      setHiddenResponseText('')
     },
   })
 
@@ -71,6 +77,9 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
   const handleCommentChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setCommentText(e.currentTarget.value)
   }
+  const handleHiddenResponseChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    setHiddenResponseText(e.currentTarget.value)
+  }
 
   return (
     <SideContainer title={'Diskusia - úloha ' + problemNumber} onClose={closeDiscussion}>
@@ -79,23 +88,44 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
           {commentsIsLoading && <Loading />}
           {comments &&
             comments.map((comment) => (
-              <div className={clsx(styles.comment, !comment.published && styles.notPublished)} key={comment.id}>
+              <div
+                className={clsx(styles.comment, comment.state !== CommentState.Published && styles.notPublished)}
+                key={comment.id}
+              >
                 <div className={styles.title}>
-                  {!comment.published && <div>(nezverejnený)(čaká na schválenie)</div>}
                   <div>{comment.posted_by}</div>
                 </div>
                 <div>{comment.text}</div>
-                <div className={styles.commentActions}>
-                  {!comment.published && (
-                    <>
-                      {hasPermissions && <Button onClick={() => publishComment(comment.id)}>Zverejniť</Button>}
-                      <Button onClick={() => deleteComment(comment.id)}>Odstrániť</Button>
-                    </>
-                  )}
-                  {comment.published && hasPermissions && (
-                    <Button onClick={() => hideComment(comment.id)}>Skryť</Button>
-                  )}
-                </div>
+                {comment.hidden_response && (
+                  <>
+                    <div className={styles.title}>
+                      <div>Vedúci:</div>
+                    </div>
+                    <div>{comment.hidden_response}</div>
+                  </>
+                )}
+                {comment.state === CommentState.WaitingForReview && <div>* komentár čaká na schválenie</div>}
+                {comment.state === CommentState.Hidden && <div>* tento komentár nie je verejný</div>}
+                {hiddenResponseDialogId === comment.id ? (
+                  <div className={styles.textArea}>
+                    <textarea value={hiddenResponseText} onChange={handleHiddenResponseChange} />
+                    <div className={styles.commentActions}>
+                      <Button onClick={() => hideComment({id: comment.id, hiddenResponseText})}>Odoslať</Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.commentActions}>
+                    {comment.state !== CommentState.Published && hasPermissions && (
+                      <Button onClick={() => publishComment(comment.id)}>Zverejniť</Button>
+                    )}
+                    {comment.state !== CommentState.Hidden && hasPermissions && (
+                      <Button onClick={() => sethiddenResponseDialogId(comment.id)}>Skryť</Button>
+                    )}
+                    {comment.state === CommentState.WaitingForReview && !hasPermissions && (
+                      <Button onClick={() => deleteComment(comment.id)}>Vymazať</Button>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
         </div>

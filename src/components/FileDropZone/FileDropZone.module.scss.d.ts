@@ -1,7 +1,5 @@
 export type Styles = {
-  table: string
-  td: string
-  th: string
+  dropzone: string
 }
 
 export type ClassNames = keyof Styles
