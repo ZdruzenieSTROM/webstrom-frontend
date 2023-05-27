@@ -1,7 +1,7 @@
 export type Styles = {
-  th: string
-  td: string
   table: string
+  td: string
+  th: string
 }
 
 export type ClassNames = keyof Styles
