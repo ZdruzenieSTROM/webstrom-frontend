@@ -58,7 +58,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
   })
 
   const {mutate: hideComment} = useMutation({
-    mutationFn: (id: number) =>
+    mutationFn: ({id, hiddenResponseText}: {id: number; hiddenResponseText: string}) =>
       axios.post(`/api/competition/comment/${id}/hide`, {hidden_response: hiddenResponseText}),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['competition', 'problem', problemId, 'comments']})
@@ -89,7 +89,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
           {comments &&
             comments.map((comment) => (
               <div
-                className={clsx(styles.comment, !(comment.state === CommentState.Published) && styles.notPublished)}
+                className={clsx(styles.comment, comment.state !== CommentState.Published && styles.notPublished)}
                 key={comment.id}
               >
                 <div className={styles.title}>
@@ -110,15 +110,15 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
                   <div className={styles.textArea}>
                     <textarea value={hiddenResponseText} onChange={handleHiddenResponseChange} />
                     <div className={styles.commentActions}>
-                      <Button onClick={() => hideComment(comment.id)}>Odoslať</Button>
+                      <Button onClick={() => hideComment({id: comment.id, hiddenResponseText})}>Odoslať</Button>
                     </div>
                   </div>
                 ) : (
                   <div className={styles.commentActions}>
-                    {!(comment.state === CommentState.Published) && hasPermissions && (
+                    {comment.state !== CommentState.Published && hasPermissions && (
                       <Button onClick={() => publishComment(comment.id)}>Zverejniť</Button>
                     )}
-                    {!(comment.state === CommentState.Hidden) && hasPermissions && (
+                    {comment.state !== CommentState.Hidden && hasPermissions && (
                       <Button onClick={() => sethiddenResponseDialogId(comment.id)}>Skryť</Button>
                     )}
                     {comment.state === CommentState.WaitingForReview && !hasPermissions && (
