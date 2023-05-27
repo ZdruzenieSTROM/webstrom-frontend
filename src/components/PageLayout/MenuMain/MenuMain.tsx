@@ -40,7 +40,7 @@ export const MenuMain: FC = () => {
   }, [seminarId])
 
   return (
-    <div className={isVisible ? `${styles.menu} ${styles.visible}` : styles.menu}>
+    <div className={clsx(styles.menu, isVisible && styles.visible)}>
       {!isVisible && (
         <div className={styles.menuOpenButton}>
           <FaIcons.FaBars onClick={toggleMenu} />

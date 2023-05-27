@@ -1,20 +1,15 @@
 .menu {
   position: fixed;
-  width: calc(calc(100% - 0px) / 4);
+  width: 25%;
   height: 100vh;
-  // top: -100%;
-  left: -100%;
+  top: -100%;
   background-color: black;
-  // background: transparent;
   transition: 750ms;
-  margin: 0px;
-  padding: 0px;
   z-index: 100;
   
   &.visible {
     left: 0;
     top: 0;
-    transition: 750ms;
   }
 }
 
