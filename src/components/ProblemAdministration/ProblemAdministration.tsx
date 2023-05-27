@@ -130,6 +130,9 @@ export const ProblemAdministration: FC = () => {
                     )}
                     <FileUploader
                       uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
+                      acceptedFormats={{
+                        'application/pdf': ['.pdf'],
+                      }}
                       refetch={refetchProblem}
                     />
                   </div>
@@ -143,6 +146,9 @@ export const ProblemAdministration: FC = () => {
                     )}
                     <FileUploader
                       uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
+                      acceptedFormats={{
+                        'application/pdf': ['.pdf'],
+                      }}
                       refetch={refetchProblem}
                     />
                   </div>
