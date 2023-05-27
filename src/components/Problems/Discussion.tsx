@@ -1,4 +1,3 @@
-import {CircularProgress} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
@@ -6,9 +5,10 @@ import {FC, useState} from 'react'
 
 import {Comment} from '@/types/api/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
-import {useIsAdmin} from '@/utils/useIsAdmin'
+import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button} from '../Clickable/Clickable'
+import {Loading} from '../Loading/Loading'
 import styles from './Discussion.module.scss'
 import {SideContainer} from './SideContainer'
 
@@ -32,7 +32,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
     posted_by: comment.posted_by_name,
   }))
 
-  const {isAdmin} = useIsAdmin()
+  const {hasPermissions} = useHasPermissions()
 
   const {isAuthed} = AuthContainer.useContainer()
 
@@ -75,11 +75,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
     <SideContainer title={'Diskusia - úloha ' + problemNumber}>
       <div className={styles.container}>
         <div className={styles.comments}>
-          {commentsIsLoading && (
-            <div className={styles.loading}>
-              <CircularProgress color="inherit" />
-            </div>
-          )}
+          {commentsIsLoading && <Loading />}
           {comments &&
             comments.map((comment) => (
               <div className={clsx(styles.comment, !comment.published && styles.notPublished)} key={comment.id}>
@@ -91,11 +87,13 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber}) => {
                 <div className={styles.commentActions}>
                   {!comment.published && (
                     <>
-                      {isAdmin && <Button onClick={() => publishComment(comment.id)}>Publish</Button>}
+                      {hasPermissions && <Button onClick={() => publishComment(comment.id)}>Publish</Button>}
                       <Button onClick={() => deleteComment(comment.id)}>Delete</Button>
                     </>
                   )}
-                  {comment.published && isAdmin && <Button onClick={() => hideComment(comment.id)}>Unpublish</Button>}
+                  {comment.published && hasPermissions && (
+                    <Button onClick={() => hideComment(comment.id)}>Unpublish</Button>
+                  )}
                 </div>
               </div>
             ))}

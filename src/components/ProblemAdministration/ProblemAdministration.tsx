@@ -6,10 +6,12 @@ import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competition'
+import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button, Link} from '../Clickable/Clickable'
 import {FileUploader} from '../FileUploader/FileUploader'
 import {Latex} from '../Latex/Latex'
+import {Loading} from '../Loading/Loading'
 import problemStyles from '../Problems/Problems.module.scss'
 import uploadProblemFormStyles from '../Problems/UploadProblemForm.module.scss'
 import styles from './ProblemAdministration.module.scss'
@@ -26,8 +28,9 @@ export const ProblemAdministration: FC = () => {
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym problemId
     enabled: problemId !== undefined,
   })
-
   const problem = problemData?.data
+
+  const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
   const [solutions, setSolutions] = useState<SolutionAdministration[]>()
 
@@ -68,6 +71,9 @@ export const ProblemAdministration: FC = () => {
   )
 
   const {getRootProps, getInputProps} = useDropzone({onDrop})
+
+  if (permissionsIsLoading) return <Loading />
+  if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
 
   return (
     <>
