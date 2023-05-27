@@ -58,6 +58,7 @@ const Problem: FC<{
       <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
       <Latex>{problem.text}</Latex>
       <div className={styles.actions}>
+        {problem.solution_pdf && <Link href={problem.solution_pdf}>vzorové riešenie</Link>}
         {registered && (
           <>
             <Link href={`/api/competition/problem/${problem.id}/my-solution`} disabled={!problem.submitted}>

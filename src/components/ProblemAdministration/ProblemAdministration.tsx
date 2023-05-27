@@ -96,6 +96,7 @@ export const ProblemAdministration: FC = () => {
         <input {...getInputProps()} />
         <p>Vlož opravené riešenia vo formáte zip</p>
       </div>
+
       <form>
         <div>
           Opravovatelia: <input type="text" />
@@ -104,7 +105,7 @@ export const ProblemAdministration: FC = () => {
           Najkrajšie riešenia:
           <input type="text" />
         </div>
-
+        <div>Vzorové riešenie:</div>
         <table>
           <tbody>
             <tr>
