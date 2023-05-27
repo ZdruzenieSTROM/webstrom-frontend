@@ -58,7 +58,10 @@ export const ProblemAdministration: FC = () => {
   }
 
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
-    async (acceptedFiles) => {
+    async (acceptedFiles, fileRejections) => {
+      if (fileRejections.length > 0) {
+        return
+      }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
       await axios.post(`/api/competition/problem/${problemId}/upload-corrected`, formData)
@@ -67,7 +70,13 @@ export const ProblemAdministration: FC = () => {
     [problemId, refetchProblem],
   )
 
-  const {getRootProps, getInputProps} = useDropzone({onDrop})
+  const {getRootProps, getInputProps} = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: {
+      'application/zip': ['.zip'],
+    },
+  })
 
   return (
     <>
