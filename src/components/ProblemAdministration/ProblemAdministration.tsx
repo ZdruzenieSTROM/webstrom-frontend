@@ -1,4 +1,5 @@
 import {FormatAlignJustify, Grading} from '@mui/icons-material'
+import {CircularProgress, Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -6,6 +7,7 @@ import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competition'
+import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button, Link} from '../Clickable/Clickable'
 import {FileUploader} from '../FileUploader/FileUploader'
@@ -26,8 +28,9 @@ export const ProblemAdministration: FC = () => {
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym problemId
     enabled: problemId !== undefined,
   })
-
   const problem = problemData?.data
+
+  const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
   const [solutions, setSolutions] = useState<SolutionAdministration[]>()
 
@@ -68,6 +71,14 @@ export const ProblemAdministration: FC = () => {
   )
 
   const {getRootProps, getInputProps} = useDropzone({onDrop})
+
+  if (permissionsIsLoading)
+    return (
+      <Stack alignItems="center">
+        <CircularProgress color="inherit" />
+      </Stack>
+    )
+  if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
 
   return (
     <>

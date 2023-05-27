@@ -1,9 +1,11 @@
+import {CircularProgress, Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
 import {SemesterWithProblems} from '@/types/api/generated/competition'
+import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button, Link} from '../Clickable/Clickable'
 import styles from '../Problems/Problems.module.scss'
@@ -24,6 +26,8 @@ export const SemesterAdministration: FC = () => {
   const {params} = router.query
 
   const semesterId = params && params[0]
+
+  const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
   const {data: semesterData} = useQuery({
     queryKey: ['competition', 'semester', semesterId],
@@ -67,6 +71,14 @@ export const SemesterAdministration: FC = () => {
         .join('\n'),
     )
   }
+
+  if (permissionsIsLoading)
+    return (
+      <Stack alignItems="center">
+        <CircularProgress color="inherit" />
+      </Stack>
+    )
+  if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
 
   return (
     <>

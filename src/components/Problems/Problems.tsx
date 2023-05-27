@@ -6,7 +6,7 @@ import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
-import {useIsAdmin} from '@/utils/useIsAdmin'
+import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
@@ -213,18 +213,18 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     },
   })
 
-  const {isAdmin} = useIsAdmin()
+  const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
   return (
     <>
       <div className={styles.container}>
-        {(semesterListIsLoading || currentSeriesIsLoading || seriesIsLoading) && (
+        {(semesterListIsLoading || currentSeriesIsLoading || seriesIsLoading || permissionsIsLoading) && (
           <div className={styles.loading}>
             <CircularProgress color="inherit" />
           </div>
         )}
         <SemesterPicker semesterList={semesterList} selectedSeriesId={seriesId} />
-        {isAdmin && (
+        {hasPermissions && (
           <div className={styles.adminSection}>
             <Link href={`/${seminar}/admin/opravovanie/${semesterId}`}>Admin: Opravovanie</Link>
           </div>
