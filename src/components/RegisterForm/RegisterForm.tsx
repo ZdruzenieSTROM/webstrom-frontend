@@ -1,5 +1,5 @@
 import {useMutation} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
+import axios from 'axios'
 import {FC, useEffect, useRef, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
@@ -69,8 +69,6 @@ export const RegisterForm: FC = () => {
   const emptySchoolItems = useRef<SelectOption[]>([])
   const otherSchoolItem = useRef<SelectOption>()
   const withoutSchoolItem = useRef<SelectOption>()
-
-  // const [successfulRegistration, setSuccessfulRegistration] = useState('')
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   useEffect(() => {
