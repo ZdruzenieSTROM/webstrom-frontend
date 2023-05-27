@@ -92,7 +92,7 @@ export const SemesterAdministration: FC = () => {
           <h4>Opravovanie úloh:</h4>
           {series?.problems.map((problem) => (
             <div key={problem.id}>
-              <Link href={`/strom/opravit-ulohu/${problem.id}`}>{problem.order}. úloha</Link>
+              <Link href={`/strom/admin/opravit-ulohu/${problem.id}`}>{problem.order}. úloha</Link>
             </div>
           ))}
         </div>

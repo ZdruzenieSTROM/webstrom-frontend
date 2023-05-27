@@ -10,8 +10,9 @@ import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competit
 import {Button, Link} from '../Clickable/Clickable'
 import {FileUploader} from '../FileUploader/FileUploader'
 import {Latex} from '../Latex/Latex'
-import styles from '../Problems/Problems.module.scss'
+import problemStyles from '../Problems/Problems.module.scss'
 import uploadProblemFormStyles from '../Problems/UploadProblemForm.module.scss'
+import styles from './ProblemAdministration.module.scss'
 
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
@@ -71,9 +72,9 @@ export const ProblemAdministration: FC = () => {
   return (
     <>
       <h2>Opravovanie {problem?.order}. úlohy</h2>
-      <Link href={`/strom/opravovanie/${problem?.series.semester}`}>Späť na semester</Link>
+      <Link href={`/strom/admin/opravovanie/${problem?.series.semester}`}>Späť na semester</Link>
       <Latex>{problem?.text ?? 'Načítavam...'}</Latex>
-      <div className={styles.actions}>
+      <div className={problemStyles.actions}>
         <Link href={`/api/competition/problem/${problemId}/download-solutions`}>Stiahnuť riešenia</Link>
       </div>
       <div {...getRootProps({className: uploadProblemFormStyles.dropzone})}>
@@ -112,28 +113,30 @@ export const ProblemAdministration: FC = () => {
                   />
                 </td>
                 <td>
-                  {solution.solution ? (
-                    <a href={solution?.solution} target="_blank" rel="noreferrer">
-                      <FormatAlignJustify />
-                    </a>
-                  ) : (
+                  <div className={styles.buttonsCell}>
+                    {solution.solution && (
+                      <a href={solution?.solution} target="_blank" rel="noreferrer" className={styles.icon}>
+                        <FormatAlignJustify />
+                      </a>
+                    )}
                     <FileUploader
                       uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
                       refetch={refetchProblem}
                     />
-                  )}
+                  </div>
                 </td>
                 <td>
-                  {solution.corrected_solution ? (
-                    <a href={solution?.corrected_solution} target="_blank" rel="noreferrer">
-                      <Grading />
-                    </a>
-                  ) : (
+                  <div className={styles.buttonsCell}>
+                    {solution.corrected_solution && (
+                      <a href={solution?.corrected_solution} target="_blank" rel="noreferrer" className={styles.icon}>
+                        <Grading />
+                      </a>
+                    )}
                     <FileUploader
                       uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
                       refetch={refetchProblem}
                     />
-                  )}
+                  </div>
                 </td>
               </tr>
             ))}

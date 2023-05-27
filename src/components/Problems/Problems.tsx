@@ -226,7 +226,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
         <SemesterPicker semesterList={semesterList} selectedSeriesId={seriesId} />
         {isAdmin && (
           <div className={styles.adminSection}>
-            <Link href={`/${seminar}/opravovanie/${semesterId}`}>Admin: Opravovanie</Link>
+            <Link href={`/${seminar}/admin/opravovanie/${semesterId}`}>Admin: Opravovanie</Link>
           </div>
         )}
         {problems.map((problem) => (
