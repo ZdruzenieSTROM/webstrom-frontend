@@ -1,5 +1,6 @@
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
+import {useRouter} from 'next/router'
 import {FC, useEffect, useRef, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
@@ -59,6 +60,8 @@ export const RegisterForm: FC = () => {
 
   const otherSchoolItem = useRef<SelectOption>()
   const withoutSchoolItem = useRef<SelectOption>()
+
+  const router = useRouter()
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   useEffect(() => {
@@ -132,6 +135,7 @@ export const RegisterForm: FC = () => {
     mutationFn: (data: RegisterFormValues) => {
       return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
     },
+    onSuccess: () => router.push(`${router.asPath}/../verifikacia`),
   })
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
@@ -145,103 +149,98 @@ export const RegisterForm: FC = () => {
         return '* Zadaj telefónne číslo vo formáte validnom formáte +421 123 456 789 alebo +421123456789.'
     },
   }
-
   return (
     <div>
-      {registrationResponseData?.data.detail ? (
-        <p>{registrationResponseData?.data.detail}</p>
-      ) : (
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <FormInput
+          control={control}
+          name="email"
+          label="Email"
+          rules={{
+            ...requiredRule,
+            pattern: {
+              value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
+              message: '* Vložte správnu emailovú adresu.',
+            },
+          }}
+        />
+        <FormInput
+          control={control}
+          name="password1"
+          label="Heslo"
+          type="password"
+          rules={{
+            ...requiredRule,
+            minLength: {
+              value: 8,
+              message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
+            },
+          }}
+        />
+        <FormInput
+          control={control}
+          name="password2"
+          label="Potvrdenie hesla"
+          type="password"
+          rules={{
+            ...requiredRule,
+            validate: (val) => {
+              if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
+            },
+          }}
+        />
+        <FormInput control={control} name="first_name" label="Krstné meno" rules={requiredRule} />
+        <FormInput control={control} name="last_name" label="Priezvisko" rules={requiredRule} />
+        <FormInput control={control} name="nickname" label="Prezývka" />
+        <FormCheckbox
+          control={control}
+          name="without_school"
+          label="Už nie som študent základnej ani strednej školy."
+        />
+        <FormAutocomplete
+          control={control}
+          name="school"
+          label="Škola"
+          options={school_not_found || without_school ? emptySchoolItems : schoolItems}
+          disabled={!schoolItems.length || school_not_found || without_school}
+          rules={requiredRule}
+        />
+        <FormCheckbox
+          control={control}
+          name="school_not_found"
+          label="Moja škola sa v zozname nenachádza."
+          disabled={without_school}
+        />
+        {school_not_found && (
           <FormInput
             control={control}
-            name="email"
-            label="Email"
-            rules={{
-              ...requiredRule,
-              pattern: {
-                value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-                message: '* Vložte správnu emailovú adresu.',
-              },
-            }}
+            name="new_school_description"
+            label="povedz nám, kam chodíš na školu, aby sme ti ju mohli dodatočne pridať"
+            rules={school_not_found ? requiredRule : {}}
           />
-          <FormInput
-            control={control}
-            name="password1"
-            label="Heslo"
-            type="password"
-            rules={{
-              ...requiredRule,
-              minLength: {
-                value: 8,
-                message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
-              },
-            }}
-          />
-          <FormInput
-            control={control}
-            name="password2"
-            label="Potvrdenie hesla"
-            type="password"
-            rules={{
-              ...requiredRule,
-              validate: (val) => {
-                if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
-              },
-            }}
-          />
-          <FormInput control={control} name="first_name" label="Krstné meno" rules={requiredRule} />
-          <FormInput control={control} name="last_name" label="Priezvisko" rules={requiredRule} />
-          <FormInput control={control} name="nickname" label="Prezývka" />
-          <FormCheckbox
-            control={control}
-            name="without_school"
-            label="Už nie som študent základnej ani strednej školy."
-          />
-          <FormAutocomplete
-            control={control}
-            name="school"
-            label="Škola"
-            options={school_not_found || without_school ? emptySchoolItems : schoolItems}
-            disabled={!schoolItems.length || school_not_found || without_school}
-            rules={requiredRule}
-          />
-          <FormCheckbox
-            control={control}
-            name="school_not_found"
-            label="Moja škola sa v zozname nenachádza."
-            disabled={without_school}
-          />
-          {school_not_found && (
-            <FormInput
-              control={control}
-              name="new_school_description"
-              label="povedz nám, kam chodíš na školu, aby sme ti ju mohli dodatočne pridať"
-              rules={school_not_found ? requiredRule : {}}
-            />
-          )}
-          <FormSelect
-            control={control}
-            name="grade"
-            label="Ročník"
-            options={gradeItems.filter(({id}) => id !== 13 || without_school)}
-            disabled={without_school}
-            rules={requiredRule}
-          />
-          <FormInput control={control} name="phone" label="Telefónne číslo" rules={phoneRule} />
-          <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" rules={phoneRule} />
-          <FormCheckbox
-            control={control}
-            name="gdpr"
-            label="Súhlas so spracovaním osobných údajov"
-            rules={{
-              validate: (val) => {
-                if (!val) return '* Súhlas so spracovaním osobných údajov je nutnou podmienkou registrácie.'
-              },
-            }}
-          />
-          <Button type="submit">Registrovať</Button>
-        </form>
-      )}
+        )}
+        <FormSelect
+          control={control}
+          name="grade"
+          label="Ročník"
+          options={gradeItems.filter(({id}) => id !== 13 || without_school)}
+          disabled={without_school}
+          rules={requiredRule}
+        />
+        <FormInput control={control} name="phone" label="Telefónne číslo" rules={phoneRule} />
+        <FormInput control={control} name="parent_phone" label="Telefónne číslo na rodiča" rules={phoneRule} />
+        <FormCheckbox
+          control={control}
+          name="gdpr"
+          label="Súhlas so spracovaním osobných údajov"
+          rules={{
+            validate: (val) => {
+              if (!val) return '* Súhlas so spracovaním osobných údajov je nutnou podmienkou registrácie.'
+            },
+          }}
+        />
+        <Button type="submit">Registrovať</Button>
+      </form>
     </div>
   )
 }
