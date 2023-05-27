@@ -13,8 +13,6 @@ import {FileDropZone} from '../FileDropZone/FileDropZone'
 import {FileUploader} from '../FileUploader/FileUploader'
 import {Latex} from '../Latex/Latex'
 import {Loading} from '../Loading/Loading'
-import problemStyles from '../Problems/Problems.module.scss'
-import uploadProblemFormStyles from '../Problems/UploadProblemForm.module.scss'
 import styles from './ProblemAdministration.module.scss'
 
 export const ProblemAdministration: FC = () => {
