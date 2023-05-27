@@ -1,19 +1,23 @@
 import {Upload} from '@mui/icons-material'
 import axios from 'axios'
 import {FC, useCallback} from 'react'
-import {DropzoneOptions, useDropzone} from 'react-dropzone'
+import {Accept, DropzoneOptions, useDropzone} from 'react-dropzone'
 
 interface PublicationUploaderProps {
   uploadLink: string
+  acceptedFormats?: Accept
   publication_type: string
   event: string
   order: string
   refetch: () => void
 }
 
-export const PublicationUploader: FC<PublicationUploaderProps> = ({uploadLink, publication_type, event, order, refetch}) => {
+export const PublicationUploader: FC<PublicationUploaderProps> = ({uploadLink, acceptedFormats, publication_type, event, order, refetch}) => {
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
-    async (acceptedFiles) => {
+    async (acceptedFiles, fileRejections) => {
+      if (fileRejections.length > 0) {
+        return
+      }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
       formData.append('publication_type', publication_type)
@@ -26,7 +30,11 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({uploadLink, p
     [refetch, uploadLink],
   )
 
-  const {getRootProps, getInputProps} = useDropzone({onDrop})
+  const {getRootProps, getInputProps} = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: acceptedFormats ?? {},
+  })
 
   return (
     <>

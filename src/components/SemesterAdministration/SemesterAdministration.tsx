@@ -130,6 +130,9 @@ export const SemesterAdministration: FC = () => {
       1. časopis:
       <PublicationUploader
         uploadLink={'/api/competition/publication/upload/'}
+        acceptedFormats={{
+          'application/pdf': ['.pdf'],
+        }}
         publication_type={'Časopisy'}
         event={`${semesterId}`}
         order={'1'}
@@ -138,6 +141,9 @@ export const SemesterAdministration: FC = () => {
       2. časopis:
       <PublicationUploader
         uploadLink={'/api/competition/publication/upload/'}
+        acceptedFormats={{
+          'application/pdf': ['.pdf'],
+        }}
         publication_type={'Časopisy'}
         event={`${semesterId}`}
         order={'2'}
@@ -146,6 +152,9 @@ export const SemesterAdministration: FC = () => {
       3. časopis:
       <PublicationUploader
         uploadLink={'/api/competition/publication/upload/'}
+        acceptedFormats={{
+          'application/pdf': ['.pdf'],
+        }}
         publication_type={'Časopisy'}
         event={`${semesterId}`}
         order={'3'}
