@@ -1,4 +1,5 @@
-import axios, {AxiosError} from 'axios'
+import {useMutation} from '@tanstack/react-query'
+import axios from 'axios'
 import {FC, useEffect, useRef, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
@@ -68,8 +69,6 @@ export const RegisterForm: FC = () => {
   const emptySchoolItems = useRef<SelectOption[]>([])
   const otherSchoolItem = useRef<SelectOption>()
   const withoutSchoolItem = useRef<SelectOption>()
-
-  const [successfulRegistration, setSuccessfulRegistration] = useState('')
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   useEffect(() => {
@@ -182,15 +181,14 @@ export const RegisterForm: FC = () => {
     new_school_description: data.new_school_description || '',
   })
 
+  const {mutate: submitFormData, data: registrationResponseData} = useMutation({
+    mutationFn: (data: RegisterFormValues) => {
+      return axios.post<IGeneralPostResponse>(`/api/user/registration`, transformFormData(data))
+    },
+  })
+
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
-    try {
-      const response = await axios.post<IGeneralPostResponse>(`/api/user/registration`, transformFormData(data))
-      setSuccessfulRegistration(response.data.detail)
-    } catch (error: unknown) {
-      // TODO: error handling
-      alert(JSON.stringify((error as AxiosError).response?.data))
-      return
-    }
+    submitFormData(data)
   }
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
@@ -203,8 +201,8 @@ export const RegisterForm: FC = () => {
 
   return (
     <div>
-      {successfulRegistration ? (
-        <p>{successfulRegistration}</p>
+      {registrationResponseData?.data.detail ? (
+        <p>{registrationResponseData?.data.detail}</p>
       ) : (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <FormInput
