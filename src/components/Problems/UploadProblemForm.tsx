@@ -12,15 +12,17 @@ import styles from './UploadProblemForm.module.scss'
 export const UploadProblemForm: FC<{
   problemId: number
   problemNumber: number
+  problemSubmitted?: boolean
   setDisplaySideContent: Dispatch<
     SetStateAction<{
       type: string
       problemId: number
       problemNumber: number
+      problemSubmitted?: boolean
     }>
   >
   invalidateSeriesQuery: () => Promise<void>
-}> = ({problemId, problemNumber, setDisplaySideContent, invalidateSeriesQuery}) => {
+}> = ({problemId, problemNumber, problemSubmitted, setDisplaySideContent, invalidateSeriesQuery}) => {
   const {mutate: uploadSolution} = useMutation({
     mutationFn: (formData: FormData) => axios.post(`/api/competition/problem/${problemId}/upload-solution`, formData),
     onSuccess: (response) => {
@@ -38,7 +40,12 @@ export const UploadProblemForm: FC<{
     },
   })
 
-  const {acceptedFiles, getRootProps, getInputProps} = useDropzone()
+  const {acceptedFiles, fileRejections, getRootProps, getInputProps} = useDropzone({
+    multiple: false,
+    accept: {
+      'application/pdf': ['.pdf'],
+    },
+  })
 
   const handleSubmit = async () => {
     const formData = new FormData()
@@ -50,6 +57,7 @@ export const UploadProblemForm: FC<{
   return (
     <SideContainer title={'Odovzdať úlohu - ' + problemNumber}>
       <div className={styles.container}>
+        {problemSubmitted && <p>Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.</p>}
         <div {...getRootProps({className: styles.dropzone})}>
           <input {...getInputProps()} />
           <p>Vlož riešenie</p>
@@ -61,6 +69,7 @@ export const UploadProblemForm: FC<{
               {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
             </span>
           )}
+          {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
         </div>
         <div className={styles.bottomAction}>
           <Button onClick={handleSubmit}>Odovzdať</Button>

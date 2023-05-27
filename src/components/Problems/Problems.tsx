@@ -22,6 +22,7 @@ const Problem: FC<{
       type: string
       problemId: number
       problemNumber: number
+      problemSubmitted?: boolean
     }>
   >
   registered: boolean
@@ -42,7 +43,12 @@ const Problem: FC<{
       if (prevState.type === 'uploadProblemForm' && prevState.problemId === problem.id) {
         return {type: '', problemId: -1, problemNumber: -1}
       } else {
-        return {type: 'uploadProblemForm', problemId: problem.id, problemNumber: problem.order}
+        return {
+          type: 'uploadProblemForm',
+          problemId: problem.id,
+          problemNumber: problem.order,
+          problemSubmitted: !!problem.submitted,
+        }
       }
     })
   }
@@ -92,7 +98,12 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const {seminarId, seminar} = useSeminarInfo()
 
   // used to display discussions and file upload boxes
-  const [displaySideContent, setDisplaySideContent] = useState({type: '', problemId: -1, problemNumber: -1})
+  const [displaySideContent, setDisplaySideContent] = useState<{
+    type: string
+    problemId: number
+    problemNumber: number
+    problemSubmitted?: boolean
+  }>({type: '', problemId: -1, problemNumber: -1, problemSubmitted: false})
 
   const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery({
     queryKey: ['competition', 'semester-list', {competition: seminarId}],
@@ -265,6 +276,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
           <UploadProblemForm
             problemId={displaySideContent.problemId}
             problemNumber={displaySideContent.problemNumber}
+            problemSubmitted={displaySideContent.problemSubmitted}
             setDisplaySideContent={setDisplaySideContent}
             invalidateSeriesQuery={invalidateSeriesQuery}
           />
