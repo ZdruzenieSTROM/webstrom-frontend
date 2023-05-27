@@ -6,6 +6,7 @@ import {useDropzone} from 'react-dropzone'
 import {niceBytes} from '@/utils/niceBytes'
 
 import {Button} from '../Clickable/Clickable'
+import {FileDropZone} from '../FileDropZone/FileDropZone'
 import {SideContainer} from './SideContainer'
 import styles from './UploadProblemForm.module.scss'
 
@@ -63,10 +64,7 @@ export const UploadProblemForm: FC<{
     >
       <div className={styles.container}>
         {problemSubmitted && <p>Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.</p>}
-        <div {...getRootProps({className: styles.dropzone})}>
-          <input {...getInputProps()} />
-          <p>Vlož riešenie vo formáte pdf</p>
-        </div>
+        <FileDropZone getRootProps={getRootProps} getInputProps={getInputProps} text="Vlož riešenie vo formáte pdf" />
         <div className={styles.files}>
           <h4>Súbor:</h4>
           {acceptedFiles[0]?.name && (

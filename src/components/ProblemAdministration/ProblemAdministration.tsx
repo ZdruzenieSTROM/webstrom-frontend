@@ -9,11 +9,10 @@ import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competit
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button, Link} from '../Clickable/Clickable'
+import {FileDropZone} from '../FileDropZone/FileDropZone'
 import {FileUploader} from '../FileUploader/FileUploader'
 import {Latex} from '../Latex/Latex'
 import {Loading} from '../Loading/Loading'
-import problemStyles from '../Problems/Problems.module.scss'
-import uploadProblemFormStyles from '../Problems/UploadProblemForm.module.scss'
 import styles from './ProblemAdministration.module.scss'
 
 export const ProblemAdministration: FC = () => {
@@ -94,86 +93,92 @@ export const ProblemAdministration: FC = () => {
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
 
   return (
-    <>
+    <div className={styles.container}>
       <h2>Opravovanie {problem?.order}. úlohy</h2>
-      <Link href={`/strom/admin/opravovanie/${problem?.series.semester}`}>Späť na semester</Link>
+
+      <div className={styles.rightButton}>
+        <Link href={`/strom/admin/opravovanie/${problem?.series.semester}`}>Späť na semester</Link>
+      </div>
+
       <Latex>{problem?.text ?? 'Načítavam...'}</Latex>
-      <div className={problemStyles.actions}>
-        <Link href={`/api/competition/problem/${problemId}/download-solutions`}>Stiahnuť riešenia</Link>
-      </div>
-      <div {...getRootProps({className: uploadProblemFormStyles.dropzone})}>
-        <input {...getInputProps()} />
-        <p>Vlož opravené riešenia vo formáte zip</p>
-      </div>
-      <form>
+
+      <form className={styles.container}>
         <div>
           Opravovatelia: <input type="text" />
         </div>
         <div>
-          Najkrajšie riešenia:
-          <input type="text" />
+          Najkrajšie riešenia: <input type="text" />
         </div>
 
-        <table>
-          <tbody>
-            <tr>
-              <th>Riešiteľ</th>
-              <th>Body</th>
-              <th>Riešenie</th>
-              <th>Opravené</th>
-            </tr>
-            {solutions?.map((solution, index) => (
-              <tr key={solution.id}>
-                <td>
-                  {solution.semester_registration?.profile.first_name}{' '}
-                  {solution.semester_registration?.profile.last_name}
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    pattern="[0-9]"
-                    value={solution.score ?? ''}
-                    onChange={(event) => updatePoints(index, event.target.value)}
-                  />
-                </td>
-                <td>
-                  <div className={styles.buttonsCell}>
-                    {solution.solution && (
-                      <a href={solution?.solution} target="_blank" rel="noreferrer" className={styles.icon}>
-                        <FormatAlignJustify />
-                      </a>
-                    )}
-                    <FileUploader
-                      uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
-                      acceptedFormats={{
-                        'application/pdf': ['.pdf'],
-                      }}
-                      refetch={refetchProblem}
-                    />
+        <div className={styles.rightButton}>
+          <Link href={`/api/competition/problem/${problemId}/download-solutions`}>Stiahnuť riešenia</Link>
+        </div>
+
+        <FileDropZone
+          getRootProps={getRootProps}
+          getInputProps={getInputProps}
+          text="Vlož opravené riešenia vo formáte zip"
+        />
+
+        <div className={styles.table}>
+          <div className={styles.tableHeader}>
+            <div>Riešiteľ</div>
+            <div className={styles.centerCell}>Body</div>
+            <div className={styles.centerCell}>Riešenie</div>
+            <div className={styles.centerCell}>Opravené</div>
+          </div>
+          {solutions?.map((solution, index) => (
+            <div key={solution.id} className={styles.tableRow}>
+              <div>
+                {solution.semester_registration?.profile.first_name} {solution.semester_registration?.profile.last_name}
+              </div>
+              <div className={styles.centerCell}>
+                <input
+                  type="text"
+                  pattern="[0-9]"
+                  value={solution.score ?? ''}
+                  onChange={(event) => updatePoints(index, event.target.value)}
+                  className={styles.input}
+                />
+              </div>
+              <div className={styles.centerCell}>
+                {solution.solution ? (
+                  <a href={solution?.solution} target="_blank" rel="noreferrer" className={styles.icon}>
+                    <FormatAlignJustify />
+                  </a>
+                ) : (
+                  <div className={styles.iconDisabled}>
+                    <FormatAlignJustify />
                   </div>
-                </td>
-                <td>
-                  <div className={styles.buttonsCell}>
-                    {solution.corrected_solution && (
-                      <a href={solution?.corrected_solution} target="_blank" rel="noreferrer" className={styles.icon}>
-                        <Grading />
-                      </a>
-                    )}
-                    <FileUploader
-                      uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
-                      acceptedFormats={{
-                        'application/pdf': ['.pdf'],
-                      }}
-                      refetch={refetchProblem}
-                    />
+                )}
+                <FileUploader
+                  uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
+                  refetch={refetchProblem}
+                />
+              </div>
+              <div className={styles.centerCell}>
+                {solution.corrected_solution ? (
+                  <a href={solution?.corrected_solution} target="_blank" rel="noreferrer" className={styles.icon}>
+                    <Grading />
+                  </a>
+                ) : (
+                  <div className={styles.iconDisabled}>
+                    <Grading />
                   </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Button onClick={handleSavePoints}>Uložiť body</Button>
+                )}
+                <FileUploader
+                  uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
+                  refetch={refetchProblem}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.rightButton}>
+          <Button onClick={handleSavePoints}>Uložiť body</Button>
+        </div>
       </form>
-    </>
+    </div>
   )
 }

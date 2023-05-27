@@ -1,7 +1,5 @@
 export type Styles = {
-  bottomAction: string
-  container: string
-  files: string
+  dropzone: string
 }
 
 export type ClassNames = keyof Styles
