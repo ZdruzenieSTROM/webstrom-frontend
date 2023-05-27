@@ -69,7 +69,7 @@ export const UploadProblemForm: FC<{
               {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
             </span>
           )}
-          {fileRejections.length > 0 && <span className="error">Nahraný súbor musí byť vo formáte pdf.</span>}
+          {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
         </div>
         <div className={styles.bottomAction}>
           <Button onClick={handleSubmit}>Odovzdať</Button>
