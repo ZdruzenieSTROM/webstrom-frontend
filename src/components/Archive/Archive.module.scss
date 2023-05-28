@@ -1,0 +1,24 @@
+.archive {
+  margin-top: 5rem;
+  display: grid;
+  row-gap: 20px;
+}
+
+.eventName {
+  font-weight: bold;
+  font-style: italic;
+  text-transform: uppercase;
+  font-size: 16pt;
+}
+
+.archiveRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  text-transform: uppercase;
+}
