@@ -59,3 +59,17 @@
   font-weight: bold;
   margin-bottom: 1rem;
 }
+
+.imageContainer {
+  display: grid;
+  place-items: center;
+}
+
+.image {
+  width: auto;
+  height: auto;
+  min-height: 3rem;
+  min-width: 3rem;
+  max-height: 50vh;
+  margin-top: 1rem;
+}

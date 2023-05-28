@@ -3,6 +3,8 @@ export type Styles = {
   adminSection: string
   container: string
   debug: string
+  image: string
+  imageContainer: string
   problem: string
   problemTitle: string
   registerButton: string
