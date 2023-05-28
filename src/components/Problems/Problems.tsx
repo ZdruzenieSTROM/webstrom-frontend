@@ -5,6 +5,7 @@ import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
+import {BannerContainer} from '@/utils/BannerContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -97,6 +98,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const router = useRouter()
 
   const {seminarId, seminar} = useSeminarInfo()
+  const {setBannerText} = BannerContainer.useContainer()
 
   // used to display discussions and file upload boxes
   const [displaySideContent, setDisplaySideContent] = useState<{
@@ -205,6 +207,10 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const queryClient = useQueryClient()
 
   const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
+
+  useEffect(() => {
+    setBannerText(seriesData?.data.deadline || '')
+  }, [seriesData, setBannerText])
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),
