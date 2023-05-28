@@ -5,19 +5,20 @@ interface CloseButtonProps {
   onClick: () => void
   size?: number
   alignRight?: boolean
+  invertColors?: boolean
 }
 
-export const CloseButton: FC<CloseButtonProps> = ({onClick, size, alignRight}) => {
+export const CloseButton: FC<CloseButtonProps> = ({onClick, size, alignRight, invertColors}) => {
   return (
     <Close
       sx={[
         {
           fontSize: size,
           cursor: 'pointer',
-          color: 'white',
+          color: !invertColors ? 'white' : 'black',
           'active, :hover': {
-            color: 'black',
-            backgroundColor: 'white',
+            color: !invertColors ? 'black' : 'white',
+            backgroundColor: !invertColors ? 'white' : 'black',
           },
         },
         !!alignRight && {position: 'absolute', right: '8px'},
