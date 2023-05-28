@@ -3,7 +3,10 @@ export type Styles = {
   commentActions: string
   comments: string
   container: string
+  inputContainer: string
   notPublished: string
+  submitAction: string
+  submitInputContainer: string
   textArea: string
   title: string
 }

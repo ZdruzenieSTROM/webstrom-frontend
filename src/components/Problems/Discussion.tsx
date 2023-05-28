@@ -107,8 +107,12 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
                 {comment.state === CommentState.WaitingForReview && <div>* komentár čaká na schválenie</div>}
                 {comment.state === CommentState.Hidden && <div>* tento komentár nie je verejný</div>}
                 {hiddenResponseDialogId === comment.id ? (
-                  <div className={styles.textArea}>
-                    <textarea value={hiddenResponseText} onChange={handleHiddenResponseChange} />
+                  <div className={styles.inputContainer}>
+                    <textarea
+                      className={styles.textArea}
+                      value={hiddenResponseText}
+                      onChange={handleHiddenResponseChange}
+                    />
                     <div className={styles.commentActions}>
                       <Button onClick={() => hideComment({id: comment.id, hiddenResponseText})}>Odoslať</Button>
                     </div>
@@ -129,11 +133,13 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
               </div>
             ))}
         </div>
-        <div className={styles.textArea}>
-          <textarea value={commentText} onChange={handleCommentChange} />
-          <Button disabled={!isAuthed} onClick={addComment}>
-            Odoslať
-          </Button>
+        <div className={styles.submitInputContainer}>
+          <textarea className={styles.textArea} value={commentText} onChange={handleCommentChange} />
+          <div className={styles.submitAction}>
+            <Button disabled={!isAuthed} onClick={addComment}>
+              Odoslať
+            </Button>
+          </div>
         </div>
       </div>
     </SideContainer>
