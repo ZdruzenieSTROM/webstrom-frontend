@@ -1,34 +1,34 @@
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
-import {Dispatch, FC, SetStateAction} from 'react'
+import {Dispatch, FC, SetStateAction, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
+import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {niceBytes} from '@/utils/niceBytes'
 
 import {Button} from '../Clickable/Clickable'
 import {FileDropZone} from '../FileDropZone/FileDropZone'
-import {SideContainer} from './SideContainer'
 import styles from './UploadProblemForm.module.scss'
 
 export const UploadProblemForm: FC<{
   problemId: number
-  problemNumber: number
+  setDisplayProblemUploadForm: Dispatch<SetStateAction<boolean>>
   problemSubmitted?: boolean
-  setDisplaySideContent: Dispatch<
-    SetStateAction<{
-      type: string
-      problemId: number
-      problemNumber: number
-      problemSubmitted?: boolean
-    }>
-  >
+  setDisplayActions: Dispatch<SetStateAction<boolean>>
   invalidateSeriesQuery: () => Promise<void>
-}> = ({problemId, problemNumber, problemSubmitted, setDisplaySideContent, invalidateSeriesQuery}) => {
+}> = ({
+  problemId,
+  setDisplayActions,
+  setDisplayProblemUploadForm,
+  // problemNumber,
+  problemSubmitted,
+  // setDisplaySideContent,
+  invalidateSeriesQuery,
+}) => {
   const {mutate: uploadSolution} = useMutation({
     mutationFn: (formData: FormData) => axios.post(`/api/competition/problem/${problemId}/upload-solution`, formData),
     onSuccess: (response) => {
       if (response.status === 201) {
-        setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
         // refetch serie, nech sa aktualizuje problem.submitted
         invalidateSeriesQuery()
         alert('Riešenie úspešne nahrané.')
@@ -41,43 +41,61 @@ export const UploadProblemForm: FC<{
     },
   })
 
+  const [files, setFiles] = useState<File | undefined>(undefined)
   const {acceptedFiles, fileRejections, getRootProps, getInputProps} = useDropzone({
     multiple: false,
     accept: {
       'application/pdf': ['.pdf'],
     },
+    onDrop: (acceptedFiles) => !!acceptedFiles[0] && setFiles(acceptedFiles[0]),
   })
 
   const handleSubmit = async () => {
     const formData = new FormData()
-    formData.append('file', acceptedFiles[0])
+    if (files) formData.append('file', files)
 
-    await uploadSolution(formData)
+    uploadSolution(formData)
+    setDisplayActions(true)
+    setDisplayProblemUploadForm(false)
+  }
+
+  const handleRemoveSelection = () => {
+    setFiles(undefined)
+  }
+
+  const handleCloseButton = () => {
+    setDisplayProblemUploadForm(false)
+    setDisplayActions(true)
   }
 
   return (
-    <SideContainer
-      title={'Odovzdať úlohu - ' + problemNumber}
-      onClose={() => {
-        setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})
-      }}
-    >
-      <div className={styles.container}>
-        {problemSubmitted && <p>Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.</p>}
+    <div className={styles.container}>
+      <CloseButton onClick={handleCloseButton} alignRight invertColors />
+      {problemSubmitted && (
+        <div className={styles.problemSubmitted}>
+          Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.
+        </div>
+      )}
+      {!files && (
         <FileDropZone getRootProps={getRootProps} getInputProps={getInputProps} text="Vlož riešenie vo formáte pdf" />
+      )}
+      {files?.name && (
         <div className={styles.files}>
-          <h4>Súbor:</h4>
-          {acceptedFiles[0]?.name && (
+          <div>
+            <b>Súbor: </b>
+
             <span>
-              {acceptedFiles[0].name} ({niceBytes(acceptedFiles[0].size)})
+              {files.name} ({niceBytes(files.size)})
             </span>
-          )}
-          {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
+          </div>
+          <div className={styles.actions}>
+            <Button onClick={handleSubmit}>Uložiť</Button>
+            <Button onClick={handleRemoveSelection}>Zrušiť</Button>
+          </div>
+
+          {/* {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>} */}
         </div>
-        <div className={styles.bottomAction}>
-          <Button onClick={handleSubmit}>Odovzdať</Button>
-        </div>
-      </div>
-    </SideContainer>
+      )}
+    </div>
   )
 }
