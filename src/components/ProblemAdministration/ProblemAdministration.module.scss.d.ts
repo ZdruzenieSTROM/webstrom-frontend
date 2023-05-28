@@ -5,6 +5,7 @@ export type Styles = {
   iconDisabled: string
   input: string
   rightButton: string
+  row: string
   table: string
   tableBody: string
   tableHeader: string

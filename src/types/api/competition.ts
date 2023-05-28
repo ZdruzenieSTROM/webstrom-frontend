@@ -79,6 +79,7 @@ export interface Problem {
   image: string | null
   series: number
   num_comments: number
+  solution_pdf: string | null
 }
 
 export enum CommentState {
@@ -128,6 +129,7 @@ export interface ProblemWithSolutions {
   order?: number
   correction?: ProblemCorrection
   series: Series
+  solution_pdf: string | null
 }
 
 export interface Series {

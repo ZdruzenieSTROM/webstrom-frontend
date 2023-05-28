@@ -102,24 +102,34 @@ export const ProblemAdministration: FC = () => {
 
       <Latex>{problem?.text ?? 'Načítavam...'}</Latex>
 
-      <form className={styles.container}>
-        <div>
-          Opravovatelia: <input type="text" />
-        </div>
-        <div>
-          Najkrajšie riešenia: <input type="text" />
-        </div>
-
-        <div className={styles.rightButton}>
-          <Link href={`/api/competition/problem/${problemId}/download-solutions`}>Stiahnuť riešenia</Link>
-        </div>
-
-        <FileDropZone
-          getRootProps={getRootProps}
-          getInputProps={getInputProps}
-          text="Vlož opravené riešenia vo formáte zip"
+      <div className={styles.row}>
+        Vzorové riešenie:
+        {problem?.solution_pdf ? (
+          <a href={problem?.solution_pdf} target="_blank" rel="noreferrer" className={styles.icon}>
+            <FormatAlignJustify />
+          </a>
+        ) : (
+          <div className={styles.iconDisabled}>
+            <FormatAlignJustify />
+          </div>
+        )}
+        <FileUploader
+          uploadLink={`/api/competition/problem/${problemId}/upload-model-solution`}
+          refetch={refetchProblem}
         />
+      </div>
 
+      <div className={styles.rightButton}>
+        <Link href={`/api/competition/problem/${problemId}/download-solutions`}>Stiahnuť riešenia</Link>
+      </div>
+
+      <FileDropZone
+        getRootProps={getRootProps}
+        getInputProps={getInputProps}
+        text="Vlož opravené riešenia vo formáte zip"
+      />
+
+      <form className={styles.container}>
         <div className={styles.table}>
           <div className={styles.tableHeader}>
             <div>Riešiteľ</div>
