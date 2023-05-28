@@ -1,22 +1,11 @@
 import axios, {AxiosError} from 'axios'
 import {FC, useEffect, useState} from 'react'
 
-import {Link} from '../Clickable/Clickable'
-import styles from './Post.module.scss'
+import {Loading} from '../Loading/Loading'
+import {IPost, Post} from './Post'
+import styles from './Posts.module.scss'
 
-interface IPost {
-  id: number
-  links: {id: number; caption: string; url: string}[]
-  caption: string
-  short_text: string
-  details: string
-  added_at: string
-  visible_after: string
-  visible_until: string
-  sites: number[]
-}
-
-export const Posts: FC<{seminarId: number}> = ({seminarId}) => {
+export const Posts: FC = () => {
   const [posts, setPosts] = useState<IPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -41,26 +30,15 @@ export const Posts: FC<{seminarId: number}> = ({seminarId}) => {
     fetchData()
   }, [])
 
-  const returnPost = ({id, caption, short_text, links, sites}: IPost) =>
-    sites.includes(seminarId) && (
-      <li key={id}>
-        <h2>{caption}</h2>
-        <h3>{short_text}</h3>
-        {links.map(({id, url, caption}) => (
-          <p key={id}>
-            <h3>
-              <Link href={url}>{caption}</Link>
-            </h3>
-          </p>
-        ))}
-        <h5>PODROBNOSTI</h5>
-      </li>
-    )
-
   return (
-    <div className={styles.posts}>
-      <ul className={styles.post}>{posts.map((post) => returnPost(post))}</ul>
-      {error && <p className="error">{error}</p>}
-    </div>
+    <>
+      {loading && <Loading />}
+      <ul className={styles.postsList}>
+        {posts.map((post) => (
+          <Post key={post.id} {...post} />
+        ))}
+      </ul>
+      {error && <p>{error}</p>}
+    </>
   )
 }

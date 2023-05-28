@@ -1,6 +1,5 @@
 export type Styles = {
-  post: string
-  posts: string
+  postsList: string
 }
 
 export type ClassNames = keyof Styles

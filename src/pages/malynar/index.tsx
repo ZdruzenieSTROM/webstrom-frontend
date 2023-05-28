@@ -5,7 +5,7 @@ import {Posts} from '@/components/Posts/Posts'
 
 const Malynar: NextPage = () => (
   <PageLayout title="Seminár Malynár">
-    <Posts seminarId={3} />
+    <Posts />
   </PageLayout>
 )
 
