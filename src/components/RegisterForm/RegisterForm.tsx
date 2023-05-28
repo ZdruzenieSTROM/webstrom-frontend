@@ -159,7 +159,7 @@ export const RegisterForm: FC = () => {
         <FormInput
           control={control}
           name="email"
-          label="e-mail"
+          label="e-mail*"
           rules={{
             ...requiredRule,
             pattern: {
@@ -171,7 +171,7 @@ export const RegisterForm: FC = () => {
         <FormInput
           control={control}
           name="password1"
-          label="heslo"
+          label="heslo*"
           type="password"
           rules={{
             ...requiredRule,
@@ -184,7 +184,7 @@ export const RegisterForm: FC = () => {
         <FormInput
           control={control}
           name="password2"
-          label="potvrdenie hesla"
+          label="potvrdenie hesla*"
           type="password"
           rules={{
             ...requiredRule,
@@ -193,13 +193,13 @@ export const RegisterForm: FC = () => {
             },
           }}
         />
-        <FormInput control={control} name="first_name" label="krstné meno" rules={requiredRule} />
-        <FormInput control={control} name="last_name" label="priezvisko" rules={requiredRule} />
+        <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
+        <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
         <FormCheckbox control={control} name="without_school" label="nie som študent základnej ani strednej školy." />
         <FormAutocomplete
           control={control}
           name="school"
-          label="škola"
+          label="škola*"
           options={school_not_found || without_school ? emptySchoolItems : schoolItems}
           disabled={!schoolItems.length || school_not_found || without_school}
           rules={requiredRule}
@@ -214,25 +214,20 @@ export const RegisterForm: FC = () => {
           <FormInput
             control={control}
             name="new_school_description"
-            label="povedz nám, na akú školu chodíš, aby sme ti ju mohli pridať"
+            label="povedz nám, na akú školu chodíš, aby sme ti ju mohli pridať*"
             rules={school_not_found ? requiredRule : {}}
           />
         )}
         <FormSelect
           control={control}
           name="grade"
-          label="ročník"
+          label="ročník*"
           options={gradeItems.filter(({id}) => id !== 13 || without_school)}
           disabled={without_school}
           rules={requiredRule}
         />
-        <FormInput control={control} name="phone" label="telefónne číslo - dobrovoľné" rules={phoneRule} />
-        <FormInput
-          control={control}
-          name="parent_phone"
-          label="telefónne číslo na rodiča - dobrovoľné"
-          rules={phoneRule}
-        />
+        <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
+        <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <FormCheckbox
           control={control}
           name="gdpr"
@@ -243,6 +238,7 @@ export const RegisterForm: FC = () => {
             },
           }}
         />
+        <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>
         <Button type="submit" onClick={scrollToTop}>
           Registrovať
         </Button>
