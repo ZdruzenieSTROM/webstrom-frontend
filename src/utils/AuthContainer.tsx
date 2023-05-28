@@ -110,19 +110,25 @@ const useAuth = () => {
 
   // globalne miesto na invalidaciu (refetch) dat pri prihlaseni alebo odhlaseni
   // - treba refetchnut vsetky queries, kto obsahuju user-specific data
+  // https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientinvalidatequeries
   useEffect(() => {
     // semestre obsahuju can_submit, can_participate, is_registered
     queryClient.invalidateQueries({queryKey: ['competition', 'series']})
     // problemy obsahuju komentare a tie maju flagy ako edit_allowed
     queryClient.invalidateQueries({queryKey: ['competition', 'problem']})
 
-    // profil a permissions su user-specific
-    // na tychto queries nestaci invalidate, je tu problem pri switchni na not authed stav.
-    // invalidate by nechal stare data aktivne, kym sa podari fetchnut nove.
+    // 1. na tychto queries je problem pri switchni na not authed stav.
+    // nestaci invalidate, ten by nechal stare data aktivne, kym sa podari fetchnut nove.
     // ale kedze tieto queries v non-auth stave zlyhaju so 403, nove data by neprisli,
-    // tak by sa appka stale tvarila, ze stare data su ok
-    queryClient.removeQueries({queryKey: ['personal', 'profiles', 'myprofile']})
-    queryClient.removeQueries({queryKey: ['personal', 'profiles', 'mypermissions']})
+    // tak by sa appka stale tvarila, ze stare data su ok.
+    // `resetQueries` vrati data na povodnu hodnotu (undefined) a ak su mountnute, refetche ich
+    // https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientresetqueries
+    // 2. switch na auth stav je rieseny cez `enabled: isAuthed` na samotnych `useQuery`
+    if (!isAuthed) {
+      // profil a permissions su user-specific
+      queryClient.resetQueries({queryKey: ['personal', 'profiles', 'myprofile']})
+      queryClient.resetQueries({queryKey: ['personal', 'profiles', 'mypermissions']})
+    }
 
     // nechceme manualne invalidovat, ked sa zmeni nieco ine ako `isAuthed` (aj ked `queryClient` by sa menit nemal)
     // eslint-disable-next-line react-hooks/exhaustive-deps

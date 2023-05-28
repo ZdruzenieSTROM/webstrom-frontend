@@ -8,13 +8,14 @@ import {AuthContainer} from '@/utils/AuthContainer'
 import styles from './Footer.module.scss'
 
 export const Footer: FC = () => {
+  const {isAuthed} = AuthContainer.useContainer()
+
   const {data} = useQuery({
     queryKey: ['personal', 'profiles', 'myprofile'],
     queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
+    enabled: isAuthed,
   })
   const profile = data?.data
-
-  const {isAuthed} = AuthContainer.useContainer()
 
   return (
     <div className={styles.footer}>
