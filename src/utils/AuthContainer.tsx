@@ -115,9 +115,14 @@ const useAuth = () => {
     queryClient.invalidateQueries({queryKey: ['competition', 'series']})
     // problemy obsahuju komentare a tie maju flagy ako edit_allowed
     queryClient.invalidateQueries({queryKey: ['competition', 'problem']})
-    // cely profil je user-specific
-    // nestaci invalidate - ten by nechal stare data aktivne, kym sa podari fetchnut nove, ale tato query v non-auth stave zlyha
+
+    // profil a permissions su user-specific
+    // na tychto queries nestaci invalidate, je tu problem pri switchni na not authed stav.
+    // invalidate by nechal stare data aktivne, kym sa podari fetchnut nove.
+    // ale kedze tieto queries v non-auth stave zlyhaju so 403, nove data by neprisli,
+    // tak by sa appka stale tvarila, ze stare data su ok
     queryClient.removeQueries({queryKey: ['personal', 'profiles', 'myprofile']})
+    queryClient.removeQueries({queryKey: ['personal', 'profiles', 'mypermissions']})
 
     // nechceme manualne invalidovat, ked sa zmeni nieco ine ako `isAuthed` (aj ked `queryClient` by sa menit nemal)
     // eslint-disable-next-line react-hooks/exhaustive-deps
