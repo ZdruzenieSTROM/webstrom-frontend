@@ -3,6 +3,7 @@ import {FC} from 'react'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Link} from '../Clickable/Clickable'
+import styles from './Post.module.scss'
 
 export interface IPost {
   id: number
@@ -23,16 +24,15 @@ export const Post: FC<IPost> = ({id, caption, short_text, links, sites}) => {
 
   return (
     <li key={id}>
-      <h2>{caption}</h2>
-      <h3>{short_text}</h3>
-      {links.map(({id, url, caption}) => (
-        <p key={id}>
-          <h3>
+      <h2 className={styles.title}>{caption}</h2>
+      <p className={styles.text}>{short_text}</p>
+      <div className={styles.links}>
+        {links.map(({id, url, caption}) => (
+          <p key={id}>
             <Link href={url}>{caption}</Link>
-          </h3>
-        </p>
-      ))}
-      <h5>PODROBNOSTI</h5>
+          </p>
+        ))}
+      </div>
     </li>
   )
 }
