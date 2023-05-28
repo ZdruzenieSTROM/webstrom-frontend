@@ -16,9 +16,19 @@ module.exports = {
       // rewrite API requestov na django BE (podstatne aj koncove lomitko)
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_BE_URL}/:path*/`,
+        destination: `${process.env.NEXT_PUBLIC_BE_PROTOCOL}://${process.env.NEXT_PUBLIC_BE_HOSTNAME}:${process.env.NEXT_PUBLIC_BE_PORT}/:path*/`,
       },
     ]
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: process.env.NEXT_PUBLIC_BE_PROTOCOL,
+        hostname: process.env.NEXT_PUBLIC_BE_HOSTNAME,
+        port: process.env.NEXT_PUBLIC_BE_PORT,
+        pathname: '/media/**',
+      },
+    ],
   },
   reactStrictMode: true,
 }
