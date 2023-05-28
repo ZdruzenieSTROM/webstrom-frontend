@@ -52,6 +52,13 @@ export const RegisterForm: FC = () => {
   const {handleSubmit, control, watch, setValue, getValues} = useForm<RegisterFormValues>({defaultValues})
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
+
   const [gradeItems, setGradeItems] = useState<SelectOption[]>([])
   const [schoolItems, setSchoolItems] = useState<SelectOption[]>([])
   const [emptySchoolItems, setEmptySchoolItems] = useState<SelectOption[]>([])
@@ -236,7 +243,9 @@ export const RegisterForm: FC = () => {
             },
           }}
         />
-        <Button type="submit">Registrovať</Button>
+        <Button type="submit" onClick={scrollToTop}>
+          Registrovať
+        </Button>
       </form>
     </div>
   )
