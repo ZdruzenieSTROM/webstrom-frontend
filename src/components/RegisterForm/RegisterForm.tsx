@@ -128,7 +128,7 @@ export const RegisterForm: FC = () => {
     new_school_description: data.new_school_description || '',
   })
 
-  const {mutate: submitFormData, data: registrationResponseData} = useMutation({
+  const {mutate: submitFormData} = useMutation({
     mutationFn: (data: RegisterFormValues) => {
       return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
     },
