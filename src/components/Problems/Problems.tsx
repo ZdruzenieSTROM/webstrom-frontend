@@ -1,5 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
+import Image from 'next/image'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
 
@@ -51,6 +52,17 @@ const Problem: FC<{
     <div className={styles.problem}>
       <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
       <Latex>{problem.text}</Latex>
+      {problem.image && (
+        <div className={styles.imageContainer}>
+          <Image
+            src={problem.image}
+            alt={`Obrázok - ${problem.order} úloha`}
+            className={styles.image}
+            width={800} // These values are overwritten by css
+            height={800}
+          />
+        </div>
+      )}
       {displayProblemUploadForm && (
         <UploadProblemForm
           problemId={problem.id}
