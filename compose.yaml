@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  frontend:
+    build: .
+    image: webstrom-frontend
+    network_mode: "host"
+    restart: always
