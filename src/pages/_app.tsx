@@ -26,6 +26,18 @@ const theme = createTheme({
 
 const queryClient = new QueryClient({
   defaultOptions: {
+    queries: {
+      retry: (failureCount, error) => {
+        if (isAxiosError(error)) {
+          // nechceme retryovat 403 (Forbidden)
+          const status = error.response?.status
+          if (status === 403 || status === 404) return false
+        }
+        // klasika - retryuj len 3x
+        if (failureCount >= 3) return false
+        return true
+      },
+    },
     mutations: {
       // globalny error handler requestov cez useMutation
       // notes:
