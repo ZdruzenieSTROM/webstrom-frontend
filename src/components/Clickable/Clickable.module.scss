@@ -1,10 +1,12 @@
 .actionButton {
   cursor: pointer;
+  // TODO(#127): 20/16=1.25rem
   font-size: .8rem;
   font-style: italic;
   font-weight: bold;
   text-transform: uppercase;
   border: 0;
+  // TODO(#127): 10px (10/16=0.625rem)
   border-bottom: 3px solid black;
   color: black;
   background-color: white;

@@ -1,6 +1,7 @@
 export type Styles = {
-  post: string
-  posts: string
+  links: string
+  text: string
+  title: string
 }
 
 export type ClassNames = keyof Styles
