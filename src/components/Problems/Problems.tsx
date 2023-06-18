@@ -1,19 +1,18 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import Image from 'next/image'
-import {useRouter} from 'next/router'
-import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
+import {Dispatch, FC, SetStateAction, useState} from 'react'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
+import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
+import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
-import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Latex} from '../Latex/Latex'
 import {Loading} from '../Loading/Loading'
 import {Discussion} from './Discussion'
 import styles from './Problems.module.scss'
-import {SemesterList, SemesterPicker} from './SemesterPicker'
 import {UploadProblemForm} from './UploadProblemForm'
 
 const Problem: FC<{
@@ -67,7 +66,6 @@ const Problem: FC<{
         <UploadProblemForm
           problemId={problem.id}
           setDisplayProblemUploadForm={setDisplayProblemUploadForm}
-          // problemNumber={problem.order}
           problemSubmitted={!!problem.submitted}
           invalidateSeriesQuery={invalidateSeriesQuery}
           setDisplayActions={setDisplayActions}
@@ -107,14 +105,8 @@ const overrideCycle = (prev: boolean | undefined) => {
   return undefined
 }
 
-type ProblemsProps = {
-  setPageTitle: (title: string) => void
-}
-
-export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
-  const router = useRouter()
-
-  const {seminarId, seminar} = useSeminarInfo()
+export const Problems: FC = () => {
+  const {id, semesterList, seminar, loading} = useDataFromURL()
 
   // used to display discussions
   const [displaySideContent, setDisplaySideContent] = useState<{
@@ -124,92 +116,14 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
     problemSubmitted?: boolean
   }>({type: '', problemId: -1, problemNumber: -1, problemSubmitted: false})
 
-  const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery({
-    queryKey: ['competition', 'semester-list', {competition: seminarId}],
-    queryFn: () => axios.get<SemesterList[]>(`/api/competition/semester-list?competition=${seminarId}`),
-  })
-  // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
-  const semesterList = useMemo(() => semesterListData?.data || [], [semesterListData])
-
-  // z tejto query sa vyuziva len `currentSeriesId` a len vtedy, ked nemame uplnu URL
-  // - napr. prideme na `/zadania` cez menu, nie na `/zadania/44/leto/2`
-  const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery({
-    queryKey: ['competition', 'series', 'current', seminarId],
-    queryFn: () => axios.get<SeriesWithProblems>(`/api/competition/series/current/` + seminarId),
-  })
-  const currentSeriesId = currentSeriesData?.data.id ?? -1
-
-  // Set seriesId from url.
-  // If series is not specified, set seriesId.semester to true and find semester id using year and semesterCode from the url.
-  // If series is specified, set seriesId.semester to false and find series id using year, semesterCode, and series number from the url.
-  const seriesId = useMemo(() => {
-    if (!semesterList.length) return -1
-
-    const {params} = router.query
-
-    const getIdFromUrl = (params: string | string[] | undefined): number => {
-      if (params === undefined || params.length === 0 || params.length === 1) {
-        return currentSeriesId
-      }
-
-      // get year from the first URL param
-      const seriesYear = getNumber(params[0])
-
-      // get season from the second URL param
-      let seasonCode = -1
-      if (params[1] === 'zima') seasonCode = 0
-      if (params[1] === 'leto') seasonCode = 1
-
-      const semester = semesterList.find(({year, season_code}) => year === seriesYear && season_code === seasonCode)
-
-      if (semester) {
-        if (params.length === 2) {
-          if (semester.series_set.length > 0) {
-            return semester.series_set[0].id
-          }
-        }
-
-        if (params.length >= 3) {
-          // get series from the second URL param
-          const seriesOrder = getNumber(params[2])
-          const series = semester.series_set.find(({order}) => order === seriesOrder)
-
-          if (series) return series.id
-        }
-      }
-
-      return currentSeriesId
-    }
-
-    return getIdFromUrl(params)
-  }, [router.query, semesterList, currentSeriesId])
-
-  // Update site title if seriesId changes
-  useEffect(() => {
-    if (!semesterList.length) return
-
-    for (const semester of semesterList) {
-      const series = semester.series_set.find(({id}) => id === seriesId)
-
-      if (series) {
-        setPageTitle(
-          `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester${
-            series.order ? ` - ${series.order}. séria` : ''
-          }`,
-        )
-        return
-      }
-    }
-  }, [seriesId, semesterList, setPageTitle])
-
   const {data: seriesData, isLoading: seriesIsLoading} = useQuery({
-    queryKey: ['competition', 'series', seriesId],
-    queryFn: () => axios.get<SeriesWithProblems>(`/api/competition/series/${seriesId}`),
-    enabled: seriesId !== -1,
+    queryKey: ['competition', 'series', id.seriesId],
+    queryFn: () => axios.get<SeriesWithProblems>(`/api/competition/series/${id.seriesId}`),
+    enabled: id.seriesId !== -1,
   })
   const series = seriesData?.data
   const problems = series?.problems ?? []
-  const semesterId = series?.semester ?? -1
+  // const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
 
   const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
@@ -222,7 +136,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 
   const queryClient = useQueryClient()
 
-  const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
+  const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', id.seriesId]})
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),
@@ -237,11 +151,18 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   return (
     <>
       <div className={styles.container}>
-        {(semesterListIsLoading || currentSeriesIsLoading || seriesIsLoading || permissionsIsLoading) && <Loading />}
-        <SemesterPicker semesterList={semesterList} selectedSeriesId={seriesId} />
+        {(loading.semesterListIsLoading ||
+          loading.currentSeriesIsLoading ||
+          seriesIsLoading ||
+          permissionsIsLoading) && <Loading />}
+        <SemesterPicker
+          semesterList={semesterList}
+          selectedItem={{semesterId: id.semesterId, seriesId: id.seriesId}}
+          page={'problems'}
+        />
         {hasPermissions && (
           <div className={styles.adminSection}>
-            <Link href={`/${seminar}/admin/opravovanie/${semesterId}`}>Admin: Opravovanie</Link>
+            <Link href={`/${seminar}/admin/opravovanie/${id.semesterId}`}>Admin: Opravovanie</Link>
           </div>
         )}
         {problems.map((problem) => (
@@ -278,7 +199,7 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
 
       <div className={styles.sideContainer}>
         {!isRegistered && canRegister ? (
-          <div onClick={() => registerToSemester(semesterId)} className={styles.registerButton}>
+          <div onClick={() => registerToSemester(id.semesterId)} className={styles.registerButton}>
             Chcem riešiť!
           </div>
         ) : (
@@ -304,12 +225,4 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
       </div>
     </>
   )
-}
-
-const getNumber = (n: string) => {
-  if (Number.isNaN(Number(n))) {
-    return -1
-  } else {
-    return Number(n) ?? -1
-  }
 }

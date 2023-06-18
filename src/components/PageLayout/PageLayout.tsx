@@ -1,6 +1,10 @@
 import clsx from 'clsx'
-import {FC, ReactNode} from 'react'
+import {FC, ReactNode, useState} from 'react'
+import {createContainer} from 'unstated-next'
 
+import {PageTitleContainer} from '@/utils/PageTitleContainer'
+
+// import {PageTitleSetterContext} from '@/utils/PageTitleContainer'
 import {Banner} from './Banner/Banner'
 import {Footer} from './Footer/Footer'
 import {MenuMain} from './MenuMain/MenuMain'
@@ -17,9 +21,15 @@ type PageLayoutProps = {
 // pre pouzitie len na seminarovych strankach a podstrankach - `/matik(/*)`
 // ked budeme potrebovat top-level stranky ako `/ina-stranka`, budeme musiet upravit, ako sa pracuje s `useSeminarInfo`
 export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', children}) => {
+  const pageTitleContainer = PageTitleContainer.useContainer()
+
+  if (title !== '') {
+    pageTitleContainer.setPageTitle(title)
+  }
+
   return (
     <div className={styles.pageContainer}>
-      <MenuSeminars title={title} />
+      <MenuSeminars title={pageTitleContainer.pageTitle} />
       <Banner />
       <MenuMain />
       <div className={styles.grid}>

@@ -8,13 +8,10 @@ export interface DropdownOption {
   id: number
   text: string
   link: string
+  selected: boolean
 }
 
-export const Dropdown: FC<{title: string; selectedId: number; options: DropdownOption[]}> = ({
-  title,
-  selectedId,
-  options,
-}) => {
+export const Dropdown: FC<{title: string; options: DropdownOption[]}> = ({title, options}) => {
   const [display, setDisplay] = useState(false)
 
   const handleClick = (event: MouseEvent) => {
@@ -35,7 +32,7 @@ export const Dropdown: FC<{title: string; selectedId: number; options: DropdownO
             <Link
               href={option.link}
               key={option.id}
-              className={clsx(styles.option, selectedId === option.id && styles.selectedOption)}
+              className={clsx(styles.option, option.selected && styles.selectedOption)}
             >
               {option.text}
             </Link>
