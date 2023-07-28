@@ -71,22 +71,20 @@ export const Archive: FC = () => {
     <div className={styles.archive}>
       {eventList.map((event) => (
         <div key={event.id} className={styles.archiveRow}>
-          <div className={styles.eventName}>
+          <span className={styles.eventName}>
             {event.year + '. ročník '}
             {event.season_code === 0 ? 'zimný' : 'letný'}
-            {' semester '}
-          </div>
+            {' semester'}
+          </span>
           <div className={styles.actions}>
-            <div>
-              <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
-            </div>
-            <div>
-              <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
-            </div>
+            <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
+            <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
             {event.publication_set.map((publication) => (
-              <div key={publication.id}>
-                <PublicationButton publicationId={publication.id} publicationName={publication.name} />
-              </div>
+              <PublicationButton
+                key={publication.id}
+                publicationId={publication.id}
+                publicationName={publication.name}
+              />
             ))}
           </div>
         </div>
