@@ -1,4 +1,3 @@
-import {Table, TableCell, TableRow} from '@mui/material'
 import axios, {AxiosError} from 'axios'
 import {FC, useEffect, useState} from 'react'
 
@@ -6,6 +5,7 @@ import {Event, Publication} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Link} from '../Clickable/Clickable'
+import styles from './Archive.module.scss'
 
 // TODO: check whether we can safely assume presence of these and either update it on BE so it gets generated that way, or update it in our `types/api/competition`
 type MyPublication = Publication & {
@@ -67,29 +67,28 @@ export const Archive: FC = () => {
     fetchData()
   }, [seminarId])
 
-  // TODO: pridat styly pre tu tabulku
   return (
-    <Table>
+    <div className={styles.archive}>
       {eventList.map((event) => (
-        <TableRow key={event.id}>
-          <TableCell>
+        <div key={event.id} className={styles.archiveRow}>
+          <span className={styles.eventName}>
             {event.year + '. ročník '}
             {event.season_code === 0 ? 'zimný' : 'letný'}
-            {' semester '}
-          </TableCell>
-          <TableCell>
+            {' semester'}
+          </span>
+          <div className={styles.actions}>
             <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
-          </TableCell>
-          <TableCell>
             <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
-          </TableCell>
-          {event.publication_set.map((publication) => (
-            <TableCell key={publication.id}>
-              <PublicationButton publicationId={publication.id} publicationName={publication.name} />
-            </TableCell>
-          ))}
-        </TableRow>
+            {event.publication_set.map((publication) => (
+              <PublicationButton
+                key={publication.id}
+                publicationId={publication.id}
+                publicationName={publication.name}
+              />
+            ))}
+          </div>
+        </div>
       ))}
-    </Table>
+    </div>
   )
 }
