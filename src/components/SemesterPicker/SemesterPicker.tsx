@@ -1,4 +1,4 @@
-import {FC} from 'react'
+import {FC, useEffect} from 'react'
 
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
@@ -52,17 +52,20 @@ export const SemesterPicker: FC<{
   const semester = semesterList.find(({id}) => id === selectedItem.semesterId)
   const series = semester?.series_set.find(({id}) => id === selectedItem.seriesId)
 
-  // setPageTitle using selectedItem variable
-  let pageTitleToSet = ''
-  if (semester) {
-    const semesterTitle = `${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester`
-    if (displayWholeSemesterOption) {
-      pageTitleToSet = semesterTitle
-    } else if (series) {
-      pageTitleToSet = `${semesterTitle}${series?.order ? ` - ${series?.order}. séria` : ''}`
+  useEffect(() => {
+    // setPageTitle using selectedItem variable
+    let pageTitleToSet = ''
+    if (semester) {
+      const semesterTitle = `${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester`
+      if (displayWholeSemesterOption) {
+        pageTitleToSet = semesterTitle
+      } else if (series) {
+        pageTitleToSet = `${semesterTitle}${series?.order ? ` - ${series?.order}. séria` : ''}`
+      }
     }
-  }
-  setPageTitle(pageTitleToSet)
+    setPageTitle(pageTitleToSet)
+    // `semester` a `series` su nami vytiahnute objekty, tak mozu triggerovat effekt kazdy render. nemalo by vadit
+  }, [displayWholeSemesterOption, semester, series, setPageTitle])
 
   const dropdownSemesterList = semesterList.map((semester) => {
     return {
