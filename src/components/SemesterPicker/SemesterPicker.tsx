@@ -6,7 +6,7 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 import {Dropdown, DropdownOption} from './Dropdown'
 import styles from './SemesterPicker.module.scss'
 
-interface SeriesList {
+interface SeriesListItem {
   id: number
   order: number
   deadline: string
@@ -15,7 +15,7 @@ interface SeriesList {
   semester: number
 }
 
-export interface SemesterList {
+export interface SemesterListItem {
   id: number
   year: number
   school_year: string
@@ -25,11 +25,11 @@ export interface SemesterList {
   frozen_results: boolean
   competition: number
   late_tags: string[]
-  series_set: SeriesList[]
+  series_set: SeriesListItem[]
 }
 
 export const SemesterPicker: FC<{
-  semesterList: SemesterList[]
+  semesterList: SemesterListItem[]
   selectedItem: {semesterId: number; seriesId: number}
   page: string
   displaySemester?: boolean
