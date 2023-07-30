@@ -10,6 +10,7 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 export const useDataFromURL = () => {
   const {seminarId, seminar} = useSeminarInfo()
   const router = useRouter()
+
   const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery({
     queryKey: ['competition', 'semester-list', {competition: seminarId}],
     queryFn: () => axios.get<SemesterListItem[]>(`/api/competition/semester-list?competition=${seminarId}`),
@@ -17,7 +18,7 @@ export const useDataFromURL = () => {
   // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
   const semesterList = useMemo(() => semesterListData?.data || [], [semesterListData])
 
-  // z tejto query sa vyuziva len `currentSeriesId` a len vtedy, ked nemame uplnu URL
+  // aktualna seria. z tejto query sa vyuziva len `currentSeriesId` a len vtedy, ked nemame uplnu URL
   // - napr. prideme na `/zadania` cez menu, nie na `/zadania/44/leto/2`
   const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery({
     queryKey: ['competition', 'series', 'current', seminarId],
@@ -26,50 +27,59 @@ export const useDataFromURL = () => {
   const currentSeriesId = currentSeriesData?.data.id ?? -1
   const currentSemesterId = currentSeriesData?.data.semester ?? -1
 
-  // Set seriesId from url.
-  // If series is not specified, set seriesId.semester to true and find semester id using year and semesterCode from the url.
-  // If series is specified, set seriesId.semester to false and find series id using year, semesterCode, and series number from the url.
-  const {semesterId, seriesId, displaySemester} = useMemo(() => {
-    if (!semesterList.length) return {semesterId: -1, seriesId: -1, displaySemester: true}
+  const {semesterId, seriesId, displayWholeSemesterOnResults} = useMemo(() => {
+    const currentIds = {semesterId: currentSemesterId, seriesId: currentSeriesId, displayWholeSemesterOnResults: true}
 
+    // sutaz bez semestrov, nemalo by sa stat
+    if (!semesterList.length) return currentIds
+
+    // ocakavane params su v podstate: `/YEAR/SEASON/SERIES_ORDER`
     const {params} = router.query
 
     const getIdsFromUrl = (
       params: string | string[] | undefined,
-    ): {semesterId: number; seriesId: number; displaySemester: boolean} => {
-      if (params === undefined || params.length === 0 || params.length === 1) {
-        return {semesterId: currentSemesterId, seriesId: currentSeriesId, displaySemester: true}
+    ): {semesterId: number; seriesId: number; displayWholeSemesterOnResults: boolean} => {
+      // ked nemame params (`/`), pouzijeme aktualny semester a seriu. na vysledkoch zobrazime cely semester
+      if (params === undefined || params.length === 0) return currentIds
+
+      // mame aspon 1 param (`/44/...`), tak vytiahneme a spracujeme rok
+      const seriesYear = getNumber(params[0])
+      const semestersForYear = semesterList.filter(({year}) => year === seriesYear)
+
+      // ked mame len jeden param (`/44`)
+      if (params.length === 1) {
+        // pouzijeme prvy semester ziadaneho roku
+        const semester = semestersForYear[0]
+        if (!semester) return currentIds
+        // pouzijeme prvu seriu semestra
+        const series = semester.series_set[0]
+        if (!series) return currentIds
+
+        return {semesterId: semester.id, seriesId: series.id, displayWholeSemesterOnResults: false}
       }
 
-      // todo: do we want to do something if only one parameter is provided?
-
-      // get year from the first URL param
-      const seriesYear = getNumber(params[0])
-
-      // get season from the second URL param
+      // mame aspon 2 params (`/44/leto/...`), tak vytiahneme a spracujeme sezonu
       let seasonCode = -1
       if (params[1] === 'zima') seasonCode = 0
       if (params[1] === 'leto') seasonCode = 1
+      const semester = semestersForYear.find(({season_code}) => season_code === seasonCode)
+      if (!semester) return currentIds
 
-      const semester = semesterList.find(({year, season_code}) => year === seriesYear && season_code === seasonCode)
+      // ked mame len 2 params (`/44/leto`), pouzijeme prvu seriu z tohto semestra
+      if (params.length === 2) {
+        const series = semester.series_set[0]
+        if (!series) return currentIds
 
-      if (semester) {
-        if (params.length === 2) {
-          if (semester.series_set.length > 0) {
-            return {semesterId: semester.id, seriesId: semester.series_set[0].id, displaySemester: true}
-          }
-        }
-
-        if (params.length >= 3) {
-          // get series from the second URL param
-          const seriesOrder = getNumber(params[2])
-          const series = semester.series_set.find(({order}) => order === seriesOrder)
-
-          if (series) return {semesterId: semester.id, seriesId: series.id, displaySemester: false}
-        }
+        // specialny pripad pre vysledky - URL bez serie sa pouziva na zobrazenie celeho semestra
+        return {semesterId: semester.id, seriesId: series.id, displayWholeSemesterOnResults: true}
       }
 
-      return {semesterId: currentSemesterId, seriesId: currentSeriesId, displaySemester: true}
+      // mame aspon 3 params (`/44/leto/2/...`), tak vytiahneme a spracujeme poradie serie
+      const seriesOrder = getNumber(params[2])
+      const series = semester.series_set.find(({order}) => order === seriesOrder)
+      if (!series) return currentIds
+
+      return {semesterId: semester.id, seriesId: series.id, displayWholeSemesterOnResults: false}
     }
 
     return getIdsFromUrl(params)
@@ -80,7 +90,7 @@ export const useDataFromURL = () => {
     semesterList,
     loading: {currentSeriesIsLoading, semesterListIsLoading},
     seminar,
-    displaySemester,
+    displayWholeSemesterOnResults,
   }
 }
 

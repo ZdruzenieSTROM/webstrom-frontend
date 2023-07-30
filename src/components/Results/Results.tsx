@@ -42,7 +42,7 @@ export interface Result {
 export const Results: FC = () => {
   const [results, setResults] = useState<Result[]>([])
 
-  const {id, displaySemester, semesterList} = useDataFromURL()
+  const {id, displayWholeSemesterOnResults, semesterList} = useDataFromURL()
 
   // ToDo: unify error and loading handling
 
@@ -56,8 +56,8 @@ export const Results: FC = () => {
       try {
         const {data} = await axios.get<Result[]>(
           '/api/competition/' +
-            (displaySemester ? 'semester/' : 'series/') +
-            (displaySemester ? id.semesterId : id.seriesId) +
+            (displayWholeSemesterOnResults ? 'semester/' : 'series/') +
+            (displayWholeSemesterOnResults ? id.semesterId : id.seriesId) +
             '/results',
           {
             headers: {
@@ -79,7 +79,7 @@ export const Results: FC = () => {
     } else {
       setResults([])
     }
-  }, [displaySemester, id.semesterId, id.seriesId])
+  }, [displayWholeSemesterOnResults, id.semesterId, id.seriesId])
 
   const displayRow = (row: Result, key: number) => {
     let votes_pos = 0
@@ -133,7 +133,7 @@ export const Results: FC = () => {
         semesterList={semesterList}
         selectedItem={{semesterId: id.semesterId, seriesId: id.seriesId}}
         page={'results'}
-        displaySemester={displaySemester}
+        displayWholeSemesterOption={displayWholeSemesterOnResults}
       />
       <div className={styles.results}>{results.map((row, index) => displayRow(row, index))}</div>
     </div>

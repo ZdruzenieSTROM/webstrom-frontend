@@ -32,8 +32,8 @@ export const SemesterPicker: FC<{
   semesterList: SemesterListItem[]
   selectedItem: {semesterId: number; seriesId: number}
   page: string
-  displaySemester?: boolean
-}> = ({semesterList, selectedItem, page, displaySemester = false}) => {
+  displayWholeSemesterOption?: boolean
+}> = ({semesterList, selectedItem, page, displayWholeSemesterOption = false}) => {
   const {seminar} = useSeminarInfo()
   const {setPageTitle} = PageTitleContainer.useContainer()
 
@@ -53,9 +53,9 @@ export const SemesterPicker: FC<{
   const series = semester?.series_set.find(({id}) => id === selectedItem.seriesId)
 
   // setPageTitle using selectedItem variable
-  if (semester !== undefined && displaySemester) {
+  if (semester !== undefined && displayWholeSemesterOption) {
     setPageTitle(`${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester`)
-  } else if (semester !== undefined && series !== undefined && !displaySemester) {
+  } else if (semester !== undefined && series !== undefined && !displayWholeSemesterOption) {
     setPageTitle(
       `${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester${
         series?.order ? ` - ${series?.order}. séria` : ''
@@ -84,7 +84,7 @@ export const SemesterPicker: FC<{
         link: `/${seminar}/${pageLink}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/${
           series.order
         }`,
-        selected: !displaySemester && series.id === selectedItem.seriesId,
+        selected: !displayWholeSemesterOption && series.id === selectedItem.seriesId,
       }
     })
 
@@ -93,7 +93,7 @@ export const SemesterPicker: FC<{
         id: -1,
         text: 'obe série',
         link: `/${seminar}/${pageLink}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
-        selected: displaySemester,
+        selected: displayWholeSemesterOption,
       })
     }
   }
