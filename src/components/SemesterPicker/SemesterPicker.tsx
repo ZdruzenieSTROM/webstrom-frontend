@@ -53,22 +53,21 @@ export const SemesterPicker: FC<{
   const series = semester?.series_set.find(({id}) => id === selectedItem.seriesId)
 
   // setPageTitle using selectedItem variable
-  if (semester !== undefined && displayWholeSemesterOption) {
-    setPageTitle(`${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester`)
-  } else if (semester !== undefined && series !== undefined && !displayWholeSemesterOption) {
-    setPageTitle(
-      `${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester${
-        series?.order ? ` - ${series?.order}. séria` : ''
-      }`,
-    )
-  } else {
-    setPageTitle('')
+  let pageTitleToSet = ''
+  if (semester) {
+    const semesterTitle = `${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester`
+    if (displayWholeSemesterOption) {
+      pageTitleToSet = semesterTitle
+    } else if (series) {
+      pageTitleToSet = `${semesterTitle}${series?.order ? ` - ${series?.order}. séria` : ''}`
+    }
   }
+  setPageTitle(pageTitleToSet)
 
   const dropdownSemesterList = semesterList.map((semester) => {
     return {
       id: semester.id,
-      text: `${semester.year}. Ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
+      text: `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
       link: `/${seminar}/${pageLink}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
       selected: semester.id === selectedItem.semesterId,
     }
