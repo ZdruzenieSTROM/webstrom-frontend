@@ -1,10 +1,12 @@
-import axios, {AxiosError} from 'axios'
-import {FC, useEffect, useState} from 'react'
+import {useQuery} from '@tanstack/react-query'
+import axios from 'axios'
+import {FC} from 'react'
 
 import {Event, Publication} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Link} from '../Clickable/Clickable'
+import {Loading} from '../Loading/Loading'
 import styles from './Archive.module.scss'
 
 // TODO: check whether we can safely assume presence of these and either update it on BE so it gets generated that way, or update it in our `types/api/competition`
@@ -45,30 +47,15 @@ const ProblemsButton: FC<{
 export const Archive: FC = () => {
   const {seminarId} = useSeminarInfo()
 
-  const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
-
-  const [eventList, setEventList] = useState<MyEvent[]>([])
-
-  // get list of events from the api
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<MyEvent[]>(`/api/competition/event/?competition=${seminarId}`)
-        setEventList(data)
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [seminarId])
+  const {data: eventListData, isLoading: eventListIsLoading} = useQuery({
+    queryKey: ['competition', 'event', `competition=${seminarId}`],
+    queryFn: () => axios.get<MyEvent[]>(`/api/competition/event/?competition=${seminarId}`),
+  })
+  const eventList = eventListData?.data ?? []
 
   return (
     <div className={styles.archive}>
+      {eventListIsLoading && <Loading />}
       {eventList.map((event) => (
         <div key={event.id} className={styles.archiveRow}>
           <span className={styles.eventName}>
