@@ -36,47 +36,42 @@ export interface Result {
 }
 
 export const ResultsRow: FC<{result: Result}> = ({result}) => {
+  const {solutions, rank_changed, rank_start, registration, subtotal, total} = result
+
   let votes_pos = 0
   let votes_neg = 0
 
-  for (const series in result.solutions) {
-    const solutions = result.solutions[series]
-    for (const solution in solutions) {
-      if (solutions[solution].votes > 0) {
-        votes_pos += solutions[solution].votes
-      } else if (solutions[solution].votes < 0) {
-        votes_neg += solutions[solution].votes
+  for (const seriesSolutions of result.solutions) {
+    for (const {votes} of seriesSolutions) {
+      if (votes > 0) {
+        votes_pos += votes
+      } else if (votes < 0) {
+        votes_neg += votes
       }
     }
   }
 
   return (
     <div className={styles.rowWrapper}>
-      <div className={styles.rank}>{result.rank_changed && result.rank_start + '.'}</div>
+      <div className={styles.rank}>{rank_changed && rank_start + '.'}</div>
       <div className={styles.nameAndSchool}>
-        <div className={styles.name}>
-          {result.registration.profile.first_name + ' ' + result.registration.profile.last_name}
-        </div>
+        <div className={styles.name}>{registration.profile.first_name + ' ' + registration.profile.last_name}</div>
         <div className={styles.school}>
-          {result.registration.school.name +
-            ' ' +
-            result.registration.school.street +
-            ' ' +
-            result.registration.school.city}
+          {registration.school.name + ' ' + registration.school.street + ' ' + registration.school.city}
         </div>
       </div>
-      <div className={styles.grade}>{result.registration.grade}</div>
+      <div className={styles.grade}>{registration.grade}</div>
       <div className={styles.score}>
-        {result.solutions.map((series, key) => (
+        {solutions.map((series, key) => (
           <div key={key}>
             {series.map((solution, key) => (
               <div key={key}>{solution.points}</div>
             ))}
-            <div className={styles.subtotal}>{result.subtotal[key]}</div>
+            <div className={styles.subtotal}>{subtotal[key]}</div>
           </div>
         ))}
       </div>
-      <div className={styles.totalScore}>{result.total}</div>
+      <div className={styles.totalScore}>{total}</div>
       <div className={clsx(styles.votes, votes_neg + votes_pos !== 0 && 'tooltip')}>
         {votes_neg + votes_pos !== 0 && votes_neg + votes_pos}
         {votes_neg + votes_pos !== 0 && <span className="tooltiptext">Hlasy</span>}
