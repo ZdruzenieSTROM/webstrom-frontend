@@ -6,7 +6,7 @@
   background-color: black;
   transition: 750ms;
   z-index: 100;
-  
+
   &.visible {
     left: 0;
     top: 0;
@@ -26,13 +26,22 @@
   left: 0;
 }
 
-.menuOpenButton.active, .menuOpenButton:hover {
+.menuOpenButton.active,
+.menuOpenButton:hover {
   color: white;
   background-color: black;
 }
 
 .menuItems {
   margin-top: 80px;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  color: white;
 }
 
 .menuItem {
@@ -56,12 +65,13 @@
   }
 }
 
-.menuItem.active, .menuItem:hover{
+.menuItem.active,
+.menuItem:hover {
   background-color: white;
 
-  a{
+  a {
     color: black;
     // TODO(#127): 10px (10/16=0.625rem). ale treba asi nastavit height celeho menu itemu, nech to neskace
-    border-bottom:0.3rem solid black;
+    border-bottom: 0.3rem solid black;
   }
 }

@@ -1,5 +1,6 @@
 export type Styles = {
   active: string
+  loading: string
   menu: string
   menuItem: string
   menuItems: string
