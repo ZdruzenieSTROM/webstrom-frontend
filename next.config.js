@@ -1,3 +1,4 @@
+/** @type import('next').NextConfig */
 module.exports = {
   // docs: https://nextjs.org/docs/api-reference/next.config.js/redirects
   async redirects() {
@@ -31,4 +32,9 @@ module.exports = {
     ],
   },
   reactStrictMode: true,
+  modularizeImports: {
+    '@mui/material': {
+      transform: '@mui/material/{{member}}',
+    },
+  },
 }

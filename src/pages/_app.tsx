@@ -1,6 +1,6 @@
 import '../index.scss'
 
-import {createTheme, ThemeProvider} from '@mui/material'
+import {createTheme, ThemeProvider} from '@mui/material/styles'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
 import {AppProps} from 'next/app'
