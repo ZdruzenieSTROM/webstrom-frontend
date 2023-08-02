@@ -33,12 +33,9 @@ export const MenuMain: FC = () => {
 
   return (
     <div className={clsx(styles.menu, isVisible && styles.visible)}>
-      {!isVisible && (
-        <div className={styles.menuOpenButton}>
-          <FaIcons.FaBars onClick={toggleMenu} />
-        </div>
-      )}
-      <CloseButton onClick={toggleMenu} size={50} />
+      <div className={styles.menuOpenButton}>
+        {isVisible ? <CloseButton onClick={toggleMenu} size={50} /> : <FaIcons.FaBars onClick={toggleMenu} />}
+      </div>
       {menuItemsIsLoading && (
         <div className={styles.loading}>
           <Loading />
