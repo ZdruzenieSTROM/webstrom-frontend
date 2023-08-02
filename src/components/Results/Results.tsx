@@ -56,7 +56,6 @@ export const Results: FC = () => {
         `/api/competition/${displayWholeSemesterOnResults ? 'semester/' : 'series/'}${
           displayWholeSemesterOnResults ? id.semesterId : id.seriesId
         }/results`,
-        {headers: {'Content-type': 'application/json'}},
       ),
     enabled: id.semesterId !== -1 || id.seriesId !== -1,
   })
