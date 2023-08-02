@@ -51,6 +51,8 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
     }
   }
 
+  const votes_total = votes_neg + votes_pos
+
   return (
     <div className={styles.rowWrapper}>
       <div className={styles.rank}>{rank_changed && rank_start + '.'}</div>
@@ -72,9 +74,9 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
         ))}
       </div>
       <div className={styles.totalScore}>{total}</div>
-      <div className={clsx(styles.votes, votes_neg + votes_pos !== 0 && 'tooltip')}>
-        {votes_neg + votes_pos !== 0 && votes_neg + votes_pos}
-        {votes_neg + votes_pos !== 0 && <span className="tooltiptext">Hlasy</span>}
+      <div className={clsx(styles.votes, votes_total !== 0 && 'tooltip')}>
+        {votes_total !== 0 && votes_total}
+        {votes_total !== 0 && <span className="tooltiptext">Hlasy</span>}
       </div>
     </div>
   )
