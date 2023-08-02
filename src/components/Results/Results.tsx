@@ -6,6 +6,7 @@ import {FC} from 'react'
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 
+import {Loading} from '../Loading/Loading'
 import styles from './Results.module.scss'
 
 interface Registration {
@@ -43,12 +44,7 @@ export interface Result {
 export const Results: FC = () => {
   const {id, displayWholeSemesterOnResults, semesterList} = useDataFromURL()
 
-  // TODO: unify error and loading handling
-  const {
-    data: resultsData,
-    isLoading,
-    error,
-  } = useQuery({
+  const {data: resultsData, isLoading: resultsIsLoading} = useQuery({
     queryKey: [
       'competition',
       displayWholeSemesterOnResults ? 'semester/' : 'series/',
@@ -114,6 +110,7 @@ export const Results: FC = () => {
 
   return (
     <div>
+      {resultsIsLoading && <Loading />}
       <SemesterPicker
         semesterList={semesterList}
         selectedItem={{semesterId: id.semesterId, seriesId: id.seriesId}}
