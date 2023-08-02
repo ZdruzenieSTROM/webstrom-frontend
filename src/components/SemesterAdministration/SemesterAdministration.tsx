@@ -9,7 +9,7 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 import {Button, Link} from '../Clickable/Clickable'
 import {Loading} from '../Loading/Loading'
 import styles from '../Problems/Problems.module.scss'
-import {Result} from '../Results/Results'
+import {Result} from '../Results/ResultsRow'
 
 interface PostalCard {
   code: number
