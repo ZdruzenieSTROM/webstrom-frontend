@@ -13,28 +13,45 @@
   }
 }
 
-.menuOpenButton {
+.menuButton {
   cursor: pointer;
-  height: 50px;
-  width: 50px;
-  font-size: 2.5rem;
   display: grid;
   place-items: center;
-  color: black;
-  // buttons taking top-left corner of the screen
-  position: fixed;
-  top: 0;
-  left: 0;
 }
 
-.menuOpenButton.active,
-.menuOpenButton:hover {
-  color: white;
-  background-color: black;
+.menuOpenButton {
+  // button taking top-left corner of the whole screen
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  // index high enough to cover the background, but menu rolls over it
+  z-index: 5;
+
+  // more space around icon looks better on hover
+  padding: 7.5px;
+
+  color: black;
+  background-color: white;
+
+  &.active,
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+}
+
+.menuCloseButton {
+  // button taking top-left corner of the rolling menu
+  position: absolute;
+  top: 50px;
+  left: 50px;
+
+  // less space around X is enough for hover to look good
+  padding: 2.5px;
 }
 
 .menuItems {
-  margin-top: 80px;
+  margin-top: 176px;
 }
 
 .loading {
