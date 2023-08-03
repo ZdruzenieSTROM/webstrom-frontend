@@ -2,6 +2,9 @@
   "name": "webstrom-frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "start": "next start",
@@ -44,6 +47,7 @@
     "unstated-next": "^1.1.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.0.1",
     "@testing-library/dom": "^9.2.0",
     "@types/jest": "^29.5.1",
     "@types/katex": "^0",
