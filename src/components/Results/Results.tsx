@@ -1,10 +1,12 @@
-import axios, {AxiosError} from 'axios'
+import {useQuery} from '@tanstack/react-query'
+import axios from 'axios'
 import clsx from 'clsx'
-import {FC, useEffect, useState} from 'react'
+import {FC} from 'react'
 
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 
+import {Loading} from '../Loading/Loading'
 import styles from './Results.module.scss'
 
 interface Registration {
@@ -40,46 +42,24 @@ export interface Result {
 }
 
 export const Results: FC = () => {
-  const [results, setResults] = useState<Result[]>([])
-
   const {id, displayWholeSemesterOnResults, semesterList} = useDataFromURL()
 
-  // ToDo: unify error and loading handling
-
-  const [loading, setLoading] = useState(true) // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState('') // eslint-disable-line @typescript-eslint/no-unused-vars
-
-  // ToDo: rewrite to useQuery
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<Result[]>(
-          '/api/competition/' +
-            (displayWholeSemesterOnResults ? 'semester/' : 'series/') +
-            (displayWholeSemesterOnResults ? id.semesterId : id.seriesId) +
-            '/results',
-          {
-            headers: {
-              'Content-type': 'application/json',
-            },
-          },
-        )
-        setResults(data)
-      } catch (e: unknown) {
-        const ex = e as AxiosError
-        const error = ex.response?.status === 404 ? 'Resource not found' : 'An unexpected error has occurred'
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    if (id.semesterId !== -1 || id.seriesId !== -1) {
-      fetchData()
-    } else {
-      setResults([])
-    }
-  }, [displayWholeSemesterOnResults, id.semesterId, id.seriesId])
+  const {data: resultsData, isLoading: resultsIsLoading} = useQuery({
+    queryKey: [
+      'competition',
+      displayWholeSemesterOnResults ? 'semester/' : 'series/',
+      displayWholeSemesterOnResults ? id.semesterId : id.seriesId,
+      'results',
+    ],
+    queryFn: () =>
+      axios.get<Result[]>(
+        `/api/competition/${displayWholeSemesterOnResults ? 'semester/' : 'series/'}${
+          displayWholeSemesterOnResults ? id.semesterId : id.seriesId
+        }/results`,
+      ),
+    enabled: id.semesterId !== -1 || id.seriesId !== -1,
+  })
+  const results = resultsData?.data ?? []
 
   const displayRow = (row: Result, key: number) => {
     let votes_pos = 0
@@ -129,6 +109,7 @@ export const Results: FC = () => {
 
   return (
     <div>
+      {resultsIsLoading && <Loading />}
       <SemesterPicker
         semesterList={semesterList}
         selectedItem={{semesterId: id.semesterId, seriesId: id.seriesId}}
