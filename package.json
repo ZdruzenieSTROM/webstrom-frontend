@@ -38,7 +38,6 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.43.9",
-    "react-icons": "^3.11.0",
     "react-markdown": "^8.0.7",
     "rehype-katex": "^6.0.3",
     "remark-gfm": "^3.0.1",
