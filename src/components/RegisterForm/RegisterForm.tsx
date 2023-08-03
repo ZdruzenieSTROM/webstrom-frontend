@@ -1,7 +1,7 @@
-import {useMutation} from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
-import {FC, useEffect, useRef, useState} from 'react'
+import {FC, useEffect, useRef} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import styles from '@/components/FormItems/Form.module.scss'
@@ -59,39 +59,33 @@ export const RegisterForm: FC = () => {
     })
   }
 
-  const [gradeItems, setGradeItems] = useState<SelectOption[]>([])
-  const [schoolItems, setSchoolItems] = useState<SelectOption[]>([])
-  const [emptySchoolItems, setEmptySchoolItems] = useState<SelectOption[]>([])
-
   const otherSchoolItem = useRef<SelectOption>()
   const withoutSchoolItem = useRef<SelectOption>()
 
   const router = useRouter()
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
-  useEffect(() => {
-    const fetchData = async () => {
-      const grades = await axios.get<IGrade[]>(`/api/competition/grade`)
-      setGradeItems(grades.data.map(({id, name}) => ({id, label: name})))
-    }
-    fetchData()
-  }, [])
+  const {data: gradesData} = useQuery({
+    queryKey: ['competition', 'grade'],
+    queryFn: () => axios.get<IGrade[]>(`/api/competition/grade`),
+  })
+  const grades = gradesData?.data ?? []
+  const gradeItems: SelectOption[] = grades.map(({id, name}) => ({id, label: name}))
 
-  // inicialne načítanie škôl z BE, pre prvotné vyplnenie FormAutocomplete so školami
-  useEffect(() => {
-    const fetchData = async () => {
-      const schools = await axios.get<ISchool[]>(`/api/personal/schools/`)
-      const schoolItems = schools.data.map(({code, city, name, street}) => ({
-        id: code,
-        label: city ? `${name} ${street}, ${city}` : name,
-      }))
-      otherSchoolItem.current = schoolItems.find((opt) => opt.id === 0)
-      withoutSchoolItem.current = schoolItems.find((opt) => opt.id === 1)
-      setEmptySchoolItems(schoolItems.filter(({id}) => [0, 1].includes(id)))
-      setSchoolItems(schoolItems.filter(({id}) => ![0, 1].includes(id)))
-    }
-    fetchData()
-  }, [])
+  // načítanie škôl z BE, ktorými vyplníme FormAutocomplete so školami
+  const {data: schoolsData} = useQuery({
+    queryKey: ['personal', 'schools'],
+    queryFn: () => axios.get<ISchool[]>(`/api/personal/schools`),
+  })
+  const schools = schoolsData?.data ?? []
+  const allSchoolItems: SelectOption[] = schools.map(({code, city, name, street}) => ({
+    id: code,
+    label: city ? `${name} ${street}, ${city}` : name,
+  }))
+  const emptySchoolItems = allSchoolItems.filter(({id}) => [0, 1].includes(id))
+  otherSchoolItem.current = emptySchoolItems.find(({id}) => id === 0)
+  withoutSchoolItem.current = emptySchoolItems.find(({id}) => id === 1)
+  const schoolItems = allSchoolItems.filter(({id}) => ![0, 1].includes(id))
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre užívateľa po škole
   useEffect(() => {
@@ -223,7 +217,7 @@ export const RegisterForm: FC = () => {
           name="grade"
           label="ročník*"
           options={gradeItems.filter(({id}) => id !== 13 || without_school)}
-          disabled={without_school}
+          disabled={!gradeItems.length || without_school}
           rules={requiredRule}
         />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />

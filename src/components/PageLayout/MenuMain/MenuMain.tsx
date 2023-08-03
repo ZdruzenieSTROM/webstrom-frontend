@@ -1,11 +1,13 @@
+import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
-import {FC, useEffect, useState} from 'react'
+import {FC, useState} from 'react'
 import * as FaIcons from 'react-icons/fa'
 
 import {CloseButton} from '@/components/CloseButton/CloseButton'
+import {Loading} from '@/components/Loading/Loading'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Authentication} from '../Authentication/Authentication'
@@ -21,38 +23,29 @@ export const MenuMain: FC = () => {
   const {seminar, seminarId} = useSeminarInfo()
 
   const [isVisible, setIsVisible] = useState(true)
-  const [menuItems, setMenuItems] = useState<MenuItemInterface[]>([])
+  const toggleMenu = () => setIsVisible((currentIsVisible) => !currentIsVisible)
 
-  const toggleMenu = () => {
-    setIsVisible((currentIsVisible) => !currentIsVisible)
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await axios.get<MenuItemInterface[]>(`/api/cms/menu-item/on-site/${seminarId}`)
-        setMenuItems(data)
-      } catch {
-        return
-      }
-    }
-    fetchData()
-  }, [seminarId])
+  const {data: menuItemsData, isLoading: menuItemsIsLoading} = useQuery({
+    queryKey: ['cms', 'menu-item', 'on-site', seminarId],
+    queryFn: () => axios.get<MenuItemInterface[]>(`/api/cms/menu-item/on-site/${seminarId}`),
+  })
+  const menuItems = menuItemsData?.data ?? []
 
   return (
     <div className={clsx(styles.menu, isVisible && styles.visible)}>
-      {!isVisible && (
-        <div className={styles.menuOpenButton}>
-          <FaIcons.FaBars onClick={toggleMenu} />
+      <div className={styles.menuOpenButton}>
+        {isVisible ? <CloseButton onClick={toggleMenu} size={50} /> : <FaIcons.FaBars onClick={toggleMenu} />}
+      </div>
+      {menuItemsIsLoading && (
+        <div className={styles.loading}>
+          <Loading />
         </div>
       )}
-      <CloseButton onClick={toggleMenu} size={50} />
       <div className={styles.menuItems}>
-        {menuItems &&
-          menuItems.map((menuItem: MenuItemInterface) => {
-            // url je vo formate `/matik/vysledky`
-            return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
-          })}
+        {menuItems.map((menuItem: MenuItemInterface) => {
+          // `menuItem.url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
+          return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
+        })}
       </div>
       <Authentication />
     </div>
