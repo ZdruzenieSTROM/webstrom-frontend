@@ -5,13 +5,13 @@ import {FC} from 'react'
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import styles from './MenuSeminars.module.scss'
+import styles from './TopGrid.module.scss'
 
-type MenuSeminarsProps = {
+type TopGridProps = {
   title: string
 }
 
-export const MenuSeminars: FC<MenuSeminarsProps> = ({title}) => {
+export const TopGrid: FC<TopGridProps> = ({title}) => {
   const {seminar} = useSeminarInfo()
 
   return (
