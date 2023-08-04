@@ -3,6 +3,7 @@ export type Styles = {
   container: string
   menu: string
   menuItem: string
+  semesterPicker: string
   title: string
 }
 

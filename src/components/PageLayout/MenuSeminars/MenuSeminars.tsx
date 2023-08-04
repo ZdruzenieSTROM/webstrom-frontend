@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import {FC} from 'react'
 
+import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import styles from './MenuSeminars.module.scss'
@@ -27,6 +28,9 @@ export const MenuSeminars: FC<MenuSeminarsProps> = ({title}) => {
         </div>
       </div>
       <div className={styles.title}>{title}</div>
+      <div className={styles.semesterPicker}>
+        <SemesterPicker />
+      </div>
     </div>
   )
 }
