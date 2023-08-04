@@ -11,19 +11,12 @@ import {Result, ResultsRow} from './ResultsRow'
 export const Results: FC = () => {
   const {id, displayWholeSemesterOnResults} = useDataFromURL()
 
+  const competitionEndpoint = displayWholeSemesterOnResults ? 'semester' : 'series'
+  const idForEndpoint = displayWholeSemesterOnResults ? id.semesterId : id.seriesId
+
   const {data: resultsData, isLoading: resultsIsLoading} = useQuery({
-    queryKey: [
-      'competition',
-      displayWholeSemesterOnResults ? 'semester/' : 'series/',
-      displayWholeSemesterOnResults ? id.semesterId : id.seriesId,
-      'results',
-    ],
-    queryFn: () =>
-      axios.get<Result[]>(
-        `/api/competition/${displayWholeSemesterOnResults ? 'semester/' : 'series/'}${
-          displayWholeSemesterOnResults ? id.semesterId : id.seriesId
-        }/results`,
-      ),
+    queryKey: ['competition', competitionEndpoint, idForEndpoint, 'results'],
+    queryFn: () => axios.get<Result[]>(`/api/competition/${competitionEndpoint}/${idForEndpoint}/results`),
     enabled: id.semesterId !== -1 || id.seriesId !== -1,
   })
   const results = resultsData?.data ?? []
