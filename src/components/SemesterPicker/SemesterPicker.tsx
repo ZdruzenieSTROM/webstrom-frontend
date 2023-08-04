@@ -38,7 +38,7 @@ export const SemesterPicker: FC<{
   const {setPageTitle} = PageTitleContainer.useContainer()
 
   // SemesterPicker menu sa zobrazuje na viacerých stránkach, podľa toho aká je hodnota premennej page.
-  // Menu sa správa trochu odlišne v závyslosti od stránky na ktorej sa zobrazuje.
+  // Menu sa správa trochu odlišne v závislosti od stránky na ktorej sa zobrazuje.
   let pageLink = ''
   switch (page) {
     case 'problems':
