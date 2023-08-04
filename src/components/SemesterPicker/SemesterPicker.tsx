@@ -1,4 +1,3 @@
-import {useRouter} from 'next/router'
 import {FC, useEffect} from 'react'
 
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
@@ -30,15 +29,11 @@ export interface SemesterListItem {
   series_set: SeriesListItem[]
 }
 
-// predpoklada pouzitie na stranke formatu `/matik/zadania(/*)` alebo `/matik/vysledky(/*)`
-export const SemesterPicker: FC = () => {
+export const SemesterPicker: FC<{page: 'zadania' | 'vysledky'}> = ({page}) => {
   const {seminar} = useSeminarInfo()
   const {setPageTitle} = PageTitleContainer.useContainer()
 
   const {id: selectedItem, semesterList, displayWholeSemesterOnResults} = useDataFromURL()
-
-  // `zadania` alebo `vysledky`
-  const pageLink = useRouter().pathname.split('/')[2]
 
   const semester = semesterList.find(({id}) => id === selectedItem.semesterId)
   const series = semester?.series_set.find(({id}) => id === selectedItem.seriesId)
@@ -62,7 +57,7 @@ export const SemesterPicker: FC = () => {
     return {
       id: semester.id,
       text: `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
-      link: `/${seminar}/${pageLink}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
+      link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
       selected: semester.id === selectedItem.semesterId,
     }
   })
@@ -74,18 +69,16 @@ export const SemesterPicker: FC = () => {
       return {
         id: series.id,
         text: `${series.order}. séria`,
-        link: `/${seminar}/${pageLink}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/${
-          series.order
-        }`,
+        link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/${series.order}`,
         selected: !displayWholeSemesterOnResults && series.id === selectedItem.seriesId,
       }
     })
 
-    if (pageLink === 'vysledky') {
+    if (page === 'vysledky') {
       dropdownSeriesList.push({
         id: -1,
         text: 'obe série',
-        link: `/${seminar}/${pageLink}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
+        link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
         selected: displayWholeSemesterOnResults,
       })
     }

@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import Link from 'next/link'
+import {useRouter} from 'next/router'
 import {FC} from 'react'
 
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
@@ -13,6 +14,9 @@ type TopGridProps = {
 
 export const TopGrid: FC<TopGridProps> = ({title}) => {
   const {seminar} = useSeminarInfo()
+
+  // z napr. `/matik/zadania(/*)` vytiahne `zadania`
+  const page = useRouter().pathname.split('/')[2]
 
   return (
     <div className={styles.container}>
@@ -28,9 +32,11 @@ export const TopGrid: FC<TopGridProps> = ({title}) => {
         </div>
       </div>
       <div className={styles.title}>{title}</div>
-      <div className={styles.semesterPicker}>
-        <SemesterPicker />
-      </div>
+      {(page === 'zadania' || page === 'vysledky') && (
+        <div className={styles.semesterPicker}>
+          <SemesterPicker page={page} />
+        </div>
+      )}
     </div>
   )
 }
