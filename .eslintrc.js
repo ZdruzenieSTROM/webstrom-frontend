@@ -133,7 +133,7 @@ module.exports = {
     'security/detect-object-injection': 'off',
 
     // Improve regexes by making them shorter, more consistent, and safer
-    'require-unicode-regexp': 'warn',
+    // 'require-unicode-regexp': 'warn',
     'unicorn/better-regex': 'warn',
     'unicorn/no-unsafe-regex': 'warn',
 

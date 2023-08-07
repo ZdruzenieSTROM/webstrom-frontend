@@ -1,0 +1,27 @@
+.closeButton {
+  cursor: pointer;
+
+  color: white;
+  background-color: black;
+
+  &.active,
+  &:hover {
+    color: black;
+    background-color: white;
+  }
+}
+.invertColors {
+  color: black;
+  background-color: white;
+
+  &.active,
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+}
+
+.alignRight {
+  position: absolute;
+  right: 12px;
+}

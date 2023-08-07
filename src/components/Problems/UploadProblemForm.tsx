@@ -70,7 +70,7 @@ export const UploadProblemForm: FC<{
 
   return (
     <div className={styles.container}>
-      <CloseButton onClick={handleCloseButton} alignRight invertColors />
+      <CloseButton onClick={handleCloseButton} size={24} invertColors className={styles.closeButton} />
       {problemSubmitted && (
         <div className={styles.problemSubmitted}>
           Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.

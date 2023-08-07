@@ -4,10 +4,10 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
-import * as FaIcons from 'react-icons/fa'
 
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
+import Menu from '@/svg/menu.svg'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Authentication} from '../Authentication/Authentication'
@@ -32,23 +32,28 @@ export const MenuMain: FC = () => {
   const menuItems = menuItemsData?.data ?? []
 
   return (
-    <div className={clsx(styles.menu, isVisible && styles.visible)}>
-      <div className={styles.menuOpenButton}>
-        {isVisible ? <CloseButton onClick={toggleMenu} size={50} /> : <FaIcons.FaBars onClick={toggleMenu} />}
-      </div>
-      {menuItemsIsLoading && (
-        <div className={styles.loading}>
-          <Loading />
+    <>
+      {!isVisible && (
+        <div className={clsx(styles.menuButton, styles.menuOpenButton)} onClick={toggleMenu}>
+          <Menu width={40} height={40} />
         </div>
       )}
-      <div className={styles.menuItems}>
-        {menuItems.map((menuItem: MenuItemInterface) => {
-          // `menuItem.url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
-          return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
-        })}
+      <div className={clsx(styles.menu, isVisible && styles.visible)}>
+        <CloseButton size={40} onClick={toggleMenu} className={clsx(styles.menuButton, styles.menuCloseButton)} />
+        {menuItemsIsLoading && (
+          <div className={styles.loading}>
+            <Loading />
+          </div>
+        )}
+        <div className={styles.menuItems}>
+          {menuItems.map((menuItem: MenuItemInterface) => {
+            // `menuItem.url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
+            return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
+          })}
+        </div>
+        <Authentication />
       </div>
-      <Authentication />
-    </div>
+    </>
   )
 }
 

@@ -1,10 +1,8 @@
 export type Styles = {
-  actions: string
-  bottomAction: string
+  active: string
+  alignRight: string
   closeButton: string
-  container: string
-  files: string
-  problemSubmitted: string
+  invertColors: string
 }
 
 export type ClassNames = keyof Styles

@@ -1,29 +1,21 @@
-import {Close} from '@mui/icons-material'
+import clsx from 'clsx'
 import {FC} from 'react'
+
+import Close from '@/svg/close.svg'
+
+import styles from './CloseButton.module.scss'
 
 interface CloseButtonProps {
   onClick: () => void
-  size?: number
-  alignRight?: boolean
+  size: number
   invertColors?: boolean
+  className?: string
 }
 
-export const CloseButton: FC<CloseButtonProps> = ({onClick, size, alignRight, invertColors}) => {
+export const CloseButton: FC<CloseButtonProps> = ({onClick, size, invertColors, className}) => {
   return (
-    <Close
-      sx={[
-        {
-          fontSize: size,
-          cursor: 'pointer',
-          color: !invertColors ? 'white' : 'black',
-          'active, :hover': {
-            color: !invertColors ? 'black' : 'white',
-            backgroundColor: !invertColors ? 'white' : 'black',
-          },
-        },
-        !!alignRight && {position: 'absolute', right: '8px'},
-      ]}
-      onClick={onClick}
-    />
+    <div className={clsx(styles.closeButton, invertColors && styles.invertColors, className)} onClick={onClick}>
+      <Close width={size} height={size} />
+    </div>
   )
 }
