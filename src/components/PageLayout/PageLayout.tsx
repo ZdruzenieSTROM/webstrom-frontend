@@ -6,9 +6,9 @@ import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {Banner} from './Banner/Banner'
 import {Footer} from './Footer/Footer'
 import {MenuMain} from './MenuMain/MenuMain'
-import {MenuSeminars} from './MenuSeminars/MenuSeminars'
 import styles from './PageLayout.module.scss'
 import {StromLogo} from './StromLogo/StromLogo'
+import {TopGrid} from './TopGrid/TopGrid'
 
 type PageLayoutProps = {
   contentWidth?: number
@@ -27,7 +27,7 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
 
   return (
     <div className={styles.pageContainer}>
-      <MenuSeminars title={pageTitle} />
+      <TopGrid title={pageTitle} />
       <Banner />
       <MenuMain />
       <div className={styles.grid}>

@@ -1,17 +1,22 @@
 import clsx from 'clsx'
 import Link from 'next/link'
+import {useRouter} from 'next/router'
 import {FC} from 'react'
 
+import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import styles from './MenuSeminars.module.scss'
+import styles from './TopGrid.module.scss'
 
-type MenuSeminarsProps = {
+type TopGridProps = {
   title: string
 }
 
-export const MenuSeminars: FC<MenuSeminarsProps> = ({title}) => {
+export const TopGrid: FC<TopGridProps> = ({title}) => {
   const {seminar} = useSeminarInfo()
+
+  // z napr. `/matik/zadania(/*)` vytiahne `zadania`
+  const page = useRouter().pathname.split('/')[2]
 
   return (
     <div className={styles.container}>
@@ -27,6 +32,11 @@ export const MenuSeminars: FC<MenuSeminarsProps> = ({title}) => {
         </div>
       </div>
       <div className={styles.title}>{title}</div>
+      {(page === 'zadania' || page === 'vysledky') && (
+        <div className={styles.semesterPicker}>
+          <SemesterPicker page={page} />
+        </div>
+      )}
     </div>
   )
 }

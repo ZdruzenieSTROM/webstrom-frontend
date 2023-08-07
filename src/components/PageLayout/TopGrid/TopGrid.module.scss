@@ -1,0 +1,64 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10rem;
+  background-color: white;
+  z-index: 3;
+  display: grid;
+  grid-template: 1fr 1fr / 1fr 2fr 1fr;
+}
+
+.menu {
+  // occupies whole first row to use the other columns on smaller screens
+  grid-row: 1;
+  grid-column: 1 / 4;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.title {
+  // second row center column
+  grid-row: 2;
+  grid-column: 2;
+  font-size: 1.7rem;
+  font-weight: bold;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.semesterPicker {
+  // second row right column
+  grid-row: 2;
+  grid-column: 3;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.menuItem {
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 8px;
+  margin: 10px;
+}
+
+.menuItem a {
+  display: inline-block;
+  padding: 0px 5px 3px 5px;
+  border-bottom: 0.3rem solid black;
+  color: black;
+}
+
+.menuItem.active,
+.menuItem:hover {
+  background-color: black;
+
+  a {
+    border-color: white;
+    color: white;
+  }
+}

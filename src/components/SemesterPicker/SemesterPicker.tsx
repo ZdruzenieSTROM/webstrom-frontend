@@ -1,6 +1,7 @@
 import {FC, useEffect} from 'react'
 
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
+import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Dropdown, DropdownOption} from './Dropdown'
@@ -28,26 +29,11 @@ export interface SemesterListItem {
   series_set: SeriesListItem[]
 }
 
-export const SemesterPicker: FC<{
-  semesterList: SemesterListItem[]
-  selectedItem: {semesterId: number; seriesId: number}
-  page: string
-  displayWholeSemesterOption?: boolean
-}> = ({semesterList, selectedItem, page, displayWholeSemesterOption = false}) => {
+export const SemesterPicker: FC<{page: 'zadania' | 'vysledky'}> = ({page}) => {
   const {seminar} = useSeminarInfo()
   const {setPageTitle} = PageTitleContainer.useContainer()
 
-  // SemesterPicker menu sa zobrazuje na viacerých stránkach, podľa toho aká je hodnota premennej page.
-  // Menu sa správa trochu odlišne v závyslosti od stránky na ktorej sa zobrazuje.
-  let pageLink = ''
-  switch (page) {
-    case 'problems':
-      pageLink = 'zadania'
-      break
-    case 'results':
-      pageLink = 'vysledky'
-      break
-  }
+  const {id: selectedItem, semesterList, displayWholeSemesterOnResults} = useDataFromURL()
 
   const semester = semesterList.find(({id}) => id === selectedItem.semesterId)
   const series = semester?.series_set.find(({id}) => id === selectedItem.seriesId)
@@ -57,7 +43,7 @@ export const SemesterPicker: FC<{
     let pageTitleToSet = ''
     if (semester) {
       const semesterTitle = `${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester`
-      if (displayWholeSemesterOption) {
+      if (displayWholeSemesterOnResults) {
         pageTitleToSet = semesterTitle
       } else if (series) {
         pageTitleToSet = `${semesterTitle}${series?.order ? ` - ${series?.order}. séria` : ''}`
@@ -65,13 +51,13 @@ export const SemesterPicker: FC<{
     }
     setPageTitle(pageTitleToSet)
     // `semester` a `series` su nami vytiahnute objekty, tak mozu triggerovat effekt kazdy render. nemalo by vadit
-  }, [displayWholeSemesterOption, semester, series, setPageTitle])
+  }, [displayWholeSemesterOnResults, semester, series, setPageTitle])
 
   const dropdownSemesterList = semesterList.map((semester) => {
     return {
       id: semester.id,
       text: `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
-      link: `/${seminar}/${pageLink}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
+      link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
       selected: semester.id === selectedItem.semesterId,
     }
   })
@@ -83,19 +69,17 @@ export const SemesterPicker: FC<{
       return {
         id: series.id,
         text: `${series.order}. séria`,
-        link: `/${seminar}/${pageLink}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/${
-          series.order
-        }`,
-        selected: !displayWholeSemesterOption && series.id === selectedItem.seriesId,
+        link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/${series.order}`,
+        selected: !displayWholeSemesterOnResults && series.id === selectedItem.seriesId,
       }
     })
 
-    if (page === 'results') {
+    if (page === 'vysledky') {
       dropdownSeriesList.push({
         id: -1,
         text: 'obe série',
-        link: `/${seminar}/${pageLink}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
-        selected: displayWholeSemesterOption,
+        link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
+        selected: displayWholeSemesterOnResults,
       })
     }
   }

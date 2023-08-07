@@ -4,7 +4,6 @@ import Image from 'next/image'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
-import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
@@ -106,7 +105,7 @@ const overrideCycle = (prev: boolean | undefined) => {
 }
 
 export const Problems: FC = () => {
-  const {id, semesterList, seminar, loading} = useDataFromURL()
+  const {id, seminar, loading} = useDataFromURL()
 
   // used to display discussions
   const [displaySideContent, setDisplaySideContent] = useState<{
@@ -155,11 +154,6 @@ export const Problems: FC = () => {
           loading.currentSeriesIsLoading ||
           seriesIsLoading ||
           permissionsIsLoading) && <Loading />}
-        <SemesterPicker
-          semesterList={semesterList}
-          selectedItem={{semesterId: id.semesterId, seriesId: id.seriesId}}
-          page={'problems'}
-        />
         {hasPermissions && (
           <div className={styles.adminSection}>
             <Link href={`/${seminar}/admin/opravovanie/${id.semesterId}`}>Admin: Opravovanie</Link>
