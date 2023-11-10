@@ -205,6 +205,7 @@ export const Problems: FC = () => {
             problemId={displaySideContent.problemId}
             problemNumber={displaySideContent.problemNumber}
             closeDiscussion={() => setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})}
+            invalidateSeriesQuery={invalidateSeriesQuery}
           />
         )}
         {/* {displaySideContent.type === 'uploadProblemForm' && (
