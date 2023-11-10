@@ -8,7 +8,6 @@ export type Styles = {
   score: string
   subtotal: string
   totalScore: string
-  votes: string
 }
 
 export type ClassNames = keyof Styles

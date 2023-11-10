@@ -1,5 +1,4 @@
 import {Typography} from '@mui/material'
-import clsx from 'clsx'
 import {FC} from 'react'
 
 import styles from './ResultsRow.module.scss'
@@ -39,21 +38,6 @@ export interface Result {
 export const ResultsRow: FC<{result: Result}> = ({result}) => {
   const {solutions, rank_changed, rank_start, registration, subtotal, total} = result
 
-  let votes_pos = 0
-  let votes_neg = 0
-
-  for (const seriesSolutions of result.solutions) {
-    for (const {votes} of seriesSolutions) {
-      if (votes > 0) {
-        votes_pos += votes
-      } else if (votes < 0) {
-        votes_neg += votes
-      }
-    }
-  }
-
-  const votes_total = votes_neg + votes_pos
-
   return (
     <div className={styles.rowWrapper}>
       <Typography variant="h1" component="span" fontStyle="italic" className={styles.rank}>
@@ -87,10 +71,6 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
       <Typography variant="h3" component="span" fontStyle="italic" className={styles.totalScore}>
         {total}
       </Typography>
-      <div className={clsx(styles.votes, votes_total !== 0 && 'tooltip')}>
-        {votes_total !== 0 && votes_total}
-        {votes_total !== 0 && <span className="tooltiptext">Hlasy</span>}
-      </div>
     </div>
   )
 }
