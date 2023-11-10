@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import NextLink from 'next/link'
-import {ButtonHTMLAttributes, FC, ReactNode} from 'react'
+import {ButtonHTMLAttributes, ComponentProps, FC, ReactNode} from 'react'
 
 import styles from './Clickable.module.scss'
 
@@ -24,20 +24,20 @@ export const Button: FC<ButtonProps> = ({children, onClick, disabled, type}) => 
   )
 }
 
-interface LinkProps {
+type LinkProps = {
   href?: string
   disabled?: boolean
   children: ReactNode
-}
+} & Pick<ComponentProps<typeof NextLink>, 'target'>
 
-export const Link: FC<LinkProps> = ({children, href, disabled}) => {
+export const Link: FC<LinkProps> = ({children, href, disabled, target}) => {
   // https://a11y-guidelines.orange.com/en/articles/disable-elements/#disable-a-link
   return disabled ? (
     <a className={clsx(styles.actionButton, styles.disabled)} aria-disabled role="link">
       {children}
     </a>
   ) : (
-    <NextLink href={href ?? ''} className={clsx(styles.actionButton)}>
+    <NextLink href={href ?? ''} target={target} className={clsx(styles.actionButton)}>
       {children}
     </NextLink>
   )
