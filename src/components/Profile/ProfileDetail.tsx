@@ -36,11 +36,9 @@ export const ProfileDetail: FC = () => {
   return (
     <Stack spacing={2}>
       <ProfileLine label={'meno'} value={profile?.first_name + ' ' + profile?.last_name} />
-      {/* TODO: pockat na BE kym to posle v datach */}
-      <ProfileLine label={'e-mail'} value={'TODO'} />
+      <ProfileLine label={'e-mail'} value={profile?.email} />
       <ProfileLine label={'škola'} value={profile?.school.verbose_name} />
-      {/* TODO: pockat na BE kym to posle v datach */}
-      <ProfileLine label={'ročník'} value={`${profile?.grade}`} />
+      <ProfileLine label={'ročník'} value={profile?.grade_name} />
       <ProfileLine label={'tel. č.'} value={profile?.phone || '-'} />
       <ProfileLine label={'tel. č. na rodiča'} value={profile?.parent_phone || '-'} />
     </Stack>
