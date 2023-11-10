@@ -72,14 +72,23 @@ const Problem: FC<{
       )}
       {displayActions && (
         <div className={styles.actions}>
-          {problem.solution_pdf && <Link href={problem.solution_pdf}>vzorové riešenie</Link>}
+          {problem.solution_pdf && (
+            <Link href={problem.solution_pdf} target="_blank">
+              vzorové riešenie
+            </Link>
+          )}
           {registered && (
             <>
-              <Link href={`/api/competition/problem/${problem.id}/my-solution`} disabled={!problem.submitted}>
+              <Link
+                href={`/api/competition/problem/${problem.id}/my-solution`}
+                target="_blank"
+                disabled={!problem.submitted}
+              >
                 moje riešenie
               </Link>
               <Link
                 href={`/api/competition/problem/${problem.id}/corrected-solution`}
+                target="_blank"
                 disabled={!problem.submitted?.corrected_solution}
               >
                 opravené riešenie{!!problem.submitted?.corrected_solution && ` (${problem.submitted.score || '?'})`}
