@@ -8,16 +8,15 @@ type ButtonProps = {
   onClick?: () => void
   disabled?: boolean
   children: ReactNode
-} & Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'autoFocus'>
+} & Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>
 
-export const Button: FC<ButtonProps> = ({children, onClick, disabled, type, autoFocus}) => {
+export const Button: FC<ButtonProps> = ({children, onClick, disabled, type}) => {
   return (
     <button
       onClick={onClick}
       className={clsx(styles.actionButton, disabled && styles.disabled)}
       disabled={disabled}
       type={type}
-      autoFocus={autoFocus}
     >
       {children}
     </button>

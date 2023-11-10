@@ -111,9 +111,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
         actions={
           <>
             <Button onClick={close}>Zavrieť</Button>
-            <Button onClick={agree} autoFocus>
-              Potvrdiť
-            </Button>
+            <Button onClick={agree}>Potvrdiť</Button>
           </>
         }
       />
