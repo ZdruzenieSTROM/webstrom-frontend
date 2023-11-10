@@ -1,18 +1,22 @@
 import {Upload} from '@mui/icons-material'
+import {useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC, useCallback} from 'react'
-import {Accept, DropzoneOptions, useDropzone} from 'react-dropzone'
+import {DropzoneOptions, useDropzone} from 'react-dropzone'
+
+import {SemesterWithProblems} from '@/types/api/generated/competition'
+
+import {Link} from '../Clickable/Clickable'
 
 interface PublicationUploaderProps {
-  uploadLink: string
-  acceptedFormats?: Accept
-  publication_type: string
-  event: string
-  order: string
-  refetch: () => void
+  semesterId: string
+  order: number
+  semesterData: SemesterWithProblems | undefined
 }
 
-export const PublicationUploader: FC<PublicationUploaderProps> = ({uploadLink, acceptedFormats, publication_type, event, order, refetch}) => {
+export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, order, semesterData}) => {
+  const queryClient = useQueryClient()
+
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
     async (acceptedFiles, fileRejections) => {
       if (fileRejections.length > 0) {
@@ -20,28 +24,38 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({uploadLink, a
       }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      formData.append('publication_type', publication_type)
-      formData.append('event', event)
-      formData.append('order', order)
-      await axios.post(uploadLink, formData)
-      await refetch()
-      
+      formData.append('publication_type', 'Časopisy')
+      formData.append('event', semesterId)
+      formData.append('order', order.toString())
+      await axios.post('/api/competition/publication/upload/', formData)
+      await queryClient.invalidateQueries({queryKey: ['competition', 'semester', semesterId]})
     },
-    [refetch, uploadLink],
+    [semesterId, order, queryClient],
   )
+  const publication = semesterData?.publication_set.find((publication) => publication.order === order)
 
   const {getRootProps, getInputProps} = useDropzone({
     onDrop,
     multiple: false,
-    accept: acceptedFormats ?? {},
+    accept:
+      {
+        'application/pdf': ['.pdf'],
+      } ?? {},
   })
 
   return (
     <>
+      <h4> {order}.Časopis: </h4>
       <div {...getRootProps()}>
         <input {...getInputProps()} />
         <Upload />
       </div>
+      {}
+      {publication && (
+        <Link key={publication.id} href={`/api/competition/publication/${publication.id}/download`}>
+          {publication.name}
+        </Link>
+      )}
     </>
   )
 }

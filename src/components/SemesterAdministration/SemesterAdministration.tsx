@@ -127,39 +127,9 @@ export const SemesterAdministration: FC = () => {
         <></>
       )}
       <h3>Nahrávanie časopisov</h3>
-      1. časopis:
-      <PublicationUploader
-        uploadLink={'/api/competition/publication/upload/'}
-        acceptedFormats={{
-          'application/pdf': ['.pdf'],
-        }}
-        publication_type={'Časopisy'}
-        event={`${semesterId}`}
-        order={'1'}
-        refetch={() => {}}
-      />
-      2. časopis:
-      <PublicationUploader
-        uploadLink={'/api/competition/publication/upload/'}
-        acceptedFormats={{
-          'application/pdf': ['.pdf'],
-        }}
-        publication_type={'Časopisy'}
-        event={`${semesterId}`}
-        order={'2'}
-        refetch={() => {}}
-      />
-      3. časopis:
-      <PublicationUploader
-        uploadLink={'/api/competition/publication/upload/'}
-        acceptedFormats={{
-          'application/pdf': ['.pdf'],
-        }}
-        publication_type={'Časopisy'}
-        event={`${semesterId}`}
-        order={'3'}
-        refetch={() => {}}
-      />
+      {[1, 2, 3].map((order) => (
+        <PublicationUploader key={order} semesterId={semesterId ?? ''} order={order} semesterData={semester} />
+      ))}
     </>
   )
 }
