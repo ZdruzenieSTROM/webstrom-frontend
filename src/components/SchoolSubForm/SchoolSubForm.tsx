@@ -1,7 +1,8 @@
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
-import {FC, useEffect, useRef} from 'react'
+import {useRef} from 'react'
 import {Control, UseFormSetValue, UseFormWatch} from 'react-hook-form'
+import {useUpdateEffect} from 'usehooks-ts'
 
 import styles from '@/components/FormItems/Form.module.scss'
 import {IGrade} from '@/types/api/competition'
@@ -11,15 +12,20 @@ import {FormAutocomplete} from '../FormItems/FormAutocomplete/FormAutocomplete'
 import {FormCheckbox} from '../FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '../FormItems/FormInput/FormInput'
 import {FormSelect, SelectOption} from '../FormItems/FormSelect/FormSelect'
+import {ProfileFormValues} from '../Profile/ProfileForm'
 import {RegisterFormValues} from '../RegisterForm/RegisterForm'
 
-type SchoolSubFormProps = {
-  control: Control<RegisterFormValues, unknown>
-  watch: UseFormWatch<RegisterFormValues>
-  setValue: UseFormSetValue<RegisterFormValues>
+type SchoolSubFormProps<T extends RegisterFormValues | ProfileFormValues> = {
+  control: Control<T, unknown>
+  watch: UseFormWatch<T>
+  setValue: UseFormSetValue<T>
 }
 
-export const SchoolSubForm: FC<SchoolSubFormProps> = ({control, watch, setValue}) => {
+export const SchoolSubForm = ({
+  control,
+  watch,
+  setValue,
+}: SchoolSubFormProps<RegisterFormValues | ProfileFormValues>) => {
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
   const otherSchoolItem = useRef<SelectOption>()
@@ -49,7 +55,7 @@ export const SchoolSubForm: FC<SchoolSubFormProps> = ({control, watch, setValue}
   const schoolItems = allSchoolItems.filter(({id}) => ![0, 1].includes(id))
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre užívateľa po škole
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (without_school) {
       setValue('school', withoutSchoolItem.current)
       setValue('grade', 13)
@@ -58,18 +64,16 @@ export const SchoolSubForm: FC<SchoolSubFormProps> = ({control, watch, setValue}
       setValue('school', null)
       setValue('grade', '')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [without_school])
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre neznámu školu
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (school_not_found) {
       setValue('school', otherSchoolItem.current)
     } else if (!without_school) {
       setValue('school', null)
       setValue('grade', '')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [school_not_found])
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
