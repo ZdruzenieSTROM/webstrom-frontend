@@ -4,12 +4,11 @@ import {ButtonHTMLAttributes, ComponentProps, FC, ReactNode} from 'react'
 
 import styles from './Clickable.module.scss'
 
-interface ButtonProps {
+type ButtonProps = {
   onClick?: () => void
   disabled?: boolean
   children: ReactNode
-  type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
-}
+} & Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>
 
 export const Button: FC<ButtonProps> = ({children, onClick, disabled, type}) => {
   return (
