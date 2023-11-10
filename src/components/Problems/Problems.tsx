@@ -72,7 +72,11 @@ const Problem: FC<{
       )}
       {displayActions && (
         <div className={styles.actions}>
-          {problem.solution_pdf && <Link href={problem.solution_pdf}>vzorové riešenie</Link>}
+          {problem.solution_pdf && (
+            <Link href={problem.solution_pdf} target="_blank">
+              vzorové riešenie
+            </Link>
+          )}
           {registered && (
             <>
               <Link
