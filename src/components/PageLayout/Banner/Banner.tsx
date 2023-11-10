@@ -9,7 +9,7 @@ export const Banner: FC = () => {
   const {bannerText} = BannerContainer.useContainer()
   return (
     <div className={styles.banner}>
-      <Marquee gradient={false} speed={50}>
+      <Marquee gradient={false} speed={100}>
         <div className={styles.marqueeTextContainer}>{bannerText}</div>
       </Marquee>
     </div>
