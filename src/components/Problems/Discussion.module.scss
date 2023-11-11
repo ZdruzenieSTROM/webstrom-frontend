@@ -20,6 +20,11 @@
     overflow-y: auto;
     overscroll-behavior-y: contain;
   }
+  >div.message {
+    padding-left: 8px;
+    padding-right: 8px;
+    color: gray;
+  }
 }
 
 .inputContainer {
