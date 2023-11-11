@@ -13,6 +13,7 @@ export interface Publication {
   file: string
   publication_type: number | null
   event: number | null
+  order: number | null
 }
 
 export interface RegistrationLink {

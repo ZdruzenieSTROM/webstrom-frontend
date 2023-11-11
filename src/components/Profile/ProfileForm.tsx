@@ -1,33 +1,28 @@
-import {useMutation} from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import styles from '@/components/FormItems/Form.module.scss'
-import {FormCheckbox} from '@/components/FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
+import {SelectOption} from '@/components/FormItems/FormSelect/FormSelect'
 import {IGeneralPostResponse} from '@/types/api/general'
+import {Profile} from '@/types/api/personal'
+import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Clickable'
 import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
-interface RegisterFormValues extends SchoolSubFormValues {
-  email?: string
-  password1?: string
-  password2?: string
+interface ProfileFormValues extends SchoolSubFormValues {
   first_name?: string
   last_name?: string
   phone?: string
   parent_phone?: string
-  gdpr?: boolean
 }
 
-const defaultValues: RegisterFormValues = {
-  email: '',
-  password1: '',
-  password2: '',
+const defaultValues: ProfileFormValues = {
   first_name: '',
   last_name: '',
   phone: '',
@@ -37,14 +32,35 @@ const defaultValues: RegisterFormValues = {
   school: null,
   school_not_found: false,
   grade: '',
-  gdpr: false,
 }
 
-export const RegisterForm: FC = () => {
-  const {handleSubmit, control, watch, setValue, getValues} = useForm<RegisterFormValues>({
-    defaultValues,
-    values: defaultValues,
+export const ProfileForm: FC = () => {
+  const {isAuthed} = AuthContainer.useContainer()
+
+  const {data} = useQuery({
+    queryKey: ['personal', 'profiles', 'myprofile'],
+    queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
+    enabled: isAuthed,
   })
+  const profile = data?.data
+  const profileValues: ProfileFormValues = {
+    first_name: profile?.first_name,
+    last_name: profile?.last_name,
+    phone: profile?.phone ?? '',
+    parent_phone: profile?.parent_phone ?? '',
+    new_school_description: '',
+    without_school: profile?.school_id === 1,
+    school: ({id: profile?.school.code, label: profile?.school.verbose_name} as SelectOption) ?? null,
+    school_not_found: profile?.school_id === 0,
+    grade: profile?.grade ?? '',
+  }
+
+  const {handleSubmit, control, watch, setValue} = useForm<ProfileFormValues>({
+    defaultValues,
+    values: profileValues,
+  })
+
+  watch(['first_name'])
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -57,30 +73,26 @@ export const RegisterForm: FC = () => {
 
   const {seminar} = useSeminarInfo()
 
-  const transformFormData = (data: RegisterFormValues) => ({
-    email: data.email,
-    password1: data.password1,
-    password2: data.password2,
+  const transformFormData = (data: ProfileFormValues) => ({
     profile: {
       first_name: data.first_name,
       last_name: data.last_name,
       school: data.school?.id,
       phone: data.phone,
       parent_phone: data.parent_phone,
-      gdpr: data.gdpr,
       grade: data.grade,
     },
     new_school_description: data.new_school_description || '',
   })
 
   const {mutate: submitFormData} = useMutation({
-    mutationFn: (data: RegisterFormValues) => {
-      return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
+    mutationFn: (data: ProfileFormValues) => {
+      return axios.put<IGeneralPostResponse>(`/api/user/user`, transformFormData(data))
     },
-    onSuccess: () => router.push(`${router.asPath}/../verifikacia`),
+    onSuccess: () => router.push(`/${seminar}/profil`),
   })
 
-  const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
+  const onSubmit: SubmitHandler<ProfileFormValues> = (data) => {
     submitFormData(data)
   }
 
@@ -94,61 +106,14 @@ export const RegisterForm: FC = () => {
   return (
     <div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <FormInput
-          control={control}
-          name="email"
-          label="e-mail*"
-          rules={{
-            ...requiredRule,
-            pattern: {
-              value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-              message: '* Vložte správnu emailovú adresu.',
-            },
-          }}
-        />
-        <FormInput
-          control={control}
-          name="password1"
-          label="heslo*"
-          type="password"
-          rules={{
-            ...requiredRule,
-            minLength: {
-              value: 8,
-              message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
-            },
-          }}
-        />
-        <FormInput
-          control={control}
-          name="password2"
-          label="potvrdenie hesla*"
-          type="password"
-          rules={{
-            ...requiredRule,
-            validate: (val) => {
-              if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
-            },
-          }}
-        />
         <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
         <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
         <SchoolSubForm control={control} watch={watch} setValue={setValue} />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
-        <FormCheckbox
-          control={control}
-          name="gdpr"
-          label="súhlas so spracovaním osobných údajov"
-          rules={{
-            validate: (val) => {
-              if (!val) return '* Súhlas so spracovaním osobných údajov je nutnou podmienkou registrácie.'
-            },
-          }}
-        />
         <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>
         <Button type="submit" onClick={scrollToTop}>
-          Registrovať
+          Uložiť údaje
         </Button>
       </form>
     </div>

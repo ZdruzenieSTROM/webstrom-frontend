@@ -96,7 +96,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
 
   const close = () => setDeleteDialogId(undefined)
   const agree = () => {
-    deleteDialogId !== undefined ? confirmDeleteComment(deleteDialogId) : undefined
+    if (deleteDialogId !== undefined) confirmDeleteComment(deleteDialogId)
     close()
   }
 
