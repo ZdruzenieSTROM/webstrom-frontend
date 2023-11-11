@@ -105,7 +105,7 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(26)},
       [lg]: {fontSize: pxToRem(30)},
       [xl]: {fontSize: pxToRem(30)},
-      textTransform: 'capitalize',
+      textTransform: 'uppercase',
     },
     button2: {
       fontSize: pxToRem(16),
@@ -113,7 +113,7 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(18)},
       [lg]: {fontSize: pxToRem(20)},
       [xl]: {fontSize: pxToRem(20)},
-      textTransform: 'capitalize',
+      textTransform: 'uppercase',
     },
     button3: {
       fontSize: pxToRem(10),
@@ -121,7 +121,9 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(12)},
       [lg]: {fontSize: pxToRem(14)},
       [xl]: {fontSize: pxToRem(14)},
-      textTransform: 'capitalize',
+      textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
     },
   },
 }

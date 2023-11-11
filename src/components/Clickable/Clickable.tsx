@@ -1,3 +1,4 @@
+import {Typography} from '@mui/material'
 import clsx from 'clsx'
 import NextLink from 'next/link'
 import {ButtonHTMLAttributes, ComponentProps, FC, ReactNode} from 'react'
@@ -12,14 +13,16 @@ type ButtonProps = {
 
 export const Button: FC<ButtonProps> = ({children, onClick, disabled, type}) => {
   return (
-    <button
+    <Typography
+      variant="button3"
+      component="button"
       onClick={onClick}
       className={clsx(styles.actionButton, disabled && styles.disabled)}
       disabled={disabled}
       type={type}
     >
       {children}
-    </button>
+    </Typography>
   )
 }
 
@@ -32,12 +35,24 @@ type LinkProps = {
 export const Link: FC<LinkProps> = ({children, href, disabled, target}) => {
   // https://a11y-guidelines.orange.com/en/articles/disable-elements/#disable-a-link
   return disabled ? (
-    <a className={clsx(styles.actionButton, styles.disabled)} aria-disabled role="link">
+    <Typography
+      variant="button3"
+      component="a"
+      className={clsx(styles.actionButton, styles.disabled)}
+      aria-disabled
+      role="link"
+    >
       {children}
-    </a>
+    </Typography>
   ) : (
-    <NextLink href={href ?? ''} target={target} className={clsx(styles.actionButton)}>
+    <Typography
+      variant="button3"
+      component={NextLink}
+      href={href ?? ''}
+      target={target}
+      className={clsx(styles.actionButton)}
+    >
       {children}
-    </NextLink>
+    </Typography>
   )
 }
