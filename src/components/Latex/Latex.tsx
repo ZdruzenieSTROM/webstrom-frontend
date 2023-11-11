@@ -33,7 +33,7 @@ export const Latex: FC<{children: string}> = ({children}) => {
 
   for (const m of matches) {
     result.push(
-      <span>{children.slice(currentPosition, m.index)}</span>,
+      <span dangerouslySetInnerHTML={{__html: `${children.slice(currentPosition, m.index)}`}} />,
       <MathComponent tex={trim(m[0])} display={m[0].slice(0, 2) === '\\[' || m[0].slice(0, 2) === '$$'} />,
     )
 
@@ -42,7 +42,7 @@ export const Latex: FC<{children: string}> = ({children}) => {
     }
   }
 
-  result.push(<span>{children.slice(Math.max(0, currentPosition))}</span>)
+  result.push(<span dangerouslySetInnerHTML={{__html: `${children.slice(Math.max(0, currentPosition))}`}} />)
 
   return (
     // nas globalny CSS reset nastavuje SVGcka na display:block, tak to tu resetneme nazad na inline
