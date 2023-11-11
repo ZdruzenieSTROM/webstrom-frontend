@@ -9,7 +9,6 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button, Link} from '../Clickable/Clickable'
 import {PasswordChangeDialog} from './PasswordChangeForm'
-import styles from './ProfileDetail.module.scss'
 
 type ProfileLineInput = {
   label: string
@@ -18,11 +17,12 @@ type ProfileLineInput = {
 
 const ProfileLine: FC<ProfileLineInput> = ({label, value}) => {
   return (
-    // font-size: 30px podla designu
-    <Typography sx={{fontSize: '1.875rem'}}>
-      <span className={styles.label}>{label}</span>
-      {value}
-    </Typography>
+    <Stack direction={'row'} spacing={1}>
+      <Typography variant="h2">{label}</Typography>
+      <Typography variant="h2" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
+        {value}
+      </Typography>
+    </Stack>
   )
 }
 
@@ -54,8 +54,12 @@ export const ProfileDetail: FC = () => {
         <ProfileLine label={'tel. č. na rodiča'} value={profile?.parent_phone || '-'} />
       </Stack>
       <Stack direction={'row'} mt={3} spacing={2}>
-        <Link href={`/${seminar}/profil/uprava`}>Upraviť údaje</Link>
-        <Button onClick={toggleOpenPasswordDialog}>Zmeniť heslo</Button>
+        <Link href={`/${seminar}/profil/uprava`}>
+          <Typography variant="button2">Upraviť údaje</Typography>
+        </Link>
+        <Button onClick={toggleOpenPasswordDialog}>
+          <Typography variant="button2">Zmeniť heslo</Typography>
+        </Button>
       </Stack>
       <PasswordChangeDialog open={openPasswordDialog} close={toggleOpenPasswordDialog} />
     </Stack>
