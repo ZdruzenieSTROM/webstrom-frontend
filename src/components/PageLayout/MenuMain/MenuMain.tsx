@@ -9,6 +9,7 @@ import {FC, useState} from 'react'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
 import Menu from '@/svg/menu.svg'
+import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Authentication} from '../Authentication/Authentication'
@@ -22,6 +23,8 @@ interface MenuItemInterface {
 
 export const MenuMain: FC = () => {
   const {seminar, seminarId} = useSeminarInfo()
+
+  const {hasPermissions} = useHasPermissions()
 
   const [isVisible, setIsVisible] = useState(true)
   const toggleMenu = () => setIsVisible((currentIsVisible) => !currentIsVisible)
@@ -55,6 +58,12 @@ export const MenuMain: FC = () => {
             <MenuMainItem key={id} caption={caption} url={`/${seminar}${url}`} />
           ))}
         </Stack>
+        {hasPermissions && (
+          <Stack sx={{mt: 4, mx: 2, borderTop: '8px dashed white', pt: 4}}>
+            <MenuMainItem caption="TODO: Opravovanie" url={`/${seminar}/admin/opravovanie`} />
+            <MenuMainItem caption="Admin" url="/admin" />
+          </Stack>
+        )}
         <Authentication />
       </div>
     </>
