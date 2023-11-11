@@ -87,8 +87,8 @@ export const RegisterForm: FC = () => {
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   const phoneRule = {
     validate: (val?: string) => {
-      if (val && !/^(\+\d{10,12})$/u.test(val.replaceAll(/\s+/gu, '')))
-        return '* Zadaj telefónne číslo vo formáte validnom formáte +421 123 456 789 alebo +421123456789.'
+      if (val && !/^(\+\d{10,12})$/u.test(val))
+        return '* Zadaj telefónne číslo vo formáte +421123456789.'
     },
   }
   return (
