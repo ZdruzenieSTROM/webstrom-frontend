@@ -113,7 +113,7 @@ export const SemesterAdministration: FC = () => {
         <Button onClick={getSemesterResults}>Poradie série</Button>
         <Button onClick={() => getPostalCards(false)}>Štítky na školy</Button>
         <Button onClick={() => getPostalCards(true)}>Štítky na školy (iba papierové riešenia)</Button>
-        <Button>Zoznam riešiteľov</Button>
+        <Link href={`/api/competition/semester/${semesterId}/participants-export/`}>Zoznam riešiteľov</Link>
       </div>
       <div className={styles.actions}>
         <Button>Pozvánky pre školy</Button>
