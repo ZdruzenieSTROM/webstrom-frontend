@@ -1,8 +1,9 @@
 export type Styles = {
-  adminSection: string
-  container: string
-  debug: string
-  sideContainer: string
+  actions: string
+  image: string
+  imageContainer: string
+  problem: string
+  problemTitle: string
 }
 
 export type ClassNames = keyof Styles

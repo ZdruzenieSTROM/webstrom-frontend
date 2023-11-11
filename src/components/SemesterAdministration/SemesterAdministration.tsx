@@ -9,9 +9,9 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button, Link} from '../Clickable/Clickable'
 import {Loading} from '../Loading/Loading'
-import styles from '../Problems/Problems.module.scss'
 import {PublicationUploader} from '../PublicationUploader/PublicationUploader'
 import {Result} from '../Results/ResultsRow'
+import styles from './SemesterAdministration.module.scss'
 
 interface PostalCard {
   code: number

@@ -1,111 +1,20 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
-import Image from 'next/image'
-import {Dispatch, FC, SetStateAction, useState} from 'react'
+import {useRouter} from 'next/router'
+import {FC, useState} from 'react'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
-import {Problem, SeriesWithProblems} from '@/types/api/competition'
+import {SeriesWithProblems} from '@/types/api/competition'
+import {Profile} from '@/types/api/personal'
+import {AuthContainer} from '@/utils/AuthContainer'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
-import {Latex} from '../Latex/Latex'
+import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 import {Discussion} from './Discussion'
+import {Problem} from './Problem'
 import styles from './Problems.module.scss'
-import {UploadProblemForm} from './UploadProblemForm'
-
-const Problem: FC<{
-  problem: Problem
-  setDisplaySideContent: Dispatch<
-    SetStateAction<{
-      type: string
-      problemId: number
-      problemNumber: number
-      problemSubmitted?: boolean
-    }>
-  >
-  registered: boolean
-  canRegister: boolean
-  canSubmit: boolean
-  invalidateSeriesQuery: () => Promise<void>
-}> = ({problem, registered, setDisplaySideContent, canSubmit, invalidateSeriesQuery}) => {
-  const handleDiscussionButtonClick = () => {
-    setDisplaySideContent((prevState) => {
-      if (prevState.type === 'discussion' && prevState.problemId === problem.id) {
-        return {type: '', problemId: -1, problemNumber: -1}
-      } else {
-        return {type: 'discussion', problemId: problem.id, problemNumber: problem.order}
-      }
-    })
-  }
-  const handleUploadClick = () => {
-    setDisplayProblemUploadForm((prevState) => !prevState)
-    setDisplayActions(false)
-  }
-
-  const [displayProblemUploadForm, setDisplayProblemUploadForm] = useState<boolean>(false)
-  const [displayActions, setDisplayActions] = useState(true)
-
-  return (
-    <div className={styles.problem}>
-      <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
-      <Latex>{problem.text}</Latex>
-      {problem.image && (
-        <div className={styles.imageContainer}>
-          <Image
-            src={problem.image}
-            alt={`Obrázok - ${problem.order} úloha`}
-            className={styles.image}
-            width={800} // These values are overwritten by css
-            height={800}
-          />
-        </div>
-      )}
-      {displayProblemUploadForm && (
-        <UploadProblemForm
-          problemId={problem.id}
-          setDisplayProblemUploadForm={setDisplayProblemUploadForm}
-          problemSubmitted={!!problem.submitted}
-          invalidateSeriesQuery={invalidateSeriesQuery}
-          setDisplayActions={setDisplayActions}
-        />
-      )}
-      {displayActions && (
-        <div className={styles.actions}>
-          {problem.solution_pdf && (
-            <Link href={problem.solution_pdf} target="_blank">
-              vzorové riešenie
-            </Link>
-          )}
-          {registered && (
-            <>
-              <Link
-                href={`/api/competition/problem/${problem.id}/my-solution`}
-                target="_blank"
-                disabled={!problem.submitted}
-              >
-                moje riešenie
-              </Link>
-              <Link
-                href={`/api/competition/problem/${problem.id}/corrected-solution`}
-                target="_blank"
-                disabled={!problem.submitted?.corrected_solution}
-              >
-                opravené riešenie{!!problem.submitted?.corrected_solution && ` (${problem.submitted.score || '?'})`}
-              </Link>
-            </>
-          )}
-          <Button onClick={handleDiscussionButtonClick}>diskusia ({problem.num_comments}) </Button>
-          {registered && (
-            <Button onClick={handleUploadClick} disabled={!canSubmit}>
-              odovzdať
-            </Button>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
 
 const overrideCycle = (prev: boolean | undefined) => {
   if (prev === undefined) return true
@@ -115,6 +24,17 @@ const overrideCycle = (prev: boolean | undefined) => {
 
 export const Problems: FC = () => {
   const {id, seminar, loading} = useDataFromURL()
+
+  const router = useRouter()
+
+  const {isAuthed} = AuthContainer.useContainer()
+
+  const {data} = useQuery({
+    queryKey: ['personal', 'profiles', 'myprofile'],
+    queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
+    enabled: isAuthed,
+  })
+  const profile = data?.data
 
   // used to display discussions
   const [displaySideContent, setDisplaySideContent] = useState<{
@@ -131,7 +51,7 @@ export const Problems: FC = () => {
   })
   const series = seriesData?.data
   const problems = series?.problems ?? []
-  // const semesterId = series?.semester ?? -1
+  const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
 
   const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
@@ -156,8 +76,31 @@ export const Problems: FC = () => {
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
+  const [displayRegisterDialog, setDisplayRegisterDialog] = useState<boolean>(false)
+  const closeRegisterDialog = () => setDisplayRegisterDialog(false)
+  const editProfile = () => {
+    closeRegisterDialog()
+    router.push(`/${seminar}/profil/uprava`)
+  }
+  const agree = () => {
+    displayRegisterDialog && registerToSemester(semesterId)
+    closeRegisterDialog()
+  }
+
   return (
     <>
+      <Dialog
+        open={displayRegisterDialog}
+        close={closeRegisterDialog}
+        title="Skontroluj prosím, čí údaje o ročníku a škole sú správne."
+        contentText={`Škola: ${profile?.grade_name}, Ročník: ${profile?.school.verbose_name}`} // TODO: this is not styled, I suggest expanding the dialog component to support content as component
+        actions={
+          <>
+            <Button onClick={editProfile}>Zmeniť údaje</Button>
+            <Button onClick={agree}>Údaje sú správne</Button>
+          </>
+        }
+      />
       <div className={styles.container}>
         {(loading.semesterListIsLoading ||
           loading.currentSeriesIsLoading ||
@@ -177,6 +120,7 @@ export const Problems: FC = () => {
             canRegister={canRegister}
             canSubmit={canSubmit}
             invalidateSeriesQuery={invalidateSeriesQuery}
+            displayRegisterDialog={() => setDisplayRegisterDialog(true)}
           />
         ))}
 
@@ -199,16 +143,7 @@ export const Problems: FC = () => {
           </div>
         </div>
       </div>
-
       <div className={styles.sideContainer}>
-        {!isRegistered && canRegister ? (
-          <div onClick={() => registerToSemester(id.semesterId)} className={styles.registerButton}>
-            Chcem riešiť!
-          </div>
-        ) : (
-          // sideCointainer grid rata s tymto childom, aj ked prazdnym
-          <div />
-        )}
         {displaySideContent.type === 'discussion' && (
           <Discussion
             problemId={displaySideContent.problemId}
@@ -217,15 +152,6 @@ export const Problems: FC = () => {
             invalidateSeriesQuery={invalidateSeriesQuery}
           />
         )}
-        {/* {displaySideContent.type === 'uploadProblemForm' && (
-          <UploadProblemForm
-            problemId={displaySideContent.problemId}
-            problemNumber={displaySideContent.problemNumber}
-            problemSubmitted={displaySideContent.problemSubmitted}
-            setDisplaySideContent={setDisplaySideContent}
-            invalidateSeriesQuery={invalidateSeriesQuery}
-          />
-        )} */}
       </div>
     </>
   )
