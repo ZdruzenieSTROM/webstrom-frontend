@@ -201,7 +201,7 @@ export const Problems: FC = () => {
         open={deleteDialogId !== undefined}
         close={close}
         title="Skontroluj prosím, čí údaje o ročníku a škole sú správne."
-        contentText={`Škola: ${profile?.grade_name}, Ročník: ${profile?.school.verbose_name}`} // TODO: this is not styled yet, I suggest expanding the dialog component to support content as component
+        contentText={`Škola: ${profile?.grade_name}, Ročník: ${profile?.school.verbose_name}`} // TODO: this is not styled, I suggest expanding the dialog component to support content as component
         actions={
           <>
             <Button onClick={editProfile}>Zmeniť údaje</Button>
