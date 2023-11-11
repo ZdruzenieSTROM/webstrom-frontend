@@ -4,7 +4,6 @@ import {createTheme, Theme} from '@mui/material/styles'
 declare module '@mui/material/styles' {
   interface TypographyVariants {
     body3: React.CSSProperties
-    body4: React.CSSProperties
     button1: React.CSSProperties
     button2: React.CSSProperties
     button3: React.CSSProperties
@@ -13,7 +12,6 @@ declare module '@mui/material/styles' {
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
     body3?: React.CSSProperties
-    body4?: React.CSSProperties
     button1?: React.CSSProperties
     button2?: React.CSSProperties
     button3?: React.CSSProperties
@@ -24,16 +22,33 @@ declare module '@mui/material/styles' {
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     body3: true
-    body4: true
     button1: true
     button2: true
     button3: true
+    // disable these variants
+    h4: false
+    h5: false
+    h6: false
+    button: false
+    caption: false
+    overline: false
+    subtitle1: false
+    subtitle2: false
   }
 }
 
 const _theme = createTheme({
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
+    // disable these variants
+    h4: undefined,
+    h5: undefined,
+    h6: undefined,
+    button: undefined,
+    caption: undefined,
+    overline: undefined,
+    subtitle1: undefined,
+    subtitle2: undefined,
   },
 })
 
@@ -53,7 +68,9 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(36)},
       [lg]: {fontSize: pxToRem(40)},
       [xl]: {fontSize: pxToRem(40)},
+      textTransform: 'uppercase',
       fontWeight: 800,
+      fontStyle: 'italic',
     },
     h2: {
       fontSize: pxToRem(22),
@@ -61,7 +78,9 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(26)},
       [lg]: {fontSize: pxToRem(30)},
       [xl]: {fontSize: pxToRem(30)},
+      textTransform: 'uppercase',
       fontWeight: 800,
+      fontStyle: 'italic',
     },
     h3: {
       fontSize: pxToRem(20),
@@ -69,14 +88,8 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(22)},
       [lg]: {fontSize: pxToRem(24)},
       [xl]: {fontSize: pxToRem(24)},
+      textTransform: 'uppercase',
       fontWeight: 800,
-    },
-    h4: {
-      fontSize: pxToRem(16),
-      [sm]: {fontSize: pxToRem(18)},
-      [md]: {fontSize: pxToRem(18)},
-      [lg]: {fontSize: pxToRem(20)},
-      [xl]: {fontSize: pxToRem(20)},
     },
     body1: {
       fontSize: pxToRem(16),
@@ -106,6 +119,8 @@ export const theme: Theme = {
       [lg]: {fontSize: pxToRem(30)},
       [xl]: {fontSize: pxToRem(30)},
       textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
     },
     button2: {
       fontSize: pxToRem(16),
@@ -114,6 +129,8 @@ export const theme: Theme = {
       [lg]: {fontSize: pxToRem(20)},
       [xl]: {fontSize: pxToRem(20)},
       textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
     },
     button3: {
       fontSize: pxToRem(10),

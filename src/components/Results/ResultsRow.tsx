@@ -40,11 +40,11 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
 
   return (
     <div className={styles.rowWrapper}>
-      <Typography variant="h1" component="span" fontStyle="italic" className={styles.rank}>
+      <Typography variant="h1" component="span" className={styles.rank}>
         {rank_changed && rank_start + '.'}
       </Typography>
       <div className={styles.nameAndSchool}>
-        <Typography variant="h2" component="span" fontStyle="italic" className={styles.name}>
+        <Typography variant="h2" component="span" className={styles.name}>
           {registration.profile.first_name + ' ' + registration.profile.last_name}
         </Typography>
         <Typography variant="body3" className={styles.school}>

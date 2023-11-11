@@ -74,7 +74,7 @@ const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
 
   return (
     <div className={clsx(styles.menuItem, active && styles.active)}>
-      <Typography variant="h2" textTransform="uppercase">
+      <Typography variant="button1" fontStyle="normal">
         <Link href={url}>{caption}</Link>
       </Typography>
     </div>
