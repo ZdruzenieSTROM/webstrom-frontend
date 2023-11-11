@@ -1,12 +1,11 @@
-import {Upload} from '@mui/icons-material'
+import {Stack} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
-import axios from 'axios'
-import {FC, useCallback} from 'react'
-import {DropzoneOptions, useDropzone} from 'react-dropzone'
+import {FC} from 'react'
 
 import {SemesterWithProblems} from '@/types/api/generated/competition'
 
 import {Link} from '../Clickable/Clickable'
+import {FileUploader} from '../FileUploader/FileUploader'
 
 interface PublicationUploaderProps {
   semesterId: string
@@ -17,45 +16,28 @@ interface PublicationUploaderProps {
 export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, order, semesterData}) => {
   const queryClient = useQueryClient()
 
-  const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
-    async (acceptedFiles, fileRejections) => {
-      if (fileRejections.length > 0) {
-        return
-      }
-      const formData = new FormData()
-      formData.append('file', acceptedFiles[0])
-      formData.append('publication_type', 'Časopisy')
-      formData.append('event', semesterId)
-      formData.append('order', order.toString())
-      await axios.post('/api/competition/publication/upload/', formData)
-      await queryClient.invalidateQueries({queryKey: ['competition', 'semester', semesterId]})
-    },
-    [semesterId, order, queryClient],
-  )
+  const refetch = () => queryClient.invalidateQueries({queryKey: ['competition', 'semester', semesterId]})
+
+  const appendFormData = (formData: FormData) => {
+    formData.append('publication_type', 'Časopisy')
+    formData.append('event', semesterId)
+    formData.append('order', order.toString())
+  }
+
   const publication = semesterData?.publication_set.find((publication) => publication.order === order)
 
-  const {getRootProps, getInputProps} = useDropzone({
-    onDrop,
-    multiple: false,
-    accept:
-      {
-        'application/pdf': ['.pdf'],
-      } ?? {},
-  })
-
   return (
-    <>
-      <h4> {order}.Časopis: </h4>
-      <div {...getRootProps()}>
-        <input {...getInputProps()} />
-        <Upload />
-      </div>
-      {}
+    <Stack direction="row" gap={2} alignItems="center">
+      <h4>{order}. Časopis:</h4>
       {publication && (
-        <Link key={publication.id} href={`/api/competition/publication/${publication.id}/download`}>
-          {publication.name}
-        </Link>
+        <Link href={`/api/competition/publication/${publication.id}/download`}>{publication.name}.pdf</Link>
       )}
-    </>
+      <FileUploader
+        uploadLink={'/api/competition/publication/upload/'}
+        acceptedFormats={{'application/pdf': ['.pdf']}}
+        adjustFormData={appendFormData}
+        refetch={refetch}
+      />
+    </Stack>
   )
 }

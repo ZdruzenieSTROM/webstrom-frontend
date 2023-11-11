@@ -1,3 +1,4 @@
+import {Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -126,10 +127,12 @@ export const SemesterAdministration: FC = () => {
       ) : (
         <></>
       )}
-      <h3>Nahrávanie časopisov</h3>
-      {[1, 2, 3].map((order) => (
-        <PublicationUploader key={order} semesterId={semesterId ?? ''} order={order} semesterData={semester} />
-      ))}
+      <Stack mt={1} gap={1}>
+        <h3>Nahrávanie časopisov</h3>
+        {[1, 2, 3].map((order) => (
+          <PublicationUploader key={order} semesterId={semesterId ?? ''} order={order} semesterData={semester} />
+        ))}
+      </Stack>
     </>
   )
 }
