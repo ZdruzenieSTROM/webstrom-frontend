@@ -63,12 +63,14 @@ export interface Profile {
   id: number
   first_name: string
   last_name: string
+  email: string
   nickname: string | null
   school: SchoolProfile
   phone: string | null
   parent_phone: string | null
   gdpr: boolean
   grade: number
+  grade_name: string
   is_student: boolean
   has_school: boolean
   school_id: number
