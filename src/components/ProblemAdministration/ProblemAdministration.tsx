@@ -159,7 +159,7 @@ export const ProblemAdministration: FC = () => {
               <div className={styles.centerCell}>
                 {solution.solution ? (
                   <a
-                    href={`/api/competition/solution/${solution.id}/download-corrected`}
+                    href={`/api/competition/solution/${solution.id}/file-solution`}
                     target="_blank"
                     rel="noreferrer"
                     className={styles.icon}
@@ -179,7 +179,7 @@ export const ProblemAdministration: FC = () => {
               <div className={styles.centerCell}>
                 {solution.corrected_solution ? (
                   <a
-                    href={`/api/competition/solution/${solution.id}/download-corrected`}
+                    href={`/api/competition/solution/${solution.id}/file-corrected`}
                     target="_blank"
                     rel="noreferrer"
                     className={styles.icon}
