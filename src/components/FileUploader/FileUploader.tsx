@@ -7,10 +7,11 @@ import {Accept, DropzoneOptions, useDropzone} from 'react-dropzone'
 interface FileUploaderProps {
   uploadLink: string
   acceptedFormats?: Accept
+  adjustFormData?: (formData: FormData) => void
   refetch: () => void
 }
 
-export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats, refetch}) => {
+export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats, adjustFormData, refetch}) => {
   const {mutate: fileUpload} = useMutation({
     mutationFn: (formData: FormData) => axios.post(uploadLink, formData),
     onSuccess: () => refetch(),
@@ -23,9 +24,10 @@ export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats
       }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
+      adjustFormData?.(formData)
       fileUpload(formData)
     },
-    [fileUpload],
+    [adjustFormData, fileUpload],
   )
 
   const {getRootProps, getInputProps} = useDropzone({

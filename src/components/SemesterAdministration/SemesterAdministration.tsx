@@ -1,3 +1,4 @@
+import {Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -9,6 +10,7 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 import {Button, Link} from '../Clickable/Clickable'
 import {Loading} from '../Loading/Loading'
 import styles from '../Problems/Problems.module.scss'
+import {PublicationUploader} from '../PublicationUploader/PublicationUploader'
 import {Result} from '../Results/ResultsRow'
 
 interface PostalCard {
@@ -125,6 +127,12 @@ export const SemesterAdministration: FC = () => {
       ) : (
         <></>
       )}
+      <Stack mt={1} gap={1}>
+        <h3>Nahrávanie časopisov</h3>
+        {[1, 2, 3].map((order) => (
+          <PublicationUploader key={order} semesterId={semesterId ?? ''} order={order} semesterData={semester} />
+        ))}
+      </Stack>
     </>
   )
 }

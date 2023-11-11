@@ -4,6 +4,7 @@ export interface Publication {
   file: any
   publication_type?: any | null
   event?: any | null
+  order: number | null
 }
 
 export interface RegistrationLink {
