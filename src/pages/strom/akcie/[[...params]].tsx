@@ -29,33 +29,72 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
           {competition.who_can_participate && <p>Pre koho? {competition.who_can_participate}</p>}
           <p>{competition.description}</p>
         </div>
-        {competition.rules && (
-          <div className={styles.container}>
-            <div className={styles.actions}>
+        <div className={styles.mainText}>
+          {competition.upcoming_or_current_event ? (
+            <div className={styles.mainText}>
+              <p>
+                <b>Nadchádzajúci ročník:</b>
+              </p>
+              {competition.upcoming_or_current_event.start && (
+                <p>Odkedy? {competition.upcoming_or_current_event.start} </p>
+              )}
+              {competition.upcoming_or_current_event.end && <p>Dokedy? {competition.upcoming_or_current_event.end}</p>}
+              {competition.upcoming_or_current_event.publication_set.length > 0 && (
+                <p>
+                  <Link href={`/api/${competition.upcoming_or_current_event.publication_set[0].file}`}>Pozvánka</Link>
+                </p>
+              )}
+              {competition.upcoming_or_current_event.registration_link && (
+                <div>
+                  <p>
+                    Registrácia prebieha do:
+                    {competition.upcoming_or_current_event.registration_link.end}
+                    <Link href={competition.upcoming_or_current_event.registration_link.url}>Registračný formulár</Link>
+                  </p>
+
+                  <p>{competition.upcoming_or_current_event.registration_link.additional_info}</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p>
+              <b>Nadchádzajúci ročník:</b> Pripravujeme
+            </p>
+          )}
+        </div>
+
+        <div className={styles.container}>
+          <div className={styles.actions}>
+            <div className={styles.actionButton}>
               <RulesLink />
             </div>
           </div>
-        )}
+        </div>
+
         <div className={styles.h2}>
           <h2>Archív: </h2>
         </div>
         {competition.competition_type.name === 'Tábor' ? (
-          <div className={styles.archiveCamp}>
+          <div className={styles.archiveWithoutPublications}>
             {competition.history_events.map((event) => (
-              <div key={event.id}>
-                {competition.name} {event.school_year}
-              </div>
+              <Fragment key={event.id}>
+                <div>
+                  {competition.name + ' '} {event.school_year}
+                </div>
+              </Fragment>
             ))}
           </div>
         ) : (
-          <div className={styles.archive}>
+          <div className={styles.archiveWithPublications}>
             {competition.history_events.map((event) => (
               <Fragment key={event.id}>
                 <div>
                   {competition.name} {event.school_year}
                 </div>
                 {event.publication_set.map((publication) => (
-                  <div key={publication.id}> {publication.name}</div>
+                  <Link key={publication.id} href={`/api/${publication.file}`}>
+                    {publication.name}
+                  </Link>
                 ))}
               </Fragment>
             ))}

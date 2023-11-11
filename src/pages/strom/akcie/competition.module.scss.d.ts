@@ -1,8 +1,8 @@
 export type Styles = {
   actionButton: string
   actions: string
-  archive: string
-  archiveCamp: string
+  archiveWithoutPublications: string
+  archiveWithPublications: string
   commentActions: string
   container: string
   disabled: string
