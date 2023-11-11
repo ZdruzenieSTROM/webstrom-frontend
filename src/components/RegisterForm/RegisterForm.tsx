@@ -7,14 +7,13 @@ import {SubmitHandler, useForm} from 'react-hook-form'
 import styles from '@/components/FormItems/Form.module.scss'
 import {FormCheckbox} from '@/components/FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
-import {SelectOption} from '@/components/FormItems/FormSelect/FormSelect'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Clickable'
-import {SchoolSubForm} from '../SchoolSubForm/SchoolSubForm'
+import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
-export type RegisterFormValues = {
+interface RegisterFormValues extends SchoolSubFormValues {
   email?: string
   password1?: string
   password2?: string
@@ -22,12 +21,7 @@ export type RegisterFormValues = {
   last_name?: string
   phone?: string
   parent_phone?: string
-  new_school_description?: string
-  without_school: boolean
-  school?: SelectOption | null
-  school_not_found: boolean
-  grade: number | ''
-  gdpr: boolean
+  gdpr?: boolean
 }
 
 const defaultValues: RegisterFormValues = {
@@ -47,7 +41,10 @@ const defaultValues: RegisterFormValues = {
 }
 
 export const RegisterForm: FC = () => {
-  const {handleSubmit, control, watch, setValue, getValues} = useForm<RegisterFormValues>({defaultValues})
+  const {handleSubmit, control, watch, setValue, getValues} = useForm<RegisterFormValues>({
+    defaultValues,
+    values: defaultValues,
+  })
 
   const scrollToTop = () => {
     window.scrollTo({

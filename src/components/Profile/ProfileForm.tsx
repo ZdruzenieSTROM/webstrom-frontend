@@ -13,18 +13,13 @@ import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Clickable'
-import {SchoolSubForm} from '../SchoolSubForm/SchoolSubForm'
+import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
-export type ProfileFormValues = {
+interface ProfileFormValues extends SchoolSubFormValues {
   first_name?: string
   last_name?: string
   phone?: string
   parent_phone?: string
-  new_school_description?: string
-  without_school: boolean
-  school?: SelectOption | null
-  school_not_found: boolean
-  grade: number | ''
 }
 
 const defaultValues: ProfileFormValues = {
@@ -64,6 +59,8 @@ export const ProfileForm: FC = () => {
     defaultValues,
     values: profileValues,
   })
+
+  watch(['first_name'])
 
   const scrollToTop = () => {
     window.scrollTo({

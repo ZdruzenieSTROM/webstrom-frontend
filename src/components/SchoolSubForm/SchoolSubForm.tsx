@@ -12,20 +12,22 @@ import {FormAutocomplete} from '../FormItems/FormAutocomplete/FormAutocomplete'
 import {FormCheckbox} from '../FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '../FormItems/FormInput/FormInput'
 import {FormSelect, SelectOption} from '../FormItems/FormSelect/FormSelect'
-import {ProfileFormValues} from '../Profile/ProfileForm'
-import {RegisterFormValues} from '../RegisterForm/RegisterForm'
 
-type SchoolSubFormProps<T extends RegisterFormValues | ProfileFormValues> = {
+export type SchoolSubFormValues = {
+  new_school_description?: string
+  without_school: boolean
+  school?: SelectOption | null
+  school_not_found: boolean
+  grade: number | ''
+}
+
+type SchoolSubFormProps<T extends SchoolSubFormValues> = {
   control: Control<T, unknown>
   watch: UseFormWatch<T>
   setValue: UseFormSetValue<T>
 }
 
-export const SchoolSubForm = ({
-  control,
-  watch,
-  setValue,
-}: SchoolSubFormProps<RegisterFormValues | ProfileFormValues>) => {
+export const SchoolSubForm = ({control, watch, setValue}: SchoolSubFormProps<SchoolSubFormValues>) => {
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
   const otherSchoolItem = useRef<SelectOption>()
