@@ -184,22 +184,22 @@ export const Problems: FC = () => {
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
-  const [deleteDialogId, setDeleteDialogId] = useState<number | undefined>()
-  const close = () => setDeleteDialogId(undefined)
+  const [displayRegisterDialog, setDisplayRegisterDialog] = useState<boolean>(false)
+  const closeRegisterDialog = () => setDisplayRegisterDialog(false)
   const editProfile = () => {
-    close()
+    closeRegisterDialog()
     router.push(`/${seminar}/profil/uprava`)
   }
   const agree = () => {
-    deleteDialogId !== undefined && registerToSemester(semesterId)
-    close()
+    displayRegisterDialog && registerToSemester(semesterId)
+    closeRegisterDialog()
   }
 
   return (
     <>
       <Dialog
-        open={deleteDialogId !== undefined}
-        close={close}
+        open={displayRegisterDialog}
+        close={closeRegisterDialog}
         title="Skontroluj prosím, čí údaje o ročníku a škole sú správne."
         contentText={`Škola: ${profile?.grade_name}, Ročník: ${profile?.school.verbose_name}`} // TODO: this is not styled, I suggest expanding the dialog component to support content as component
         actions={
@@ -228,7 +228,7 @@ export const Problems: FC = () => {
             canRegister={canRegister}
             canSubmit={canSubmit}
             invalidateSeriesQuery={invalidateSeriesQuery}
-            displayRegisterDialog={() => setDeleteDialogId(problem.id)}
+            displayRegisterDialog={() => setDisplayRegisterDialog(true)}
           />
         ))}
 
