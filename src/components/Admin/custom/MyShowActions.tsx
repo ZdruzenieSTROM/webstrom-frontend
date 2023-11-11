@@ -8,6 +8,8 @@ export const MyShowActions: FC = () => {
 
   const resource = useResourceContext()
   const record = useRecordContext()
+  // needed, undefined on first load
+  if (!record) return null
 
   const currentPathWithoutTab = `/${resource}/${record.id}/show` // '/cms/post/123/show'
   let to = `/${resource}/${record.id}` // '/cms/post/123'

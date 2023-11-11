@@ -8,6 +8,8 @@ export const MyEditActions: FC<EditActionsProps> = () => {
 
   const resource = useResourceContext()
   const record = useRecordContext()
+  // needed, undefined on first load
+  if (!record) return null
 
   const currentPathWithoutTab = `/${resource}/${record.id}` // '/cms/post/123'
   let to = `${currentPathWithoutTab}/show` // '/cms/post/123/show'
