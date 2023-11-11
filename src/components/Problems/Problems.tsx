@@ -217,15 +217,6 @@ export const Problems: FC = () => {
             invalidateSeriesQuery={invalidateSeriesQuery}
           />
         )}
-        {/* {displaySideContent.type === 'uploadProblemForm' && (
-          <UploadProblemForm
-            problemId={displaySideContent.problemId}
-            problemNumber={displaySideContent.problemNumber}
-            problemSubmitted={displaySideContent.problemSubmitted}
-            setDisplaySideContent={setDisplaySideContent}
-            invalidateSeriesQuery={invalidateSeriesQuery}
-          />
-        )} */}
       </div>
     </>
   )
