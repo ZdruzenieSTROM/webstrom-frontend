@@ -1,5 +1,5 @@
 import {useMutation} from '@tanstack/react-query'
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
@@ -11,11 +11,13 @@ import {Dialog} from '../Dialog/Dialog'
 import {FormInput} from '../FormItems/FormInput/FormInput'
 
 type PasswordChangeDialogValues = {
+  old_password: string
   new_password1: string
   new_password2: string
 }
 
 const defaultValues: PasswordChangeDialogValues = {
+  old_password: '',
   new_password1: '',
   new_password2: '',
 }
@@ -25,8 +27,12 @@ interface PasswordChangeDialogProps {
   close: () => void
 }
 
+interface ChangePasswordErrorResponseData {
+  old_password?: string[]
+}
+
 export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close}) => {
-  const {handleSubmit, reset, control, getValues} = useForm<PasswordChangeDialogValues>({defaultValues})
+  const {handleSubmit, reset, control, getValues, setError} = useForm<PasswordChangeDialogValues>({defaultValues})
 
   const onSuccess = () => {
     alert('Zmena hesla prebehla úspešne.')
@@ -34,11 +40,20 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
     close()
   }
 
+  const onError = (error: AxiosError<ChangePasswordErrorResponseData>) => {
+    if (error.response?.status === 400) {
+      if (error.response.data.old_password) {
+        setError('old_password', {type: 'manual', message: error.response.data.old_password[0]}) // TODO: We might want to simplify/reword this message
+      }
+    }
+  }
+
   const {mutate: submitFormData} = useMutation({
     mutationFn: (data: PasswordChangeDialogValues) => {
       return axios.post<IGeneralPostResponse>(`/api/user/password/change`, data)
     },
     onSuccess: onSuccess,
+    onError: onError,
   })
 
   const onSubmit: SubmitHandler<PasswordChangeDialogValues> = async (data) => {
@@ -54,6 +69,13 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
       title="Zmena hesla"
       contentText={
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <FormInput
+            control={control}
+            name="old_password"
+            label="aktuálne heslo"
+            type="password"
+            rules={requiredRule}
+          />
           <FormInput
             control={control}
             name="new_password1"
