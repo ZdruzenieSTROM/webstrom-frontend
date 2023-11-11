@@ -2,8 +2,8 @@ import {NextPage} from 'next'
 
 import Page from '../../strom/profil/index'
 
-const Vysledky: NextPage = () => {
+const Profile: NextPage = () => {
   return <Page />
 }
 
-export default Vysledky
+export default Profile
