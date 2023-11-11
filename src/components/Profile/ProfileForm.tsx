@@ -78,8 +78,8 @@ export const ProfileForm: FC = () => {
       first_name: data.first_name,
       last_name: data.last_name,
       school: data.school?.id,
-      phone: data.phone,
-      parent_phone: data.parent_phone,
+      phone: data.phone?.replaceAll(/\s+/gu, ''),
+      parent_phone: data.parent_phone?.replaceAll(/\s+/gu, ''),
       grade: data.grade,
     },
     new_school_description: data.new_school_description || '',
@@ -100,7 +100,7 @@ export const ProfileForm: FC = () => {
   const phoneRule = {
     validate: (val?: string) => {
       if (val && !/^(\+\d{10,12})$/u.test(val.replaceAll(/\s+/gu, '')))
-        return '* Zadaj telefónne číslo vo formáte validnom formáte +421 123 456 789 alebo +421123456789.'
+        return '* Zadaj telefónne číslo vo formáte +421 123 456 789 alebo +421123456789.'
     },
   }
   return (
