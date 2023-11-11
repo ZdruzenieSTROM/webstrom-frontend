@@ -1,4 +1,4 @@
-import {Theme, Typography, useMediaQuery} from '@mui/material'
+import {Stack, Theme, Typography, useMediaQuery} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
@@ -49,12 +49,12 @@ export const MenuMain: FC = () => {
             <Loading />
           </div>
         )}
-        <div className={styles.menuItems}>
-          {menuItems.map((menuItem: MenuItemInterface) => {
-            // `menuItem.url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
-            return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
-          })}
-        </div>
+        <Stack mt="176px">
+          {menuItems.map(({id, caption, url}) => (
+            // `url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
+            <MenuMainItem key={id} caption={caption} url={`/${seminar}${url}`} />
+          ))}
+        </Stack>
         <Authentication />
       </div>
     </>
