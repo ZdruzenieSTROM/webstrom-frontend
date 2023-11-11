@@ -1,5 +1,5 @@
 import {useMutation} from '@tanstack/react-query'
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
@@ -24,6 +24,10 @@ interface RegisterFormValues extends SchoolSubFormValues {
   gdpr?: boolean
 }
 
+interface RegisterErrorResponseData {
+  email?: string[]
+}
+
 const defaultValues: RegisterFormValues = {
   email: '',
   password1: '',
@@ -41,7 +45,7 @@ const defaultValues: RegisterFormValues = {
 }
 
 export const RegisterForm: FC = () => {
-  const {handleSubmit, control, watch, setValue, getValues} = useForm<RegisterFormValues>({
+  const {handleSubmit, control, watch, setValue, getValues, setError} = useForm<RegisterFormValues>({
     defaultValues,
     values: defaultValues,
   })
@@ -78,6 +82,15 @@ export const RegisterForm: FC = () => {
       return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
     },
     onSuccess: () => router.push(`${router.asPath}/../verifikacia`),
+    onError: (error: AxiosError<RegisterErrorResponseData>) => {
+      if (error.response?.status === 400) {
+        if (error.response.data.email) {
+          setError('email', {type: 'custom', message: `* ${error.response.data.email[0]}`})
+        }
+      } else {
+        alert('Neznáma chyba pri registrácii. Skúste to prosím neskôr.')
+      }
+    },
   })
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
