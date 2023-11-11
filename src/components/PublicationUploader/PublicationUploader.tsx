@@ -10,7 +10,7 @@ import {FileUploader} from '../FileUploader/FileUploader'
 interface PublicationUploaderProps {
   semesterId: string
   order: number
-  semesterData: SemesterWithProblems | undefined
+  semesterData: SemesterWithProblems
 }
 
 export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, order, semesterData}) => {
@@ -24,7 +24,7 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
     formData.append('order', order.toString())
   }
 
-  const publication = semesterData?.publication_set.find((publication) => publication.order === order)
+  const publication = semesterData.publication_set.find((publication) => publication.order === order)
 
   return (
     <Stack direction="row" gap={2} alignItems="center">
