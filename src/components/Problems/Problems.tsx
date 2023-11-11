@@ -199,16 +199,7 @@ export const Problems: FC = () => {
           </div>
         </div>
       </div>
-
       <div className={styles.sideContainer}>
-        {!isRegistered && canRegister ? (
-          <div onClick={() => registerToSemester(id.semesterId)} className={styles.registerButton}>
-            Chcem riešiť!
-          </div>
-        ) : (
-          // sideCointainer grid rata s tymto childom, aj ked prazdnym
-          <div />
-        )}
         {displaySideContent.type === 'discussion' && (
           <Discussion
             problemId={displaySideContent.problemId}
