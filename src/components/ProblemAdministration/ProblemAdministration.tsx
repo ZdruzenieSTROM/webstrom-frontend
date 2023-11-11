@@ -158,7 +158,12 @@ export const ProblemAdministration: FC = () => {
               </div>
               <div className={styles.centerCell}>
                 {solution.solution ? (
-                  <a href={solution?.solution} target="_blank" rel="noreferrer" className={styles.icon}>
+                  <a
+                    href={`/api/competition/solution/${solution.id}/file-solution`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.icon}
+                  >
                     <FormatAlignJustify />
                   </a>
                 ) : (
@@ -173,7 +178,12 @@ export const ProblemAdministration: FC = () => {
               </div>
               <div className={styles.centerCell}>
                 {solution.corrected_solution ? (
-                  <a href={solution?.corrected_solution} target="_blank" rel="noreferrer" className={styles.icon}>
+                  <a
+                    href={`/api/competition/solution/${solution.id}/file-corrected`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.icon}
+                  >
                     <Grading />
                   </a>
                 ) : (
