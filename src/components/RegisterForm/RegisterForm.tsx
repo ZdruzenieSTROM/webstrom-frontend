@@ -80,7 +80,7 @@ export const RegisterForm: FC = () => {
     onSuccess: () => router.push(`${router.asPath}/../verifikacia`),
   })
 
-  const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
     submitFormData(data)
   }
 

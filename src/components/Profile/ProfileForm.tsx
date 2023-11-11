@@ -92,7 +92,7 @@ export const ProfileForm: FC = () => {
     onSuccess: () => router.push(`/${seminar}/profil`),
   })
 
-  const onSubmit: SubmitHandler<ProfileFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<ProfileFormValues> = (data) => {
     submitFormData(data)
   }
 
