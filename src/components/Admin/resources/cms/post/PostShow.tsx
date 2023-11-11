@@ -5,7 +5,6 @@ import {
   DateField,
   NumberField,
   Show,
-  ShowProps,
   SimpleShowLayout,
   Tab,
   TabbedShowLayout,
@@ -15,8 +14,8 @@ import {
 import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
 import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 
-export const PostShow: FC<ShowProps> = (props) => (
-  <Show {...props} actions={<MyShowActions />}>
+export const PostShow: FC = () => (
+  <Show actions={<MyShowActions />}>
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>

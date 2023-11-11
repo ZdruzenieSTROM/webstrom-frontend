@@ -1,9 +1,9 @@
 import {FC} from 'react'
-import {EditActionsProps, ListButton, ShowButton, TopToolbar, useRecordContext, useResourceContext} from 'react-admin'
+import {ListButton, ShowButton, TopToolbar, useRecordContext, useResourceContext} from 'react-admin'
 // eslint-disable-next-line node/no-extraneous-import
 import {useLocation} from 'react-router-dom'
 
-export const MyEditActions: FC<EditActionsProps> = () => {
+export const MyEditActions: FC = () => {
   const {pathname} = useLocation() // bud '/cms/post/123' alebo '/cms/post/123/1' (prvy tab)
 
   const resource = useResourceContext()

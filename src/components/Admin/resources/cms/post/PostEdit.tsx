@@ -1,22 +1,12 @@
 import {FC} from 'react'
-import {
-  ArrayInput,
-  Edit,
-  EditProps,
-  FormTab,
-  NumberInput,
-  required,
-  SimpleFormIterator,
-  TabbedForm,
-  TextInput,
-} from 'react-admin'
+import {ArrayInput, Edit, FormTab, NumberInput, required, SimpleFormIterator, TabbedForm, TextInput} from 'react-admin'
 
 import {MyDateInput} from '@/components/Admin/custom/MyDateInput'
 import {MyEditActions} from '@/components/Admin/custom/MyEditActions'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
-export const PostEdit: FC<EditProps> = (props) => (
-  <Edit {...props} actions={<MyEditActions />} redirect="show" mutationMode="undoable">
+export const PostEdit: FC = () => (
+  <Edit actions={<MyEditActions />} redirect="show" mutationMode="undoable">
     <TabbedForm>
       <FormTab label="general">
         <NumberInput source="id" fullWidth disabled />

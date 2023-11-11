@@ -1,12 +1,13 @@
 import {Chip} from '@mui/material'
 import {FC} from 'react'
-import {FieldProps} from 'react-admin'
+import {FieldProps, useRecordContext} from 'react-admin'
 
 type MyArrayFieldProps = FieldProps & {
   formatNumber?: (v: number) => string
 }
 
-export const MyArrayField: FC<MyArrayFieldProps> = ({record, source, formatNumber}) => {
+export const MyArrayField: FC<MyArrayFieldProps> = ({source, formatNumber}) => {
+  const record = useRecordContext()
   if (!record || !source) return null
 
   const array = record[source] as (string | number)[] | undefined
