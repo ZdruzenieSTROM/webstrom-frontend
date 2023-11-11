@@ -1,9 +1,9 @@
+import {Stack, Typography} from '@mui/material'
 import {FC} from 'react'
 
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Link} from '../Clickable/Clickable'
-import styles from './Post.module.scss'
 
 export interface IPost {
   id: number
@@ -24,15 +24,20 @@ export const Post: FC<IPost> = ({id, caption, short_text, links, sites}) => {
 
   return (
     <li key={id}>
-      <h2 className={styles.title}>{caption}</h2>
-      <p className={styles.text}>{short_text}</p>
-      <div className={styles.links}>
+      <Typography variant="h2" textTransform="none" fontStyle="normal">
+        {caption}
+      </Typography>
+      <Typography variant="h2" component="p" textTransform="none" fontStyle="normal" fontWeight={400}>
+        {short_text}
+      </Typography>
+      {/* alignItems so the links don't stretch */}
+      <Stack gap={0.5} alignItems="start">
         {links.map(({id, url, caption}) => (
-          <p key={id}>
-            <Link href={url}>{caption}</Link>
-          </p>
+          <Link key={id} href={url}>
+            {caption}
+          </Link>
         ))}
-      </div>
+      </Stack>
     </li>
   )
 }
