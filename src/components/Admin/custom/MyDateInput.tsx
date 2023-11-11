@@ -6,6 +6,7 @@ const backendFormat = 'dd.MM.yyyy HH:mm:ss'
 
 // used to convert BE weird format of 01.01.2020 18:00:00 to 01-01-2020 input format
 // https://moment.github.io/luxon/#/formatting
+// TODO: ale blbost, upravi sa to aj tak nazad na ISO vs ISODate: https://github.com/ZdruzenieSTROM/webstrom-backend/issues/257
 const dateFormatter = (v: string) => DateTime.fromFormat(v, backendFormat).toISODate()
 
 // used to convert input format of 01-01-2020 to 01-01-2020TT00:00:00.000+02:00 BE-expected format
