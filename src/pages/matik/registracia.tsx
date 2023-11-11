@@ -1,12 +1,9 @@
 import {NextPage} from 'next'
 
-import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {RegisterForm} from '@/components/RegisterForm/RegisterForm'
+import Page from '../strom/registracia'
 
-const Register: NextPage = () => (
-  <PageLayout contentWidth={1} title="Registrácia">
-    <RegisterForm />
-  </PageLayout>
-)
+const Register: NextPage = () => {
+  return <Page />
+}
 
 export default Register
