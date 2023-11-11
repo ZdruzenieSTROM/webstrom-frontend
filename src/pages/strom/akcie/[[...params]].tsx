@@ -1,5 +1,4 @@
 import axios from 'axios'
-import {DateTime} from 'luxon'
 import {GetServerSideProps, NextPage} from 'next'
 import {useRouter} from 'next/router'
 import {FC, Fragment} from 'react'
@@ -37,20 +36,17 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
                 <b>Nadchádzajúci ročník:</b>
               </p>
               {competition.upcoming_or_current_event.start && (
-                <p>Odkedy? {DateTime.fromISO(competition.upcoming_or_current_event.start).toISODate()} </p>
+                <p>Odkedy? {competition.upcoming_or_current_event.start} </p>
               )}
-              {competition.upcoming_or_current_event.end && (
-                <p>Dokedy? {DateTime.fromISO(competition.upcoming_or_current_event.start).toISODate()}</p>
-              )}
-              {competition.upcoming_or_current_event.unspecifiedpublication_set.length > 0 && (
+              {competition.upcoming_or_current_event.end && <p>Dokedy? {competition.upcoming_or_current_event.end}</p>}
+              {competition.upcoming_or_current_event.unspecifiedpublication_set?.length > 0 && (
                 <p>Pozvánka: {competition.upcoming_or_current_event.unspecifiedpublication_set[0].name} </p>
               )}
               {competition.upcoming_or_current_event.registration_link && (
                 <div>
                   <p>
-                    Registračný formulár:{' '}
-                    {DateTime.fromISO(competition.upcoming_or_current_event.registration_link.start).toISODate()} -
-                    {DateTime.fromISO(competition.upcoming_or_current_event.registration_link.end).toISODate()}
+                    Registračný formulár: {competition.upcoming_or_current_event.registration_link.start} -
+                    {competition.upcoming_or_current_event.registration_link.end}
                     {competition.upcoming_or_current_event.registration_link.url}
                   </p>
 
@@ -76,7 +72,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
         <div className={styles.h2}>
           <h2>Archív: </h2>
         </div>
-        {competition.competition_type.name === 'Tábor' || competition.competition_type.name === 'Seminár' ? (
+        {competition.competition_type.name === 'Tábor' ? (
           <div className={styles.archive_without_publications}>
             {competition.history_events.map((event) => (
               <Fragment key={event.id}>
@@ -94,7 +90,9 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
                   {competition.name} {event.school_year}
                 </div>
                 {event.publication_set.map((publication) => (
-                  <div key={publication.id}> {publication.name}</div>
+                  <Link key={publication.id} href={`/api/competition/publication/${publication.id}/download/`}>
+                    {publication.name}
+                  </Link>
                 ))}
               </Fragment>
             ))}
