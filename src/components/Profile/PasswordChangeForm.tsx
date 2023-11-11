@@ -11,8 +11,8 @@ import {Dialog} from '../Dialog/Dialog'
 import {FormInput} from '../FormItems/FormInput/FormInput'
 
 type PasswordChangeDialogValues = {
-  new_password1?: string
-  new_password2?: string
+  new_password1: string
+  new_password2: string
 }
 
 const defaultValues: PasswordChangeDialogValues = {
