@@ -1,13 +1,17 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import Image from 'next/image'
+import {useRouter} from 'next/router'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
+import {Profile} from '@/types/api/personal'
+import {AuthContainer} from '@/utils/AuthContainer'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
+import {Dialog} from '../Dialog/Dialog'
 import {Latex} from '../Latex/Latex'
 import {Loading} from '../Loading/Loading'
 import {Discussion} from './Discussion'
@@ -28,7 +32,16 @@ const Problem: FC<{
   canRegister: boolean
   canSubmit: boolean
   invalidateSeriesQuery: () => Promise<void>
-}> = ({problem, registered, setDisplaySideContent, canSubmit, invalidateSeriesQuery}) => {
+  displayRegisterDialog: () => void
+}> = ({
+  problem,
+  registered,
+  setDisplaySideContent,
+  canRegister,
+  canSubmit,
+  invalidateSeriesQuery,
+  displayRegisterDialog,
+}) => {
   const handleDiscussionButtonClick = () => {
     setDisplaySideContent((prevState) => {
       if (prevState.type === 'discussion' && prevState.problemId === problem.id) {
@@ -39,8 +52,12 @@ const Problem: FC<{
     })
   }
   const handleUploadClick = () => {
-    setDisplayProblemUploadForm((prevState) => !prevState)
-    setDisplayActions(false)
+    if (!registered && canRegister) {
+      displayRegisterDialog()
+    } else {
+      setDisplayProblemUploadForm((prevState) => !prevState)
+      setDisplayActions(false)
+    }
   }
 
   const [displayProblemUploadForm, setDisplayProblemUploadForm] = useState<boolean>(false)
@@ -96,7 +113,7 @@ const Problem: FC<{
             </>
           )}
           <Button onClick={handleDiscussionButtonClick}>diskusia ({problem.num_comments}) </Button>
-          {registered && (
+          {(registered || canRegister) && (
             <Button onClick={handleUploadClick} disabled={!canSubmit}>
               odovzdať
             </Button>
@@ -116,6 +133,17 @@ const overrideCycle = (prev: boolean | undefined) => {
 export const Problems: FC = () => {
   const {id, seminar, loading} = useDataFromURL()
 
+  const router = useRouter()
+
+  const {isAuthed} = AuthContainer.useContainer()
+
+  const {data} = useQuery({
+    queryKey: ['personal', 'profiles', 'myprofile'],
+    queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
+    enabled: isAuthed,
+  })
+  const profile = data?.data
+
   // used to display discussions
   const [displaySideContent, setDisplaySideContent] = useState<{
     type: string
@@ -131,7 +159,7 @@ export const Problems: FC = () => {
   })
   const series = seriesData?.data
   const problems = series?.problems ?? []
-  // const semesterId = series?.semester ?? -1
+  const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
 
   const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
@@ -156,8 +184,31 @@ export const Problems: FC = () => {
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
+  const [deleteDialogId, setDeleteDialogId] = useState<number | undefined>()
+  const close = () => setDeleteDialogId(undefined)
+  const editProfile = () => {
+    close()
+    router.push(`/${seminar}/profil/uprava`)
+  }
+  const agree = () => {
+    deleteDialogId !== undefined && registerToSemester(semesterId)
+    close()
+  }
+
   return (
     <>
+      <Dialog
+        open={deleteDialogId !== undefined}
+        close={close}
+        title="Skontroluj prosím, čí údaje o ročníku a škole sú správne."
+        contentText={`Škola: ${profile?.grade_name}, Ročník: ${profile?.school.verbose_name}`} // TODO: this is not styled, I suggest expanding the dialog component to support content as component
+        actions={
+          <>
+            <Button onClick={editProfile}>Zmeniť údaje</Button>
+            <Button onClick={agree}>Údaje sú správne</Button>
+          </>
+        }
+      />
       <div className={styles.container}>
         {(loading.semesterListIsLoading ||
           loading.currentSeriesIsLoading ||
@@ -177,6 +228,7 @@ export const Problems: FC = () => {
             canRegister={canRegister}
             canSubmit={canSubmit}
             invalidateSeriesQuery={invalidateSeriesQuery}
+            displayRegisterDialog={() => setDeleteDialogId(problem.id)}
           />
         ))}
 
