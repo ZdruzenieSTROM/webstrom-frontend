@@ -1,4 +1,11 @@
-import {Dialog as MuiDialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material'
+import {
+  Dialog as MuiDialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+} from '@mui/material'
 import {FC, ReactNode} from 'react'
 
 type DialogProps = {
@@ -17,8 +24,13 @@ export const Dialog: FC<DialogProps> = ({open, close, title, contentText, action
       onClose={close}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      sx={{border: '10px solid black'}}
     >
-      {title && <DialogTitle id="alert-dialog-title">{title}</DialogTitle>}
+      {title && (
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h2">{title}</Typography>
+        </DialogTitle>
+      )}
       {contentText && (
         <DialogContent>
           <DialogContentText id="alert-dialog-description">{contentText}</DialogContentText>

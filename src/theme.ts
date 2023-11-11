@@ -143,4 +143,28 @@ export const theme: Theme = {
       fontStyle: 'italic',
     },
   },
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          '& > div.MuiDialogContent-root': {paddingTop: '20px'},
+          border: '10px solid black',
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          paddingBottom: '20px',
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          textAlign: 'center',
+        },
+      },
+    },
+  },
 }
