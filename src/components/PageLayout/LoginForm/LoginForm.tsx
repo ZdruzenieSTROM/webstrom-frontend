@@ -24,8 +24,8 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const {login} = AuthContainer.useContainer()
   const {handleSubmit, control} = useForm<LoginFormValues>({defaultValues})
 
-  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    await login({data, onSuccess: closeOverlay})
+  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
+    login({data, onSuccess: closeOverlay})
   }
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
