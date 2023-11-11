@@ -41,11 +41,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
               {competition.upcoming_or_current_event.end && <p>Dokedy? {competition.upcoming_or_current_event.end}</p>}
               {competition.upcoming_or_current_event.publication_set.length > 0 && (
                 <p>
-                  <Link
-                    href={`/api/competition/publication/${competition.upcoming_or_current_event.publication_set[0].id}/download/`}
-                  >
-                    Pozvánka
-                  </Link>
+                  <Link href={`/api/${competition.upcoming_or_current_event.publication_set[0].file}`}>Pozvánka</Link>
                 </p>
               )}
               {competition.upcoming_or_current_event.registration_link && (
@@ -96,7 +92,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
                   {competition.name} {event.school_year}
                 </div>
                 {event.publication_set.map((publication) => (
-                  <Link key={publication.id} href={`/api/competition/publication/${publication.id}/download/`}>
+                  <Link key={publication.id} href={`/api/${publication.file}`}>
                     {publication.name}
                   </Link>
                 ))}
