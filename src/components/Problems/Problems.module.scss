@@ -9,21 +9,6 @@
   margin-left: auto;
 }
 
-.problem {
-  padding: 20px;
-
-  .problemTitle {
-    font-weight: bold;
-  }
-}
-
-.actions {
-  margin-top: .5rem;
-  display: flex;
-  justify-content: flex-end;
-  column-gap: 20px;
-}
-
 .debug {
   margin-left: .5rem;
   margin-bottom: .5rem;
@@ -42,34 +27,4 @@
   bottom: 2rem;
   right: 20px;
   width: calc(25vw - 40px);
-}
-
-.registerButton {
-  background-color: black;
-  color: white;
-  height: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  text-transform: uppercase;
-  font-size: .8rem;
-  font-style: italic;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.imageContainer {
-  display: grid;
-  place-items: center;
-}
-
-.image {
-  width: auto;
-  height: auto;
-  min-height: 3rem;
-  min-width: 3rem;
-  max-height: 50vh;
-  margin-top: 1rem;
 }

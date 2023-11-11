@@ -1,0 +1,28 @@
+.problem {
+  padding: 20px;
+  
+  .problemTitle {
+    font-weight: bold;
+  }
+}
+
+.actions {
+  margin-top: .5rem;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 20px;
+}
+
+.imageContainer {
+  display: grid;
+  place-items: center;
+}
+
+.image {
+  width: auto;
+  height: auto;
+  min-height: 3rem;
+  min-width: 3rem;
+  max-height: 50vh;
+  margin-top: 1rem;
+}
