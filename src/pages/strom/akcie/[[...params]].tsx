@@ -39,15 +39,21 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
                 <p>Odkedy? {competition.upcoming_or_current_event.start} </p>
               )}
               {competition.upcoming_or_current_event.end && <p>Dokedy? {competition.upcoming_or_current_event.end}</p>}
-              {competition.upcoming_or_current_event.unspecifiedpublication_set?.length > 0 && (
-                <p>Pozvánka: {competition.upcoming_or_current_event.unspecifiedpublication_set[0].name} </p>
+              {competition.upcoming_or_current_event.publication_set.length > 0 && (
+                <p>
+                  <Link
+                    href={`/api/competition/publication/${competition.upcoming_or_current_event.publication_set[0].id}/download/`}
+                  >
+                    Pozvánka
+                  </Link>
+                </p>
               )}
               {competition.upcoming_or_current_event.registration_link && (
                 <div>
                   <p>
-                    Registračný formulár: {competition.upcoming_or_current_event.registration_link.start} -
+                    Registrácia prebieha do:
                     {competition.upcoming_or_current_event.registration_link.end}
-                    {competition.upcoming_or_current_event.registration_link.url}
+                    <Link href={competition.upcoming_or_current_event.registration_link.url}>Registračný formulár</Link>
                   </p>
 
                   <p>{competition.upcoming_or_current_event.registration_link.additional_info}</p>
