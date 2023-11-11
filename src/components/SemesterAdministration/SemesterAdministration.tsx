@@ -1,4 +1,4 @@
-import {Stack} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -31,7 +31,7 @@ export const SemesterAdministration: FC = () => {
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
-  const {data: semesterData} = useQuery({
+  const {data: semesterData, isLoading: semesterIsLoading} = useQuery({
     queryKey: ['competition', 'semester', semesterId],
     queryFn: () => axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
@@ -74,16 +74,18 @@ export const SemesterAdministration: FC = () => {
     )
   }
 
-  if (permissionsIsLoading) return <Loading />
+  if (permissionsIsLoading || semesterIsLoading) return <Loading />
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
+  if (semesterId === undefined || !semester)
+    return <Typography>Nevalidný semester (semesterId) v URL alebo ho proste nevieme fetchnúť z BE.</Typography>
 
   return (
     <>
       <h2>
-        {semester?.year}. ročník ({semester?.school_year}) - {semester?.season_code === 0 ? 'zima' : 'leto'}
+        {semester.year}. ročník ({semester.school_year}) - {semester.season_code === 0 ? 'zima' : 'leto'}
       </h2>
       Administrácia semestra pre opravovateľov.
-      {semester?.series_set.map((series) => (
+      {semester.series_set.map((series) => (
         <div key={series.id}>
           <h3>{series.order}. séria</h3>
           <table>
@@ -130,7 +132,7 @@ export const SemesterAdministration: FC = () => {
       <Stack mt={1} gap={1}>
         <h3>Nahrávanie časopisov</h3>
         {[1, 2, 3].map((order) => (
-          <PublicationUploader key={order} semesterId={semesterId ?? ''} order={order} semesterData={semester} />
+          <PublicationUploader key={order} semesterId={semesterId} order={order} semesterData={semester} />
         ))}
       </Stack>
     </>

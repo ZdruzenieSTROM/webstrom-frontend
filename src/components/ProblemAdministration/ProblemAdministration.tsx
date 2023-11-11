@@ -1,4 +1,5 @@
 import {FormatAlignJustify, Grading} from '@mui/icons-material'
+import {Typography} from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -21,7 +22,11 @@ export const ProblemAdministration: FC = () => {
 
   const problemId = params && params[0]
 
-  const {data: problemData, refetch: refetchProblem} = useQuery({
+  const {
+    data: problemData,
+    refetch: refetchProblem,
+    isLoading: problemIsLoading,
+  } = useQuery({
     queryKey: ['competition', 'problem-administration', problemId],
     queryFn: () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym problemId
@@ -47,10 +52,6 @@ export const ProblemAdministration: FC = () => {
     },
     onSuccess: () => refetchProblem(),
   })
-
-  const handleSavePoints = async () => {
-    problemId && uploadPoints(problemId)
-  }
 
   const updatePoints = (index: number, newPointsInput: string) => {
     const newPoints = Number.parseInt(newPointsInput)
@@ -89,23 +90,27 @@ export const ProblemAdministration: FC = () => {
     },
   })
 
-  if (permissionsIsLoading) return <Loading />
+  if (permissionsIsLoading || problemIsLoading) return <Loading />
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
+  if (problemId === undefined || !problem)
+    return <Typography>Nevalidné číslo úlohy (problemId) v URL alebo ju proste nevieme fetchnúť z BE.</Typography>
+
+  const handleSavePoints = () => uploadPoints(problemId)
 
   return (
     <div className={styles.container}>
-      <h2>Opravovanie {problem?.order}. úlohy</h2>
+      <h2>Opravovanie {problem.order}. úlohy</h2>
 
       <div className={styles.rightButton}>
-        <Link href={`/strom/admin/opravovanie/${problem?.series.semester}`}>Späť na semester</Link>
+        <Link href={`/strom/admin/opravovanie/${problem.series.semester}`}>Späť na semester</Link>
       </div>
 
-      <Latex>{problem?.text ?? 'Načítavam...'}</Latex>
+      <Latex>{problem.text ?? 'Načítavam...'}</Latex>
 
       <div className={styles.row}>
         Vzorové riešenie:
-        {problem?.solution_pdf ? (
-          <a href={problem?.solution_pdf} target="_blank" rel="noreferrer" className={styles.icon}>
+        {problem.solution_pdf ? (
+          <a href={problem.solution_pdf} target="_blank" rel="noreferrer" className={styles.icon}>
             <FormatAlignJustify />
           </a>
         ) : (
