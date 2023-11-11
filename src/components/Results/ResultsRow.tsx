@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import {Typography} from '@mui/material'
 import {FC} from 'react'
 
 import styles from './ResultsRow.module.scss'
@@ -38,46 +38,39 @@ export interface Result {
 export const ResultsRow: FC<{result: Result}> = ({result}) => {
   const {solutions, rank_changed, rank_start, registration, subtotal, total} = result
 
-  let votes_pos = 0
-  let votes_neg = 0
-
-  for (const seriesSolutions of result.solutions) {
-    for (const {votes} of seriesSolutions) {
-      if (votes > 0) {
-        votes_pos += votes
-      } else if (votes < 0) {
-        votes_neg += votes
-      }
-    }
-  }
-
-  const votes_total = votes_neg + votes_pos
-
   return (
     <div className={styles.rowWrapper}>
-      <div className={styles.rank}>{rank_changed && rank_start + '.'}</div>
+      <Typography variant="h1" component="span" className={styles.rank}>
+        {rank_changed && rank_start + '.'}
+      </Typography>
       <div className={styles.nameAndSchool}>
-        <div className={styles.name}>{registration.profile.first_name + ' ' + registration.profile.last_name}</div>
-        <div className={styles.school}>
+        <Typography variant="h2" component="span" className={styles.name}>
+          {registration.profile.first_name + ' ' + registration.profile.last_name}
+        </Typography>
+        <Typography variant="body3" className={styles.school}>
           {registration.school.name + ' ' + registration.school.street + ' ' + registration.school.city}
-        </div>
+        </Typography>
       </div>
-      <div className={styles.grade}>{registration.grade}</div>
+      <Typography variant="h3" component="span" fontWeight={400} fontStyle="italic" className={styles.grade}>
+        {registration.grade}
+      </Typography>
       <div className={styles.score}>
-        {solutions.map((series, key) => (
-          <div key={key}>
-            {series.map((solution, key) => (
-              <div key={key}>{solution.points}</div>
+        {solutions.map((series, index) => (
+          <div key={index}>
+            {series.map((solution, index) => (
+              <Typography variant="body2" key={index}>
+                {solution.points}
+              </Typography>
             ))}
-            <div className={styles.subtotal}>{subtotal[key]}</div>
+            <Typography variant="body2" fontWeight={600} className={styles.subtotal}>
+              {subtotal[index]}
+            </Typography>
           </div>
         ))}
       </div>
-      <div className={styles.totalScore}>{total}</div>
-      <div className={clsx(styles.votes, votes_total !== 0 && 'tooltip')}>
-        {votes_total !== 0 && votes_total}
-        {votes_total !== 0 && <span className="tooltiptext">Hlasy</span>}
-      </div>
+      <Typography variant="h3" component="span" fontStyle="italic" className={styles.totalScore}>
+        {total}
+      </Typography>
     </div>
   )
 }

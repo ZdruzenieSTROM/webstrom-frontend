@@ -1,3 +1,4 @@
+import {Theme, Typography, useMediaQuery} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
@@ -31,15 +32,18 @@ export const MenuMain: FC = () => {
   })
   const menuItems = menuItemsData?.data ?? []
 
+  const lg = useMediaQuery<Theme>((theme) => theme.breakpoints.up('lg'))
+  const iconSize = lg ? 40 : 30
+
   return (
     <>
       {!isVisible && (
         <div className={clsx(styles.menuButton, styles.menuOpenButton)} onClick={toggleMenu}>
-          <Menu width={40} height={40} />
+          <Menu width={iconSize} height={iconSize} />
         </div>
       )}
       <div className={clsx(styles.menu, isVisible && styles.visible)}>
-        <CloseButton size={40} onClick={toggleMenu} className={clsx(styles.menuButton, styles.menuCloseButton)} />
+        <CloseButton size={iconSize} onClick={toggleMenu} className={clsx(styles.menuButton, styles.menuCloseButton)} />
         {menuItemsIsLoading && (
           <div className={styles.loading}>
             <Loading />
@@ -70,7 +74,9 @@ const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
 
   return (
     <div className={clsx(styles.menuItem, active && styles.active)}>
-      <Link href={url}>{caption}</Link>
+      <Typography variant="button1" fontStyle="normal">
+        <Link href={url}>{caption}</Link>
+      </Typography>
     </div>
   )
 }
