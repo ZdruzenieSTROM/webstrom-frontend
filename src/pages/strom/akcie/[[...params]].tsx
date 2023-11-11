@@ -79,7 +79,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
           <h2>Archív: </h2>
         </div>
         {competition.competition_type.name === 'Tábor' ? (
-          <div className={styles.archive_without_publications}>
+          <div className={styles.archiveWithoutPublications}>
             {competition.history_events.map((event) => (
               <Fragment key={event.id}>
                 <div>
@@ -89,7 +89,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
             ))}
           </div>
         ) : (
-          <div className={styles.archive_with_publications}>
+          <div className={styles.archiveWithPublications}>
             {competition.history_events.map((event) => (
               <Fragment key={event.id}>
                 <div>
