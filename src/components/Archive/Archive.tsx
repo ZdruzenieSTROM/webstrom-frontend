@@ -25,7 +25,7 @@ const PublicationButton: FC<{
 }> = ({publicationId, publicationName}) => {
   return (
     <Link href={`/api/competition/publication/${publicationId}/download`} target="_blank">
-      {publicationName}
+      Časopis {publicationName}
     </Link>
   )
 }
