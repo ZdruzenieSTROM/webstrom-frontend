@@ -1,3 +1,4 @@
+import {Typography} from '@mui/material'
 import clsx from 'clsx'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
@@ -21,16 +22,24 @@ export const TopGrid: FC = () => {
     <div className={styles.container}>
       <div className={styles.menu}>
         <div className={clsx(styles.menuItem, seminar === 'malynar' && styles.active)}>
-          <Link href="/malynar">Malynár</Link>
+          <Typography variant="button1">
+            <Link href="/malynar">Malynár</Link>
+          </Typography>
         </div>
         <div className={clsx(styles.menuItem, seminar === 'matik' && styles.active)}>
-          <Link href="/matik">Matik</Link>
+          <Typography variant="button1">
+            <Link href="/matik">Matik</Link>
+          </Typography>
         </div>
         <div className={clsx(styles.menuItem, seminar === 'strom' && styles.active)}>
-          <Link href="/strom">Strom</Link>
+          <Typography variant="button1">
+            <Link href="/strom">Strom</Link>
+          </Typography>
         </div>
       </div>
-      <div className={styles.title}>{pageTitle}</div>
+      <Typography variant="h1" className={styles.title}>
+        {pageTitle}
+      </Typography>
       {(page === 'zadania' || page === 'vysledky') && (
         <div className={styles.semesterPicker}>
           <SemesterPicker page={page} />

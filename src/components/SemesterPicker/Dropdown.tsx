@@ -1,3 +1,4 @@
+import {Typography} from '@mui/material'
 import clsx from 'clsx'
 import Link from 'next/link'
 import {FC, MouseEvent, useState} from 'react'
@@ -25,7 +26,10 @@ export const Dropdown: FC<{title: string; options: DropdownOption[]}> = ({title,
 
   return (
     <div className={styles.dropdown} onClick={handleClick} onMouseLeave={handleMouseLeave}>
-      {title} <div className={styles.arrow} />
+      <Typography variant="button2">
+        {title}
+        <div className={styles.arrow} />
+      </Typography>
       <div className={clsx(styles.options, display && styles.displayOptions)}>
         {options.map((option) => {
           return (
@@ -34,7 +38,7 @@ export const Dropdown: FC<{title: string; options: DropdownOption[]}> = ({title,
               key={option.id}
               className={clsx(styles.option, option.selected && styles.selectedOption)}
             >
-              {option.text}
+              <Typography variant="button2">{option.text}</Typography>
             </Link>
           )
         })}
