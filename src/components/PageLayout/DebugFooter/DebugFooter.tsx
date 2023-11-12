@@ -5,9 +5,9 @@ import {FC} from 'react'
 import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
 
-import styles from './Footer.module.scss'
+import styles from './DebugFooter.module.scss'
 
-export const Footer: FC = () => {
+export const DebugFooter: FC = () => {
   const {isAuthed} = AuthContainer.useContainer()
 
   const {data} = useQuery({
@@ -18,7 +18,7 @@ export const Footer: FC = () => {
   const profile = data?.data
 
   return (
-    <div className={styles.footer}>
+    <div className={styles.debugFooter}>
       <span>Debug info: </span>
       <span>user name: {profile?.first_name + ' ' + profile?.last_name} </span>
       <span>isAuthed: {`${isAuthed}`}</span>

@@ -6,7 +6,7 @@ import {BannerContainer} from '@/utils/BannerContainer'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {Seminar, useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Footer} from './Footer/Footer'
+import {DebugFooter} from './DebugFooter/DebugFooter'
 import {MenuMain} from './MenuMain/MenuMain'
 import styles from './PageLayout.module.scss'
 import {StromLogo} from './StromLogo/StromLogo'
@@ -54,7 +54,7 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
                 {children}
               </div>
             </div>
-            <Footer />
+            <DebugFooter />
           </div>
         </BannerContainer.Provider>
       </PageTitleContainer.Provider>

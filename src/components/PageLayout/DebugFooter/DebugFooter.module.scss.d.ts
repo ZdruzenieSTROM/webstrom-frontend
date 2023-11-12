@@ -1,5 +1,5 @@
 export type Styles = {
-  footer: string
+  debugFooter: string
 }
 
 export type ClassNames = keyof Styles
