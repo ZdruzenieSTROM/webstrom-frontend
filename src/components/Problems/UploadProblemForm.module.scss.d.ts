@@ -4,6 +4,7 @@ export type Styles = {
   closeButton: string
   container: string
   files: string
+  inputWrapper: string
   problemSubmitted: string
 }
 

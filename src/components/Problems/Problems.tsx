@@ -54,6 +54,7 @@ export const Problems: FC = () => {
   const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
   const canResubmit = series?.can_resubmit ?? canSubmit
+  const isAfterDeadline = new Date(series?.deadline ?? '') < new Date()
 
   const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
   const [overrideIsRegistered, setOverrideIsRegistered] = useState<boolean>()
@@ -120,6 +121,7 @@ export const Problems: FC = () => {
             registered={isRegistered}
             canRegister={canRegister}
             canSubmit={(canSubmit && !problem.submitted) || (!!problem.submitted && canResubmit)}
+            isAfterDeadline={isAfterDeadline}
             invalidateSeriesQuery={invalidateSeriesQuery}
             displayRegisterDialog={() => setDisplayRegisterDialog(true)}
           />

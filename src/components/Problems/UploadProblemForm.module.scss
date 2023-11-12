@@ -10,6 +10,10 @@
   position: relative;
 }
 
+.inputWrapper {
+  position: relative;
+}
+
 .files {
   margin-top: 8px;
   display: grid;
@@ -39,5 +43,6 @@
 
 .closeButton {
   position: absolute;
-  right: 0;
+  right: 2px;
+  top: 2px;
 }

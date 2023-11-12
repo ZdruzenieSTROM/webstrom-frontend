@@ -7,22 +7,23 @@ import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {niceBytes} from '@/utils/niceBytes'
 
 import {Button} from '../Clickable/Clickable'
+import {Dialog} from '../Dialog/Dialog'
 import {FileDropZone} from '../FileDropZone/FileDropZone'
 import styles from './UploadProblemForm.module.scss'
 
 export const UploadProblemForm: FC<{
   problemId: number
   setDisplayProblemUploadForm: Dispatch<SetStateAction<boolean>>
-  problemSubmitted?: boolean
+  problemSubmitted: boolean
+  isAfterDeadline: boolean
   setDisplayActions: Dispatch<SetStateAction<boolean>>
   invalidateSeriesQuery: () => Promise<void>
 }> = ({
   problemId,
   setDisplayActions,
   setDisplayProblemUploadForm,
-  // problemNumber,
   problemSubmitted,
-  // setDisplaySideContent,
+  isAfterDeadline,
   invalidateSeriesQuery,
 }) => {
   const {mutate: uploadSolution} = useMutation({
@@ -42,7 +43,7 @@ export const UploadProblemForm: FC<{
   })
 
   const [files, setFiles] = useState<File | undefined>(undefined)
-  const {acceptedFiles, fileRejections, getRootProps, getInputProps} = useDropzone({
+  const {fileRejections, getRootProps, getInputProps} = useDropzone({
     multiple: false,
     accept: {
       'application/pdf': ['.pdf'],
@@ -68,34 +69,67 @@ export const UploadProblemForm: FC<{
     setDisplayActions(true)
   }
 
+  const [displayAlertDialog, setDisplayAlertDialog] = useState<boolean>(problemSubmitted)
+  const closeAlertDialog = () => setDisplayAlertDialog(false)
+  const cancel = () => {
+    closeAlertDialog()
+    setDisplayProblemUploadForm(false)
+    setDisplayActions(true)
+  }
+
+  const alertMessage = isAfterDeadline
+    ? 'Toto riešenie nahrávaš PO TERMÍNE. Nahraním nového riešenia prepíšeš svoje predošlé odovzdanie a pri hodnotení budeme zohľadnovať len toto nové riešenie.'
+    : 'Nahraním nového riešenia prepíšeš svoje predošlé odovzdanie a pri hodnotení budeme zohľadnovať len toto nové riešenie.'
+
   return (
     <div className={styles.container}>
-      <CloseButton onClick={handleCloseButton} size={24} invertColors className={styles.closeButton} />
+      {isAfterDeadline && <div className={styles.problemSubmitted}>Toto riešenie už nahrávaš po termíne.</div>}
       {problemSubmitted && (
         <div className={styles.problemSubmitted}>
           Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.
         </div>
       )}
-      {!files && (
-        <FileDropZone getRootProps={getRootProps} getInputProps={getInputProps} text="Vlož riešenie vo formáte pdf" />
-      )}
-      {files?.name && (
-        <div className={styles.files}>
-          <div>
-            <b>Súbor: </b>
+      <Dialog
+        open={displayAlertDialog}
+        close={closeAlertDialog}
+        title="Pozor"
+        contentText={alertMessage}
+        actions={
+          <>
+            <Button onClick={cancel}>Zrušiť</Button>
+            <Button onClick={closeAlertDialog}>Pokračovať</Button>
+          </>
+        }
+      />
+      <div className={styles.inputWrapper}>
+        {!files && (
+          <>
+            <CloseButton onClick={handleCloseButton} size={24} invertColors className={styles.closeButton} />
+            <FileDropZone
+              getRootProps={getRootProps}
+              getInputProps={getInputProps}
+              text="Vlož riešenie vo formáte pdf"
+            />
+          </>
+        )}
+        {files?.name && (
+          <div className={styles.files}>
+            <div>
+              <b>Súbor: </b>
 
-            <span>
-              {files.name} ({niceBytes(files.size)})
-            </span>
-          </div>
-          <div className={styles.actions}>
-            <Button onClick={handleSubmit}>Uložiť</Button>
-            <Button onClick={handleRemoveSelection}>Zrušiť</Button>
-          </div>
+              <span>
+                {files.name} ({niceBytes(files.size)})
+              </span>
+            </div>
+            <div className={styles.actions}>
+              <Button onClick={handleSubmit}>Uložiť</Button>
+              <Button onClick={handleRemoveSelection}>Zrušiť</Button>
+            </div>
 
-          {/* {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>} */}
-        </div>
-      )}
+            {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
