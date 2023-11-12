@@ -7,6 +7,7 @@ import {Link} from '@/components/Clickable/Clickable'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Markdown} from '@/components/StaticSites/Markdown'
 import {Competition, Event} from '@/types/api/generated/competition'
+import {formatDate} from '@/utils/formatDate'
 import {Seminar} from '@/utils/useSeminarInfo'
 
 import styles from './competition.module.scss'
@@ -19,40 +20,50 @@ type CompetitionPageProps = {
   is_rules: boolean
 }
 
-const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => (
-  <PageLayout title={competition.name}>
+const StaticPage: NextPage<CompetitionPageProps> = ({
+  competition: {
+    name,
+    rules,
+    who_can_participate,
+    description,
+    upcoming_or_current_event,
+    competition_type,
+    history_events,
+  },
+  is_rules,
+}) => (
+  <PageLayout title={name}>
     {is_rules ? (
-      <div className={styles.mainText}>{competition.rules && <Markdown content={competition.rules} />}</div>
+      <div className={styles.mainText}>{rules && <Markdown content={rules} />}</div>
     ) : (
       <>
         <div className={styles.mainText}>
-          {competition.who_can_participate && <p>Pre koho? {competition.who_can_participate}</p>}
-          <p>{competition.description}</p>
+          {who_can_participate && <p>Pre koho? {who_can_participate}</p>}
+          <p>{description}</p>
         </div>
         <div className={styles.mainText}>
-          {competition.upcoming_or_current_event ? (
+          {upcoming_or_current_event ? (
             <div className={styles.mainText}>
               <p>
                 <b>Nadchádzajúci ročník:</b>
               </p>
-              {competition.upcoming_or_current_event.start && (
-                <p>Odkedy? {competition.upcoming_or_current_event.start} </p>
-              )}
-              {competition.upcoming_or_current_event.end && <p>Dokedy? {competition.upcoming_or_current_event.end}</p>}
-              {competition.upcoming_or_current_event.publication_set.length > 0 && (
+              {upcoming_or_current_event.start && <p>Odkedy? {formatDate(upcoming_or_current_event.start)} </p>}
+              {upcoming_or_current_event.end && <p>Dokedy? {formatDate(upcoming_or_current_event.end)}</p>}
+              {upcoming_or_current_event.publication_set.length > 0 && (
+                // TODO: vyplut vsetky publikacie
                 <p>
-                  <Link href={`/api/${competition.upcoming_or_current_event.publication_set[0].file}`}>Pozvánka</Link>
+                  <Link href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>Pozvánka</Link>
                 </p>
               )}
-              {competition.upcoming_or_current_event.registration_link && (
+              {upcoming_or_current_event.registration_link && (
                 <div>
                   <p>
                     Registrácia prebieha do:
-                    {competition.upcoming_or_current_event.registration_link.end}
-                    <Link href={competition.upcoming_or_current_event.registration_link.url}>Registračný formulár</Link>
+                    {formatDate(upcoming_or_current_event.registration_link.end)}
+                    <Link href={upcoming_or_current_event.registration_link.url}>Registračný formulár</Link>
                   </p>
 
-                  <p>{competition.upcoming_or_current_event.registration_link.additional_info}</p>
+                  <p>{upcoming_or_current_event.registration_link.additional_info}</p>
                 </div>
               )}
             </div>
@@ -74,22 +85,23 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
         <div className={styles.h2}>
           <h2>Archív: </h2>
         </div>
-        {competition.competition_type.name === 'Tábor' ? (
+        {/* TODO: asi zjednotit styly, neriesit with/without publications */}
+        {competition_type.name === 'Tábor' ? (
           <div className={styles.archiveWithoutPublications}>
-            {competition.history_events.map((event) => (
+            {history_events.map((event) => (
               <Fragment key={event.id}>
                 <div>
-                  {competition.name + ' '} {event.school_year}
+                  {name + ' '} {event.school_year}
                 </div>
               </Fragment>
             ))}
           </div>
         ) : (
           <div className={styles.archiveWithPublications}>
-            {competition.history_events.map((event) => (
+            {history_events.map((event) => (
               <Fragment key={event.id}>
                 <div>
-                  {competition.name} {event.school_year}
+                  {name} {event.school_year}
                 </div>
                 {event.publication_set.map((publication) => (
                   <Link key={publication.id} href={`/api/${publication.file}`}>
