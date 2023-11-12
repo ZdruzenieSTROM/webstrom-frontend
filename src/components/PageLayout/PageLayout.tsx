@@ -4,7 +4,6 @@ import {FC, ReactNode} from 'react'
 import {BannerContainer} from '@/utils/BannerContainer'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 
-import {Banner} from './Banner/Banner'
 import {Footer} from './Footer/Footer'
 import {MenuMain} from './MenuMain/MenuMain'
 import styles from './PageLayout.module.scss'
@@ -25,7 +24,6 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
       <BannerContainer.Provider>
         <div className={styles.pageContainer}>
           <TopGrid />
-          <Banner />
           <MenuMain />
           <div className={styles.grid}>
             <StromLogo />

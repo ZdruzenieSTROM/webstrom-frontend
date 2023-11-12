@@ -1,13 +1,16 @@
 .container {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
-  height: 10rem;
+  height: auto;
   background-color: white;
   z-index: 3;
+}
+
+.grid {
   display: grid;
-  grid-template: 1fr 1fr / 1fr 2fr 1fr;
+  grid-template: 1fr auto / 1fr 2fr 1fr;
 }
 
 .menu {

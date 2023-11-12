@@ -5,8 +5,6 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  // top offset because of sticky menu/title/banner
-  padding-top: 12rem;
   // bottom offset because of sticky debug footer
   padding-bottom: 1rem;
 }
