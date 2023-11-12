@@ -170,14 +170,16 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
               )
             })}
         </div>
-        <div className={styles.submitInputContainer}>
-          <textarea className={styles.textArea} value={commentText} onChange={handleCommentChange} />
-          <div className={styles.submitAction}>
-            <Button disabled={!isAuthed} onClick={addComment}>
-              Odoslať
-            </Button>
+        {isAuthed ? (
+          <div className={styles.submitInputContainer}>
+            <textarea className={styles.textArea} value={commentText} onChange={handleCommentChange} />
+            <div className={styles.submitAction}>
+              <Button onClick={addComment}>Odoslať</Button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className={styles.message}> Prispievať do diskusie môžu len prihlásení uživatelia. </div>
+        )}
       </div>
     </SideContainer>
   )

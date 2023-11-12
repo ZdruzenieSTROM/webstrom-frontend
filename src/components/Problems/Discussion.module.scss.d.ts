@@ -4,6 +4,7 @@ export type Styles = {
   comments: string
   container: string
   inputContainer: string
+  message: string
   notPublished: string
   submitAction: string
   submitInputContainer: string
