@@ -1,8 +1,8 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
+import {DateTime} from 'luxon'
 import {useRouter} from 'next/router'
 import {Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react'
-import Countdown from 'react-countdown'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
@@ -210,17 +210,15 @@ export const Problems: FC<ProblemsProps> = ({setPageTitle}) => {
   const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', seriesId]})
 
   useEffect(() => {
-    if (seriesData?.data.can_submit) {
-      if (seriesData.data.deadline<new Date())
-      {
-        setBannerText(`Termín série${seriesData?.data.deadline || ''}`)
-      }
-      else{
-        if (seriesData.data.deadline<new Date())
-      }
-      setBannerText(`Termín série${seriesData?.data.deadline || ''} - ${ TU JE ODPOCET }`)
+    if (seriesData === undefined) {
+      setBannerText('')
     } else {
-      setBannerText(`Termín série${seriesData?.data.deadline || ''}`)
+      const deadline = DateTime.fromISO(seriesData.data.deadline)
+      if (seriesData?.data.can_submit) {
+        setBannerText(`Termín série: ${deadline.toFormat('dd.MM.yyyy HH:mm')}`)
+      } else {
+        setBannerText(`Séria je uzavretá.`)
+      }
     }
   }, [seriesData, setBannerText])
 
