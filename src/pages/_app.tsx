@@ -11,6 +11,7 @@ import {CookiesProvider} from 'react-cookie'
 
 import {theme} from '@/theme'
 import {AuthContainer} from '@/utils/AuthContainer'
+import {BannerContainer} from '@/utils/BannerContainer'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 
 const ReactQueryDevtools = dynamic(
@@ -83,11 +84,13 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
         <ReactQueryDevtools />
         <CookiesProvider>
           <AuthContainer.Provider>
-            <ThemeProvider theme={theme}>
-              <PageTitleContainer.Provider>
-                <Component {...pageProps} />
-              </PageTitleContainer.Provider>
-            </ThemeProvider>
+            <BannerContainer.Provider>
+              <ThemeProvider theme={theme}>
+                <PageTitleContainer.Provider>
+                  <Component {...pageProps} />
+                </PageTitleContainer.Provider>
+              </ThemeProvider>
+            </BannerContainer.Provider>
           </AuthContainer.Provider>
         </CookiesProvider>
       </QueryClientProvider>

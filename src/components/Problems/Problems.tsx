@@ -1,13 +1,15 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
-import {FC, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 import {useInterval} from 'usehooks-ts'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {SeriesWithProblems} from '@/types/api/competition'
 import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
+import {BannerContainer} from '@/utils/BannerContainer'
+import {formatDate} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
@@ -29,6 +31,7 @@ export const Problems: FC = () => {
   const router = useRouter()
 
   const {isAuthed} = AuthContainer.useContainer()
+  const {setBannerText} = BannerContainer.useContainer()
 
   const {data} = useQuery({
     queryKey: ['personal', 'profiles', 'myprofile'],
@@ -77,6 +80,19 @@ export const Problems: FC = () => {
   const queryClient = useQueryClient()
 
   const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', id.seriesId]})
+
+  useEffect(() => {
+    if (seriesData === undefined) {
+      setBannerText('')
+    } else {
+      const deadline = formatDate(seriesData.data.deadline)
+      if (seriesData?.data.can_submit) {
+        setBannerText(`Termín série: ${deadline}`)
+      } else {
+        setBannerText(`Séria je uzavretá.`)
+      }
+    }
+  }, [seriesData, setBannerText])
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),
