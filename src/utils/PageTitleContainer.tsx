@@ -1,8 +1,8 @@
 import {useState} from 'react'
 import {createContainer} from 'unstated-next'
 
-const usePageTitle = () => {
-  const [pageTitle, setPageTitle] = useState('')
+const usePageTitle = (initial = '') => {
+  const [pageTitle, setPageTitle] = useState(initial)
   return {pageTitle, setPageTitle}
 }
 

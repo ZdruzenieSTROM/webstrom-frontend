@@ -4,19 +4,18 @@ import {useRouter} from 'next/router'
 import {FC} from 'react'
 
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
+import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import styles from './TopGrid.module.scss'
 
-type TopGridProps = {
-  title: string
-}
-
-export const TopGrid: FC<TopGridProps> = ({title}) => {
+export const TopGrid: FC = () => {
   const {seminar} = useSeminarInfo()
 
   // z napr. `/matik/zadania(/*)` vytiahne `zadania`
   const page = useRouter().pathname.split('/')[2]
+
+  const {pageTitle} = PageTitleContainer.useContainer()
 
   return (
     <div className={styles.container}>
@@ -31,7 +30,7 @@ export const TopGrid: FC<TopGridProps> = ({title}) => {
           <Link href="/strom">Strom</Link>
         </div>
       </div>
-      <div className={styles.title}>{title}</div>
+      <div className={styles.title}>{pageTitle}</div>
       {(page === 'zadania' || page === 'vysledky') && (
         <div className={styles.semesterPicker}>
           <SemesterPicker page={page} />
