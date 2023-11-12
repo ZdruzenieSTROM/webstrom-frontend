@@ -1,14 +1,9 @@
-import {CheckboxGroupInput, required} from 'react-admin'
+import {CheckboxGroupInput} from 'react-admin'
+
+import {seminarIdToName} from '@/utils/useSeminarInfo'
+
+const choices = Object.entries(seminarIdToName).map(([id, name]) => ({id, name}))
 
 export const SitesCheckboxInput: typeof CheckboxGroupInput = (props) => (
-  <CheckboxGroupInput
-    choices={[
-      {id: 1, name: 'Strom'},
-      {id: 2, name: 'Matik'},
-      {id: 3, name: 'Malynar'},
-      {id: 4, name: 'Zdruzenie'},
-    ]}
-    validate={required()}
-    {...props}
-  />
+  <CheckboxGroupInput choices={choices} {...props} />
 )
