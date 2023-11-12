@@ -5,7 +5,6 @@ export type Styles = {
   menuButton: string
   menuCloseButton: string
   menuItem: string
-  menuItems: string
   menuOpenButton: string
   visible: string
 }

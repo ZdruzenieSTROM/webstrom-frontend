@@ -1,6 +1,6 @@
+import axios from 'axios'
 import {stringify} from 'querystring'
-import {DataProvider, fetchUtils, RaRecord} from 'react-admin'
-import {Cookies} from 'react-cookie'
+import {DataProvider, RaRecord} from 'react-admin'
 
 // potencialne TODO: ak BE bude mat pagination, filter alebo sort, upravime a pouzijeme tento kod.
 // zatial je pagination aj sort rieseny client-side a len pre getList, filter/search nemame.
@@ -18,21 +18,6 @@ import {Cookies} from 'react-cookie'
 // const getOrderingQuery = ({field, order}: SortPayload) => ({
 //   ordering: `${order === 'ASC' ? '' : '-'}${field}`,
 // })
-
-const cookies = new Cookies()
-
-const authFetchJson = (url: string, options?: Record<string, unknown>) => {
-  const token = cookies.get('webstrom-token')
-  const authOptions = token
-    ? {
-        user: {
-          authenticated: true,
-          token: 'Token ' + token,
-        },
-      }
-    : {}
-  return fetchUtils.fetchJson(url, Object.assign(authOptions, options))
-}
 
 const dynamicSort = (key: string, order: string) => {
   const orderValue = order === 'ASC' ? 1 : -1
@@ -54,99 +39,67 @@ export const dataProvider: DataProvider = {
       // ...getPaginationQuery(params.pagination),
       // ...getOrderingQuery(params.sort),
     }
-    const {json} = await authFetchJson(`${apiUrl}/${resource}/?${stringify(query)}`)
+    const {data} = await axios.get(`${apiUrl}/${resource}/?${stringify(query)}`)
 
     // client-side sort
     const {field, order} = params.sort
-    json.sort(dynamicSort(field, order))
+
+    data.sort(dynamicSort(field, order))
 
     // client-side pagination
     const {page, perPage} = params.pagination
-    const pagedData = json.slice((page - 1) * perPage, page * perPage)
+    const pagedData = data.slice((page - 1) * perPage, page * perPage)
 
     return {
       data: pagedData,
-      total: json.length,
+      total: data.length,
     }
   },
   getOne: async (resource, params) => {
-    const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}`)
+    const {data} = await axios.get(`${apiUrl}/${resource}/${params.id}`)
 
-    return {
-      data: json,
-    }
+    return {data}
   },
   getMany: async (resource, params) => {
-    const data = await Promise.all(params.ids.map((id) => authFetchJson(`${apiUrl}/${resource}/${id}`)))
+    const data = await Promise.all(params.ids.map((id) => axios.get(`${apiUrl}/${resource}/${id}`)))
 
-    return {
-      data: data.map(({json}) => json),
-    }
+    return {data: data.map(({data}) => data)}
   },
   // TODO: ak budeme pouzivat tuto funkciu, upravime podla getList (pagination, sort, filter). uprimne este neviem, pri com sa pouziva
   getManyReference: async (resource, params) => {
     const query = {
       [params.target]: params.id,
     }
-    const {json} = await authFetchJson(`${apiUrl}/${resource}/?${stringify(query)}`)
+    const {data} = await axios.get(`${apiUrl}/${resource}/?${stringify(query)}`)
 
     return {
-      data: json,
-      total: json.length,
+      data: data,
+      total: data.length,
     }
   },
   update: async (resource, params) => {
-    const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(params.data),
-    })
+    const {data} = await axios.patch(`${apiUrl}/${resource}/${params.id}`, params.data)
 
-    return {data: json}
+    return {data}
   },
   updateMany: async (resource, params) => {
-    const data = await Promise.all(
-      params.ids.map((id) =>
-        authFetchJson(`${apiUrl}/${resource}/${id}`, {
-          method: 'PATCH',
-          body: JSON.stringify(params.data),
-        }),
-      ),
-    )
+    const data = await Promise.all(params.ids.map((id) => axios.patch(`${apiUrl}/${resource}/${id}`, params.data)))
 
-    return {
-      data: data.map(({json}) => json),
-    }
+    return {data: data.map(({data}) => data)}
   },
   create: async (resource, params) => {
-    const {json} = await authFetchJson(`${apiUrl}/${resource}`, {
-      method: 'POST',
-      body: JSON.stringify(params.data),
-    })
+    const {data} = await axios.post(`${apiUrl}/${resource}`, params.data)
 
-    return {
-      data: json,
-    }
+    return {data}
   },
   delete: async (resource, params) => {
-    const {json} = await authFetchJson(`${apiUrl}/${resource}/${params.id}`, {
-      method: 'DELETE',
-    })
+    const {data} = await axios.delete(`${apiUrl}/${resource}/${params.id}`)
 
-    return {
-      data: json,
-    }
+    return {data}
   },
   deleteMany: async (resource, params) => {
-    const data = await Promise.all(
-      params.ids.map((id) =>
-        authFetchJson(`${apiUrl}/${resource}/${id}`, {
-          method: 'DELETE',
-        }),
-      ),
-    )
+    const data = await Promise.all(params.ids.map((id) => axios.delete(`${apiUrl}/${resource}/${id}`)))
 
-    return {
-      data: data.map(({json}) => json.id),
-    }
+    return {data: data.map(({data}) => data.id)}
   },
 }

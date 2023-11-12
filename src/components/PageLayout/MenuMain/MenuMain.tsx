@@ -1,4 +1,4 @@
-import {Theme, Typography, useMediaQuery} from '@mui/material'
+import {Stack, Theme, Typography, useMediaQuery} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
@@ -9,6 +9,7 @@ import {FC, useState} from 'react'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
 import Menu from '@/svg/menu.svg'
+import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Authentication} from '../Authentication/Authentication'
@@ -22,6 +23,8 @@ interface MenuItemInterface {
 
 export const MenuMain: FC = () => {
   const {seminar, seminarId} = useSeminarInfo()
+
+  const {hasPermissions} = useHasPermissions()
 
   const [isVisible, setIsVisible] = useState(true)
   const toggleMenu = () => setIsVisible((currentIsVisible) => !currentIsVisible)
@@ -49,12 +52,18 @@ export const MenuMain: FC = () => {
             <Loading />
           </div>
         )}
-        <div className={styles.menuItems}>
-          {menuItems.map((menuItem: MenuItemInterface) => {
-            // `menuItem.url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
-            return <MenuMainItem key={menuItem.id} caption={menuItem.caption} url={`/${seminar}${menuItem.url}`} />
-          })}
-        </div>
+        <Stack mt="176px">
+          {menuItems.map(({id, caption, url}) => (
+            // `url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
+            <MenuMainItem key={id} caption={caption} url={`/${seminar}${url}`} />
+          ))}
+        </Stack>
+        {hasPermissions && (
+          <Stack sx={{mt: 4, mx: 2, borderTop: '8px dashed white', pt: 4}}>
+            <MenuMainItem caption="TODO: Opravovanie" url={`/${seminar}/admin/opravovanie`} />
+            <MenuMainItem caption="Admin" url="/admin" />
+          </Stack>
+        )}
         <Authentication />
       </div>
     </>

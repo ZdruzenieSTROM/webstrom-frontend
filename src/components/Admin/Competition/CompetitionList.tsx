@@ -1,10 +1,10 @@
 import {FC} from 'react'
-import {ArrayField, Datagrid, DateField, List, ListProps, TextField} from 'react-admin'
+import {ArrayField, Datagrid, DateField, List, TextField} from 'react-admin'
 
 // TODO: premysliet a prerobit rozhranie, mozno ako u postov - pri kliku na riadok ukazat Show, kde budu priklady
 // (nie ako teraz v zanorenom Datagride)
-export const CompetitionList: FC<ListProps> = (props) => (
-  <List {...props}>
+export const CompetitionList: FC = () => (
+  <List>
     <Datagrid>
       <TextField source="id" />
       <DateField source="deadline" />

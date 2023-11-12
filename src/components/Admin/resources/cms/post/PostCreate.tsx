@@ -1,20 +1,11 @@
 import {FC} from 'react'
-import {
-  ArrayInput,
-  Create,
-  CreateProps,
-  FormTab,
-  required,
-  SimpleFormIterator,
-  TabbedForm,
-  TextInput,
-} from 'react-admin'
+import {ArrayInput, Create, FormTab, required, SimpleFormIterator, TabbedForm, TextInput} from 'react-admin'
 
 import {MyDateInput} from '@/components/Admin/custom/MyDateInput'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
-export const PostCreate: FC<CreateProps> = (props) => (
-  <Create redirect="show" {...props}>
+export const PostCreate: FC = () => (
+  <Create redirect="show">
     <TabbedForm>
       <FormTab label="general">
         {/* <NumberInput source="id" fullWidth disabled /> */}

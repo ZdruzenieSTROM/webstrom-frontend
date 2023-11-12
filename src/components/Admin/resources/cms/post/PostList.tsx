@@ -1,8 +1,8 @@
 import {FC} from 'react'
-import {Datagrid, DateField, List, ListProps, NumberField, TextField} from 'react-admin'
+import {Datagrid, DateField, List, NumberField, TextField} from 'react-admin'
 
-export const PostList: FC<ListProps> = (props) => (
-  <List {...props}>
+export const PostList: FC = () => (
+  <List>
     <Datagrid rowClick="show">
       <NumberField source="id" />
       <TextField source="caption" />
