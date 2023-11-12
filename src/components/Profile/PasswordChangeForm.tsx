@@ -104,9 +104,12 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
         </form>
       }
       actions={
-        <Button type="submit" onClick={handleSubmit(onSubmit)}>
-          Potvrdiť
-        </Button>
+        <>
+          <Button type="submit" onClick={handleSubmit(onSubmit)}>
+            Potvrdiť
+          </Button>
+          <Button onClick={close}>Zavrieť</Button>
+        </>
       }
     />
   )
