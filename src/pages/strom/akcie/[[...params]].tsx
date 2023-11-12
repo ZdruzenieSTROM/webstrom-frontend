@@ -7,6 +7,7 @@ import {Link} from '@/components/Clickable/Clickable'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Markdown} from '@/components/StaticSites/Markdown'
 import {Competition, Event} from '@/types/api/generated/competition'
+import {formatDate} from '@/utils/formatDate'
 import {Seminar} from '@/utils/useSeminarInfo'
 
 import styles from './competition.module.scss'
@@ -46,9 +47,10 @@ const StaticPage: NextPage<CompetitionPageProps> = ({
               <p>
                 <b>Nadchádzajúci ročník:</b>
               </p>
-              {upcoming_or_current_event.start && <p>Odkedy? {upcoming_or_current_event.start} </p>}
-              {upcoming_or_current_event.end && <p>Dokedy? {upcoming_or_current_event.end}</p>}
+              {upcoming_or_current_event.start && <p>Odkedy? {formatDate(upcoming_or_current_event.start)} </p>}
+              {upcoming_or_current_event.end && <p>Dokedy? {formatDate(upcoming_or_current_event.end)}</p>}
               {upcoming_or_current_event.publication_set.length > 0 && (
+                // TODO: vyplut vsetky publikacie
                 <p>
                   <Link href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>Pozvánka</Link>
                 </p>
@@ -57,7 +59,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({
                 <div>
                   <p>
                     Registrácia prebieha do:
-                    {upcoming_or_current_event.registration_link.end}
+                    {formatDate(upcoming_or_current_event.registration_link.end)}
                     <Link href={upcoming_or_current_event.registration_link.url}>Registračný formulár</Link>
                   </p>
 
@@ -83,6 +85,7 @@ const StaticPage: NextPage<CompetitionPageProps> = ({
         <div className={styles.h2}>
           <h2>Archív: </h2>
         </div>
+        {/* TODO: asi zjednotit styly, neriesit with/without publications */}
         {competition_type.name === 'Tábor' ? (
           <div className={styles.archiveWithoutPublications}>
             {history_events.map((event) => (
