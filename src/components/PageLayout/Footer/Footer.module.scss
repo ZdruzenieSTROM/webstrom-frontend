@@ -1,6 +1,7 @@
-.pageContainer {
-  min-height: 100vh;
-  position: relative;
+.footer {
+  width: 100%;
+  background-color: black;
+  color: white;
 }
 
 .grid {
@@ -10,18 +11,7 @@
   padding-bottom: 1rem;
 }
 
-.mainContent {
-  padding: 20px;
-  overflow: visible;
+.content {
   grid-column-start: 2;
-}
-
-.col1 {
   grid-column-end: 3;
-}
-.col2 {
-  grid-column-end: 4;
-}
-.col3 {
-  grid-column-end: 5;
 }
