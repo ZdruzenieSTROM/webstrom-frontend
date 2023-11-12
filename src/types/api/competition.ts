@@ -148,6 +148,7 @@ export interface SeriesWithProblems {
   is_registered: boolean
   problems: Problem[]
   can_submit: boolean
+  can_resubmit: boolean
   order: number
   deadline: string
   complete: boolean

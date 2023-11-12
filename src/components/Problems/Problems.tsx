@@ -53,6 +53,7 @@ export const Problems: FC = () => {
   const problems = series?.problems ?? []
   const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
+  const canResubmit = series?.can_resubmit ?? canSubmit
 
   const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
   const [overrideIsRegistered, setOverrideIsRegistered] = useState<boolean>()
@@ -118,7 +119,7 @@ export const Problems: FC = () => {
             setDisplaySideContent={setDisplaySideContent}
             registered={isRegistered}
             canRegister={canRegister}
-            canSubmit={canSubmit}
+            canSubmit={(canSubmit && !problem.submitted) || (!!problem.submitted && canResubmit)}
             invalidateSeriesQuery={invalidateSeriesQuery}
             displayRegisterDialog={() => setDisplayRegisterDialog(true)}
           />
