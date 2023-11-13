@@ -1,17 +1,11 @@
 import axios from 'axios'
 import {GetServerSideProps, NextPage} from 'next'
-import {useRouter} from 'next/router'
-import {FC, Fragment} from 'react'
 
-import {Link} from '@/components/Clickable/Clickable'
+import {CompetitionPage} from '@/components/CompetitionPage/CompetitionPage'
+import {RulesPage} from '@/components/CompetitionPage/RulesPage'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {Markdown} from '@/components/StaticSites/Markdown'
 import {Competition, Event} from '@/types/api/generated/competition'
-import {BannerContainer} from '@/utils/BannerContainer'
-import {formatDate} from '@/utils/formatDate'
 import {Seminar} from '@/utils/useSeminarInfo'
-
-import styles from './competition.module.scss'
 
 // skusime to opravit v API - `history_events` je nespravne vygenerovane ako `any`
 type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Event[]}
@@ -21,108 +15,17 @@ type CompetitionPageProps = {
   is_rules: boolean
 }
 
-const StaticPage: NextPage<CompetitionPageProps> = ({
-  competition: {
-    name,
-    rules,
-    who_can_participate,
-    description,
-    upcoming_or_current_event,
-    competition_type,
-    history_events,
-  },
-  is_rules,
-}) => {
-  const startDate = formatDate(upcoming_or_current_event.start)
-  const endDate = formatDate(upcoming_or_current_event.end)
-  const {setBannerText} = BannerContainer.useContainer()
-  if (upcoming_or_current_event) {
-    setBannerText(`${name} sa bude konať  ${startDate}`)
-  } else {
-    setBannerText('')
-  }
-
+const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => {
   return (
-    <PageLayout title={name}>
+    <PageLayout title={competition.name}>
       {is_rules ? (
-        <div className={styles.mainText}>{rules && <Markdown content={rules} />}</div>
+        <RulesPage
+          name={competition.name}
+          rules={competition.rules}
+          upcoming_or_current_event={competition.upcoming_or_current_event}
+        />
       ) : (
-        <>
-          <div className={styles.mainText}>
-            {who_can_participate && <p>Pre koho? {who_can_participate}</p>}
-            <p>{description}</p>
-          </div>
-          <div className={styles.mainText}>
-            {upcoming_or_current_event ? (
-              <div className={styles.mainText}>
-                <p>
-                  <b>Nadchádzajúci ročník:</b>
-                </p>
-                {upcoming_or_current_event.start && <p>Odkedy? {startDate} </p>}
-                {upcoming_or_current_event.end && <p>Dokedy? {endDate}</p>}
-                {upcoming_or_current_event.publication_set.length > 0 && (
-                  <p>
-                    <Link href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>Pozvánka</Link>
-                  </p>
-                )}
-                {upcoming_or_current_event.registration_link && (
-                  <div>
-                    <p>
-                      Registrácia prebieha do:
-                      {upcoming_or_current_event.registration_link.end}
-                      <Link href={upcoming_or_current_event.registration_link.url}>Registračný formulár</Link>
-                    </p>
-
-                    <p>{upcoming_or_current_event.registration_link.additional_info}</p>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <p>
-                <b>Nadchádzajúci ročník:</b> Pripravujeme
-              </p>
-            )}
-          </div>
-
-          <div className={styles.container}>
-            <div className={styles.actions}>
-              <div className={styles.actionButton}>
-                <RulesLink />
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.h2}>
-            <h2>Archív: </h2>
-          </div>
-          {/* TODO: asi zjednotit styly, neriesit with/without publications */}
-          {competition_type.name === 'Tábor' ? (
-            <div className={styles.archiveWithoutPublications}>
-              {history_events.map((event) => (
-                <Fragment key={event.id}>
-                  <div>
-                    {name + ' '} {event.school_year}
-                  </div>
-                </Fragment>
-              ))}
-            </div>
-          ) : (
-            <div className={styles.archiveWithPublications}>
-              {history_events.map((event) => (
-                <Fragment key={event.id}>
-                  <div>
-                    {name} {event.school_year}
-                  </div>
-                  {event.publication_set.map((publication) => (
-                    <Link key={publication.id} href={`/api/${publication.file}`}>
-                      {publication.name}
-                    </Link>
-                  ))}
-                </Fragment>
-              ))}
-            </div>
-          )}
-        </>
+        <CompetitionPage competition={competition} />
       )}
     </PageLayout>
   )
@@ -164,9 +67,3 @@ export const competitionBasedGetServerSideProps =
   }
 
 export const getServerSideProps = competitionBasedGetServerSideProps('strom')
-
-const RulesLink: FC = () => {
-  const router = useRouter()
-  const active = `${router.asPath}/pravidla`
-  return <Link href={active}>Pravidlá</Link>
-}
