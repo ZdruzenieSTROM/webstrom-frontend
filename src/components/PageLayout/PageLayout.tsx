@@ -1,6 +1,7 @@
 import clsx from 'clsx'
-import {FC, ReactNode, useEffect} from 'react'
+import {FC, ReactNode} from 'react'
 
+import {BannerContainer} from '@/utils/BannerContainer'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 
 import {Banner} from './Banner/Banner'
@@ -21,25 +22,27 @@ type PageLayoutProps = {
 export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', children}) => {
   return (
     <PageTitleContainer.Provider initialState={title}>
-      <div className={styles.pageContainer}>
-        <TopGrid />
-        <Banner />
-        <MenuMain />
-        <div className={styles.grid}>
-          <StromLogo />
-          <div
-            className={clsx(
-              styles.mainContent,
-              contentWidth === 1 && styles.col1,
-              contentWidth === 2 && styles.col2,
-              contentWidth === 3 && styles.col3,
-            )}
-          >
-            {children}
+      <BannerContainer.Provider>
+        <div className={styles.pageContainer}>
+          <TopGrid />
+          <Banner />
+          <MenuMain />
+          <div className={styles.grid}>
+            <StromLogo />
+            <div
+              className={clsx(
+                styles.mainContent,
+                contentWidth === 1 && styles.col1,
+                contentWidth === 2 && styles.col2,
+                contentWidth === 3 && styles.col3,
+              )}
+            >
+              {children}
+            </div>
           </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </BannerContainer.Provider>
     </PageTitleContainer.Provider>
   )
 }

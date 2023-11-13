@@ -11,7 +11,6 @@ import {CookiesProvider} from 'react-cookie'
 
 import {theme} from '@/theme'
 import {AuthContainer} from '@/utils/AuthContainer'
-import {BannerContainer} from '@/utils/BannerContainer'
 
 const ReactQueryDevtools = dynamic(
   () => import('@tanstack/react-query-devtools').then(({ReactQueryDevtools}) => ReactQueryDevtools),
@@ -83,11 +82,9 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
         <ReactQueryDevtools />
         <CookiesProvider>
           <AuthContainer.Provider>
-            <BannerContainer.Provider>
-              <ThemeProvider theme={theme}>
-                <Component {...pageProps} />
-              </ThemeProvider>
-            </BannerContainer.Provider>
+            <ThemeProvider theme={theme}>
+              <Component {...pageProps} />
+            </ThemeProvider>
           </AuthContainer.Provider>
         </CookiesProvider>
       </QueryClientProvider>
