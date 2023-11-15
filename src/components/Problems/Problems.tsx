@@ -2,6 +2,7 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
+import {useInterval} from 'usehooks-ts'
 
 import {Button, Link} from '@/components/Clickable/Clickable'
 import {SeriesWithProblems} from '@/types/api/competition'
@@ -53,6 +54,17 @@ export const Problems: FC = () => {
   const problems = series?.problems ?? []
   const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
+  const canResubmit = series?.can_resubmit ?? canSubmit
+  const [isAfterDeadline, setIsAfterDeadline] = useState<boolean>(new Date(series?.deadline ?? '') < new Date())
+
+  useInterval(
+    () => {
+      const isAfterDeadlineNew = new Date(series?.deadline ?? '') < new Date()
+      isAfterDeadlineNew !== isAfterDeadline && setIsAfterDeadline(isAfterDeadlineNew)
+    },
+    // Delay to null to stop it after deadline
+    isAfterDeadline ? null : 500,
+  )
 
   const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
   const [overrideIsRegistered, setOverrideIsRegistered] = useState<boolean>()
@@ -118,7 +130,8 @@ export const Problems: FC = () => {
             setDisplaySideContent={setDisplaySideContent}
             registered={isRegistered}
             canRegister={canRegister}
-            canSubmit={canSubmit}
+            canSubmit={problem.submitted ? canResubmit : canSubmit}
+            isAfterDeadline={isAfterDeadline}
             invalidateSeriesQuery={invalidateSeriesQuery}
             displayRegisterDialog={() => setDisplayRegisterDialog(true)}
           />

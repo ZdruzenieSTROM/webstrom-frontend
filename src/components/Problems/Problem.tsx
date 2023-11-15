@@ -21,6 +21,7 @@ export const Problem: FC<{
   registered: boolean
   canRegister: boolean
   canSubmit: boolean
+  isAfterDeadline: boolean
   invalidateSeriesQuery: () => Promise<void>
   displayRegisterDialog: () => void
 }> = ({
@@ -29,6 +30,7 @@ export const Problem: FC<{
   setDisplaySideContent,
   canRegister,
   canSubmit,
+  isAfterDeadline,
   invalidateSeriesQuery,
   displayRegisterDialog,
 }) => {
@@ -73,6 +75,7 @@ export const Problem: FC<{
           problemId={problem.id}
           setDisplayProblemUploadForm={setDisplayProblemUploadForm}
           problemSubmitted={!!problem.submitted}
+          isAfterDeadline={isAfterDeadline}
           invalidateSeriesQuery={invalidateSeriesQuery}
           setDisplayActions={setDisplayActions}
         />
