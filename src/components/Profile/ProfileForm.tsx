@@ -118,11 +118,11 @@ export const ProfileForm: FC = () => {
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>
         <Stack direction={'row'} mt={3} spacing={2}>
-          <Button type="submit" onClick={scrollToTop}>
-            <Typography variant="button2"> Uložiť údaje </Typography>
-          </Button>
           <Button onClick={returnBack}>
             <Typography variant="button2"> Späť </Typography>
+          </Button>
+          <Button type="submit" onClick={scrollToTop}>
+            <Typography variant="button2"> Uložiť údaje </Typography>
           </Button>
         </Stack>
       </form>

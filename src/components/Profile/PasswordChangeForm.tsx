@@ -60,6 +60,11 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
     submitFormData(data)
   }
 
+  const onClose = () => {
+    reset()
+    close()
+  }
+
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
 
   return (
@@ -105,10 +110,10 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
       }
       actions={
         <>
+          <Button onClick={onClose}>Zavrieť</Button>
           <Button type="submit" onClick={handleSubmit(onSubmit)}>
             Potvrdiť
           </Button>
-          <Button onClick={close}>Zavrieť</Button>
         </>
       }
     />
