@@ -6,7 +6,7 @@ import rehypeKatex from 'rehype-katex'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 
-import {MarkdownLink, Table, Td, Th} from './Texts'
+import {MarkdownLink, P, Table, Td, Th} from './Texts'
 
 type MarkdownProps = {
   content: string
@@ -21,6 +21,7 @@ export const Markdown: FC<MarkdownProps> = ({content}) => (
       td: Td,
       a: MarkdownLink,
       table: Table,
+      p: P,
     }}
   >
     {content}
