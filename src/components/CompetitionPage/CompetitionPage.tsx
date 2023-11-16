@@ -2,13 +2,12 @@ import {useRouter} from 'next/router'
 import {FC, Fragment} from 'react'
 
 import {Link} from '@/components/Clickable/Clickable'
-import {Competition, Event} from '@/types/api/generated/competition'
+import {Competition, Event} from '@/types/api/competition'
 import {BannerContainer} from '@/utils/BannerContainer'
 import {formatDate} from '@/utils/formatDate'
 
 import styles from './competition.module.scss'
 
-// TODO: skusime to opravit v API - `history_events` je nespravne vygenerovane ako `any`
 type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Event[]}
 
 type CompetitionPageProps = {
@@ -20,9 +19,9 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
 }) => {
   const {setBannerText} = BannerContainer.useContainer()
 
-  const startDate = formatDate(upcoming_or_current_event?.start)
-  const endDate = formatDate(upcoming_or_current_event?.end)
-  setBannerText(upcoming_or_current_event ? `${name} sa bude konať  ${startDate}` : '')
+  const startDate = upcoming_or_current_event ? formatDate(upcoming_or_current_event.start) : null
+  const endDate = upcoming_or_current_event ? formatDate(upcoming_or_current_event.end) : null
+  setBannerText(startDate ? `${name} sa bude konať  ${startDate}` : '')
 
   const router = useRouter()
   const rulesLink = `${router.asPath}/pravidla`
@@ -39,8 +38,8 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
             <p>
               <b>Nadchádzajúci ročník:</b>
             </p>
-            {upcoming_or_current_event.start && <p>Odkedy? {startDate} </p>}
-            {upcoming_or_current_event.end && <p>Dokedy? {endDate}</p>}
+            {startDate && <p>Odkedy? {startDate} </p>}
+            {endDate && <p>Dokedy? {endDate}</p>}
             {upcoming_or_current_event.publication_set.length > 0 && (
               <p>
                 <Link href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>Pozvánka</Link>
@@ -77,7 +76,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         <h2>Archív: </h2>
       </div>
       {/* TODO: asi zjednotit styly, neriesit with/without publications */}
-      {competition_type.name === 'Tábor' ? (
+      {competition_type?.name === 'Tábor' ? (
         <div className={styles.archiveWithoutPublications}>
           {history_events.map((event) => (
             <Fragment key={event.id}>

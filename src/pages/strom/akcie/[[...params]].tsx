@@ -4,10 +4,9 @@ import {GetServerSideProps, NextPage} from 'next'
 import {CompetitionPage} from '@/components/CompetitionPage/CompetitionPage'
 import {RulesPage} from '@/components/CompetitionPage/RulesPage'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {Competition, Event} from '@/types/api/generated/competition'
+import {Competition, Event} from '@/types/api/competition'
 import {Seminar} from '@/utils/useSeminarInfo'
 
-// skusime to opravit v API - `history_events` je nespravne vygenerovane ako `any`
 type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Event[]}
 
 type CompetitionPageProps = {
