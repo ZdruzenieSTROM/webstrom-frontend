@@ -1,7 +1,6 @@
 import {FC} from 'react'
 import {
   ArrayField,
-  BooleanField,
   Datagrid,
   DateField,
   NumberField,
@@ -20,9 +19,6 @@ export const EventShow: FC = () => (
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
-          <TextField source="registration_link.url" />
-
-          <NumberField source="id" />
           <CompetitionField source="competition" />
           <NumberField source="year" />
           <NumberField source="season_code" />
@@ -31,10 +27,6 @@ export const EventShow: FC = () => (
           <DateField source="end" />
           <TextField source="additional_name" />
 
-          <BooleanField source="can_participate" />
-          <BooleanField source="is_registered" />
-
-          <NumberField source="registration_link.id" />
           <TextField source="registration_link.url" />
           <DateField source="registration_link.start" />
           <DateField source="registration_link.end" />
@@ -45,7 +37,6 @@ export const EventShow: FC = () => (
         <SimpleShowLayout>
           <ArrayField source="publication_set">
             <Datagrid>
-              <NumberField source="id" />
               <TextField source="name" />
               <TextField source="file" />
               <NumberField source="publication_type" />
