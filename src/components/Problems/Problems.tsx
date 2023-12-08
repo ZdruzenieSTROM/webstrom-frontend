@@ -10,7 +10,7 @@ import {SeriesWithProblems} from '@/types/api/competition'
 import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {BannerContainer} from '@/utils/BannerContainer'
-import {formatDate} from '@/utils/formatDate'
+import {formatDateTime} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
@@ -86,7 +86,7 @@ export const Problems: FC = () => {
     if (seriesData === undefined) {
       setBannerText('')
     } else {
-      const deadline = formatDate(seriesData.data.deadline)
+      const deadline = formatDateTime(seriesData.data.deadline)
       if (seriesData?.data.can_submit) {
         setBannerText(`Termín série: ${deadline}`)
       } else {

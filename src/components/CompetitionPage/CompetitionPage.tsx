@@ -4,7 +4,7 @@ import {FC, Fragment} from 'react'
 import {Link} from '@/components/Clickable/Link'
 import {Competition, Event} from '@/types/api/competition'
 import {BannerContainer} from '@/utils/BannerContainer'
-import {formatDate} from '@/utils/formatDate'
+import {formatDateTime} from '@/utils/formatDate'
 
 import styles from './competition.module.scss'
 
@@ -19,8 +19,8 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
 }) => {
   const {setBannerText} = BannerContainer.useContainer()
 
-  const startDate = upcoming_or_current_event ? formatDate(upcoming_or_current_event.start) : null
-  const endDate = upcoming_or_current_event ? formatDate(upcoming_or_current_event.end) : null
+  const startDate = upcoming_or_current_event ? formatDateTime(upcoming_or_current_event.start) : null
+  const endDate = upcoming_or_current_event ? formatDateTime(upcoming_or_current_event.end) : null
   setBannerText(startDate ? `${name} sa bude konať  ${startDate}` : '')
 
   const router = useRouter()
