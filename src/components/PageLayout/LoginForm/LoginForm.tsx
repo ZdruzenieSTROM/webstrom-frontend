@@ -1,3 +1,4 @@
+import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
@@ -5,7 +6,6 @@ import {Button} from '@/components/Clickable/Clickable'
 import styles from '@/components/FormItems/Form.module.scss'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
-import { useRouter } from 'next/router'
 
 type LoginFormValues = {
   email: string
@@ -25,12 +25,12 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const {login} = AuthContainer.useContainer()
   const {handleSubmit, control} = useForm<LoginFormValues>({defaultValues})
 
-  const router = useRouter() 
+  const router = useRouter()
 
   const redirectClose = () => {
     closeOverlay()
-    if (router.asPath.endsWith("registracia")) {
-      router.push("/")
+    if (router.asPath.endsWith('registracia')) {
+      router.push('/')
     }
   }
 
