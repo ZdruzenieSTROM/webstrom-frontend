@@ -96,8 +96,12 @@ export const UploadProblemForm: FC<{
         contentText={alertMessage}
         actions={
           <>
-            <Button onClick={cancel}>Zrušiť</Button>
-            <Button onClick={closeAlertDialog}>Pokračovať</Button>
+            <Button variant="button2" onClick={cancel}>
+              Zrušiť
+            </Button>
+            <Button variant="button2" onClick={closeAlertDialog}>
+              Pokračovať
+            </Button>
           </>
         }
       />
@@ -122,8 +126,12 @@ export const UploadProblemForm: FC<{
               </span>
             </div>
             <div className={styles.actions}>
-              <Button onClick={handleSubmit}>Uložiť</Button>
-              <Button onClick={handleRemoveSelection}>Zrušiť</Button>
+              <Button variant="button2" onClick={handleSubmit}>
+                Uložiť
+              </Button>
+              <Button variant="button2" onClick={handleRemoveSelection}>
+                Zrušiť
+              </Button>
             </div>
 
             {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
