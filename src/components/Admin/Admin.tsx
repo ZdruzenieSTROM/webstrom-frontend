@@ -14,6 +14,9 @@ import {EventCreate} from './resources/competition/event/EventCreate'
 import {EventEdit} from './resources/competition/event/EventEdit'
 import {EventList} from './resources/competition/event/EventList'
 import {EventShow} from './resources/competition/event/EventShow'
+import {SeriesEdit} from './resources/competition/series/SeriesEdit'
+import {SeriesList} from './resources/competition/series/SeriesList'
+import {SeriesShow} from './resources/competition/series/SeriesShow'
 import {useAuthProvider} from './useAuthProvider'
 
 export const Admin: FC = () => {
@@ -22,8 +25,7 @@ export const Admin: FC = () => {
   return (
     <ReactAdmin authProvider={authProvider} dataProvider={dataProvider}>
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
-      {/* TODO: create, edit, celkovo rozumne rozhranie pre sutaze/serie */}
-      <Resource name="competition/series" list={CompetitionList} />
+      <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} />
       <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
       <Resource
         name="competition/competition"
