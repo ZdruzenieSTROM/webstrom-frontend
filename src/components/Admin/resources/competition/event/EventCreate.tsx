@@ -1,7 +1,6 @@
 import {FC} from 'react'
 import {
   ArrayInput,
-  Create,
   DateTimeInput,
   FormTab,
   NumberInput,
@@ -12,9 +11,10 @@ import {
 } from 'react-admin'
 
 import {CompetitionInput} from '@/components/Admin/custom/CompetitionInput'
+import {MyCreate} from '@/components/Admin/custom/MyCreate'
 
 export const EventCreate: FC = () => (
-  <Create redirect="show">
+  <MyCreate>
     <TabbedForm>
       <FormTab label="general">
         <NumberInput source="id" fullWidth disabled />
@@ -47,5 +47,5 @@ export const EventCreate: FC = () => (
         </ArrayInput>
       </FormTab>
     </TabbedForm>
-  </Create>
+  </MyCreate>
 )
