@@ -1,3 +1,4 @@
+import {Typography} from '@mui/material'
 import {FC} from 'react'
 
 import {Marquee} from '@/components/Marquee/Marquee'
@@ -10,7 +11,9 @@ export const Banner: FC = () => {
   return (
     <div className={styles.banner}>
       <Marquee gradient={false} speed={100}>
-        <div className={styles.marqueeTextContainer}>{bannerText}</div>
+        <Typography variant="h2" component="span" className={styles.marqueeTextContainer}>
+          {bannerText}
+        </Typography>
       </Marquee>
     </div>
   )
