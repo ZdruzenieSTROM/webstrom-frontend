@@ -2,6 +2,10 @@ import {FC} from 'react'
 import {Admin as ReactAdmin, Resource} from 'react-admin'
 
 import {dataProvider} from './dataProvider'
+import {FlatpageCreate} from './resources/base/flat-page/FlatpageCreate'
+import {FlatpageEdit} from './resources/base/flat-page/FlatpageEdit'
+import {FlatpageList} from './resources/base/flat-page/FlatpageList'
+import {FlatpageShow} from './resources/base/flat-page/FlatpageShow'
 import {PostCreate} from './resources/cms/post/PostCreate'
 import {PostEdit} from './resources/cms/post/PostEdit'
 import {PostList} from './resources/cms/post/PostList'
@@ -33,6 +37,13 @@ export const Admin: FC = () => {
         edit={CompetitionEdit}
         show={CompetitionShow}
         create={CompetitionCreate}
+      />
+      <Resource
+        name="base/flat-page"
+        list={FlatpageList}
+        edit={FlatpageEdit}
+        show={FlatpageShow}
+        create={FlatpageCreate}
       />
     </ReactAdmin>
   )
