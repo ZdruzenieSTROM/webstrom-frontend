@@ -7,6 +7,8 @@ declare module '@mui/material/styles' {
     button1: React.CSSProperties
     button2: React.CSSProperties
     button3: React.CSSProperties
+    postTitle: React.CSSProperties
+    postBody: React.CSSProperties
   }
 
   // allow configuration using `createTheme`
@@ -15,6 +17,8 @@ declare module '@mui/material/styles' {
     button1?: React.CSSProperties
     button2?: React.CSSProperties
     button3?: React.CSSProperties
+    postTitle?: React.CSSProperties
+    postBody?: React.CSSProperties
   }
 }
 
@@ -25,6 +29,8 @@ declare module '@mui/material/Typography' {
     button1: true
     button2: true
     button3: true
+    postTitle: true
+    postBody: true
     // disable these variants
     h4: false
     h5: false
@@ -150,6 +156,23 @@ export const theme: Theme = {
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
+    },
+    postTitle: {
+      // original Figma fontSize: 36px
+      fontSize: pxToRem(30),
+      [sm]: {fontSize: pxToRem(30)},
+      [md]: {fontSize: pxToRem(30)},
+      [lg]: {fontSize: pxToRem(30)},
+      [xl]: {fontSize: pxToRem(36)},
+      fontWeight: 800,
+    },
+    postBody: {
+      // original Figma fontSize: 30px
+      fontSize: pxToRem(24),
+      [sm]: {fontSize: pxToRem(24)},
+      [md]: {fontSize: pxToRem(24)},
+      [lg]: {fontSize: pxToRem(24)},
+      [xl]: {fontSize: pxToRem(30)},
     },
   },
   components: {

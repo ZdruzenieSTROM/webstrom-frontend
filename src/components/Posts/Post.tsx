@@ -1,9 +1,10 @@
 import {Stack, Typography} from '@mui/material'
 import {FC} from 'react'
 
+import {formatDate} from '@/utils/formatDate'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Link} from '../Clickable/Clickable'
+import {Link} from '../Clickable/Link'
 
 export interface IPost {
   id: number
@@ -17,27 +18,31 @@ export interface IPost {
   sites: number[]
 }
 
-export const Post: FC<IPost> = ({id, caption, short_text, links, sites}) => {
+export const Post: FC<IPost> = ({id, caption, short_text, links, sites, added_at}) => {
   const {seminarId} = useSeminarInfo()
 
   if (!sites.includes(seminarId)) return null
 
   return (
-    <li key={id}>
-      <Typography variant="h2" textTransform="none" fontStyle="normal">
-        {caption}
-      </Typography>
-      <Typography variant="h2" component="p" textTransform="none" fontStyle="normal" fontWeight={400}>
+    <Stack key={id}>
+      <Typography variant="postTitle">{caption}</Typography>
+      <Typography variant="postBody" component="p">
         {short_text}
       </Typography>
-      {/* alignItems so the links don't stretch */}
-      <Stack gap={0.5} alignItems="start">
-        {links.map(({id, url, caption}) => (
-          <Link key={id} href={url}>
-            {caption}
-          </Link>
-        ))}
+      <Stack direction="row" justifyContent="space-between" alignItems="end">
+        {/* alignItems so the links don't stretch */}
+        <Stack gap={0.5} alignItems="start">
+          {links.map(({id, url, caption}) => (
+            <Link key={id} href={url} variant="button2">
+              {caption}
+            </Link>
+          ))}
+        </Stack>
+
+        <Typography variant="body1" component="p" fontWeight={275} textTransform="uppercase">
+          {formatDate(added_at)}
+        </Typography>
       </Stack>
-    </li>
+    </Stack>
   )
 }

@@ -1,10 +1,10 @@
+import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC} from 'react'
 
 import {Loading} from '../Loading/Loading'
 import {IPost, Post} from './Post'
-import styles from './Posts.module.scss'
 
 export const Posts: FC = () => {
   const {
@@ -17,15 +17,15 @@ export const Posts: FC = () => {
   })
   const posts = postsData?.data ?? []
 
+  if (postsIsLoading) return <Loading />
+
+  if (postsError) return <Typography>{postsError.message}</Typography>
+
   return (
-    <>
-      {postsIsLoading && <Loading />}
-      <ul className={styles.postsList}>
-        {posts.map((post) => (
-          <Post key={post.id} {...post} />
-        ))}
-      </ul>
-      {postsError && <p>{postsError.message}</p>}
-    </>
+    <Stack gap={5}>
+      {posts.map((post) => (
+        <Post key={post.id} {...post} />
+      ))}
+    </Stack>
   )
 }
