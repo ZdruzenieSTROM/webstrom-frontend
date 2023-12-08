@@ -23,11 +23,17 @@ export const VerifyEmail: FC = () => {
     typeof verificationKey === 'string' && verifyEmail(verificationKey)
   }, [verificationKey, verifyEmail])
 
-  if (isError) return <Typography variant="body1">Email už bol verifikovaný, skús sa prihlásiť.</Typography>
+  if (isError)
+    return (
+      <Typography variant="body1">
+        Email už bol verifikovaný, alebo nastal iný problém. Skús sa prihlásiť a v prípade problémov skús overiť email
+        znovu alebo nás kontaktuj.
+      </Typography>
+    )
   if (isVerified)
     return (
       <>
-        <Typography variant="body1">Pre dokončenie overenia emailu sa prihláste</Typography>
+        <Typography variant="body1">Pre dokončenie overenia emailu sa prihlás</Typography>
         <LoginForm
           closeOverlay={() => {
             router.push('/')
