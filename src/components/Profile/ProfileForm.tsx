@@ -1,3 +1,4 @@
+import {Stack, Typography} from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -96,6 +97,10 @@ export const ProfileForm: FC = () => {
     submitFormData(data)
   }
 
+  const returnBack = () => {
+    router.push(`/${seminar}/profil`)
+  }
+
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   const phoneRule = {
     validate: (val?: string) => {
@@ -112,9 +117,14 @@ export const ProfileForm: FC = () => {
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>
-        <Button type="submit" onClick={scrollToTop}>
-          Uložiť údaje
-        </Button>
+        <Stack direction={'row'} mt={3} spacing={2}>
+          <Button onClick={returnBack}>
+            <Typography variant="button2"> Späť </Typography>
+          </Button>
+          <Button type="submit" onClick={scrollToTop}>
+            <Typography variant="button2"> Uložiť údaje </Typography>
+          </Button>
+        </Stack>
       </form>
     </div>
   )
