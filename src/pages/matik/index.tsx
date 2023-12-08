@@ -4,7 +4,7 @@ import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Posts} from '@/components/Posts/Posts'
 
 const Matik: NextPage = () => (
-  <PageLayout title="Seminár Matik" contentWidth={1}>
+  <PageLayout title="Novinky" contentWidth={1}>
     <Posts />
   </PageLayout>
 )

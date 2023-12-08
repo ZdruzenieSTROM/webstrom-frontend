@@ -5,7 +5,7 @@ import {Problems} from '@/components/Problems/Problems'
 
 const Zadania: NextPage = () => {
   return (
-    <PageLayout contentWidth={2}>
+    <PageLayout contentWidth={2} title="Zadania">
       <Problems />
     </PageLayout>
   )

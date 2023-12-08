@@ -1,8 +1,10 @@
 import clsx from 'clsx'
+import Head from 'next/head'
 import {FC, ReactNode} from 'react'
 
 import {BannerContainer} from '@/utils/BannerContainer'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Footer} from './Footer/Footer'
 import {MenuMain} from './MenuMain/MenuMain'
@@ -16,31 +18,46 @@ type PageLayoutProps = {
   children: ReactNode
 }
 
+export type Seminar = 'strom' | 'matik' | 'malynar'
+const seminarTitle: Record<Seminar, string> = {
+  strom: 'STROM',
+  matik: 'Matik',
+  malynar: 'Malynár',
+}
+
 // pre pouzitie len na seminarovych strankach a podstrankach - `/matik(/*)`
 // ked budeme potrebovat top-level stranky ako `/ina-stranka`, budeme musiet upravit, ako sa pracuje s `useSeminarInfo`
 export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', children}) => {
+  const {seminar} = useSeminarInfo()
   return (
-    <PageTitleContainer.Provider initialState={title}>
-      <BannerContainer.Provider>
-        <div className={styles.pageContainer}>
-          <TopGrid />
-          <MenuMain />
-          <div className={styles.grid}>
-            <StromLogo />
-            <div
-              className={clsx(
-                styles.mainContent,
-                contentWidth === 1 && styles.col1,
-                contentWidth === 2 && styles.col2,
-                contentWidth === 3 && styles.col3,
-              )}
-            >
-              {children}
+    <>
+      <Head>
+        <title>
+          {title} | {seminarTitle[seminar]}
+        </title>
+      </Head>
+      <PageTitleContainer.Provider initialState={title}>
+        <BannerContainer.Provider>
+          <div className={styles.pageContainer}>
+            <TopGrid />
+            <MenuMain />
+            <div className={styles.grid}>
+              <StromLogo />
+              <div
+                className={clsx(
+                  styles.mainContent,
+                  contentWidth === 1 && styles.col1,
+                  contentWidth === 2 && styles.col2,
+                  contentWidth === 3 && styles.col3,
+                )}
+              >
+                {children}
+              </div>
             </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
-      </BannerContainer.Provider>
-    </PageTitleContainer.Provider>
+        </BannerContainer.Provider>
+      </PageTitleContainer.Provider>
+    </>
   )
 }
