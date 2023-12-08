@@ -121,7 +121,7 @@ export interface Series {
 }
 
 export interface SeriesWithProblems {
-  id?: number
+  id: number
   can_participate?: any
   is_registered?: any
   problems: Problem[]
