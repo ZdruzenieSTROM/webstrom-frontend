@@ -63,6 +63,27 @@ export const SemesterAdministration: FC = () => {
     )
   }
 
+  const getSeriesResults = async (seriesId: number) => {
+    const {data} = await axios.get<Result[]>(`/api/competition/series/${seriesId}/results`)
+    setTextareaContent(
+      data
+        .map((result: Result) => {
+          let rank = ''
+          if (result.rank_changed) {
+            if (result.rank_start === result.rank_end) {
+              rank = `${result.rank_start}.`
+            } else {
+              rank = `${result.rank_start}.-${result.rank_end}.`
+            }
+          }
+          const name = `${result.registration.profile.first_name} ${result.registration.profile.last_name}`
+          const points = result.solutions[0].map((problem) => problem.points).join('&')
+          return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${points}&${result.total}\\\\`
+        })
+        .join('\n'),
+    )
+  }
+
   const getPostalCards = async (offline_only: boolean) => {
     const {data} = await axios.get<PostalCard[]>(
       `/api/competition/semester/${semesterId}/${offline_only ? 'offline-schools' : 'schools'}`,
@@ -110,7 +131,14 @@ export const SemesterAdministration: FC = () => {
       ))}
       <h3>Generovanie dát</h3>
       <div className={styles.actions}>
-        <Button onClick={getSemesterResults}>Poradie série</Button>
+        {[...semester.series_set].reverse().map((series) => (
+          <div key={series.id}>
+            <Button onClick={() => getSeriesResults(series.id)}>Poradie {series.order}. série</Button>
+          </div>
+        ))}
+        <Button onClick={getSemesterResults}>Poradie semestra</Button>
+      </div>
+      <div className={styles.actions}>
         <Button onClick={() => getPostalCards(false)}>Štítky na školy</Button>
         <Button onClick={() => getPostalCards(true)}>Štítky na školy (iba papierové riešenia)</Button>
         <Link href={`/api/competition/semester/${semesterId}/participants-export/`}>Zoznam riešiteľov</Link>
