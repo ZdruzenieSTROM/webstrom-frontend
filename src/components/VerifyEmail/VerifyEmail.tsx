@@ -8,7 +8,7 @@ export const VerifyEmail: FC = () => {
   const router = useRouter()
   const {verificationKey} = router.query
 
-  const {mutate: verifyEmail, isSuccess: isEmailVerified} = useMutation({
+  const {mutate: verifyEmail, isError: isError, isSuccess: isVerified} = useMutation({
     mutationFn: (verificationKey: string) => axios.post('/api/user/registration/verify-email', {key: verificationKey}),
   })
 
@@ -17,13 +17,19 @@ export const VerifyEmail: FC = () => {
   }, [verificationKey, verifyEmail])
 
 
-  if (!isEmailVerified)
+
+
+  if (isError)
     return <>I am a temporary email verification error. Please put me out of my misery.</>
 
-  return (
-    <>
-      <p>Pre dokončenie overenia emailu sa prihláste</p>
-      <LoginForm closeOverlay={()=>{ router.push("/") }}/>
-    </>
-  )
+  else if (isVerified)
+    return (
+      <>
+        <p>Pre dokončenie overenia emailu sa prihláste</p>
+        <LoginForm closeOverlay={()=>{ router.push("/") }}/>
+      </>
+    )
+  
+  else
+    return <>Loading... </>
 }
