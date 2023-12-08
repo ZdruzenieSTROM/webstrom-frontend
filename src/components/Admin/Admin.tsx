@@ -6,6 +6,10 @@ import {PostCreate} from './resources/cms/post/PostCreate'
 import {PostEdit} from './resources/cms/post/PostEdit'
 import {PostList} from './resources/cms/post/PostList'
 import {PostShow} from './resources/cms/post/PostShow'
+import {CompetitionCreate} from './resources/competition/competition/CompetitionCreate'
+import {CompetitionEdit} from './resources/competition/competition/CompetitionEdit'
+import {CompetitionList} from './resources/competition/competition/CompetitionList'
+import {CompetitionShow} from './resources/competition/competition/CompetitionShow'
 import {EventCreate} from './resources/competition/event/EventCreate'
 import {EventEdit} from './resources/competition/event/EventEdit'
 import {EventList} from './resources/competition/event/EventList'
@@ -21,6 +25,13 @@ export const Admin: FC = () => {
       {/* TODO: create, edit, celkovo rozumne rozhranie pre sutaze/serie */}
       <Resource name="competition/series" list={CompetitionList} />
       <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
+      <Resource
+        name="competition/competition"
+        list={CompetitionList}
+        edit={CompetitionEdit}
+        show={CompetitionShow}
+        create={CompetitionCreate}
+      />
     </ReactAdmin>
   )
 }
