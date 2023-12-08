@@ -1,11 +1,10 @@
-import {Stack, Typography} from '@mui/material'
+import {Stack} from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import styles from '@/components/FormItems/Form.module.scss'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {SelectOption} from '@/components/FormItems/FormSelect/FormSelect'
 import {IGeneralPostResponse} from '@/types/api/general'
@@ -109,23 +108,23 @@ export const ProfileForm: FC = () => {
     },
   }
   return (
-    <div>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack spacing={5}>
         <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
         <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
         <SchoolSubForm control={control} watch={watch} setValue={setValue} />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>
-        <Stack direction={'row'} mt={3} spacing={2}>
-          <Button onClick={returnBack}>
-            <Typography variant="button2"> Späť </Typography>
+        <Stack direction={'row'} mt={3} spacing={2} justifyContent="space-between">
+          <Button onClick={returnBack} variant="button2">
+            Späť
           </Button>
-          <Button type="submit" onClick={scrollToTop}>
-            <Typography variant="button2"> Uložiť údaje </Typography>
+          <Button type="submit" onClick={scrollToTop} variant="button2">
+            Uložiť údaje
           </Button>
         </Stack>
-      </form>
-    </div>
+      </Stack>
+    </form>
   )
 }

@@ -19,7 +19,9 @@ type ProfileLineInput = {
 const ProfileLine: FC<ProfileLineInput> = ({label, value}) => {
   return (
     <Stack direction={'row'} spacing={1}>
-      <Typography variant="h2">{label}</Typography>
+      <Typography variant="h2" component="span">
+        {label}
+      </Typography>
       <Typography variant="h2" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
         {value}
       </Typography>
@@ -46,15 +48,16 @@ export const ProfileDetail: FC = () => {
 
   return (
     <Stack>
-      <Stack spacing={2}>
-        <ProfileLine label={'meno'} value={profile?.first_name + ' ' + profile?.last_name} />
-        <ProfileLine label={'e-mail'} value={profile?.email} />
-        <ProfileLine label={'škola'} value={profile?.school.verbose_name} />
-        <ProfileLine label={'ročník'} value={profile?.grade_name} />
+      <Stack spacing={4}>
+        <ProfileLine label={'meno'} value={profile?.first_name || '-'} />
+        <ProfileLine label={'priezvisko'} value={profile?.last_name || '-'} />
+        <ProfileLine label={'e-mail'} value={profile?.email || '-'} />
+        <ProfileLine label={'škola'} value={profile?.school.verbose_name || '-'} />
+        <ProfileLine label={'ročník'} value={profile?.grade_name || '-'} />
         <ProfileLine label={'tel. č.'} value={profile?.phone || '-'} />
         <ProfileLine label={'tel. č. na rodiča'} value={profile?.parent_phone || '-'} />
       </Stack>
-      <Stack direction={'row'} mt={3} spacing={2}>
+      <Stack direction={'row'} mt={3} spacing={5}>
         <Link href={`/${seminar}/profil/uprava`}>
           <Typography variant="button2">Upraviť údaje</Typography>
         </Link>
