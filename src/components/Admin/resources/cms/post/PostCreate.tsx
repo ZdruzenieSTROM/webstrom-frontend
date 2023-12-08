@@ -1,7 +1,6 @@
 import {FC} from 'react'
 import {
   ArrayInput,
-  Create,
   DateTimeInput,
   FormTab,
   NumberInput,
@@ -11,10 +10,11 @@ import {
   TextInput,
 } from 'react-admin'
 
+import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
 export const PostCreate: FC = () => (
-  <Create redirect="show">
+  <MyCreate>
     <TabbedForm>
       <FormTab label="general">
         <NumberInput source="id" fullWidth disabled />
@@ -36,5 +36,5 @@ export const PostCreate: FC = () => (
         </ArrayInput>
       </FormTab>
     </TabbedForm>
-  </Create>
+  </MyCreate>
 )

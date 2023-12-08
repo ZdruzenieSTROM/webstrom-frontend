@@ -2,7 +2,6 @@ import {FC} from 'react'
 import {
   ArrayInput,
   DateTimeInput,
-  Edit,
   FormTab,
   NumberInput,
   required,
@@ -11,11 +10,11 @@ import {
   TextInput,
 } from 'react-admin'
 
-import {MyEditActions} from '@/components/Admin/custom/MyEditActions'
+import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
 export const PostEdit: FC = () => (
-  <Edit actions={<MyEditActions />} redirect="show" mutationMode="undoable">
+  <MyEdit>
     <TabbedForm>
       <FormTab label="general">
         <NumberInput source="id" fullWidth disabled />
@@ -37,5 +36,5 @@ export const PostEdit: FC = () => (
         </ArrayInput>
       </FormTab>
     </TabbedForm>
-  </Edit>
+  </MyEdit>
 )
