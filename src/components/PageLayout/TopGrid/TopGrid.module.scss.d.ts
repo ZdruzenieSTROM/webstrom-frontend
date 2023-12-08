@@ -1,6 +1,7 @@
 export type Styles = {
   active: string
   container: string
+  grid: string
   menu: string
   menuItem: string
   semesterPicker: string
