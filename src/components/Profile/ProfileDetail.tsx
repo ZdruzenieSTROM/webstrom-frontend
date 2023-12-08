@@ -58,11 +58,11 @@ export const ProfileDetail: FC = () => {
         <ProfileLine label={'tel. č. na rodiča'} value={profile?.parent_phone || '-'} />
       </Stack>
       <Stack direction={'row'} mt={3} spacing={5}>
-        <Link href={`/${seminar}/profil/uprava`}>
-          <Typography variant="button2">Upraviť údaje</Typography>
+        <Link variant="button2" href={`/${seminar}/profil/uprava`}>
+          Upraviť údaje
         </Link>
-        <Button onClick={toggleOpenPasswordDialog}>
-          <Typography variant="button2">Zmeniť heslo</Typography>
+        <Button variant="button2" onClick={toggleOpenPasswordDialog}>
+          Zmeniť heslo
         </Button>
       </Stack>
       <PasswordChangeDialog open={openPasswordDialog} close={toggleOpenPasswordDialog} />
