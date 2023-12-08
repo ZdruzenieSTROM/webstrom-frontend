@@ -2,7 +2,6 @@ import {FC} from 'react'
 import {
   ArrayInput,
   DateTimeInput,
-  Edit,
   FormTab,
   NumberInput,
   required,
@@ -12,10 +11,10 @@ import {
 } from 'react-admin'
 
 import {CompetitionInput} from '@/components/Admin/custom/CompetitionInput'
-import {MyEditActions} from '@/components/Admin/custom/MyEditActions'
+import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
 export const EventEdit: FC = () => (
-  <Edit actions={<MyEditActions />} mutationMode="optimistic">
+  <MyEdit>
     <TabbedForm>
       <FormTab label="general">
         <NumberInput source="id" fullWidth disabled />
@@ -48,5 +47,5 @@ export const EventEdit: FC = () => (
         </ArrayInput>
       </FormTab>
     </TabbedForm>
-  </Edit>
+  </MyEdit>
 )
