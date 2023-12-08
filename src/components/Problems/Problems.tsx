@@ -57,7 +57,7 @@ export const Problems: FC = () => {
   const problems = series?.problems ?? []
   const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
-  const canResubmit = series?.can_resubmit ?? canSubmit
+  const canResubmit = series?.can_resubmit ?? false
   const [isAfterDeadline, setIsAfterDeadline] = useState<boolean>(new Date(series?.deadline ?? '') < new Date())
 
   useInterval(
