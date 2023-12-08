@@ -5,12 +5,11 @@ import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import styles from '@/components/FormItems/Form.module.scss'
-import {FormCheckbox} from '@/components/FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Button} from '../Clickable/Clickable'
+import {Button, Link} from '../Clickable/Clickable'
 import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
 interface RegisterFormValues extends SchoolSubFormValues {
@@ -149,17 +148,11 @@ export const RegisterForm: FC = () => {
         <SchoolSubForm control={control} watch={watch} setValue={setValue} />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
-        <FormCheckbox
-          control={control}
-          name="gdpr"
-          label="súhlas so spracovaním osobných údajov"
-          rules={{
-            validate: (val) => {
-              if (!val) return '* Súhlas so spracovaním osobných údajov je nutnou podmienkou registrácie.'
-            },
-          }}
-        />
         <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>
+        <p>
+          Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so zákonom
+          o ochrane osobných údajov. Bližšie informácie nájdete <Link href={`./gdpr`}>tu</Link>.
+        </p>
         <Button type="submit" onClick={scrollToTop}>
           Registrovať
         </Button>
