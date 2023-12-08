@@ -5,6 +5,7 @@ import {Button} from '@/components/Clickable/Clickable'
 import styles from '@/components/FormItems/Form.module.scss'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
+import { useRouter } from 'next/router'
 
 type LoginFormValues = {
   email: string
@@ -24,8 +25,17 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const {login} = AuthContainer.useContainer()
   const {handleSubmit, control} = useForm<LoginFormValues>({defaultValues})
 
+  const router = useRouter() 
+
+  const redirectClose = () => {
+    closeOverlay()
+    if (router.asPath.endsWith("registracia")) {
+      router.push("/")
+    }
+  }
+
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
-    login({data, onSuccess: closeOverlay})
+    login({data, onSuccess: redirectClose})
   }
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}

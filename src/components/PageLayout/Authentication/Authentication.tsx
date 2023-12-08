@@ -7,6 +7,7 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 import {Overlay} from '../../Overlay/Overlay'
 import {LoginForm} from '../LoginForm/LoginForm'
 import styles from './Authentication.module.scss'
+import { useRouter } from 'next/router'
 
 export const Authentication: FC = () => {
   const [displayAuthenticationOverlay, setDisplayAuthenticationOverlay] = useState(false)
@@ -17,6 +18,15 @@ export const Authentication: FC = () => {
   }
 
   const {seminar} = useSeminarInfo()
+
+  const router = useRouter() 
+
+  const redirectLogout = () => {
+    logout()
+    if (router.asPath.endsWith("profil") || router.asPath.endsWith("profil/uprava")) {
+      router.push("/")
+    }
+  }
 
   if (!isAuthed) {
     return (
@@ -38,7 +48,7 @@ export const Authentication: FC = () => {
     return (
       <div className={styles.authenticationDisplayButtons}>
         <Link href={`/${seminar}/profil`}>Profil</Link>
-        <span onClick={() => logout()}>Odhlásiť</span>
+        <span onClick={redirectLogout}>Odhlásiť</span>
       </div>
     )
   }
