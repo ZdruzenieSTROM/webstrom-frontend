@@ -5,7 +5,7 @@ import {FC} from 'react'
 import {Event, Publication} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Link} from '../Clickable/Clickable'
+import {Link} from '../Clickable/Link'
 import {Loading} from '../Loading/Loading'
 import styles from './Archive.module.scss'
 

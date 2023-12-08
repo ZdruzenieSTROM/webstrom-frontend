@@ -2,7 +2,7 @@ import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import {Button} from '@/components/Clickable/Clickable'
+import {Button} from '@/components/Clickable/Button'
 import styles from '@/components/FormItems/Form.module.scss'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'

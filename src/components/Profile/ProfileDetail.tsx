@@ -3,11 +3,12 @@ import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC, useState} from 'react'
 
+import {Button} from '@/components/Clickable/Button'
+import {Link} from '@/components/Clickable/Link'
 import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Button, Link} from '../Clickable/Clickable'
 import {PasswordChangeDialog} from './PasswordChangeForm'
 
 type ProfileLineInput = {

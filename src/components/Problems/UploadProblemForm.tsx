@@ -6,7 +6,7 @@ import {useDropzone} from 'react-dropzone'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {niceBytes} from '@/utils/niceBytes'
 
-import {Button} from '../Clickable/Clickable'
+import {Button} from '../Clickable/Button'
 import {Dialog} from '../Dialog/Dialog'
 import {FileDropZone} from '../FileDropZone/FileDropZone'
 import styles from './UploadProblemForm.module.scss'

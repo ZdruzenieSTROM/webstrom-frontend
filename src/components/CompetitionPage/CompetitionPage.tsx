@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
 import {FC, Fragment} from 'react'
 
-import {Link} from '@/components/Clickable/Clickable'
+import {Link} from '@/components/Clickable/Link'
 import {Competition, Event} from '@/types/api/competition'
 import {BannerContainer} from '@/utils/BannerContainer'
 import {formatDate} from '@/utils/formatDate'

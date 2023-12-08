@@ -1,6 +1,6 @@
 import {ChangeEvent, FC, useState} from 'react'
 
-import {Link} from '../Clickable/Clickable'
+import {Link} from '../Clickable/Link'
 import {Latex} from './Latex'
 import styles from './LatexExample.module.scss'
 

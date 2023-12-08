@@ -13,7 +13,7 @@ import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Button} from '../Clickable/Clickable'
+import {Button} from '../Clickable/Button'
 import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
 interface ProfileFormValues extends SchoolSubFormValues {

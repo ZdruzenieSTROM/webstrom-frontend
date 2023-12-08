@@ -9,7 +9,8 @@ import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Button, Link} from '../Clickable/Clickable'
+import {Button} from '../Clickable/Button'
+import {Link} from '../Clickable/Link'
 import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
 interface RegisterFormValues extends SchoolSubFormValues {

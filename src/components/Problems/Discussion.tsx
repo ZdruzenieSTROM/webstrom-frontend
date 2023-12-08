@@ -8,7 +8,7 @@ import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
-import {Button} from '../Clickable/Clickable'
+import {Button} from '../Clickable/Button'
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 import styles from './Discussion.module.scss'

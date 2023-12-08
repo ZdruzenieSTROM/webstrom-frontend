@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
 
-import {Button, Link} from '@/components/Clickable/Clickable'
+import {Button} from '@/components/Clickable/Button'
+import {Link} from '@/components/Clickable/Link'
 import {Problem as ProblemType} from '@/types/api/competition'
 
 import {Latex} from '../Latex/Latex'

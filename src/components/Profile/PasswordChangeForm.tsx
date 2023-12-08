@@ -6,7 +6,7 @@ import {SubmitHandler, useForm} from 'react-hook-form'
 import styles from '@/components/FormItems/Form.module.scss'
 import {IGeneralPostResponse} from '@/types/api/general'
 
-import {Button} from '../Clickable/Clickable'
+import {Button} from '../Clickable/Button'
 import {Dialog} from '../Dialog/Dialog'
 import {FormInput} from '../FormItems/FormInput/FormInput'
 
