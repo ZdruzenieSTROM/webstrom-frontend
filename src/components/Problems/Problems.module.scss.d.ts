@@ -1,6 +1,4 @@
 export type Styles = {
-  adminSection: string
-  container: string
   debug: string
   sideContainer: string
 }

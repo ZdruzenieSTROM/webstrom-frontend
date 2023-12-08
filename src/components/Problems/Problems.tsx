@@ -1,3 +1,4 @@
+import {Stack} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -130,15 +131,17 @@ export const Problems: FC = () => {
           </>
         }
       />
-      <div className={styles.container}>
+      <Stack gap={5}>
         {(loading.semesterListIsLoading ||
           loading.currentSeriesIsLoading ||
           seriesIsLoading ||
           permissionsIsLoading) && <Loading />}
         {hasPermissions && (
-          <div className={styles.adminSection}>
-            <Link href={`/${seminar}/admin/opravovanie/${id.semesterId}`}>Admin: Opravovanie</Link>
-          </div>
+          <Stack alignSelf="end">
+            <Link href={`/${seminar}/admin/opravovanie/${id.semesterId}`} variant="button2">
+              Admin: Opravovanie
+            </Link>
+          </Stack>
         )}
         {problems.map((problem) => (
           <Problem
@@ -172,7 +175,7 @@ export const Problems: FC = () => {
             </span>
           </div>
         </div>
-      </div>
+      </Stack>
       <div className={styles.sideContainer}>
         {displaySideContent.type === 'discussion' && (
           <Discussion
