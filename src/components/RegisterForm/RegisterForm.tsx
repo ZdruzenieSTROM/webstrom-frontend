@@ -20,7 +20,6 @@ interface RegisterFormValues extends SchoolSubFormValues {
   last_name?: string
   phone?: string
   parent_phone?: string
-  gdpr?: boolean
 }
 
 interface RegisterErrorResponseData {
@@ -40,7 +39,6 @@ const defaultValues: RegisterFormValues = {
   school: null,
   school_not_found: false,
   grade: '',
-  gdpr: false,
 }
 
 export const RegisterForm: FC = () => {
@@ -70,7 +68,6 @@ export const RegisterForm: FC = () => {
       school: data.school?.id,
       phone: data.phone?.replaceAll(/\s+/gu, ''),
       parent_phone: data.parent_phone?.replaceAll(/\s+/gu, ''),
-      gdpr: data.gdpr,
       grade: data.grade,
     },
     new_school_description: data.new_school_description || '',
