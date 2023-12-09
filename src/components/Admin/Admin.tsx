@@ -28,10 +28,6 @@ export const Admin: FC = () => {
   return (
     <ReactAdmin authProvider={authProvider} dataProvider={dataProvider}>
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
-      <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} />
-      <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
-      {/* nedovolujeme create na competition - velmi rare vec, ani nemame BE POST endpoint na to */}
-      <Resource name="competition/competition" list={CompetitionList} edit={CompetitionEdit} show={CompetitionShow} />
       <Resource
         name="base/flat-page"
         list={FlatpageList}
@@ -39,6 +35,10 @@ export const Admin: FC = () => {
         show={FlatpageShow}
         create={FlatpageCreate}
       />
+      {/* nedovolujeme create na competition - velmi rare vec, ani nemame BE POST endpoint na to */}
+      <Resource name="competition/competition" list={CompetitionList} edit={CompetitionEdit} show={CompetitionShow} />
+      <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
+      <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} />
     </ReactAdmin>
   )
 }
