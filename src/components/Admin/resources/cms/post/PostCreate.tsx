@@ -20,7 +20,7 @@ export const PostCreate: FC = () => (
         <NumberInput source="id" fullWidth disabled />
         <TextInput source="caption" fullWidth validate={required()} />
         <TextInput source="short_text" fullWidth validate={required()} />
-        <TextInput source="details" fullWidth />
+        <TextInput source="details" multiline fullWidth />
         <DateTimeInput source="added_at" fullWidth disabled />
         <DateTimeInput source="visible_after" fullWidth validate={required()} />
         <DateTimeInput source="visible_until" fullWidth validate={required()} />
