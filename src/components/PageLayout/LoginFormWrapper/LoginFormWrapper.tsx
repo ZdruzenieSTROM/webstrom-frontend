@@ -6,11 +6,11 @@ import {Button} from '@/components/Clickable/Button'
 import {LoginForm} from '../LoginForm/LoginForm'
 import {PasswordResetRequestForm} from '../PasswordResetRequest/PasswordResetRequest'
 
-export interface ILoginFormWrapper {
+export type LoginFormWrapperProps = {
   closeOverlay: () => void
 }
 
-export const LoginFormWrapper: FC<ILoginFormWrapper> = ({closeOverlay}) => {
+export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
   const router = useRouter()
   const [form, changeForm] = useState('login')
 
