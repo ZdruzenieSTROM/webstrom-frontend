@@ -33,7 +33,7 @@ export const SeriesShow: FC = () => (
           <ArrayField source="problems">
             <Datagrid>
               <TextField source="id" />
-              <TruncatedTextField source="text" maxTextWidth={50} />
+              <TruncatedTextField source="text" maxTextWidth={100} expandable />
             </Datagrid>
           </ArrayField>
         </SimpleShowLayout>
