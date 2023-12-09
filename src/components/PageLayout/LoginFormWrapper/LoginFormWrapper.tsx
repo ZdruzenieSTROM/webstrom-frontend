@@ -1,3 +1,4 @@
+import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
 import {Button} from '@/components/Clickable/Clickable'
@@ -10,6 +11,7 @@ export interface ILoginFormWrapper {
 }
 
 export const LoginFormWrapper: FC<ILoginFormWrapper> = ({closeOverlay}) => {
+  const router = useRouter()
   const [form, changeForm] = useState('login')
 
   if (form === 'login')
@@ -26,5 +28,11 @@ export const LoginFormWrapper: FC<ILoginFormWrapper> = ({closeOverlay}) => {
       </>
     )
 
-  return <PasswordResetRequestForm closeOverlay={closeOverlay} />
+  return (
+    <PasswordResetRequestForm
+      closeOverlay={() => {
+        router.push('/reset-verification-sent')
+      }}
+    />
+  )
 }

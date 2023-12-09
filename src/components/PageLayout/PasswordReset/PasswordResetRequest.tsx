@@ -27,6 +27,12 @@ export const PasswordResetRequestForm: FC<ILoginFormWrapper> = ({closeOverlay}) 
     mutationFn: (data: PasswordResetRequestFormValues) => {
       return axios.post<IGeneralPostResponse>('/api/user/password/reset/', data)
     },
+
+    onError: (error, variables, context) => {},
+
+    onSuccess: () => {
+      closeOverlay()
+    },
   })
 
   const onSubmit: SubmitHandler<PasswordResetRequestFormValues> = (data) => {
