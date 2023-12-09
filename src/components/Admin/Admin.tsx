@@ -10,7 +10,6 @@ import {PostCreate} from './resources/cms/post/PostCreate'
 import {PostEdit} from './resources/cms/post/PostEdit'
 import {PostList} from './resources/cms/post/PostList'
 import {PostShow} from './resources/cms/post/PostShow'
-import {CompetitionCreate} from './resources/competition/competition/CompetitionCreate'
 import {CompetitionEdit} from './resources/competition/competition/CompetitionEdit'
 import {CompetitionList} from './resources/competition/competition/CompetitionList'
 import {CompetitionShow} from './resources/competition/competition/CompetitionShow'
@@ -31,13 +30,8 @@ export const Admin: FC = () => {
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
       <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} />
       <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
-      <Resource
-        name="competition/competition"
-        list={CompetitionList}
-        edit={CompetitionEdit}
-        show={CompetitionShow}
-        create={CompetitionCreate}
-      />
+      {/* nedovolujeme create na competition - velmi rare vec, ani nemame BE POST endpoint na to */}
+      <Resource name="competition/competition" list={CompetitionList} edit={CompetitionEdit} show={CompetitionShow} />
       <Resource
         name="base/flat-page"
         list={FlatpageList}

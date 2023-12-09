@@ -12,7 +12,6 @@ export const CompetitionList: FC = () => (
       <NumberField source="start_year" />
       <TruncatedTextField source="description" maxTextWidth={30} />
       <TruncatedTextField source="rules" maxTextWidth={30} />
-      {/* <NumberField source="competition_type.id" /> */}
       <TextField source="competition_type.name" label="Competition type" />
       <SitesArrayField source="sites" />
       <TextField source="who_can_participate" />
