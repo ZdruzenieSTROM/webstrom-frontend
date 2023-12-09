@@ -31,24 +31,24 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
     <>
       <div className={styles.mainText}>
         {who_can_participate && (
-          <Typography variant="body1">
-            Pre koho? {who_can_participate}
-            {description}
-          </Typography>
+          <div className={styles.mainText}>
+            <Typography variant="body1">Pre koho? {who_can_participate}</Typography>
+            <Typography variant="body1">{description}</Typography>
+          </div>
         )}
       </div>
       <div className={styles.mainText}>
         {upcoming_or_current_event ? (
           <div className={styles.mainText}>
-            <Typography variant="body1" fontStyle="bold">
-              Nadchádzajúci ročník:
-            </Typography>
+            <Typography variant="body1">Nadchádzajúci ročník:</Typography>
             {startDate && <Typography variant="body1"> Odkedy? {startDate} </Typography>}
             {endDate && <Typography variant="body1"> Dokedy? {endDate} </Typography>}
             {upcoming_or_current_event.publication_set.length > 0 && (
-              <Link variant="button2" href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>
-                Pozvánka
-              </Link>
+              <Typography variant="body1">
+                <Link variant="button2" href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>
+                  Pozvánka
+                </Link>
+              </Typography>
             )}
             {upcoming_or_current_event.registration_link && (
               <div className={styles.mainText}>
@@ -56,9 +56,11 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
                   Registrácia prebieha do:
                   {upcoming_or_current_event.registration_link.end}
                 </Typography>
-                <Link variant="button2" href={upcoming_or_current_event.registration_link.url}>
-                  Registračný formulár
-                </Link>
+                <Typography variant="body1">
+                  <Link variant="button2" href={upcoming_or_current_event.registration_link.url}>
+                    Registračný formulár
+                  </Link>
+                </Typography>
                 <Typography variant="body1">{upcoming_or_current_event.registration_link.additional_info}</Typography>
               </div>
             )}
@@ -66,21 +68,18 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         ) : (
           <div className={styles.mainText}>
             <Typography variant="body1" fontStyle="bold">
-              Nadchádzajúci ročník:{' '}
+              Nadchádzajúci ročník: Pripravujeme
             </Typography>
-            <Typography variant="body1"> Pripravujeme </Typography>{' '}
           </div>
         )}
       </div>
 
-      <div className={styles.container}>
-        <div className={styles.actions}>
-          <div className={styles.actionButton}>
-            <Link variant="button2" href={rulesLink}>
-              Pravidlá
-            </Link>
-          </div>
-        </div>
+      <div className={styles.mainText}>
+        <Typography variant="body1">
+          <Link variant="button2" href={rulesLink}>
+            Pravidlá
+          </Link>
+        </Typography>
       </div>
 
       <div>
