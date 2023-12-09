@@ -1,12 +1,10 @@
 export type Styles = {
   active: string
   loading: string
-  menu: string
   menuButton: string
   menuCloseButton: string
   menuItem: string
   menuOpenButton: string
-  visible: string
 }
 
 export type ClassNames = keyof Styles
