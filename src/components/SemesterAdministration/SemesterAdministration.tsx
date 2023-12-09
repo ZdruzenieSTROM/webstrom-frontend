@@ -41,30 +41,11 @@ export const SemesterAdministration: FC = () => {
 
   const [textareaContent, setTextareaContent] = useState('')
 
-  const getSemesterResults = async () => {
-    const {data} = await axios.get<Result[]>(`/api/competition/semester/${semesterId}/results`)
-    setTextareaContent(
-      data
-        .map((result: Result) => {
-          let rank = ''
-          if (result.rank_changed) {
-            if (result.rank_start === result.rank_end) {
-              rank = `${result.rank_start}.`
-            } else {
-              rank = `${result.rank_start}.-${result.rank_end}.`
-            }
-          }
-          const name = `${result.registration.profile.first_name} ${result.registration.profile.last_name}`
-          const subtotal = result.subtotal[0]
-          const points = result.solutions[1].map((problem) => problem.points).join('&')
-          return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${subtotal}&${points}&${result.total}\\\\`
-        })
-        .join('\n'),
+  const getResults = async (seriesId: number | null) => {
+    const isSemester = seriesId === null
+    const {data} = await axios.get<Result[]>(
+      isSemester ? `/api/competition/semester/${semesterId}/results` : `/api/competition/series/${seriesId}/results`,
     )
-  }
-
-  const getSeriesResults = async (seriesId: number) => {
-    const {data} = await axios.get<Result[]>(`/api/competition/series/${seriesId}/results`)
     setTextareaContent(
       data
         .map((result: Result) => {
@@ -77,8 +58,14 @@ export const SemesterAdministration: FC = () => {
             }
           }
           const name = `${result.registration.profile.first_name} ${result.registration.profile.last_name}`
-          const points = result.solutions[0].map((problem) => problem.points).join('&')
-          return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${points}&${result.total}\\\\`
+          if (isSemester) {
+            const subtotal = result.subtotal[0]
+            const points = result.solutions[1].map((problem) => problem.points).join('&')
+            return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${subtotal}&${points}&${result.total}\\\\`
+          } else {
+            const points = result.solutions[0].map((problem) => problem.points).join('&')
+            return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${points}&${result.total}\\\\`
+          }
         })
         .join('\n'),
     )
@@ -133,10 +120,10 @@ export const SemesterAdministration: FC = () => {
       <div className={styles.actions}>
         {[...semester.series_set].reverse().map((series) => (
           <div key={series.id}>
-            <Button onClick={() => getSeriesResults(series.id)}>Poradie {series.order}. série</Button>
+            <Button onClick={() => getResults(series.id)}>Poradie {series.order}. série</Button>
           </div>
         ))}
-        <Button onClick={getSemesterResults}>Poradie semestra</Button>
+        <Button onClick={() => getResults(null)}>Poradie semestra</Button>
       </div>
       <div className={styles.actions}>
         <Button onClick={() => getPostalCards(false)}>Štítky na školy</Button>
