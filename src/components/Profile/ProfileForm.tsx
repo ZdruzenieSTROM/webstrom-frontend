@@ -109,14 +109,14 @@ export const ProfileForm: FC = () => {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={5}>
+      <Stack gap={5}>
         <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
         <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
-        <SchoolSubForm control={control} watch={watch} setValue={setValue} spacing={5} />
+        <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={5} />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>
-        <Stack direction={'row'} mt={3} spacing={2} justifyContent="space-between">
+        <Stack direction={'row'} mt={3} gap={2} justifyContent="space-between">
           <Button onClick={returnBack} variant="button2">
             Späť
           </Button>

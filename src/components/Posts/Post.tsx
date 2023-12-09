@@ -24,7 +24,7 @@ export const Post: FC<IPost> = ({id, caption, short_text, links, sites, added_at
   if (!sites.includes(seminarId)) return null
 
   return (
-    <Stack key={id}>
+    <Stack>
       <Typography variant="postTitle">{caption}</Typography>
       <Typography variant="postBody" component="p">
         {short_text}
@@ -39,7 +39,7 @@ export const Post: FC<IPost> = ({id, caption, short_text, links, sites, added_at
           ))}
         </Stack>
 
-        <Typography variant="body1" component="p" fontWeight={275} textTransform="uppercase">
+        <Typography variant="body1" fontWeight={275} textTransform="uppercase">
           {formatDate(added_at)}
         </Typography>
       </Stack>

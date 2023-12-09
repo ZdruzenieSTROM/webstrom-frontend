@@ -131,28 +131,20 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
                   <Typography variant="h3" component="span">
                     {comment.posted_by_name}
                   </Typography>
-                  <Typography variant="body1" component="span">
-                    {comment.text}
-                  </Typography>
+                  <Typography variant="body1">{comment.text}</Typography>
                   {comment.hidden_response && (
                     <Stack ml={2}>
                       <Typography variant="h3" component="span">
                         Vedúci:
                       </Typography>
-                      <Typography variant="body1" component="span">
-                        {comment.hidden_response}
-                      </Typography>
+                      <Typography variant="body1">{comment.hidden_response}</Typography>
                     </Stack>
                   )}
                   {comment.state === CommentState.WaitingForReview && (
-                    <Typography variant="body3" component="span">
-                      * komentár čaká na schválenie
-                    </Typography>
+                    <Typography variant="body3">* komentár čaká na schválenie</Typography>
                   )}
                   {comment.state === CommentState.Hidden && (
-                    <Typography variant="body3" component="span">
-                      * tento komentár nie je verejný
-                    </Typography>
+                    <Typography variant="body3">* tento komentár nie je verejný</Typography>
                   )}
                   {hiddenResponseDialogId === comment.id ? (
                     <Stack my={1} gap={1}>
@@ -203,7 +195,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
               </Stack>
             </>
           ) : (
-            <Typography variant="body2" component="span" sx={{color: 'gray'}}>
+            <Typography variant="body2" sx={{color: 'gray'}}>
               Prispievať do diskusie môžu len prihlásení uživatelia.
             </Typography>
           )}

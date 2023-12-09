@@ -26,7 +26,7 @@ export const Latex: FC<{children: string}> = ({children}) => {
   const matches = Array.from(children.matchAll(re))
 
   if (matches.length === 0) {
-    return <Typography variant="body1" component="span" dangerouslySetInnerHTML={{__html: `${children}`}} />
+    return <Typography variant="body1" dangerouslySetInnerHTML={{__html: `${children}`}} />
   }
 
   const result = []
@@ -34,11 +34,7 @@ export const Latex: FC<{children: string}> = ({children}) => {
 
   for (const m of matches) {
     result.push(
-      <Typography
-        variant="body1"
-        component="span"
-        dangerouslySetInnerHTML={{__html: `${children.slice(currentPosition, m.index)}`}}
-      />,
+      <Typography variant="body1" dangerouslySetInnerHTML={{__html: `${children.slice(currentPosition, m.index)}`}} />,
       <MathComponent tex={trim(m[0])} display={m[0].slice(0, 2) === '\\[' || m[0].slice(0, 2) === '$$'} />,
     )
 
@@ -50,7 +46,6 @@ export const Latex: FC<{children: string}> = ({children}) => {
   result.push(
     <Typography
       variant="body1"
-      component="span"
       dangerouslySetInnerHTML={{__html: `${children.slice(Math.max(0, currentPosition))}`}}
     />,
   )

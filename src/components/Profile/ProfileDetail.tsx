@@ -18,7 +18,7 @@ type ProfileLineInput = {
 
 const ProfileLine: FC<ProfileLineInput> = ({label, value}) => {
   return (
-    <Stack direction={'row'} spacing={1}>
+    <Stack direction={'row'} gap={1}>
       <Typography variant="h2" component="span">
         {label}
       </Typography>
@@ -48,7 +48,7 @@ export const ProfileDetail: FC = () => {
 
   return (
     <Stack>
-      <Stack spacing={4}>
+      <Stack gap={4}>
         <ProfileLine label={'meno'} value={profile?.first_name || '-'} />
         <ProfileLine label={'priezvisko'} value={profile?.last_name || '-'} />
         <ProfileLine label={'e-mail'} value={profile?.email || '-'} />
@@ -57,7 +57,7 @@ export const ProfileDetail: FC = () => {
         <ProfileLine label={'tel. č.'} value={profile?.phone || '-'} />
         <ProfileLine label={'tel. č. na rodiča'} value={profile?.parent_phone || '-'} />
       </Stack>
-      <Stack direction={'row'} mt={3} spacing={5}>
+      <Stack direction={'row'} mt={3} gap={5}>
         <Link variant="button2" href={`/${seminar}/profil/uprava`}>
           Upraviť údaje
         </Link>

@@ -143,7 +143,7 @@ export const RegisterForm: FC = () => {
         />
         <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
         <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
-        <SchoolSubForm control={control} watch={watch} setValue={setValue} spacing={2} />
+        <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={2} />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <Typography variant="body2" fontWeight={800}>

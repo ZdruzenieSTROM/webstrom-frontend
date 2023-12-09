@@ -125,7 +125,7 @@ export const Problems: FC = () => {
         title="Skontroluj prosím, čí údaje o ročníku a škole sú správne."
         contentText={
           <Stack gap={2}>
-            <Stack direction={'row'} spacing={1}>
+            <Stack direction={'row'} gap={1}>
               <Typography variant="h3" component="span">
                 Škola
               </Typography>
@@ -133,7 +133,7 @@ export const Problems: FC = () => {
                 {profile?.school.verbose_name}
               </Typography>
             </Stack>
-            <Stack direction={'row'} spacing={1}>
+            <Stack direction={'row'} gap={1}>
               <Typography variant="h3" component="span">
                 Ročník
               </Typography>

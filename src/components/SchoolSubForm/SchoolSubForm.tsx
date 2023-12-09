@@ -25,10 +25,10 @@ type SchoolSubFormProps<T extends SchoolSubFormValues> = {
   control: Control<T, unknown>
   watch: UseFormWatch<T>
   setValue: UseFormSetValue<T>
-  spacing: number
+  gap: number
 }
 
-export const SchoolSubForm = ({control, watch, setValue, spacing}: SchoolSubFormProps<SchoolSubFormValues>) => {
+export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProps<SchoolSubFormValues>) => {
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
   const otherSchoolItem = useRef<SelectOption>()
@@ -81,7 +81,7 @@ export const SchoolSubForm = ({control, watch, setValue, spacing}: SchoolSubForm
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   return (
-    <Stack gap={spacing}>
+    <Stack gap={gap}>
       <FormCheckbox control={control} name="without_school" label="nie som študent základnej ani strednej školy." />
       <FormAutocomplete
         control={control}
