@@ -1,9 +1,9 @@
+import {Stack} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import styles from '@/components/FormItems/Form.module.scss'
 import {IGeneralPostResponse} from '@/types/api/general'
 
 import {Button} from '../Clickable/Button'
@@ -73,48 +73,50 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
       close={close}
       title="Zmena hesla"
       contentText={
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <FormInput
-            control={control}
-            name="old_password"
-            label="aktuálne heslo"
-            type="password"
-            rules={requiredRule}
-          />
-          <FormInput
-            control={control}
-            name="new_password1"
-            label="nové heslo"
-            type="password"
-            rules={{
-              ...requiredRule,
-              minLength: {
-                value: 8,
-                message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
-              },
-            }}
-          />
-          <FormInput
-            control={control}
-            name="new_password2"
-            label="nové heslo znovu"
-            type="password"
-            rules={{
-              ...requiredRule,
-              validate: (val) => {
-                if (val !== getValues().new_password1) return '* Zadané heslá sa nezhodujú.'
-              },
-            }}
-          />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Stack gap={2}>
+            <FormInput
+              control={control}
+              name="old_password"
+              label="aktuálne heslo"
+              type="password"
+              rules={requiredRule}
+            />
+            <FormInput
+              control={control}
+              name="new_password1"
+              label="nové heslo"
+              type="password"
+              rules={{
+                ...requiredRule,
+                minLength: {
+                  value: 8,
+                  message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
+                },
+              }}
+            />
+            <FormInput
+              control={control}
+              name="new_password2"
+              label="nové heslo znovu"
+              type="password"
+              rules={{
+                ...requiredRule,
+                validate: (val) => {
+                  if (val !== getValues().new_password1) return '* Zadané heslá sa nezhodujú.'
+                },
+              }}
+            />
+          </Stack>
         </form>
       }
       actions={
-        <>
+        <Stack direction="row" gap={2}>
           <Button onClick={onClose}>Zavrieť</Button>
           <Button type="submit" onClick={handleSubmit(onSubmit)}>
             Potvrdiť
           </Button>
-        </>
+        </Stack>
       }
     />
   )

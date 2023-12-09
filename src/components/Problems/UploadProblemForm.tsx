@@ -1,3 +1,4 @@
+import {Stack} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
@@ -95,14 +96,14 @@ export const UploadProblemForm: FC<{
         title="Pozor"
         contentText={alertMessage}
         actions={
-          <>
+          <Stack direction="row" gap={2}>
             <Button variant="button2" onClick={cancel}>
               Zrušiť
             </Button>
             <Button variant="button2" onClick={closeAlertDialog}>
               Pokračovať
             </Button>
-          </>
+          </Stack>
         }
       />
       <div className={styles.inputWrapper}>

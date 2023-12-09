@@ -1,10 +1,10 @@
+import {Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRef} from 'react'
 import {Control, UseFormSetValue, UseFormWatch} from 'react-hook-form'
 import {useUpdateEffect} from 'usehooks-ts'
 
-import styles from '@/components/FormItems/Form.module.scss'
 import {IGrade} from '@/types/api/competition'
 import {ISchool} from '@/types/api/personal'
 
@@ -25,9 +25,10 @@ type SchoolSubFormProps<T extends SchoolSubFormValues> = {
   control: Control<T, unknown>
   watch: UseFormWatch<T>
   setValue: UseFormSetValue<T>
+  spacing: number
 }
 
-export const SchoolSubForm = ({control, watch, setValue}: SchoolSubFormProps<SchoolSubFormValues>) => {
+export const SchoolSubForm = ({control, watch, setValue, spacing}: SchoolSubFormProps<SchoolSubFormValues>) => {
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
   const otherSchoolItem = useRef<SelectOption>()
@@ -80,7 +81,7 @@ export const SchoolSubForm = ({control, watch, setValue}: SchoolSubFormProps<Sch
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   return (
-    <div className={styles.form}>
+    <Stack gap={spacing}>
       <FormCheckbox control={control} name="without_school" label="nie som študent základnej ani strednej školy." />
       <FormAutocomplete
         control={control}
@@ -113,6 +114,6 @@ export const SchoolSubForm = ({control, watch, setValue}: SchoolSubFormProps<Sch
         disabled={!gradeItems.length || without_school}
         rules={requiredRule}
       />
-    </div>
+    </Stack>
   )
 }

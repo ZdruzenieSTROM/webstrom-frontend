@@ -112,7 +112,7 @@ export const ProfileForm: FC = () => {
       <Stack spacing={5}>
         <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
         <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
-        <SchoolSubForm control={control} watch={watch} setValue={setValue} />
+        <SchoolSubForm control={control} watch={watch} setValue={setValue} spacing={5} />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>

@@ -1,9 +1,9 @@
+import {Stack} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {Button} from '@/components/Clickable/Button'
-import styles from '@/components/FormItems/Form.module.scss'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
 
@@ -41,21 +41,27 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <FormInput
-        control={control}
-        name="email"
-        label="Email"
-        rules={{
-          ...requiredRule,
-          pattern: {
-            value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-            message: '* Vložte správnu emailovú adresu.',
-          },
-        }}
-      />
-      <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
-      <Button type="submit">Prihlásiť</Button>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack gap={2}>
+        <FormInput
+          control={control}
+          name="email"
+          label="Email"
+          rules={{
+            ...requiredRule,
+            pattern: {
+              value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
+              message: '* Vložte správnu emailovú adresu.',
+            },
+          }}
+        />
+        <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
+        <Stack alignItems="center" mt={2}>
+          <Button variant="button2" type="submit">
+            Prihlásiť
+          </Button>
+        </Stack>
+      </Stack>
     </form>
   )
 }

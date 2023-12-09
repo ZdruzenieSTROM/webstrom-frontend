@@ -109,14 +109,14 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
         title="Vymazať komentár?"
         contentText="Komentár bude nenávratne vymazaný."
         actions={
-          <>
+          <Stack direction="row" gap={2}>
             <Button variant="button2" onClick={close}>
               Zavrieť
             </Button>
             <Button variant="button2" onClick={agree}>
               Potvrdiť
             </Button>
-          </>
+          </Stack>
         }
       />
       <Stack my={1} mx={2} gap={1} sx={{overflow: 'hidden'}}>

@@ -1,10 +1,10 @@
+import {Stack, Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import styles from '@/components/FormItems/Form.module.scss'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
@@ -102,8 +102,8 @@ export const RegisterForm: FC = () => {
     },
   }
   return (
-    <div>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack gap={2}>
         <FormInput
           control={control}
           name="email"
@@ -143,18 +143,22 @@ export const RegisterForm: FC = () => {
         />
         <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
         <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
-        <SchoolSubForm control={control} watch={watch} setValue={setValue} />
+        <SchoolSubForm control={control} watch={watch} setValue={setValue} spacing={2} />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
-        <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>
-        <p>
+        <Typography variant="body2" fontWeight={800}>
+          * takto označéné polia sú povinné
+        </Typography>
+        <Typography variant="body2">
           Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so zákonom
           o ochrane osobných údajov. Bližšie informácie nájdete <Link href={`./gdpr`}>tu</Link>.
-        </p>
-        <Button type="submit" onClick={scrollToTop}>
-          Registrovať
-        </Button>
-      </form>
-    </div>
+        </Typography>
+        <Stack alignItems="center" mt={2}>
+          <Button variant="button2" type="submit" onClick={scrollToTop}>
+            Registrovať
+          </Button>
+        </Stack>
+      </Stack>
+    </form>
   )
 }
