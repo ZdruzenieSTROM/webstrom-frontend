@@ -1,3 +1,4 @@
+import {Stack} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
@@ -16,7 +17,7 @@ export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
 
   if (form === 'login')
     return (
-      <>
+      <Stack alignItems={'center'} gap={1}>
         <LoginForm closeOverlay={closeOverlay} />
         <Button
           onClick={() => {
@@ -25,7 +26,7 @@ export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
         >
           Zabudnuté heslo
         </Button>
-      </>
+      </Stack>
     )
 
   return (

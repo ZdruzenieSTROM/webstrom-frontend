@@ -6,7 +6,9 @@ import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {Problem as ProblemType} from '@/types/api/competition'
 
+import {Dialog} from '../Dialog/Dialog'
 import {Latex} from '../Latex/Latex'
+import {LoginFormWrapper} from '../PageLayout/LoginFormWrapper/LoginFormWrapper'
 import styles from './Problem.module.scss'
 import {UploadProblemForm} from './UploadProblemForm'
 
@@ -45,16 +47,28 @@ export const Problem: FC<{
       }
     })
   }
+
+  const close = () => {
+    setDisplayLoginDialog(false)
+  }
+
   const handleUploadClick = () => {
     if (!registered && canRegister) {
       displayRegisterDialog()
+    } else if (!registered && !canRegister) {
+      setDisplayLoginDialog(true)
     } else {
       setDisplayProblemUploadForm((prevState) => !prevState)
       setDisplayActions(false)
     }
   }
 
+  const toggleDisplayLoginDialog = () => {
+    setDisplayLoginDialog((prevState) => !prevState)
+  }
+
   const [displayProblemUploadForm, setDisplayProblemUploadForm] = useState<boolean>(false)
+  const [displayLoginDialog, setDisplayLoginDialog] = useState<boolean>(false)
   const [displayActions, setDisplayActions] = useState(true)
 
   return (
@@ -82,6 +96,18 @@ export const Problem: FC<{
           isAfterDeadline={isAfterDeadline}
           invalidateSeriesQuery={invalidateSeriesQuery}
           setDisplayActions={setDisplayActions}
+        />
+      )}
+      {displayLoginDialog && (
+        <Dialog
+          open={displayLoginDialog}
+          close={close}
+          contentText={
+            <Stack alignItems={'center'} gap={3}>
+              <Typography variant="body1">Pre odovzdanie sa prihlás.</Typography>
+              <LoginFormWrapper closeOverlay={toggleDisplayLoginDialog} />
+            </Stack>
+          }
         />
       )}
       {displayActions && (
@@ -114,11 +140,9 @@ export const Problem: FC<{
           <Button onClick={handleDiscussionButtonClick} variant="button2">
             diskusia ({problem.num_comments}){' '}
           </Button>
-          {(registered || canRegister) && (
-            <Button onClick={handleUploadClick} disabled={!canSubmit} variant="button2">
-              odovzdať
-            </Button>
-          )}
+          <Button onClick={handleUploadClick} disabled={!canSubmit} variant="button2">
+            odovzdať
+          </Button>
         </Stack>
       )}
     </div>
