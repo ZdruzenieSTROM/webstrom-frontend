@@ -41,8 +41,11 @@ export const SemesterAdministration: FC = () => {
 
   const [textareaContent, setTextareaContent] = useState('')
 
-  const getSemesterResults = async () => {
-    const {data} = await axios.get<Result[]>(`/api/competition/semester/${semesterId}/results`)
+  const getResults = async (seriesId: number | null) => {
+    const isSemester = seriesId === null
+    const {data} = await axios.get<Result[]>(
+      isSemester ? `/api/competition/semester/${semesterId}/results` : `/api/competition/series/${seriesId}/results`,
+    )
     setTextareaContent(
       data
         .map((result: Result) => {
@@ -55,9 +58,14 @@ export const SemesterAdministration: FC = () => {
             }
           }
           const name = `${result.registration.profile.first_name} ${result.registration.profile.last_name}`
-          const subtotal = result.subtotal[0]
-          const points = result.solutions[1].map((problem) => problem.points).join('&')
-          return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${subtotal}&${points}&${result.total}\\\\`
+          if (isSemester) {
+            const subtotal = result.subtotal[0]
+            const points = result.solutions[1].map((problem) => problem.points).join('&')
+            return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${subtotal}&${points}&${result.total}\\\\`
+          } else {
+            const points = result.solutions[0].map((problem) => problem.points).join('&')
+            return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${points}&${result.total}\\\\`
+          }
         })
         .join('\n'),
     )
@@ -110,7 +118,14 @@ export const SemesterAdministration: FC = () => {
       ))}
       <h3>Generovanie dát</h3>
       <div className={styles.actions}>
-        <Button onClick={getSemesterResults}>Poradie série</Button>
+        {[...semester.series_set].reverse().map((series) => (
+          <div key={series.id}>
+            <Button onClick={() => getResults(series.id)}>Poradie {series.order}. série</Button>
+          </div>
+        ))}
+        <Button onClick={() => getResults(null)}>Poradie semestra</Button>
+      </div>
+      <div className={styles.actions}>
         <Button onClick={() => getPostalCards(false)}>Štítky na školy</Button>
         <Button onClick={() => getPostalCards(true)}>Štítky na školy (iba papierové riešenia)</Button>
         <Link href={`/api/competition/semester/${semesterId}/participants-export/`}>Zoznam riešiteľov</Link>
