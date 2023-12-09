@@ -2,10 +2,6 @@
   display: contents;
 }
 
-.rowWrapper > div {
-  padding: 0px 10px;
-}
-
 .rowWrapper:hover > div {
   background-color: #000;
   color: #fff;
@@ -21,6 +17,7 @@
 .nameAndSchool {
   display: grid;
   grid-template-rows: 2fr 1fr;
+  padding: 0px 10px;
 }
 
 .name {
@@ -48,6 +45,7 @@
   justify-content: center;
   // border: 1px solid red;
   grid-template-rows: max-content max-content;
+  padding: 0px 10px;
 
   > div {
     // border: 1px solid red;
