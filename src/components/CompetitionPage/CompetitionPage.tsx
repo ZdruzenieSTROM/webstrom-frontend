@@ -32,19 +32,31 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
       <div className={styles.mainText}>
         {who_can_participate && (
           <div className={styles.mainText}>
-            <Typography variant="body1">Pre koho? {who_can_participate}</Typography>
-            <Typography variant="body1">{description}</Typography>
+            <Typography variant="body1" component="div">
+              Pre koho? {who_can_participate}
+            </Typography>
+            <Typography variant="body1" component="div">
+              {description}
+            </Typography>
           </div>
         )}
       </div>
       <div className={styles.mainText}>
         {upcoming_or_current_event ? (
           <div className={styles.mainText}>
-            <Typography variant="body1" fontWeight="bold">
+            <Typography variant="body1" fontWeight="bold" component="div">
               Nadchádzajúci ročník:
             </Typography>
-            {startDate && <Typography variant="body1"> Odkedy? {startDate} </Typography>}
-            {endDate && <Typography variant="body1"> Dokedy? {endDate} </Typography>}
+            {startDate && (
+              <Typography variant="body1" component="div">
+                Odkedy? {startDate}
+              </Typography>
+            )}
+            {endDate && (
+              <Typography variant="body1" component="div">
+                Dokedy? {endDate}
+              </Typography>
+            )}
             {upcoming_or_current_event.publication_set.length > 0 && (
               <Typography variant="body1">
                 <Link variant="button2" href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>
@@ -54,16 +66,18 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
             )}
             {upcoming_or_current_event.registration_link && (
               <div className={styles.mainText}>
-                <Typography variant="body1">
+                <Typography variant="body1" component="div">
                   Registrácia prebieha do:
                   {upcoming_or_current_event.registration_link.end}
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" component="div">
                   <Link variant="button2" href={upcoming_or_current_event.registration_link.url}>
                     Registračný formulár
                   </Link>
                 </Typography>
-                <Typography variant="body1">{upcoming_or_current_event.registration_link.additional_info}</Typography>
+                <Typography variant="body1" component="div">
+                  {upcoming_or_current_event.registration_link.additional_info}
+                </Typography>
               </div>
             )}
           </div>
