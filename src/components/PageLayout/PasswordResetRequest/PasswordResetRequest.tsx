@@ -27,7 +27,9 @@ export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeOverla
       return axios.post<IGeneralPostResponse>('/api/user/password/reset', data)
     },
 
-    onError: (error, variables, context) => {},
+    onError: (error) => {
+      alert(error.message)
+    },
 
     onSuccess: () => {
       closeOverlay()

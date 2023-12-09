@@ -32,7 +32,7 @@ export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
   return (
     <PasswordResetRequestForm
       closeOverlay={() => {
-        router.push(`${router.asPath}/../verifikacia`)
+        router.push(`${router.asPath}/verifikacia`)
       }}
     />
   )

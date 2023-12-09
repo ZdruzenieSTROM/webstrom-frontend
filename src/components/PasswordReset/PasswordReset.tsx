@@ -1,3 +1,4 @@
+import {Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -7,6 +8,8 @@ import {SubmitHandler, useForm} from 'react-hook-form'
 import {Button} from '@/components/Clickable/Button'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
+
+import {LoginForm} from '../PageLayout/LoginForm/LoginForm'
 
 export type PasswordResetFormProps = {
   uid: string
@@ -39,17 +42,12 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
     }
   }
 
-  const {mutate: submitFormData} = useMutation({
+  const {mutate: submitFormData, isSuccess: isReset} = useMutation({
     mutationFn: (data: PasswordResetForm) => {
       return axios.post<IGeneralPostResponse>('/api/user/password/reset/confirm', transformFormData(data))
     },
-
-    onError: (error, variables, context) => {
-      console.log(error)
-    },
-
-    onSuccess: () => {
-      alert(1)
+    onError: (error) => {
+      alert(error.name)
     },
   })
 
@@ -57,10 +55,20 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
     submitFormData(data)
   }
 
+  if (isReset)
+    return (
+      <>
+        <Typography variant="body1">Heslo úspešne zmenené, môžeš sa prihlásiť</Typography>
+        <LoginForm
+          closeOverlay={() => {
+            router.push('/')
+          }}
+        />
+      </>
+    )
+
   return (
     <>
-      <p> Debug: {uid}</p>
-      <p> Debug: {token}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           control={control}
