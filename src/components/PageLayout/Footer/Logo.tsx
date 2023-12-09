@@ -13,7 +13,7 @@ export const Logo: FC<ILogo> = ({name, image}) => {
     <Box
       component={'img'}
       src={image}
-      alt={name} // TODO: alt from backend
+      alt={name}
       sx={{
         maxHeight: '9rem',
       }}

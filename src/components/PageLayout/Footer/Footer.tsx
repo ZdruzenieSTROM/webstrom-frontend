@@ -48,7 +48,7 @@ export const Footer: FC = () => {
           ))}
           {menuItemsError && <p>{menuItemsError.message}</p>}
         </Stack>
-        <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
+        <Stack direction="row" m={2} mt={5} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
           {logosIsLoading && <Loading />}
           {logos.map((logo) => (
             <Logo key={logo.id} {...logo} />
