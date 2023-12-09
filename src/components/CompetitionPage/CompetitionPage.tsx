@@ -40,7 +40,9 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
       <div className={styles.mainText}>
         {upcoming_or_current_event ? (
           <div className={styles.mainText}>
-            <Typography variant="body1">Nadchádzajúci ročník:</Typography>
+            <Typography variant="body1" fontWeight="bold">
+              Nadchádzajúci ročník:
+            </Typography>
             {startDate && <Typography variant="body1"> Odkedy? {startDate} </Typography>}
             {endDate && <Typography variant="body1"> Dokedy? {endDate} </Typography>}
             {upcoming_or_current_event.publication_set.length > 0 && (
@@ -67,9 +69,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
           </div>
         ) : (
           <div className={styles.mainText}>
-            <Typography variant="body1" fontStyle="bold">
-              Nadchádzajúci ročník: Pripravujeme
-            </Typography>
+            <Typography variant="body1">Nadchádzajúci ročník: Pripravujeme</Typography>
           </div>
         )}
       </div>
