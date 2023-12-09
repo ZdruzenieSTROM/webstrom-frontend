@@ -7,7 +7,7 @@ import {Button} from '@/components/Clickable/Button'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
 
-import {ILoginFormWrapper} from '../LoginFormWrapper/LoginFormWrapper'
+import {LoginFormWrapperProps} from '../LoginFormWrapper/LoginFormWrapper'
 
 type PasswordResetRequestFormValues = {
   email: string
@@ -17,7 +17,7 @@ const defaultValues: PasswordResetRequestFormValues = {
   email: '',
 }
 
-export const PasswordResetRequestForm: FC<ILoginFormWrapper> = ({closeOverlay}) => {
+export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
   const {handleSubmit, control} = useForm<PasswordResetRequestFormValues>({defaultValues})
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
