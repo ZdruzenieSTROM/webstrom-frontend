@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {BooleanField, NumberField, Show, SimpleShowLayout, TextField} from 'react-admin'
+import {NumberField, Show, SimpleShowLayout, TextField} from 'react-admin'
 
 import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
 import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
@@ -12,8 +12,6 @@ export const FlatpageShow: FC = () => (
       <TextField source="url" />
       <TextField source="title" />
       <TruncatedTextField source="content" maxTextWidth={200} expandable />
-      <BooleanField source="enable_comments" />
-      <BooleanField source="registration_required" />
       <SitesArrayField source="sites" />
     </SimpleShowLayout>
   </Show>
