@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
-import {Button} from '@/components/Clickable/Clickable'
+import {Button} from '@/components/Clickable/Button'
 
 import {LoginForm} from '../LoginForm/LoginForm'
 import {PasswordResetRequestForm} from '../PasswordReset/PasswordResetRequest'

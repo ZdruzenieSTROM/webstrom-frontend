@@ -3,8 +3,7 @@ import axios from 'axios'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import {Button} from '@/components/Clickable/Clickable'
-import styles from '@/components/FormItems/Form.module.scss'
+import {Button} from '@/components/Clickable/Button'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
 
@@ -40,7 +39,7 @@ export const PasswordResetRequestForm: FC<ILoginFormWrapper> = ({closeOverlay}) 
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <FormInput
         control={control}
         name="email"
