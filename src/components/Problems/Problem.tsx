@@ -26,6 +26,7 @@ export const Problem: FC<{
   isAfterDeadline: boolean
   invalidateSeriesQuery: () => Promise<void>
   displayRegisterDialog: () => void
+  displayLoginDialog: () => void
 }> = ({
   problem,
   registered,
@@ -35,6 +36,7 @@ export const Problem: FC<{
   isAfterDeadline,
   invalidateSeriesQuery,
   displayRegisterDialog,
+  displayLoginDialog,
 }) => {
   const handleDiscussionButtonClick = () => {
     setDisplaySideContent((prevState) => {
@@ -45,9 +47,12 @@ export const Problem: FC<{
       }
     })
   }
+
   const handleUploadClick = () => {
     if (!registered && canRegister) {
       displayRegisterDialog()
+    } else if (!registered && !canRegister) {
+      displayLoginDialog()
     } else {
       setDisplayProblemUploadForm((prevState) => !prevState)
       setDisplayActions(false)
@@ -114,11 +119,9 @@ export const Problem: FC<{
           <Button onClick={handleDiscussionButtonClick} variant="button2">
             diskusia ({problem.num_comments}){' '}
           </Button>
-          {(registered || canRegister) && (
-            <Button onClick={handleUploadClick} disabled={!canSubmit} variant="button2">
-              odovzdať
-            </Button>
-          )}
+          <Button onClick={handleUploadClick} disabled={!canSubmit} variant="button2">
+            odovzdať
+          </Button>
         </Stack>
       )}
     </div>
