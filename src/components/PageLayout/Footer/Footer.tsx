@@ -19,8 +19,8 @@ export const Footer: FC = () => {
     isLoading: menuItemsIsLoading,
     error: menuItemsError,
   } = useQuery({
-    queryKey: ['cms', 'menu-item', 'on-site', seminarId],
-    queryFn: () => axios.get<MenuItemShort[]>(`/api/cms/menu-item/on-site/${seminarId}`),
+    queryKey: ['cms', 'menu-item', 'on-site', seminarId, '?footer'],
+    queryFn: () => axios.get<MenuItemShort[]>(`/api/cms/menu-item/on-site/${seminarId}?type=footer`),
   })
   const menuItems = menuItemsData?.data ?? []
 

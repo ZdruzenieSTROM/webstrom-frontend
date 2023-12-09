@@ -25,8 +25,8 @@ export const MenuMain: FC = () => {
   const toggleMenu = () => setIsVisible((currentIsVisible) => !currentIsVisible)
 
   const {data: menuItemsData, isLoading: menuItemsIsLoading} = useQuery({
-    queryKey: ['cms', 'menu-item', 'on-site', seminarId],
-    queryFn: () => axios.get<MenuItemShort[]>(`/api/cms/menu-item/on-site/${seminarId}`),
+    queryKey: ['cms', 'menu-item', 'on-site', seminarId, '?menu'],
+    queryFn: () => axios.get<MenuItemShort[]>(`/api/cms/menu-item/on-site/${seminarId}?type=menu`),
   })
   const menuItems = menuItemsData?.data ?? []
 

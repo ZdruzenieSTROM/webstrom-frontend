@@ -2,6 +2,8 @@ export interface MenuItemShort {
   id: number
   caption: string
   url: string
+  in_footer: boolean
+  in_menu: boolean
 }
 
 export interface PostLink {
