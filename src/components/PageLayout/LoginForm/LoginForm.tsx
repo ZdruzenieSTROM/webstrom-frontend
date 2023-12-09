@@ -7,6 +7,8 @@ import {Button} from '@/components/Clickable/Button'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
 
+import {ILoginFormWrapper} from '../LoginFormWrapper/LoginFormWrapper'
+
 type LoginFormValues = {
   email: string
   password: string
@@ -17,11 +19,7 @@ const defaultValues: LoginFormValues = {
   password: '',
 }
 
-interface ILoginForm {
-  closeOverlay: () => void
-}
-
-export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
+export const LoginForm: FC<ILoginFormWrapper> = ({closeOverlay}) => {
   const {login} = AuthContainer.useContainer()
   const {handleSubmit, control} = useForm<LoginFormValues>({defaultValues})
 
