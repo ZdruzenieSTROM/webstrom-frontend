@@ -1,3 +1,4 @@
+import {Stack} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
@@ -6,7 +7,7 @@ import {useDropzone} from 'react-dropzone'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {niceBytes} from '@/utils/niceBytes'
 
-import {Button} from '../Clickable/Clickable'
+import {Button} from '../Clickable/Button'
 import {Dialog} from '../Dialog/Dialog'
 import {FileDropZone} from '../FileDropZone/FileDropZone'
 import styles from './UploadProblemForm.module.scss'
@@ -95,10 +96,14 @@ export const UploadProblemForm: FC<{
         title="Pozor"
         contentText={alertMessage}
         actions={
-          <>
-            <Button onClick={cancel}>Zrušiť</Button>
-            <Button onClick={closeAlertDialog}>Pokračovať</Button>
-          </>
+          <Stack direction="row" gap={2}>
+            <Button variant="button2" onClick={cancel}>
+              Zrušiť
+            </Button>
+            <Button variant="button2" onClick={closeAlertDialog}>
+              Pokračovať
+            </Button>
+          </Stack>
         }
       />
       <div className={styles.inputWrapper}>
@@ -122,8 +127,12 @@ export const UploadProblemForm: FC<{
               </span>
             </div>
             <div className={styles.actions}>
-              <Button onClick={handleSubmit}>Uložiť</Button>
-              <Button onClick={handleRemoveSelection}>Zrušiť</Button>
+              <Button variant="button2" onClick={handleSubmit}>
+                Uložiť
+              </Button>
+              <Button variant="button2" onClick={handleRemoveSelection}>
+                Zrušiť
+              </Button>
             </div>
 
             {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}

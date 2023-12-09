@@ -1,3 +1,4 @@
+import {Typography} from '@mui/material'
 import {FC, ReactNode} from 'react'
 
 import {CloseButton} from '../CloseButton/CloseButton'
@@ -12,7 +13,7 @@ export const SideContainer: FC<{title: string; children: ReactNode; onClose: () 
     <aside className={styles.container}>
       <div className={styles.title}>
         <CloseButton onClick={onClose} size={24} className={styles.closeButton} />
-        <span>{title}</span>
+        <Typography variant="h3">{title}</Typography>
       </div>
       {children}
     </aside>

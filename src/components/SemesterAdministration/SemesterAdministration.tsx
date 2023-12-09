@@ -4,10 +4,11 @@ import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
+import {Button} from '@/components/Clickable/Button'
+import {Link} from '@/components/Clickable/Link'
 import {SemesterWithProblems} from '@/types/api/generated/competition'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
-import {Button, Link} from '../Clickable/Clickable'
 import {Loading} from '../Loading/Loading'
 import {PublicationUploader} from '../PublicationUploader/PublicationUploader'
 import {Result} from '../Results/ResultsRow'

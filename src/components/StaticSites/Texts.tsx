@@ -1,7 +1,7 @@
 import {FC, ReactNode} from 'react'
 import {ReactMarkdownProps, TableDataCellProps, TableHeaderCellProps} from 'react-markdown/lib/ast-to-react'
 
-import {Link} from '../Clickable/Clickable'
+import {Link} from '../Clickable/Link'
 import styles from './Texts.module.scss'
 
 type MarkdownLinkProps = {

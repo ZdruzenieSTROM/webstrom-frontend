@@ -1,15 +1,5 @@
 export type Styles = {
-  comment: string
-  commentActions: string
-  comments: string
-  container: string
-  inputContainer: string
-  message: string
-  notPublished: string
-  submitAction: string
-  submitInputContainer: string
   textArea: string
-  title: string
 }
 
 export type ClassNames = keyof Styles

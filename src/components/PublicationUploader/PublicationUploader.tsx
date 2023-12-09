@@ -4,7 +4,7 @@ import {FC} from 'react'
 
 import {SemesterWithProblems} from '@/types/api/generated/competition'
 
-import {Link} from '../Clickable/Clickable'
+import {Link} from '../Clickable/Link'
 import {FileUploader} from '../FileUploader/FileUploader'
 
 interface PublicationUploaderProps {

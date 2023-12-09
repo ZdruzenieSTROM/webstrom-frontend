@@ -7,6 +7,8 @@ declare module '@mui/material/styles' {
     button1: React.CSSProperties
     button2: React.CSSProperties
     button3: React.CSSProperties
+    postTitle: React.CSSProperties
+    postBody: React.CSSProperties
   }
 
   // allow configuration using `createTheme`
@@ -15,6 +17,8 @@ declare module '@mui/material/styles' {
     button1?: React.CSSProperties
     button2?: React.CSSProperties
     button3?: React.CSSProperties
+    postTitle?: React.CSSProperties
+    postBody?: React.CSSProperties
   }
 }
 
@@ -25,6 +29,8 @@ declare module '@mui/material/Typography' {
     button1: true
     button2: true
     button3: true
+    postTitle: true
+    postBody: true
     // disable these variants
     h4: false
     h5: false
@@ -53,94 +59,120 @@ const _theme = createTheme({
 })
 
 const pxToRem = _theme.typography.pxToRem
-const sm = _theme.breakpoints.up('sm')
-const md = _theme.breakpoints.up('md')
-const lg = _theme.breakpoints.up('lg')
-const xl = _theme.breakpoints.up('xl')
+const sm = _theme.breakpoints.up('sm') // 600px
+const md = _theme.breakpoints.up('md') // 900px
+const lg = _theme.breakpoints.up('lg') // 1200px
+const xl = _theme.breakpoints.up('xl') // 1536px
 
 export const theme: Theme = {
   ..._theme,
   typography: {
     ..._theme.typography,
     h1: {
+      // original Figma fontSize: 40px
       fontSize: pxToRem(32),
-      [sm]: {fontSize: pxToRem(36)},
-      [md]: {fontSize: pxToRem(36)},
-      [lg]: {fontSize: pxToRem(40)},
+      [sm]: {fontSize: pxToRem(32)},
+      [md]: {fontSize: pxToRem(32)},
+      [lg]: {fontSize: pxToRem(32)},
       [xl]: {fontSize: pxToRem(40)},
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
     },
     h2: {
-      fontSize: pxToRem(22),
-      [sm]: {fontSize: pxToRem(26)},
-      [md]: {fontSize: pxToRem(26)},
-      [lg]: {fontSize: pxToRem(30)},
+      // original Figma fontSize: 30px
+      fontSize: pxToRem(24),
+      [sm]: {fontSize: pxToRem(24)},
+      [md]: {fontSize: pxToRem(24)},
+      [lg]: {fontSize: pxToRem(24)},
       [xl]: {fontSize: pxToRem(30)},
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
     },
     h3: {
-      fontSize: pxToRem(20),
-      [sm]: {fontSize: pxToRem(22)},
-      [md]: {fontSize: pxToRem(22)},
-      [lg]: {fontSize: pxToRem(24)},
+      // original Figma fontSize: 24px
+      fontSize: pxToRem(18),
+      [sm]: {fontSize: pxToRem(18)},
+      [md]: {fontSize: pxToRem(18)},
+      [lg]: {fontSize: pxToRem(18)},
       [xl]: {fontSize: pxToRem(24)},
       textTransform: 'uppercase',
       fontWeight: 800,
     },
     body1: {
-      fontSize: pxToRem(16),
-      [sm]: {fontSize: pxToRem(18)},
-      [md]: {fontSize: pxToRem(18)},
-      [lg]: {fontSize: pxToRem(20)},
+      // original Figma fontSize: 20px
+      fontSize: pxToRem(14),
+      [sm]: {fontSize: pxToRem(16)},
+      [md]: {fontSize: pxToRem(16)},
+      [lg]: {fontSize: pxToRem(18)},
       [xl]: {fontSize: pxToRem(20)},
     },
     body2: {
-      fontSize: pxToRem(12),
-      [sm]: {fontSize: pxToRem(14)},
-      [md]: {fontSize: pxToRem(14)},
-      [lg]: {fontSize: pxToRem(16)},
+      // original Figma fontSize: 16px
+      fontSize: pxToRem(10),
+      [sm]: {fontSize: pxToRem(12)},
+      [md]: {fontSize: pxToRem(12)},
+      [lg]: {fontSize: pxToRem(14)},
       [xl]: {fontSize: pxToRem(16)},
     },
     body3: {
-      fontSize: pxToRem(12),
-      [sm]: {fontSize: pxToRem(12)},
-      [md]: {fontSize: pxToRem(12)},
-      [lg]: {fontSize: pxToRem(12)},
+      // original Figma fontSize: 12px
+      fontSize: pxToRem(8),
+      [sm]: {fontSize: pxToRem(8)},
+      [md]: {fontSize: pxToRem(8)},
+      [lg]: {fontSize: pxToRem(10)},
       [xl]: {fontSize: pxToRem(12)},
     },
     button1: {
-      fontSize: pxToRem(22),
-      [sm]: {fontSize: pxToRem(26)},
-      [md]: {fontSize: pxToRem(26)},
-      [lg]: {fontSize: pxToRem(30)},
+      // original Figma fontSize: 30px
+      fontSize: pxToRem(24),
+      [sm]: {fontSize: pxToRem(24)},
+      [md]: {fontSize: pxToRem(24)},
+      [lg]: {fontSize: pxToRem(24)},
       [xl]: {fontSize: pxToRem(30)},
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
     },
     button2: {
-      fontSize: pxToRem(16),
-      [sm]: {fontSize: pxToRem(18)},
-      [md]: {fontSize: pxToRem(18)},
-      [lg]: {fontSize: pxToRem(20)},
+      // original Figma fontSize: 20px
+      fontSize: pxToRem(14),
+      [sm]: {fontSize: pxToRem(16)},
+      [md]: {fontSize: pxToRem(16)},
+      [lg]: {fontSize: pxToRem(18)},
       [xl]: {fontSize: pxToRem(20)},
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
     },
     button3: {
+      // original Figma fontSize: 14px
       fontSize: pxToRem(10),
-      [sm]: {fontSize: pxToRem(12)},
-      [md]: {fontSize: pxToRem(12)},
-      [lg]: {fontSize: pxToRem(14)},
+      [sm]: {fontSize: pxToRem(10)},
+      [md]: {fontSize: pxToRem(10)},
+      [lg]: {fontSize: pxToRem(12)},
       [xl]: {fontSize: pxToRem(14)},
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
+    },
+    postTitle: {
+      // original Figma fontSize: 36px
+      fontSize: pxToRem(30),
+      [sm]: {fontSize: pxToRem(30)},
+      [md]: {fontSize: pxToRem(30)},
+      [lg]: {fontSize: pxToRem(30)},
+      [xl]: {fontSize: pxToRem(36)},
+      fontWeight: 800,
+    },
+    postBody: {
+      // original Figma fontSize: 30px
+      fontSize: pxToRem(24),
+      [sm]: {fontSize: pxToRem(24)},
+      [md]: {fontSize: pxToRem(24)},
+      [lg]: {fontSize: pxToRem(24)},
+      [xl]: {fontSize: pxToRem(30)},
     },
   },
   components: {

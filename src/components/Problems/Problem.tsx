@@ -1,7 +1,9 @@
+import {Stack, Typography} from '@mui/material'
 import Image from 'next/image'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
 
-import {Button, Link} from '@/components/Clickable/Clickable'
+import {Button} from '@/components/Clickable/Button'
+import {Link} from '@/components/Clickable/Link'
 import {Problem as ProblemType} from '@/types/api/competition'
 
 import {Latex} from '../Latex/Latex'
@@ -56,11 +58,13 @@ export const Problem: FC<{
   const [displayActions, setDisplayActions] = useState(true)
 
   return (
-    <div className={styles.problem}>
-      <h3 className={styles.problemTitle}>{problem.order}. ÚLOHA</h3>
+    <div>
+      <Typography variant="h3" fontStyle="unset">
+        {problem.order}. ÚLOHA
+      </Typography>
       <Latex>{problem.text}</Latex>
       {problem.image && (
-        <div className={styles.imageContainer}>
+        <Stack alignItems="center">
           <Image
             src={problem.image}
             alt={`Obrázok - ${problem.order} úloha`}
@@ -68,7 +72,7 @@ export const Problem: FC<{
             width={800} // These values are overwritten by css
             height={800}
           />
-        </div>
+        </Stack>
       )}
       {displayProblemUploadForm && (
         <UploadProblemForm
@@ -81,9 +85,9 @@ export const Problem: FC<{
         />
       )}
       {displayActions && (
-        <div className={styles.actions}>
+        <Stack direction="row" mt={0.5} justifyContent="end" gap={4}>
           {problem.solution_pdf && (
-            <Link href={problem.solution_pdf} target="_blank">
+            <Link href={problem.solution_pdf} target="_blank" variant="button2">
               vzorové riešenie
             </Link>
           )}
@@ -93,6 +97,7 @@ export const Problem: FC<{
                 href={`/api/competition/problem/${problem.id}/my-solution`}
                 target="_blank"
                 disabled={!problem.submitted}
+                variant="button2"
               >
                 moje riešenie
               </Link>
@@ -100,18 +105,21 @@ export const Problem: FC<{
                 href={`/api/competition/problem/${problem.id}/corrected-solution`}
                 target="_blank"
                 disabled={!problem.submitted?.corrected_solution}
+                variant="button2"
               >
                 opravené riešenie{!!problem.submitted?.corrected_solution && ` (${problem.submitted.score || '?'})`}
               </Link>
             </>
           )}
-          <Button onClick={handleDiscussionButtonClick}>diskusia ({problem.num_comments}) </Button>
+          <Button onClick={handleDiscussionButtonClick} variant="button2">
+            diskusia ({problem.num_comments}){' '}
+          </Button>
           {(registered || canRegister) && (
-            <Button onClick={handleUploadClick} disabled={!canSubmit}>
+            <Button onClick={handleUploadClick} disabled={!canSubmit} variant="button2">
               odovzdať
             </Button>
           )}
-        </div>
+        </Stack>
       )}
     </div>
   )
