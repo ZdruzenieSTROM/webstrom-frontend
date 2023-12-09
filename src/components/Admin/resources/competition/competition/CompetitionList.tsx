@@ -7,7 +7,6 @@ import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 export const CompetitionList: FC = () => (
   <List>
     <Datagrid rowClick="show">
-      <NumberField source="id" />
       <TextField source="name" />
       <TextField source="slug" />
       <NumberField source="start_year" />

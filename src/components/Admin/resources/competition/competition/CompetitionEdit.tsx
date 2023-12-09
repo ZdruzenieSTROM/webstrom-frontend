@@ -8,7 +8,6 @@ export const CompetitionEdit: FC = () => (
   <MyEdit>
     <TabbedForm>
       <FormTab label="general">
-        <NumberInput source="id" fullWidth disabled />
         <TextInput source="name" fullWidth />
         <NumberInput source="start_year" fullWidth />
         <TextInput source="description" fullWidth />
@@ -20,7 +19,6 @@ export const CompetitionEdit: FC = () => (
       <FormTab label="events">
         <ArrayInput source="event_set" defaultValue={[]}>
           <SimpleFormIterator>
-            <NumberInput source="id" fullWidth disabled />
             {/* unspecifiedpublication_set: UnspecifiedPublication[]
                 registration_links: RegistrationLink[] */}
             <NumberInput source="year" fullWidth />

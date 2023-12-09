@@ -8,12 +8,10 @@ import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 export const SeriesList: FC = () => (
   <List>
     <Datagrid rowClick="show">
-      <TextField source="id" />
       <DateField source="deadline" />
       <TextField source="order" />
       <ArrayField source="problems">
         <Datagrid>
-          <TextField source="id" />
           <TruncatedTextField source="text" maxTextWidth={50} />
         </Datagrid>
       </ArrayField>
