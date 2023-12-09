@@ -1,3 +1,4 @@
+import {Typography} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, Fragment} from 'react'
 
@@ -29,51 +30,61 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
   return (
     <>
       <div className={styles.mainText}>
-        {who_can_participate && <p>Pre koho? {who_can_participate}</p>}
-        <p>{description}</p>
+        {who_can_participate && (
+          <Typography variant="body1">
+            Pre koho? {who_can_participate}
+            {description}
+          </Typography>
+        )}
       </div>
       <div className={styles.mainText}>
         {upcoming_or_current_event ? (
           <div className={styles.mainText}>
-            <p>
-              <b>Nadchádzajúci ročník:</b>
-            </p>
-            {startDate && <p>Odkedy? {startDate} </p>}
-            {endDate && <p>Dokedy? {endDate}</p>}
+            <Typography variant="body1" fontStyle="bold">
+              Nadchádzajúci ročník:
+            </Typography>
+            {startDate && <Typography variant="body1"> Odkedy? {startDate} </Typography>}
+            {endDate && <Typography variant="body1"> Dokedy? {endDate} </Typography>}
             {upcoming_or_current_event.publication_set.length > 0 && (
-              <p>
-                <Link href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>Pozvánka</Link>
-              </p>
+              <Link variant="button2" href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>
+                Pozvánka
+              </Link>
             )}
             {upcoming_or_current_event.registration_link && (
-              <div>
-                <p>
+              <div className={styles.mainText}>
+                <Typography variant="body1">
                   Registrácia prebieha do:
                   {upcoming_or_current_event.registration_link.end}
-                  <Link href={upcoming_or_current_event.registration_link.url}>Registračný formulár</Link>
-                </p>
-
-                <p>{upcoming_or_current_event.registration_link.additional_info}</p>
+                </Typography>
+                <Link variant="button2" href={upcoming_or_current_event.registration_link.url}>
+                  Registračný formulár
+                </Link>
+                <Typography variant="body1">{upcoming_or_current_event.registration_link.additional_info}</Typography>
               </div>
             )}
           </div>
         ) : (
-          <p>
-            <b>Nadchádzajúci ročník:</b> Pripravujeme
-          </p>
+          <div className={styles.mainText}>
+            <Typography variant="body1" fontStyle="bold">
+              Nadchádzajúci ročník:{' '}
+            </Typography>
+            <Typography variant="body1"> Pripravujeme </Typography>{' '}
+          </div>
         )}
       </div>
 
       <div className={styles.container}>
         <div className={styles.actions}>
           <div className={styles.actionButton}>
-            <Link href={rulesLink}>Pravidlá</Link>
+            <Link variant="button2" href={rulesLink}>
+              Pravidlá
+            </Link>
           </div>
         </div>
       </div>
 
-      <div className={styles.h2}>
-        <h2>Archív: </h2>
+      <div>
+        <Typography variant="h2">Archív: </Typography>
       </div>
       {/* TODO: asi zjednotit styly, neriesit with/without publications */}
       {competition_type?.name === 'Tábor' ? (
@@ -94,7 +105,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
                 {name} {event.school_year}
               </div>
               {event.publication_set.map((publication) => (
-                <Link key={publication.id} href={`/api/${publication.file}`}>
+                <Link variant="button2" key={publication.id} href={`/api/${publication.file}`}>
                   {publication.name}
                 </Link>
               ))}
