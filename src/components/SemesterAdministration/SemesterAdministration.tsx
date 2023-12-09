@@ -103,14 +103,18 @@ export const SemesterAdministration: FC = () => {
       </Typography>
       {semester.series_set.map((series) => (
         <div key={series.id}>
-          <Typography variant="h3">{series.order}. séria</Typography>
+          <Typography variant="h3" sx={{marginTop: 3}}>
+            {series.order}. séria
+          </Typography>
           <Typography variant="body1" component="div">
             {' '}
             Termín série: {formatDateTime(series.deadline)}
           </Typography>
-          <Typography variant="h3">Opravovanie úloh:</Typography>
+          <Typography variant="h3" sx={{marginTop: 3}}>
+            Opravovanie úloh:
+          </Typography>
           {series?.problems.map((problem) => (
-            <div key={problem.id}>
+            <div key={problem.id} className={styles.actions}>
               <Link variant="button2" href={`/strom/admin/opravit-ulohu/${problem.id}`}>
                 {problem.order}. úloha
               </Link>
@@ -118,33 +122,35 @@ export const SemesterAdministration: FC = () => {
           ))}
         </div>
       ))}
-      <Typography variant="h3">Generovanie dát</Typography>
+      <Typography variant="h3" sx={{marginTop: 3}}>
+        Generovanie dát
+      </Typography>
       <div className={styles.actions}>
         {[...semester.series_set].reverse().map((series) => (
           <div key={series.id}>
-            <Button variant="button3" onClick={() => getResults(series.id)}>
+            <Button variant="button2" onClick={() => getResults(series.id)}>
               Poradie {series.order}. série
             </Button>
           </div>
         ))}
-        <Button variant="button3" onClick={() => getResults(null)}>
+        <Button variant="button2" onClick={() => getResults(null)}>
           Poradie semestra
         </Button>
       </div>
       <div className={styles.actions}>
-        <Button variant="button3" onClick={() => getPostalCards(false)}>
+        <Button variant="button2" onClick={() => getPostalCards(false)}>
           Štítky na školy
         </Button>
-        <Button variant="button3" onClick={() => getPostalCards(true)}>
+        <Button variant="button2" onClick={() => getPostalCards(true)}>
           Štítky na školy (iba papierové riešenia)
         </Button>
       </div>
       <div className={styles.actions}>
-        <Button variant="button3"> Pozvánky pre školy</Button>
-        <Button variant="button3">Pozvánky pre účastníkov</Button>
+        <Button variant="button2"> Pozvánky pre školy</Button>
+        <Button variant="button2">Pozvánky pre účastníkov</Button>
       </div>
       <div className={styles.actions}>
-        <Link variant="button3" href={`/api/competition/semester/${semesterId}/participants-export/`}>
+        <Link variant="button2" href={`/api/competition/semester/${semesterId}/participants-export/`}>
           Zoznam riešiteľov
         </Link>
       </div>
@@ -161,7 +167,9 @@ export const SemesterAdministration: FC = () => {
         <></>
       )}
       <Stack mt={1} gap={1}>
-        <Typography variant="h3">Nahrávanie časopisov</Typography>
+        <Typography variant="h3" sx={{marginTop: 3}}>
+          Nahrávanie časopisov
+        </Typography>
         {[1, 2, 3].map((order) => (
           <PublicationUploader key={order} semesterId={semesterId} order={order} semesterData={semester} />
         ))}
