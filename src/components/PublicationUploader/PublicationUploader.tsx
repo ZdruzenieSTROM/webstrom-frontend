@@ -28,9 +28,7 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
 
   return (
     <Stack direction="row" gap={2} alignItems="center">
-      <Typography variant="body1" component="div">
-        {order}. Časopis:
-      </Typography>
+      <Typography variant="body1">{order}. Časopis:</Typography>
       {publication && (
         <Link variant="button2" href={`/api/competition/publication/${publication.id}/download`}>
           {publication.name}.pdf
