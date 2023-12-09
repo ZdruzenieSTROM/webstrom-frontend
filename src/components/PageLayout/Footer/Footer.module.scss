@@ -12,3 +12,24 @@
   grid-column-start: 2;
   grid-column-end: 4;
 }
+
+.menuItem {
+  background-color: transparent;
+
+  a {
+    padding: 0px 5px;
+    border-bottom: 5px solid white;
+    color: white;
+    background-color: inherit;
+  }
+}
+
+.menuItem:hover {
+  background-color: white;
+
+  a {
+    color: black;
+    border-color: black;
+    background-color: inherit;
+  }
+}
