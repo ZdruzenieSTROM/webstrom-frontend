@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {ArrayInput, DateInput, FormTab, NumberInput, SimpleFormIterator, TabbedForm, TextInput} from 'react-admin'
+import {ArrayInput, DateInput, FormTab, SimpleFormIterator, TabbedForm, TextInput} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
@@ -9,14 +9,12 @@ export const SeriesEdit: FC = () => (
   <MyEdit>
     <TabbedForm>
       <FormTab label="general">
-        <NumberInput source="id" fullWidth />
         <DateInput source="deadline" fullWidth />
         <TextInput source="order" fullWidth />
       </FormTab>
       <FormTab label="problems">
         <ArrayInput source="problems">
           <SimpleFormIterator>
-            <NumberInput source="id" fullWidth />
             <TextInput source="text" fullWidth />
           </SimpleFormIterator>
         </ArrayInput>

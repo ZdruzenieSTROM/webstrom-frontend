@@ -7,7 +7,6 @@ import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 export const PostList: FC = () => (
   <List>
     <Datagrid rowClick="show">
-      <NumberField source="id" />
       <TextField source="caption" />
       <TruncatedTextField source="short_text" maxTextWidth={50} />
       <TruncatedTextField source="details" maxTextWidth={50} />

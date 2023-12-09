@@ -1,14 +1,5 @@
 import {FC} from 'react'
-import {
-  ArrayInput,
-  DateTimeInput,
-  FormTab,
-  NumberInput,
-  required,
-  SimpleFormIterator,
-  TabbedForm,
-  TextInput,
-} from 'react-admin'
+import {ArrayInput, DateTimeInput, FormTab, required, SimpleFormIterator, TabbedForm, TextInput} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
@@ -17,7 +8,6 @@ export const PostEdit: FC = () => (
   <MyEdit>
     <TabbedForm>
       <FormTab label="general">
-        <NumberInput source="id" fullWidth disabled />
         <TextInput source="caption" fullWidth validate={required()} />
         <TextInput source="short_text" fullWidth validate={required()} />
         <TextInput source="details" multiline fullWidth />
@@ -29,7 +19,6 @@ export const PostEdit: FC = () => (
       <FormTab label="links">
         <ArrayInput source="links" defaultValue={[]}>
           <SimpleFormIterator>
-            <NumberInput source="id" fullWidth disabled />
             <TextInput source="caption" fullWidth validate={required()} />
             <TextInput source="url" fullWidth validate={required()} />
           </SimpleFormIterator>

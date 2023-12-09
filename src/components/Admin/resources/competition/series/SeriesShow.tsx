@@ -20,7 +20,6 @@ export const SeriesShow: FC = () => (
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
-          <TextField source="id" />
           <DateField source="deadline" />
           <TextField source="order" />
           <NumberField source="semester" />
@@ -32,7 +31,6 @@ export const SeriesShow: FC = () => (
         <SimpleShowLayout>
           <ArrayField source="problems">
             <Datagrid>
-              <TextField source="id" />
               <TruncatedTextField source="text" maxTextWidth={100} expandable />
             </Datagrid>
           </ArrayField>

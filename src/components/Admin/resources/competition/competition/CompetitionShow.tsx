@@ -21,7 +21,6 @@ export const CompetitionShow: FC = () => (
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
-          <NumberField source="id" />
           <TextField source="name" />
           <TextField source="slug" />
           <NumberField source="start_year" />
@@ -39,7 +38,6 @@ export const CompetitionShow: FC = () => (
         <SimpleShowLayout>
           <ArrayField source="history_events">
             <Datagrid>
-              <NumberField source="id" />
               <NumberField source="year" />
               <TextField source="school_year" />
               <DateField source="start" />
