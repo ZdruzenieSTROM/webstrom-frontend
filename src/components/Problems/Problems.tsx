@@ -17,6 +17,7 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
+import {LoginFormWrapper} from '../PageLayout/LoginFormWrapper/LoginFormWrapper'
 import {Discussion} from './Discussion'
 import {Problem} from './Problem'
 import styles from './Problems.module.scss'
@@ -117,6 +118,9 @@ export const Problems: FC = () => {
     closeRegisterDialog()
   }
 
+  const [displayLoginDialog, setDisplayLoginDialog] = useState<boolean>(false)
+  const closeLoginDialog = () => setDisplayLoginDialog(false)
+
   return (
     <>
       <Dialog
@@ -154,6 +158,16 @@ export const Problems: FC = () => {
           </Stack>
         }
       />
+      <Dialog
+        open={displayLoginDialog}
+        close={closeLoginDialog}
+        contentText={
+          <Stack alignItems={'center'} gap={3}>
+            <Typography variant="body1">Pre odovzdanie sa prihlás.</Typography>
+            <LoginFormWrapper closeOverlay={closeLoginDialog} />
+          </Stack>
+        }
+      />
       <Stack gap={5}>
         {(loading.semesterListIsLoading ||
           loading.currentSeriesIsLoading ||
@@ -177,6 +191,7 @@ export const Problems: FC = () => {
             isAfterDeadline={isAfterDeadline}
             invalidateSeriesQuery={invalidateSeriesQuery}
             displayRegisterDialog={() => setDisplayRegisterDialog(true)}
+            displayLoginDialog={() => setDisplayLoginDialog(true)}
           />
         ))}
 
