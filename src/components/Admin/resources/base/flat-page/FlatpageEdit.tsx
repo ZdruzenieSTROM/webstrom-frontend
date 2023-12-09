@@ -10,7 +10,7 @@ export const FlatpageEdit: FC = () => (
       <NumberInput source="id" fullWidth disabled />
       <TextInput source="url" fullWidth validate={required()} />
       <TextInput source="title" fullWidth validate={required()} />
-      <TextInput source="content" fullWidth validate={required()} />
+      <TextInput source="content" multiline fullWidth validate={required()} />
       <SitesCheckboxInput source="sites" validate={required()} />
     </SimpleForm>
   </MyEdit>
