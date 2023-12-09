@@ -1,4 +1,4 @@
-import {Stack} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
 import {FC} from 'react'
 
@@ -28,9 +28,13 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
 
   return (
     <Stack direction="row" gap={2} alignItems="center">
-      <h4>{order}. Časopis:</h4>
+      <Typography variant="body1" component="div">
+        {order}. Časopis:
+      </Typography>
       {publication && (
-        <Link href={`/api/competition/publication/${publication.id}/download`}>{publication.name}.pdf</Link>
+        <Link variant="button2" href={`/api/competition/publication/${publication.id}/download`}>
+          {publication.name}.pdf
+        </Link>
       )}
       <FileUploader
         uploadLink={'/api/competition/publication/upload/'}

@@ -100,16 +100,20 @@ export const ProblemAdministration: FC = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Opravovanie {problem.order}. úlohy</h2>
+      <Typography variant="h2">Opravovanie {problem.order}. úlohy</Typography>
 
       <div className={styles.rightButton}>
-        <Link href={`/strom/admin/opravovanie/${problem.series.semester}`}>Späť na semester</Link>
+        <Link variant="button2" href={`/strom/admin/opravovanie/${problem.series.semester}`}>
+          Späť na semester
+        </Link>
       </div>
 
       <Latex>{problem.text ?? 'Načítavam...'}</Latex>
 
       <div className={styles.row}>
-        Vzorové riešenie:
+        <Typography variant="body1" component="div">
+          Vzorové riešenie:
+        </Typography>
         {problem.solution_pdf ? (
           <a href={problem.solution_pdf} target="_blank" rel="noreferrer" className={styles.icon}>
             <FormatAlignJustify />
@@ -126,7 +130,9 @@ export const ProblemAdministration: FC = () => {
       </div>
 
       <div className={styles.rightButton}>
-        <Link href={`/api/competition/problem/${problemId}/download-solutions`}>Stiahnuť riešenia</Link>
+        <Link variant="button2" href={`/api/competition/problem/${problemId}/download-solutions`}>
+          Stiahnuť riešenia
+        </Link>
       </div>
 
       <FileDropZone
@@ -202,7 +208,9 @@ export const ProblemAdministration: FC = () => {
         </div>
 
         <div className={styles.rightButton}>
-          <Button onClick={handleSavePoints}>Uložiť body</Button>
+          <Button variant="button2" onClick={handleSavePoints}>
+            Uložiť body
+          </Button>
         </div>
       </form>
     </div>
