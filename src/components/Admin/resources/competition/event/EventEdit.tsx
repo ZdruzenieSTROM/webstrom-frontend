@@ -21,7 +21,6 @@ export const EventEdit: FC = () => {
       }}
     >
       <SimpleForm>
-        {/* <NumberInput source="id" fullWidth disabled /> */}
         <NumberInput source="year" fullWidth validate={required()} />
         <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth validate={required()} />
         <DateTimeInput source="start" fullWidth validate={required()} />
