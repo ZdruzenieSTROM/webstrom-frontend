@@ -42,8 +42,8 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
           <div className={styles.pageContainer}>
             <TopGrid />
             <MenuMain />
+            <StromLogo />
             <div className={styles.grid}>
-              <StromLogo />
               <div
                 className={clsx(
                   styles.mainContent,
@@ -55,8 +55,8 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
                 {children}
               </div>
             </div>
-            <DebugFooter />
             <Footer />
+            <DebugFooter />
           </div>
         </BannerContainer.Provider>
       </PageTitleContainer.Provider>
