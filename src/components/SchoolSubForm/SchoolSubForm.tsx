@@ -75,7 +75,6 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
       setValue('school', otherSchoolItem.current)
     } else if (!without_school) {
       setValue('school', null)
-      setValue('grade', '')
     }
   }, [school_not_found])
 
