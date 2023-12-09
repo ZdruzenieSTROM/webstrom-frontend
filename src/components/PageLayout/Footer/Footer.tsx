@@ -1,3 +1,4 @@
+import {Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC} from 'react'
@@ -6,7 +7,6 @@ import {Loading} from '@/components/Loading/Loading'
 import {ILogo, Logo} from '@/components/PageLayout/Footer/Logo'
 
 import styles from './Footer.module.scss'
-import logoStyles from './Logo.module.scss'
 
 export const Footer: FC = () => {
   const {
@@ -17,20 +17,18 @@ export const Footer: FC = () => {
     queryKey: ['cms', 'logo'],
     queryFn: () => axios.get<ILogo[]>('/api/cms/logo'),
   })
-  const logos = postsData?.data ?? []
+  const logos = postsData?.data.filter((logo) => !logo.disabled) ?? []
 
   return (
-    <div className={styles.footer}>
-      <div className={styles.grid}>
-        <div className={styles.content}>
-          <div className={logoStyles.logosRow}>
-            {logosIsLoading && <Loading />}
-            {logos.map((post) => (
-              <Logo key={post.id} {...post} />
-            ))}
-            {postsError && <p>{postsError.message}</p>}
-          </div>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
+          {logosIsLoading && <Loading />}
+          {logos.map((logo) => (
+            <Logo key={logo.id} {...logo} />
+          ))}
+          {postsError && <p>{postsError.message}</p>}
+        </Stack>
       </div>
     </div>
   )

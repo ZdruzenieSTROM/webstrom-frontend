@@ -1,7 +1,5 @@
-import Image from 'next/image'
+import {Box} from '@mui/material'
 import {FC} from 'react'
-
-import styles from './Logo.module.scss'
 
 export interface ILogo {
   id: number
@@ -10,18 +8,15 @@ export interface ILogo {
   image: string
 }
 
-export const Logo: FC<ILogo> = ({id, name, disabled, image}) => {
+export const Logo: FC<ILogo> = ({name, image}) => {
   return (
-    <div className={styles.imageContainer}>
-      {disabled || (
-        <Image
-          src={image}
-          alt={name} // TODO: alt from backend
-          className={styles.image}
-          width={800} // These values are overwritten by css
-          height={800}
-        />
-      )}
-    </div>
+    <Box
+      component={'img'}
+      src={image}
+      alt={name} // TODO: alt from backend
+      sx={{
+        maxHeight: '9rem',
+      }}
+    />
   )
 }

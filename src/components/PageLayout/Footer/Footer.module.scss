@@ -1,17 +1,14 @@
-.footer {
+.container {
   width: 100%;
-  background-color: black;
-  color: white;
-}
-
-.grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  background-color: black;
+  color: white;
   // bottom offset because of sticky debug footer
   padding-bottom: 1rem;
 }
 
 .content {
   grid-column-start: 2;
-  grid-column-end: 3;
+  grid-column-end: 4;
 }

@@ -1,6 +1,5 @@
 export type Styles = {
-  footer: string
-  grid: string
+  container: string
   content: string
 }
 
