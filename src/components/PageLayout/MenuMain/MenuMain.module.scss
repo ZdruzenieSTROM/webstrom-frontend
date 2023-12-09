@@ -1,18 +1,3 @@
-.menu {
-  position: fixed;
-  width: 25%;
-  height: 100vh;
-  top: -100%;
-  background-color: black;
-  transition: 750ms;
-  z-index: 100;
-
-  &.visible {
-    left: 0;
-    top: 0;
-  }
-}
-
 .menuButton {
   cursor: pointer;
   display: grid;

@@ -1,4 +1,4 @@
-import {Stack, Theme, Typography, useMediaQuery} from '@mui/material'
+import {Box, Stack, Theme, Typography, useMediaQuery} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
@@ -45,27 +45,45 @@ export const MenuMain: FC = () => {
           <Menu width={iconSize} height={iconSize} />
         </div>
       )}
-      <div className={clsx(styles.menu, isVisible && styles.visible)}>
-        <CloseButton size={iconSize} onClick={toggleMenu} className={clsx(styles.menuButton, styles.menuCloseButton)} />
-        {menuItemsIsLoading && (
-          <div className={styles.loading}>
-            <Loading />
-          </div>
-        )}
-        <Stack mt="176px">
-          {menuItems.map(({id, caption, url}) => (
-            // `url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
-            <MenuMainItem key={id} caption={caption} url={`/${seminar}${url}`} />
-          ))}
-        </Stack>
-        {hasPermissions && (
-          <Stack sx={{mt: 4, mx: 2, borderTop: '8px dashed white', pt: 4}}>
-            <MenuMainItem caption="TODO: Opravovanie" url={`/${seminar}/admin/opravovanie`} />
-            <MenuMainItem caption="Admin" url="/admin" />
+      <Stack
+        sx={{
+          position: 'fixed',
+          width: '25%',
+          height: '100%',
+          left: 0,
+          top: isVisible ? 0 : '-100%',
+          overflow: 'auto',
+          backgroundColor: 'black',
+          transition: '750ms',
+          zIndex: 100,
+        }}
+      >
+        <Box flexGrow={1}>
+          <CloseButton
+            size={iconSize}
+            onClick={toggleMenu}
+            className={clsx(styles.menuButton, styles.menuCloseButton)}
+          />
+          {menuItemsIsLoading && (
+            <div className={styles.loading}>
+              <Loading />
+            </div>
+          )}
+          <Stack mt="176px">
+            {menuItems.map(({id, caption, url}) => (
+              // `url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
+              <MenuMainItem key={id} caption={caption} url={`/${seminar}${url}`} />
+            ))}
           </Stack>
-        )}
+          {hasPermissions && (
+            <Stack sx={{mt: 4, mx: 2, borderTop: '8px dashed white', pt: 4}}>
+              <MenuMainItem caption="TODO: Opravovanie" url={`/${seminar}/admin/opravovanie`} />
+              <MenuMainItem caption="Admin" url="/admin" />
+            </Stack>
+          )}
+        </Box>
         <Authentication />
-      </div>
+      </Stack>
     </>
   )
 }
