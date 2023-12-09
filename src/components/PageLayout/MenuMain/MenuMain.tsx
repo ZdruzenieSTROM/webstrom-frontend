@@ -9,17 +9,12 @@ import {FC, useState} from 'react'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
 import Menu from '@/svg/menu.svg'
+import {MenuItemShort} from '@/types/api/cms'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Authentication} from '../Authentication/Authentication'
 import styles from './MenuMain.module.scss'
-
-interface MenuItemInterface {
-  id: number
-  caption: string
-  url: string
-}
 
 export const MenuMain: FC = () => {
   const {seminar, seminarId} = useSeminarInfo()
@@ -31,7 +26,7 @@ export const MenuMain: FC = () => {
 
   const {data: menuItemsData, isLoading: menuItemsIsLoading} = useQuery({
     queryKey: ['cms', 'menu-item', 'on-site', seminarId],
-    queryFn: () => axios.get<MenuItemInterface[]>(`/api/cms/menu-item/on-site/${seminarId}`),
+    queryFn: () => axios.get<MenuItemShort[]>(`/api/cms/menu-item/on-site/${seminarId}`),
   })
   const menuItems = menuItemsData?.data ?? []
 

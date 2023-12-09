@@ -1,13 +1,34 @@
-.footer {
-  position: fixed;
-  left: 25%;
-  right: 0;
-  bottom: 0;
-
+.container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   background-color: black;
   color: white;
+  // bottom offset because of sticky debug footer
+  padding-bottom: 1rem;
+}
 
-  display: flex;
-  flex-direction: row;
-  gap: 40px;
+.content {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.menuItem {
+  background-color: transparent;
+
+  a {
+    border-color: white;
+    color: white;
+    background-color: inherit;
+  }
+}
+
+.menuItem:hover {
+  background-color: white;
+
+  a {
+    color: black;
+    border-color: black;
+    background-color: inherit;
+  }
 }

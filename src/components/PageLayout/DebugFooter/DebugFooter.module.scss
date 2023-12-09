@@ -1,0 +1,13 @@
+.debugFooter {
+  position: fixed;
+  left: 25%;
+  right: 0;
+  bottom: 0;
+
+  background-color: black;
+  color: white;
+
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}

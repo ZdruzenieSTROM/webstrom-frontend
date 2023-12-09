@@ -1,27 +1,61 @@
+import {Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC} from 'react'
 
-import {Profile} from '@/types/api/personal'
-import {AuthContainer} from '@/utils/AuthContainer'
+import {Link} from '@/components/Clickable/Link'
+import {Loading} from '@/components/Loading/Loading'
+import {ILogo, Logo} from '@/components/PageLayout/Footer/Logo'
+import {MenuItemShort} from '@/types/api/cms'
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import styles from './Footer.module.scss'
 
 export const Footer: FC = () => {
-  const {isAuthed} = AuthContainer.useContainer()
+  const {seminar, seminarId} = useSeminarInfo()
 
-  const {data} = useQuery({
-    queryKey: ['personal', 'profiles', 'myprofile'],
-    queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
-    enabled: isAuthed,
+  const {
+    data: menuItemsData,
+    isLoading: menuItemsIsLoading,
+    error: menuItemsError,
+  } = useQuery({
+    queryKey: ['cms', 'menu-item', 'on-site', seminarId],
+    queryFn: () => axios.get<MenuItemShort[]>(`/api/cms/menu-item/on-site/${seminarId}`),
   })
-  const profile = data?.data
+  const menuItems = menuItemsData?.data ?? []
+
+  const {
+    data: logosData,
+    isLoading: logosIsLoading,
+    error: logosError,
+  } = useQuery({
+    queryKey: ['cms', 'logo'],
+    queryFn: () => axios.get<ILogo[]>('/api/cms/logo'),
+  })
+  const logos = logosData?.data.filter((logo) => !logo.disabled) ?? []
 
   return (
-    <div className={styles.footer}>
-      <span>Debug info: </span>
-      <span>user name: {profile?.first_name + ' ' + profile?.last_name} </span>
-      <span>isAuthed: {`${isAuthed}`}</span>
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
+          {menuItemsIsLoading && <Loading />}
+          {menuItems.map((item) => (
+            <div key={item.id} className={styles.menuItem}>
+              <Link variant="button2" href={`/${seminar}${item.url}`}>
+                {item.caption}
+              </Link>
+            </div>
+          ))}
+          {menuItemsError && <p>{menuItemsError.message}</p>}
+        </Stack>
+        <Stack direction="row" m={2} mt={5} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
+          {logosIsLoading && <Loading />}
+          {logos.map((logo) => (
+            <Logo key={logo.id} {...logo} />
+          ))}
+          {logosError && <p>{logosError.message}</p>}
+        </Stack>
+      </div>
     </div>
   )
 }

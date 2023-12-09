@@ -1,7 +1,5 @@
 export type Styles = {
-  container: string
-  content: string
-  menuItem: string
+  debugFooter: string
 }
 
 export type ClassNames = keyof Styles
