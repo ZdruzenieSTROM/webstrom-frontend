@@ -38,8 +38,3 @@ export const H3: FC<ReactMarkdownProps> = ({children}) => (
     {children}
   </Typography>
 )
-export const Ul: FC<ReactMarkdownProps> = ({children}) => (
-  <Typography variant="body1" sx={{marginTop: 1}}>
-    {children}
-  </Typography>
-)
