@@ -4,7 +4,7 @@ import {FC, useState} from 'react'
 import {Button} from '@/components/Clickable/Button'
 
 import {LoginForm} from '../LoginForm/LoginForm'
-import {PasswordResetRequestForm} from '../PasswordReset/PasswordResetRequest'
+import {PasswordResetRequestForm} from '../PasswordResetRequest/PasswordResetRequest'
 
 export interface ILoginFormWrapper {
   closeOverlay: () => void
@@ -31,7 +31,7 @@ export const LoginFormWrapper: FC<ILoginFormWrapper> = ({closeOverlay}) => {
   return (
     <PasswordResetRequestForm
       closeOverlay={() => {
-        router.push('/reset-verification-sent')
+        router.push('/verifikacia')
       }}
     />
   )
