@@ -56,6 +56,44 @@ const _theme = createTheme({
     subtitle1: undefined,
     subtitle2: undefined,
   },
+  components: {
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          body1: 'span',
+          body2: 'span',
+          body3: 'span',
+          button1: 'span',
+          button2: 'span',
+          button3: 'span',
+          postTitle: 'span',
+          postBody: 'span',
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          '& > div.MuiDialogContent-root': {paddingTop: '20px'},
+          border: '10px solid black',
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          paddingBottom: '20px',
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          textAlign: 'center',
+        },
+      },
+    },
+  },
 })
 
 const pxToRem = _theme.typography.pxToRem
@@ -64,6 +102,7 @@ const md = _theme.breakpoints.up('md') // 900px
 const lg = _theme.breakpoints.up('lg') // 1200px
 const xl = _theme.breakpoints.up('xl') // 1536px
 
+// manual font sizes
 export const theme: Theme = {
   ..._theme,
   typography: {
@@ -173,30 +212,6 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(24)},
       [lg]: {fontSize: pxToRem(24)},
       [xl]: {fontSize: pxToRem(30)},
-    },
-  },
-  components: {
-    MuiDialog: {
-      styleOverrides: {
-        paper: {
-          '& > div.MuiDialogContent-root': {paddingTop: '20px'},
-          border: '10px solid black',
-        },
-      },
-    },
-    MuiDialogActions: {
-      styleOverrides: {
-        root: {
-          paddingBottom: '20px',
-        },
-      },
-    },
-    MuiDialogTitle: {
-      styleOverrides: {
-        root: {
-          textAlign: 'center',
-        },
-      },
     },
   },
 }
