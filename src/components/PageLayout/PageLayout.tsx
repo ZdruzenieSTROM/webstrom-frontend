@@ -4,7 +4,7 @@ import {FC, ReactNode} from 'react'
 
 import {BannerContainer} from '@/utils/BannerContainer'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
-import {useSeminarInfo} from '@/utils/useSeminarInfo'
+import {Seminar, useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Footer} from './Footer/Footer'
 import {MenuMain} from './MenuMain/MenuMain'
@@ -18,7 +18,6 @@ type PageLayoutProps = {
   children: ReactNode
 }
 
-export type Seminar = 'strom' | 'matik' | 'malynar'
 const seminarTitle: Record<Seminar, string> = {
   strom: 'STROM',
   matik: 'Matik',
@@ -33,7 +32,8 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
     <>
       <Head>
         <title>
-          {title} | {seminarTitle[seminar]}
+          {title && `${title} | `}
+          {seminarTitle[seminar]}
         </title>
       </Head>
       <PageTitleContainer.Provider initialState={title}>
