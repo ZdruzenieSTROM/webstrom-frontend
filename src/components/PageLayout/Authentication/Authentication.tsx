@@ -6,7 +6,7 @@ import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Overlay} from '../../Overlay/Overlay'
-import {LoginForm} from '../LoginForm/LoginForm'
+import {LoginFormWrapper} from '../LoginFormWrapper/LoginFormWrapper'
 import styles from './Authentication.module.scss'
 
 export const Authentication: FC = () => {
@@ -38,7 +38,7 @@ export const Authentication: FC = () => {
         <Overlay display={displayAuthenticationOverlay} closeOverlay={toggleDisplayLoginOverlay}>
           <div className={styles.authenticationContainer}>
             <div className={styles.content}>
-              <LoginForm closeOverlay={toggleDisplayLoginOverlay} />
+              <LoginFormWrapper closeOverlay={toggleDisplayLoginOverlay} />
             </div>
           </div>
         </Overlay>
