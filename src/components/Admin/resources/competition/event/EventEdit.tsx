@@ -1,51 +1,47 @@
-import {FC} from 'react'
-import {
-  ArrayInput,
-  DateTimeInput,
-  FormTab,
-  NumberInput,
-  required,
-  SimpleFormIterator,
-  TabbedForm,
-  TextInput,
-} from 'react-admin'
+import {Checkbox, FormControlLabel} from '@mui/material'
+import {FC, useState} from 'react'
+import {DateTimeInput, Labeled, NumberInput, required, SimpleForm, TextInput} from 'react-admin'
 
 import {CompetitionInput} from '@/components/Admin/custom/CompetitionInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
-export const EventEdit: FC = () => (
-  <MyEdit>
-    <TabbedForm>
-      <FormTab label="general">
-        <NumberInput source="id" fullWidth disabled />
+export const EventEdit: FC = () => {
+  // initial true, nech vidime vsetky fieldy, ktore ideme editovat
+  const [includeRegLink, setIncludeRegLink] = useState(true)
+
+  return (
+    <MyEdit
+      transform={(record) => {
+        // bud musime pridat cely registration object, alebo poslat null. ideal je si to tu ohandlit explicitne,
+        // nie je uplne jasne, ako inak presvedcit react admina, aby ako ten cely objekt poslat null
+        if (!includeRegLink) record.registration_link = null
+        // publication_set je nested field, sme dohodnuti, ze neposielame a publikacie handlujeme inak
+        delete record.publication_set
+        return record
+      }}
+    >
+      <SimpleForm>
         <NumberInput source="year" fullWidth validate={required()} />
-        <TextInput source="school_year" fullWidth validate={required()} />
-        <span>napr. 2023/2024</span>
+        <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth validate={required()} />
         <DateTimeInput source="start" fullWidth validate={required()} />
         <DateTimeInput source="end" fullWidth validate={required()} />
         <CompetitionInput source="competition" fullWidth validate={required()} />
-
-        <span>TODO: always sends null as registration_link</span>
-        <TextInput source="registration_link" fullWidth hidden disabled defaultValue={null} parse={() => null} />
-        {/* <NumberInput source="registration_link.id" fullWidth disabled />
-        <TextInput source="registration_link.url" fullWidth />
-        <DateInput source="registration_link.start" fullWidth />
-        <DateInput source="registration_link.end" fullWidth />
-        <TextInput source="registration_link.additional_info" fullWidth /> */}
-      </FormTab>
-      <FormTab label="publications">
-        <span>TODO: publikacie treba vediet nahrat, nie tu editovat db</span>
-        <ArrayInput source="publication_set" defaultValue={[]}>
-          <SimpleFormIterator>
-            <NumberInput source="id" fullWidth disabled />
-            <TextInput source="name" fullWidth validate={required()} />
-            <TextInput source="file" fullWidth validate={required()} />
-            <NumberInput source="publication_type" fullWidth />
-            <NumberInput source="event" fullWidth disabled />
-            <NumberInput source="order" fullWidth />
-          </SimpleFormIterator>
-        </ArrayInput>
-      </FormTab>
-    </TabbedForm>
-  </MyEdit>
-)
+        <FormControlLabel
+          control={<Checkbox checked={includeRegLink} onChange={(e) => setIncludeRegLink(e.target.checked)} />}
+          label="Upraviť registračný link"
+        />
+        {includeRegLink && (
+          <Labeled label="Registration link">
+            <>
+              <NumberInput source="registration_link.id" fullWidth disabled />
+              <TextInput source="registration_link.url" fullWidth validate={required()} />
+              <DateTimeInput source="registration_link.start" fullWidth validate={required()} />
+              <DateTimeInput source="registration_link.end" fullWidth validate={required()} />
+              <TextInput source="registration_link.additional_info" fullWidth validate={required()} />
+            </>
+          </Labeled>
+        )}
+      </SimpleForm>
+    </MyEdit>
+  )
+}

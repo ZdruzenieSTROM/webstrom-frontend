@@ -1,4 +1,8 @@
 import {FC, PropsWithChildren} from 'react'
-import {Create} from 'react-admin'
+import {Create, CreateProps} from 'react-admin'
 
-export const MyCreate: FC<PropsWithChildren> = ({children}) => <Create redirect="show">{children}</Create>
+export const MyCreate: FC<PropsWithChildren<CreateProps>> = ({children, ...rest}) => (
+  <Create redirect="show" {...rest}>
+    {children}
+  </Create>
+)
