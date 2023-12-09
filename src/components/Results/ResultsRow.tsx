@@ -40,9 +40,11 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
 
   return (
     <div className={styles.rowWrapper}>
-      <Typography variant="h1" component="span" className={styles.rank}>
-        {rank_changed && rank_start + '.'}
-      </Typography>
+      <div className={styles.rank}>
+        <Typography variant="h1" component="span">
+          {rank_changed && rank_start + '.'}
+        </Typography>
+      </div>
       <div className={styles.nameAndSchool}>
         <Typography variant="h2" component="span" className={styles.name}>
           {registration.profile.first_name + ' ' + registration.profile.last_name}
@@ -51,9 +53,11 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
           {registration.school.name + ' ' + registration.school.street + ' ' + registration.school.city}
         </Typography>
       </div>
-      <Typography variant="h3" component="span" fontWeight={400} fontStyle="italic" className={styles.grade}>
-        {registration.grade}
-      </Typography>
+      <div className={styles.grade}>
+        <Typography variant="h3" component="span" fontWeight={400} fontStyle="italic">
+          {registration.grade}
+        </Typography>
+      </div>
       <div className={styles.score}>
         {solutions.map((series, index) => (
           <div key={index}>
@@ -68,9 +72,11 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
           </div>
         ))}
       </div>
-      <Typography variant="h3" component="span" fontStyle="italic" className={styles.totalScore}>
-        {total}
-      </Typography>
+      <div className={styles.totalScore}>
+        <Typography variant="h3" component="span" fontStyle="italic">
+          {total}
+        </Typography>
+      </div>
     </div>
   )
 }
