@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
 import {AuthContainer} from '@/utils/AuthContainer'
@@ -17,6 +18,15 @@ export const Authentication: FC = () => {
   }
 
   const {seminar} = useSeminarInfo()
+
+  const router = useRouter()
+
+  const redirectLogout = () => {
+    logout()
+    if (router.asPath.endsWith('profil') || router.asPath.endsWith('profil/uprava')) {
+      router.push('/')
+    }
+  }
 
   if (!isAuthed) {
     return (
@@ -38,7 +48,7 @@ export const Authentication: FC = () => {
     return (
       <div className={styles.authenticationDisplayButtons}>
         <Link href={`/${seminar}/profil`}>Profil</Link>
-        <span onClick={() => logout()}>Odhlásiť</span>
+        <span onClick={redirectLogout}>Odhlásiť</span>
       </div>
     )
   }

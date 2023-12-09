@@ -1,3 +1,4 @@
+import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
@@ -24,8 +25,17 @@ export const LoginForm: FC<ILoginForm> = ({closeOverlay}) => {
   const {login} = AuthContainer.useContainer()
   const {handleSubmit, control} = useForm<LoginFormValues>({defaultValues})
 
+  const router = useRouter()
+
+  const redirectClose = () => {
+    closeOverlay()
+    if (router.asPath.endsWith('registracia')) {
+      router.push('/')
+    }
+  }
+
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
-    login({data, onSuccess: closeOverlay})
+    login({data, onSuccess: redirectClose})
   }
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
