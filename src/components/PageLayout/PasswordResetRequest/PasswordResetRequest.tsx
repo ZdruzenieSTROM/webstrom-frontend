@@ -24,7 +24,7 @@ export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeOverla
 
   const {mutate: submitFormData} = useMutation({
     mutationFn: (data: PasswordResetRequestFormValues) => {
-      return axios.post<IGeneralPostResponse>('/api/user/password/reset/', data)
+      return axios.post<IGeneralPostResponse>('/api/user/password/reset', data)
     },
 
     onError: (error, variables, context) => {},
