@@ -28,7 +28,7 @@ export interface SemesterListItem {
   series_set: SeriesListItem[]
 }
 
-export const SemesterPicker: FC<{page: 'zadania' | 'vysledky'}> = ({page}) => {
+export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovanie'}> = ({page}) => {
   const {seminar} = useSeminarInfo()
   const {setPageTitle} = PageTitleContainer.useContainer()
 
@@ -42,7 +42,9 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky'}> = ({page}) => {
     let pageTitleToSet = ''
     if (semester) {
       const semesterTitle = `${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester`
-      if (displayWholeSemesterOnResults) {
+      if (page === 'admin/opravovanie') {
+        pageTitleToSet = 'Opravovanie'
+      } else if (displayWholeSemesterOnResults) {
         pageTitleToSet = semesterTitle
       } else if (series) {
         pageTitleToSet = `${semesterTitle}${series?.order ? ` - ${series?.order}. séria` : ''}`
@@ -50,9 +52,17 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky'}> = ({page}) => {
     }
     setPageTitle(pageTitleToSet)
     // `semester` a `series` su nami vytiahnute objekty, tak mozu triggerovat effekt kazdy render. nemalo by vadit
-  }, [displayWholeSemesterOnResults, semester, series, setPageTitle])
+  }, [displayWholeSemesterOnResults, semester, series, page, setPageTitle])
 
   const dropdownSemesterList = semesterList.map((semester) => {
+    if (page === 'admin/opravovanie') {
+      return {
+        id: semester.id,
+        text: `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
+        link: `/${seminar}/${page}/${semester.id}`,
+        selected: semester.id === selectedItem.semesterId,
+      }
+    }
     return {
       id: semester.id,
       text: `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
@@ -85,7 +95,7 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky'}> = ({page}) => {
 
   return (
     <div className={styles.menu}>
-      <Dropdown title={'Séria'} options={dropdownSeriesList} />
+      {page !== 'admin/opravovanie' && <Dropdown title={'Séria'} options={dropdownSeriesList} />}
       <Dropdown title={'Semester'} options={dropdownSemesterList} />
     </div>
   )
