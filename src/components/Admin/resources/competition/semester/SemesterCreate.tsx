@@ -19,9 +19,9 @@ export const SemesterCreate: FC = () => (
       <ReferenceInput source="competition" reference="competition/competition">
         <SelectInput fullWidth validate={required()} />
       </ReferenceInput>
-      <NumberInput source="year" fullWidth validate={required()} />
+      <NumberInput source="year" helperText="ročník súťaže, napr. 48" fullWidth validate={required()} />
       <NumberInput source="season_code" fullWidth validate={required()} />
-      <TextInput source="school_year" fullWidth />
+      <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth />
       <DateTimeInput source="start" fullWidth validate={required()} />
       <DateTimeInput source="end" fullWidth validate={required()} />
       <TextInput source="additional_name" fullWidth />

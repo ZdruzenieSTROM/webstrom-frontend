@@ -19,7 +19,7 @@ export const EventCreate: FC = () => {
       }}
     >
       <SimpleForm>
-        <NumberInput source="year" fullWidth validate={required()} />
+        <NumberInput source="year" helperText="ročník súťaže, napr. 48" fullWidth validate={required()} />
         <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth validate={required()} />
         <DateTimeInput source="start" fullWidth validate={required()} />
         <DateTimeInput source="end" fullWidth validate={required()} />
