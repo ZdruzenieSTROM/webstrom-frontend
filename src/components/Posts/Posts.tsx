@@ -1,7 +1,7 @@
 import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
-import {FC} from 'react'
+import {FC, useState} from 'react'
 
 import {Loading} from '../Loading/Loading'
 import {IPost, Post} from './Post'
@@ -17,14 +17,21 @@ export const Posts: FC = () => {
   })
   const posts = postsData?.data ?? []
 
+  const [activePostDetailId, setActivePostDetailId] = useState<number | null>(null)
+
   if (postsIsLoading) return <Loading />
 
   if (postsError) return <Typography>{postsError.message}</Typography>
 
   return (
-    <Stack gap={5}>
+    <Stack gap={5} mb={10}>
       {posts.map((post) => (
-        <Post key={post.id} {...post} />
+        <Post
+          key={post.id}
+          {...post}
+          isDialogOpen={post.id === activePostDetailId}
+          openDialog={() => setActivePostDetailId(post.id)}
+        />
       ))}
     </Stack>
   )
