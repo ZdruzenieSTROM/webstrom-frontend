@@ -14,17 +14,3 @@
     border-left: 2px solid white;
   }
 }
-
-.authenticationContainer {
-  place-self: center;
-  padding: 0px;
-  width: 300px;
-  color: black;
-  background-color: white;
-  z-index: 1000;
-  border: 10px solid black;
-
-  .content {
-    padding: 20px;
-  }
-}
