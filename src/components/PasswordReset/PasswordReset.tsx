@@ -57,7 +57,7 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
       <Stack gap={2}>
         <Typography variant="body1">Heslo úspešne zmenené, môžeš sa prihlásiť</Typography>
         <LoginForm
-          closeOverlay={() => {
+          closeDialog={() => {
             router.push('/')
           }}
         />

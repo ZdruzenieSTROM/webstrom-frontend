@@ -18,7 +18,7 @@ const defaultValues: PasswordResetRequestFormValues = {
   email: '',
 }
 
-export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
+export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeDialog: closeDialog}) => {
   const {handleSubmit, control} = useForm<PasswordResetRequestFormValues>({defaultValues})
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
@@ -29,7 +29,7 @@ export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeOverla
     },
 
     onSuccess: () => {
-      closeOverlay()
+      closeDialog()
     },
   })
 

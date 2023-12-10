@@ -5,16 +5,16 @@ import {FC, useState} from 'react'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Overlay} from '../../Overlay/Overlay'
+import {Dialog} from '../../Dialog/Dialog'
 import {LoginFormWrapper} from '../LoginFormWrapper/LoginFormWrapper'
 import styles from './Authentication.module.scss'
 
 export const Authentication: FC = () => {
-  const [displayAuthenticationOverlay, setDisplayAuthenticationOverlay] = useState(false)
+  const [displayAuthenticationDialog, setDisplayAuthenticationDialog] = useState(false)
   const {logout, isAuthed} = AuthContainer.useContainer()
 
-  const toggleDisplayLoginOverlay = () => {
-    setDisplayAuthenticationOverlay((prev) => !prev)
+  const toggleDisplayAuthenticationDialog = () => {
+    setDisplayAuthenticationDialog((prev) => !prev)
   }
 
   const {seminar} = useSeminarInfo()
@@ -33,15 +33,13 @@ export const Authentication: FC = () => {
       <>
         <div className={styles.authenticationDisplayButtons}>
           <Link href={`/${seminar}/registracia`}>Registrovať</Link>
-          <span onClick={toggleDisplayLoginOverlay}>Prihlásiť</span>
+          <span onClick={toggleDisplayAuthenticationDialog}>Prihlásiť</span>
         </div>
-        <Overlay display={displayAuthenticationOverlay} closeOverlay={toggleDisplayLoginOverlay}>
-          <div className={styles.authenticationContainer}>
-            <div className={styles.content}>
-              <LoginFormWrapper closeOverlay={toggleDisplayLoginOverlay} />
-            </div>
-          </div>
-        </Overlay>
+        <Dialog
+          open={displayAuthenticationDialog}
+          close={toggleDisplayAuthenticationDialog}
+          contentText={<LoginFormWrapper closeDialog={toggleDisplayAuthenticationDialog} />}
+        />
       </>
     )
   } else {

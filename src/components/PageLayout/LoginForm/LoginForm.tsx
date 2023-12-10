@@ -19,14 +19,14 @@ const defaultValues: LoginFormValues = {
   password: '',
 }
 
-export const LoginForm: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
+export const LoginForm: FC<LoginFormWrapperProps> = ({closeDialog: closeDialog}) => {
   const {login} = AuthContainer.useContainer()
   const {handleSubmit, control} = useForm<LoginFormValues>({defaultValues})
 
   const router = useRouter()
 
   const redirectClose = () => {
-    closeOverlay()
+    closeDialog()
     if (router.asPath.endsWith('registracia')) {
       router.push('/')
     }
