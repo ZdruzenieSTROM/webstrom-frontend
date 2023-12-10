@@ -12,7 +12,6 @@ interface SeriesListItem {
   order: number
   deadline: string
   complete: boolean
-  frozen_results: string | null
   semester: number
 }
 
