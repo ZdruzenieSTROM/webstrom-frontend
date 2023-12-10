@@ -1,8 +1,8 @@
 import {FC} from 'react'
 import {Admin as ReactAdmin, Resource} from 'react-admin'
 
+import {AdminLayout} from './AdminLayout'
 import {dataProvider} from './dataProvider'
-import {AdminLayout} from './layout'
 import {FlatpageCreate} from './resources/base/flat-page/FlatpageCreate'
 import {FlatpageEdit} from './resources/base/flat-page/FlatpageEdit'
 import {FlatpageList} from './resources/base/flat-page/FlatpageList'
