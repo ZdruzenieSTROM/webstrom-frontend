@@ -35,7 +35,7 @@ export const VerifyEmail: FC = () => {
       <>
         <Typography variant="body1">Pre dokončenie overenia emailu sa prihlás</Typography>
         <LoginForm
-          closeOverlay={() => {
+          closeDialog={() => {
             router.push('/')
           }}
         />

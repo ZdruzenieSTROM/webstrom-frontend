@@ -164,7 +164,7 @@ export const Problems: FC = () => {
         contentText={
           <Stack alignItems={'center'} gap={3}>
             <Typography variant="body1">Pre odovzdanie sa prihlás.</Typography>
-            <LoginFormWrapper closeOverlay={closeLoginDialog} />
+            <LoginFormWrapper closeDialog={closeLoginDialog} />
           </Stack>
         }
       />

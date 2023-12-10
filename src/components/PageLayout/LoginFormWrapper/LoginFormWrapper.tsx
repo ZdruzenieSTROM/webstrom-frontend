@@ -9,10 +9,10 @@ import {LoginForm} from '../LoginForm/LoginForm'
 import {PasswordResetRequestForm} from '../PasswordResetRequest/PasswordResetRequest'
 
 export type LoginFormWrapperProps = {
-  closeOverlay: () => void
+  closeDialog: () => void
 }
 
-export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
+export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeDialog: closeDialog}) => {
   const router = useRouter()
   const [form, changeForm] = useState('login')
 
@@ -21,7 +21,7 @@ export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
   if (form === 'login')
     return (
       <Stack gap={2}>
-        <LoginForm closeOverlay={closeOverlay} />
+        <LoginForm closeDialog={closeDialog} />
         <Stack alignItems="center" mt={2}>
           <Button
             onClick={() => {
@@ -36,7 +36,7 @@ export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
 
   return (
     <PasswordResetRequestForm
-      closeOverlay={() => {
+      closeDialog={() => {
         router.push(`/${seminar}/reset-sent`)
       }}
     />
