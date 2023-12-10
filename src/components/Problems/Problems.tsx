@@ -161,6 +161,7 @@ export const Problems: FC = () => {
       <Dialog
         open={displayLoginDialog}
         close={closeLoginDialog}
+        title="Prihlásenie"
         contentText={
           <Stack alignItems={'center'} gap={3}>
             <Typography variant="body1">Pre odovzdanie sa prihlás.</Typography>

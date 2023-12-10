@@ -38,6 +38,7 @@ export const Authentication: FC = () => {
         <Dialog
           open={displayAuthenticationDialog}
           close={toggleDisplayAuthenticationDialog}
+          title="Prihlásenie"
           contentText={<LoginFormWrapper closeDialog={toggleDisplayAuthenticationDialog} />}
         />
       </>
