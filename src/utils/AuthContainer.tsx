@@ -98,7 +98,7 @@ const useAuth = () => {
   })
 
   // zavoláme logout API point, ktorý zmaže token na BE a odstráni sessionid cookie.
-  const {mutate: logout} = useMutation({
+  const {mutate: logout, mutateAsync: logoutAsync} = useMutation({
     mutationFn: () => axios.post('/api/user/logout'),
     onSettled: () => {
       setIsAuthed(false)
@@ -134,7 +134,7 @@ const useAuth = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthed])
 
-  return {isAuthed, login, logout, /* for react admin - this one can throw */ loginAsync}
+  return {isAuthed, login, logout, /* for react admin - this one can throw */ loginAsync, logoutAsync}
 }
 
 export const AuthContainer = createContainer(useAuth)
