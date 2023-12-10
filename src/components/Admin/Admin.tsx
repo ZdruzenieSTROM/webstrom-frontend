@@ -17,6 +17,10 @@ import {EventCreate} from './resources/competition/event/EventCreate'
 import {EventEdit} from './resources/competition/event/EventEdit'
 import {EventList} from './resources/competition/event/EventList'
 import {EventShow} from './resources/competition/event/EventShow'
+import {SemesterCreate} from './resources/competition/semester/SemesterCreate'
+import {SemesterEdit} from './resources/competition/semester/SemesterEdit'
+import {SemesterList} from './resources/competition/semester/SemesterList'
+import {SemesterShow} from './resources/competition/semester/SemesterShow'
 import {SeriesEdit} from './resources/competition/series/SeriesEdit'
 import {SeriesList} from './resources/competition/series/SeriesList'
 import {SeriesShow} from './resources/competition/series/SeriesShow'
@@ -35,9 +39,23 @@ export const Admin: FC = () => {
         show={FlatpageShow}
         create={FlatpageCreate}
       />
-      {/* nedovolujeme create na competition - velmi rare vec, ani nemame BE POST endpoint na to */}
-      <Resource name="competition/competition" list={CompetitionList} edit={CompetitionEdit} show={CompetitionShow} />
+      <Resource
+        name="competition/competition"
+        // helps with option names in ReferenceInput
+        recordRepresentation="name"
+        list={CompetitionList}
+        edit={CompetitionEdit}
+        show={CompetitionShow}
+        // nedovolujeme create na competition - velmi rare flow, ani nemame BE POST endpoint na to
+      />
       <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
+      <Resource
+        name="competition/semester"
+        list={SemesterList}
+        edit={SemesterEdit}
+        show={SemesterShow}
+        create={SemesterCreate}
+      />
       <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} />
     </ReactAdmin>
   )
