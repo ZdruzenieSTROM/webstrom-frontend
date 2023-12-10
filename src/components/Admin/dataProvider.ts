@@ -79,7 +79,8 @@ export const dataProvider: DataProvider = {
     }
   },
   update: async (resource, params) => {
-    const {data} = await axios.patch(`${apiUrl}/${resource}/${params.id}`, params.data)
+    const {id, ...input} = params.data
+    const {data} = await axios.patch(`${apiUrl}/${resource}/${id}`, input)
 
     return {data}
   },
