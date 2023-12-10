@@ -52,7 +52,7 @@ export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeOverla
             },
           }}
         />
-        <Stack alignItems="center" mt={2}>
+        <Stack alignItems="center">
           <Button variant="button2" type="submit">
             Resetovať heslo
           </Button>
