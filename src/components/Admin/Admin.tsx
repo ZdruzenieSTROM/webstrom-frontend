@@ -21,6 +21,7 @@ import {SemesterCreate} from './resources/competition/semester/SemesterCreate'
 import {SemesterEdit} from './resources/competition/semester/SemesterEdit'
 import {SemesterList} from './resources/competition/semester/SemesterList'
 import {SemesterShow} from './resources/competition/semester/SemesterShow'
+import {SeriesCreate} from './resources/competition/series/SeriesCreate'
 import {SeriesEdit} from './resources/competition/series/SeriesEdit'
 import {SeriesList} from './resources/competition/series/SeriesList'
 import {SeriesShow} from './resources/competition/series/SeriesShow'
@@ -51,12 +52,16 @@ export const Admin: FC = () => {
       <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
       <Resource
         name="competition/semester"
+        // helps with option names in ReferenceInput
+        recordRepresentation={(semester) =>
+          `competition:${semester.competition},year:${semester.year},season:${semester.season_code}`
+        }
         list={SemesterList}
         edit={SemesterEdit}
         show={SemesterShow}
         create={SemesterCreate}
       />
-      <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} />
+      <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} create={SeriesCreate} />
     </ReactAdmin>
   )
 }
