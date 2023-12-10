@@ -12,7 +12,7 @@ export const Banner: FC = () => {
     <div className={styles.banner}>
       <Marquee gradient={false} speed={100}>
         <Typography variant="h2" component="span" className={styles.marqueeTextContainer}>
-          {bannerText}
+          {bannerText || '\u00A0'}
         </Typography>
       </Marquee>
     </div>
