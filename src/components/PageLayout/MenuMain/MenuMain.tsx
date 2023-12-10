@@ -92,9 +92,16 @@ const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
   // potrebne koncove lomitko pre porovnanie s URLkami z BE
   const pathWithSlash = `${router.asPath}/`
 
-  // ak sme na `/matik/vysledky/44/leto/2`, orezme to na dlzku `url`, v zavere porovnajme
-  // (teda v podstate zistime, ci `pathWithSlash` zacina znakmi `url`)
-  const active = pathWithSlash.slice(0, url.length) === url
+  let active
+
+  const urlArray = url.split('/')
+  if (urlArray.length === 3 && urlArray[0] === '' && urlArray[2] === '') {
+    // riesi case ked url je napr. /strom/ a teda nestaci porovnanie so .startsWith
+    // urlArray je tak v tvare ['', 'strom', ''] co overuje dlzka 3 a zaciatok/koniec ako ''
+    active = pathWithSlash === url
+  } else {
+    active = pathWithSlash.startsWith(url)
+  }
 
   return (
     <div className={clsx(styles.menuItem, active && styles.active)}>
