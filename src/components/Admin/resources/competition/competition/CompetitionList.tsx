@@ -9,7 +9,7 @@ export const CompetitionList: FC = () => (
     <Datagrid rowClick="show">
       <TextField source="name" />
       <TextField source="slug" />
-      <NumberField source="start_year" />
+      <TextField source="start_year" />
       <TruncatedTextField source="description" maxTextWidth={30} />
       <TruncatedTextField source="rules" maxTextWidth={30} />
       <TextField source="competition_type.name" label="Competition type" />

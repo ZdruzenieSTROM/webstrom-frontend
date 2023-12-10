@@ -27,7 +27,7 @@ export const CompetitionShow: FC = () => (
         <SimpleShowLayout>
           <TextField source="name" />
           <TextField source="slug" />
-          <NumberField source="start_year" />
+          <TextField source="start_year" />
           <TruncatedTextField source="description" maxTextWidth={100} expandable />
           <TruncatedTextField source="rules" maxTextWidth={200} expandable />
           <TextField source="competition_type.name" label="Competition type" />
