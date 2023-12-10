@@ -1,6 +1,6 @@
 export type Styles = {
+  semesterPicker: string
   textarea: string
-  semesterPicker: SemesterPicker
 }
 
 export type ClassNames = keyof Styles
