@@ -39,7 +39,8 @@ export const dataProvider: DataProvider = {
       // ...getPaginationQuery(params.pagination),
       // ...getOrderingQuery(params.sort),
     }
-    const {data} = await axios.get(`${apiUrl}/${resource}/?${stringify(query)}`)
+    const stringifiedQuery = stringify(query)
+    const {data} = await axios.get(`${apiUrl}/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`)
 
     // client-side sort
     const {field, order} = params.sort

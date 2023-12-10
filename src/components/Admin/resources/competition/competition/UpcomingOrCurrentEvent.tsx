@@ -37,7 +37,8 @@ export const UpcomingOrCurrentEvent: FC = () => {
         <FunctionField<RaRecord>
           source="publication_set"
           label="Publication count"
-          render={(record) => record && <span>{record['publication_set'].length}</span>}
+          // optional access because of weird behavior of nested FunctionFields for null record
+          render={(record) => record && <span>{record['publication_set']?.length}</span>}
         />
       </SimpleShowLayout>
     </Labeled>

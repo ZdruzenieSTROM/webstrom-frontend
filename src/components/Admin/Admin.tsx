@@ -17,6 +17,11 @@ import {EventCreate} from './resources/competition/event/EventCreate'
 import {EventEdit} from './resources/competition/event/EventEdit'
 import {EventList} from './resources/competition/event/EventList'
 import {EventShow} from './resources/competition/event/EventShow'
+import {SemesterCreate} from './resources/competition/semester/SemesterCreate'
+import {SemesterEdit} from './resources/competition/semester/SemesterEdit'
+import {SemesterList} from './resources/competition/semester/SemesterList'
+import {SemesterShow} from './resources/competition/semester/SemesterShow'
+import {SeriesCreate} from './resources/competition/series/SeriesCreate'
 import {SeriesEdit} from './resources/competition/series/SeriesEdit'
 import {SeriesList} from './resources/competition/series/SeriesList'
 import {SeriesShow} from './resources/competition/series/SeriesShow'
@@ -28,10 +33,6 @@ export const Admin: FC = () => {
   return (
     <ReactAdmin authProvider={authProvider} dataProvider={dataProvider}>
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
-      <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} />
-      <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
-      {/* nedovolujeme create na competition - velmi rare vec, ani nemame BE POST endpoint na to */}
-      <Resource name="competition/competition" list={CompetitionList} edit={CompetitionEdit} show={CompetitionShow} />
       <Resource
         name="base/flat-page"
         list={FlatpageList}
@@ -39,6 +40,28 @@ export const Admin: FC = () => {
         show={FlatpageShow}
         create={FlatpageCreate}
       />
+      <Resource
+        name="competition/competition"
+        // helps with option names in ReferenceInput
+        recordRepresentation="name"
+        list={CompetitionList}
+        edit={CompetitionEdit}
+        show={CompetitionShow}
+        // nedovolujeme create na competition - velmi rare flow, ani nemame BE POST endpoint na to
+      />
+      <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
+      <Resource
+        name="competition/semester"
+        // helps with option names in ReferenceInput
+        recordRepresentation={(semester) =>
+          `competition:${semester.competition},year:${semester.year},season:${semester.season_code}`
+        }
+        list={SemesterList}
+        edit={SemesterEdit}
+        show={SemesterShow}
+        create={SemesterCreate}
+      />
+      <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} create={SeriesCreate} />
     </ReactAdmin>
   )
 }

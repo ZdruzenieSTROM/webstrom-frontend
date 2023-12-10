@@ -14,7 +14,7 @@ export const CompetitionEdit: FC = () => (
       <TextInput source="rules" multiline fullWidth />
       <TextInput source="competition_type.name" label="Competition type" fullWidth disabled />
       <SitesCheckboxInput source="sites" disabled />
-      <TextInput source="who_can_participate" multiline fullWidth />
+      <TextInput source="who_can_participate" fullWidth />
       <NumberInput source="min_years_until_graduation" fullWidth disabled />
     </SimpleForm>
   </MyEdit>

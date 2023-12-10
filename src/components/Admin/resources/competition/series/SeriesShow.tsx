@@ -4,7 +4,7 @@ import {
   BooleanField,
   Datagrid,
   DateField,
-  NumberField,
+  ReferenceField,
   Show,
   SimpleShowLayout,
   Tab,
@@ -20,10 +20,9 @@ export const SeriesShow: FC = () => (
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
+          <ReferenceField source="semester" reference="competition/semester" link="show" />
           <DateField source="deadline" />
           <TextField source="order" />
-          <NumberField source="semester" />
-          <BooleanField source="frozen_results" />
           <BooleanField source="complete" />
         </SimpleShowLayout>
       </Tab>

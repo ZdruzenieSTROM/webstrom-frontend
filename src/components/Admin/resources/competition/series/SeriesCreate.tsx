@@ -10,17 +10,10 @@ import {
   TextInput,
 } from 'react-admin'
 
-import {MyEdit} from '@/components/Admin/custom/MyEdit'
+import {MyCreate} from '@/components/Admin/custom/MyCreate'
 
-export const SeriesEdit: FC = () => (
-  <MyEdit
-    transform={(record) => {
-      // automaticky sa na BE posiela cely record, ale BE read_only (aj neexistujuce) fieldy ignoruje
-      // radsej z payloadu odstranime aspon sety
-      delete record.problems
-      return record
-    }}
-  >
+export const SeriesCreate: FC = () => (
+  <MyCreate>
     <TabbedForm>
       <FormTab label="general">
         <ReferenceInput source="semester" reference="competition/semester">
@@ -31,5 +24,5 @@ export const SeriesEdit: FC = () => (
         <BooleanInput source="complete" disabled />
       </FormTab>
     </TabbedForm>
-  </MyEdit>
+  </MyCreate>
 )
