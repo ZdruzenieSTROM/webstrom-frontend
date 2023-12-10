@@ -6,6 +6,7 @@ import {FC, useState} from 'react'
 
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
+import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {SemesterWithProblems} from '@/types/api/generated/competition'
 import {formatDateTime} from '@/utils/formatDate'
 import {useHasPermissions} from '@/utils/useHasPermissions'
@@ -95,6 +96,9 @@ export const SemesterAdministration: FC = () => {
 
   return (
     <>
+      <div className={styles.semesterPicker}>
+        <SemesterPicker page="admin/opravovanie" />
+      </div>
       <Typography variant="h1">
         {semester.year}. ročník ({semester.school_year}) - {semester.season_code === 0 ? 'zima' : 'leto'}
       </Typography>
