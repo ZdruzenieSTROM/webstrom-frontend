@@ -58,11 +58,6 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
                 </Link>
               </Stack>
             )}
-            <Stack alignSelf="center">
-              <Link variant="button2" href={`/api/`}>
-                Pozvánka
-              </Link>
-            </Stack>
             {upcoming_or_current_event.registration_link && (
               <>
                 <Typography variant="body1">
