@@ -1,7 +1,5 @@
 export type Styles = {
-  p: string
   table: string
-  td: string
   th: string
 }
 

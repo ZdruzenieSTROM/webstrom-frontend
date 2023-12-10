@@ -7,6 +7,7 @@ import {FC, useState} from 'react'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {SemesterWithProblems} from '@/types/api/generated/competition'
+import {formatDateTime} from '@/utils/formatDate'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Loading} from '../Loading/Loading'
@@ -86,67 +87,93 @@ export const SemesterAdministration: FC = () => {
   if (permissionsIsLoading || semesterIsLoading) return <Loading />
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
   if (semesterId === undefined || !semester)
-    return <Typography>Nevalidný semester (semesterId) v URL alebo ho proste nevieme fetchnúť z BE.</Typography>
+    return (
+      <Typography variant="body1">
+        Nevalidný semester (semesterId) v URL alebo ho proste nevieme fetchnúť z BE.
+      </Typography>
+    )
 
   return (
     <>
-      <h2>
+      <Typography variant="h1">
         {semester.year}. ročník ({semester.school_year}) - {semester.season_code === 0 ? 'zima' : 'leto'}
-      </h2>
-      Administrácia semestra pre opravovateľov.
+      </Typography>
+      <Typography variant="body1">Administrácia semestra pre opravovateľov.</Typography>
       {semester.series_set.map((series) => (
-        <div key={series.id}>
-          <h3>{series.order}. séria</h3>
-          <table>
-            <tbody>
-              <tr>
-                <td>Termín série:</td>
-                <td>{series.deadline}</td>
-              </tr>
-              <tr>
-                <td />
-                <td />
-              </tr>
-            </tbody>
-          </table>
-          <h4>Opravovanie úloh:</h4>
-          {series?.problems.map((problem) => (
-            <div key={problem.id}>
-              <Link href={`/strom/admin/opravit-ulohu/${problem.id}`}>{problem.order}. úloha</Link>
-            </div>
-          ))}
-        </div>
+        <Stack key={series.id} gap={1} mt={5}>
+          <Typography variant="h2">{series.order}. séria</Typography>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="h3">Opravovanie úloh:</Typography>
+            <Typography variant="body1" component="div">
+              <b>Termín série:</b> {formatDateTime(series.deadline)}
+            </Typography>
+          </Stack>
+          <Stack px={2} direction="row" justifyContent="space-between">
+            {series?.problems.map((problem) => (
+              <Link key={problem.id} variant="button2" href={`/strom/admin/opravit-ulohu/${problem.id}`}>
+                {problem.order}. úloha
+              </Link>
+            ))}
+          </Stack>
+        </Stack>
       ))}
-      <h3>Generovanie dát</h3>
-      <div className={styles.actions}>
+
+      <Typography variant="h2" mt={5}>
+        Generovanie poradia
+      </Typography>
+      <Stack pl={2} alignItems="start">
         {[...semester.series_set].reverse().map((series) => (
-          <div key={series.id}>
-            <Button onClick={() => getResults(series.id)}>Poradie {series.order}. série</Button>
-          </div>
+          <Button key={series.id} variant="button2" onClick={() => getResults(series.id)}>
+            Poradie {series.order}. série
+          </Button>
         ))}
-        <Button onClick={() => getResults(null)}>Poradie semestra</Button>
-      </div>
-      <div className={styles.actions}>
-        <Button onClick={() => getPostalCards(false)}>Štítky na školy</Button>
-        <Button onClick={() => getPostalCards(true)}>Štítky na školy (iba papierové riešenia)</Button>
-        <Link href={`/api/competition/semester/${semesterId}/participants-export/`}>Zoznam riešiteľov</Link>
-      </div>
-      <div className={styles.actions}>
-        <Button>Pozvánky pre školy</Button>
-        <Button>Pozvánky pre účastníkov</Button>
-      </div>
-      {textareaContent ? (
-        <div>
-          <textarea cols={100} rows={10} value={textareaContent} readOnly />
-          <div className={styles.actions}>
-            <Button onClick={() => navigator.clipboard.writeText(textareaContent)}>kopírovať</Button>
-          </div>
-        </div>
-      ) : (
-        <></>
+        <Button variant="button2" onClick={() => getResults(null)}>
+          Poradie semestra
+        </Button>
+      </Stack>
+
+      <Typography variant="h2" mt={5}>
+        Generovanie štítkov
+      </Typography>
+      <Stack pl={2} alignItems="start">
+        <Button variant="button2" onClick={() => getPostalCards(false)}>
+          Štítky na školy
+        </Button>
+        <Button variant="button2" onClick={() => getPostalCards(true)}>
+          Štítky na školy (iba papierové riešenia)
+        </Button>
+      </Stack>
+
+      <Typography variant="h2" mt={5}>
+        Generovanie pozvánok
+      </Typography>
+      <Stack pl={2} alignItems="start">
+        <Button variant="button2"> Pozvánky pre školy</Button>
+        <Button variant="button2">Pozvánky pre účastníkov</Button>
+      </Stack>
+
+      <Typography variant="h2" mt={5}>
+        Generovanie zoznamu
+      </Typography>
+      <Stack pl={2} alignItems="start">
+        <Link variant="button2" href={`/api/competition/semester/${semesterId}/participants-export/`}>
+          Zoznam riešiteľov
+        </Link>
+      </Stack>
+
+      {textareaContent && (
+        <Stack mt={5} gap={2} alignItems="end">
+          <textarea rows={10} value={textareaContent} readOnly className={styles.textarea} />
+          <Button variant="button2" onClick={() => navigator.clipboard.writeText(textareaContent)}>
+            kopírovať
+          </Button>
+        </Stack>
       )}
+
       <Stack mt={1} gap={1}>
-        <h3>Nahrávanie časopisov</h3>
+        <Typography variant="h2" sx={{marginTop: 3}}>
+          Nahrávanie časopisov
+        </Typography>
         {[1, 2, 3].map((order) => (
           <PublicationUploader key={order} semesterId={semesterId} order={order} semesterData={semester} />
         ))}

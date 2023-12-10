@@ -1,5 +1,5 @@
 export type Styles = {
-  actions: string
+  textarea: string
 }
 
 export type ClassNames = keyof Styles
