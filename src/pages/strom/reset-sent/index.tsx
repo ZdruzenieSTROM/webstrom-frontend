@@ -1,8 +1,7 @@
 import {NextPage} from 'next'
 
+import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {PasswordResetSent} from '@/components/PasswordResetSent/PasswordResetSent'
-
-import {PageLayout} from '../../../components/PageLayout/PageLayout'
 
 const Verifikacia: NextPage = () => {
   return (

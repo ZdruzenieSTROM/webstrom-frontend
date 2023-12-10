@@ -54,54 +54,50 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
 
   if (isReset)
     return (
-      <>
-        <Stack gap={2}>
-          <Typography variant="body1">Heslo úspešne zmenené, môžeš sa prihlásiť</Typography>
-          <LoginForm
-            closeOverlay={() => {
-              router.push('/')
-            }}
-          />
-        </Stack>
-      </>
+      <Stack gap={2}>
+        <Typography variant="body1">Heslo úspešne zmenené, môžeš sa prihlásiť</Typography>
+        <LoginForm
+          closeOverlay={() => {
+            router.push('/')
+          }}
+        />
+      </Stack>
     )
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack gap={2}>
-          <FormInput
-            control={control}
-            name="password1"
-            label="heslo*"
-            type="password"
-            rules={{
-              ...requiredRule,
-              minLength: {
-                value: 8,
-                message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
-              },
-            }}
-          />
-          <FormInput
-            control={control}
-            name="password2"
-            label="potvrdenie hesla*"
-            type="password"
-            rules={{
-              ...requiredRule,
-              validate: (val) => {
-                if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
-              },
-            }}
-          />
-          <Stack alignItems="center" mt={2}>
-            <Button variant="button2" type="submit">
-              Resetovať heslo
-            </Button>
-          </Stack>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack gap={2}>
+        <FormInput
+          control={control}
+          name="password1"
+          label="heslo*"
+          type="password"
+          rules={{
+            ...requiredRule,
+            minLength: {
+              value: 8,
+              message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
+            },
+          }}
+        />
+        <FormInput
+          control={control}
+          name="password2"
+          label="potvrdenie hesla*"
+          type="password"
+          rules={{
+            ...requiredRule,
+            validate: (val) => {
+              if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
+            },
+          }}
+        />
+        <Stack alignItems="center" mt={2}>
+          <Button variant="button2" type="submit">
+            Resetovať heslo
+          </Button>
         </Stack>
-      </form>
-    </>
+      </Stack>
+    </form>
   )
 }

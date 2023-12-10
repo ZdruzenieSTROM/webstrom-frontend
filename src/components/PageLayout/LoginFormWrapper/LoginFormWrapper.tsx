@@ -20,20 +20,18 @@ export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
 
   if (form === 'login')
     return (
-      <>
-        <Stack gap={2}>
-          <LoginForm closeOverlay={closeOverlay} />
-          <Stack alignItems="center" mt={2}>
-            <Button
-              onClick={() => {
-                changeForm('reset')
-              }}
-            >
-              Zabudnuté heslo
-            </Button>
-          </Stack>
+      <Stack gap={2}>
+        <LoginForm closeOverlay={closeOverlay} />
+        <Stack alignItems="center" mt={2}>
+          <Button
+            onClick={() => {
+              changeForm('reset')
+            }}
+          >
+            Zabudnuté heslo
+          </Button>
         </Stack>
-      </>
+      </Stack>
     )
 
   return (

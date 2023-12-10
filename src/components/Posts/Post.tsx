@@ -18,7 +18,7 @@ export interface IPost {
   sites: number[]
 }
 
-export const Post: FC<IPost> = ({id, caption, short_text, links, sites, added_at}) => {
+export const Post: FC<IPost> = ({caption, short_text, links, sites, added_at}) => {
   const {seminarId} = useSeminarInfo()
 
   if (!sites.includes(seminarId)) return null

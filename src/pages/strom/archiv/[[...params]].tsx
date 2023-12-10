@@ -1,7 +1,8 @@
 import {NextPage} from 'next'
 
+import {PageLayout} from '@/components/PageLayout/PageLayout'
+
 import {Archive} from '../../../components/Archive/Archive'
-import {PageLayout} from '../../../components/PageLayout/PageLayout'
 
 const Archiv: NextPage = () => {
   return (

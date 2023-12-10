@@ -1,6 +1,7 @@
 import {NextPage} from 'next'
 
-import {PageLayout} from '../../../components/PageLayout/PageLayout'
+import {PageLayout} from '@/components/PageLayout/PageLayout'
+
 import {Verification} from '../../../components/Verification/Verification'
 
 const Verifikacia: NextPage = () => {
