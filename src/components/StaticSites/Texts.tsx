@@ -3,6 +3,7 @@ import {FC, ReactNode} from 'react'
 import {
   HeadingProps,
   LiProps,
+  OrderedListProps,
   ReactMarkdownProps,
   TableDataCellProps,
   TableHeaderCellProps,
@@ -33,17 +34,21 @@ export const Th: FC<TableHeaderCellProps> = ({children}) => (
 )
 
 export const Td: FC<TableDataCellProps> = ({children}) => (
-  <td className={styles.td}>
-    <Typography variant="body1">{children}</Typography>
-  </td>
+  <Typography variant="body1" component="td" p={0.3}>
+    {children}
+  </Typography>
+)
+
+export const Ol: FC<OrderedListProps> = ({children}) => (
+  <Typography variant="body1" component="ol">
+    {children}
+  </Typography>
 )
 
 export const Li: FC<LiProps> = ({children}) => (
-  <li>
-    <Typography variant="body1" mt={1} component="div">
-      {children}
-    </Typography>
-  </li>
+  <Typography variant="body1" mt={1} component="li">
+    {children}
+  </Typography>
 )
 
 export const P: FC<ReactMarkdownProps> = ({children}) => (
