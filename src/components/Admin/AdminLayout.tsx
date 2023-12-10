@@ -8,29 +8,27 @@ const AppMenuBar = () => {
   const logout = useLogout()
 
   return (
-    <>
-      <AppBar
-        userMenu={false}
-        position="relative"
-        toolbar={
-          <Stack gap={2} direction="row">
-            <Button color="inherit" onClick={() => router.push('/')}>
-              <Stack gap={1} direction="row">
-                <Home />
-                <Typography variant="body1">Späť na hlavnú stránku</Typography>
-              </Stack>
-            </Button>
+    <AppBar
+      userMenu={false}
+      position="relative"
+      toolbar={
+        <Stack gap={2} direction="row">
+          <Button color="inherit" onClick={() => router.push('/')}>
+            <Stack gap={1} direction="row">
+              <Home />
+              <Typography variant="body1">Späť na hlavnú stránku</Typography>
+            </Stack>
+          </Button>
 
-            <Button color="inherit" onClick={() => logout(null, '../../', false)}>
-              <Stack gap={1} direction="row">
-                <Logout />
-                <Typography variant="body1">Odhlásiť</Typography>
-              </Stack>
-            </Button>
-          </Stack>
-        }
-      />
-    </>
+          <Button color="inherit" onClick={() => logout(null, '../../', false)}>
+            <Stack gap={1} direction="row">
+              <Logout />
+              <Typography variant="body1">Odhlásiť</Typography>
+            </Stack>
+          </Button>
+        </Stack>
+      }
+    />
   )
 }
 
