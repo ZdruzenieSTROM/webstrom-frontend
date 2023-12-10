@@ -20,7 +20,7 @@ const AppMenuBar = () => {
             </Stack>
           </Button>
 
-          <Button color="inherit" onClick={() => logout(null, '../../', false)}>
+          <Button color="inherit" onClick={() => logout()}>
             <Stack gap={1} direction="row">
               <Logout />
               <Typography variant="body1">Odhlásiť</Typography>
