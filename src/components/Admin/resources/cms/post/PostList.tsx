@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {Datagrid, DateField, FunctionField, List, NumberField, RaRecord, TextField} from 'react-admin'
+import {Datagrid, DateField, FunctionField, List, RaRecord, TextField} from 'react-admin'
 
 import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'

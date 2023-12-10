@@ -3,6 +3,7 @@ import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
 import {Button} from '@/components/Clickable/Button'
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {LoginForm} from '../LoginForm/LoginForm'
 import {PasswordResetRequestForm} from '../PasswordResetRequest/PasswordResetRequest'
@@ -15,24 +16,28 @@ export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeOverlay}) => {
   const router = useRouter()
   const [form, changeForm] = useState('login')
 
+  const {seminar} = useSeminarInfo()
+
   if (form === 'login')
     return (
-      <Stack alignItems={'center'} gap={1}>
+      <Stack gap={2}>
         <LoginForm closeOverlay={closeOverlay} />
-        <Button
-          onClick={() => {
-            changeForm('reset')
-          }}
-        >
-          Zabudnuté heslo
-        </Button>
+        <Stack alignItems="center" mt={2}>
+          <Button
+            onClick={() => {
+              changeForm('reset')
+            }}
+          >
+            Zabudnuté heslo
+          </Button>
+        </Stack>
       </Stack>
     )
 
   return (
     <PasswordResetRequestForm
       closeOverlay={() => {
-        router.push('/verifikacia')
+        router.push(`/${seminar}/reset-sent`)
       }}
     />
   )

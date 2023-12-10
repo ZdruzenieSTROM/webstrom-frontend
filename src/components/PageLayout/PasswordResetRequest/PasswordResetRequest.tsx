@@ -1,3 +1,4 @@
+import {Stack} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC} from 'react'
@@ -24,10 +25,8 @@ export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeOverla
 
   const {mutate: submitFormData} = useMutation({
     mutationFn: (data: PasswordResetRequestFormValues) => {
-      return axios.post<IGeneralPostResponse>('/api/user/password/reset/', data)
+      return axios.post<IGeneralPostResponse>('/api/user/password/reset', data)
     },
-
-    onError: (error, variables, context) => {},
 
     onSuccess: () => {
       closeOverlay()
@@ -40,19 +39,25 @@ export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeOverla
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormInput
-        control={control}
-        name="email"
-        label="Email"
-        rules={{
-          ...requiredRule,
-          pattern: {
-            value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-            message: '* Vložte správnu emailovú adresu.',
-          },
-        }}
-      />
-      <Button type="submit">Resetovať heslo</Button>
+      <Stack gap={2}>
+        <FormInput
+          control={control}
+          name="email"
+          label="Email"
+          rules={{
+            ...requiredRule,
+            pattern: {
+              value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
+              message: '* Vložte správnu emailovú adresu.',
+            },
+          }}
+        />
+        <Stack alignItems="center">
+          <Button variant="button2" type="submit">
+            Resetovať heslo
+          </Button>
+        </Stack>
+      </Stack>
     </form>
   )
 }

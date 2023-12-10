@@ -1,13 +1,12 @@
 import {NextPage} from 'next'
 
 import {PageLayout} from '@/components/PageLayout/PageLayout'
-
-import {Verification} from '../../../components/Verification/Verification'
+import {PasswordResetSent} from '@/components/PasswordResetSent/PasswordResetSent'
 
 const Verifikacia: NextPage = () => {
   return (
-    <PageLayout title="Verifikácia" contentWidth={2}>
-      <Verification />
+    <PageLayout title="Zabudnuté heslo" contentWidth={2}>
+      <PasswordResetSent />
     </PageLayout>
   )
 }
