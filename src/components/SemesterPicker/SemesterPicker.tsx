@@ -43,7 +43,9 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
     if (semester) {
       const semesterTitle = `${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester`
       if (page === 'admin/opravovanie') {
-        pageTitleToSet = 'Opravovanie'
+        pageTitleToSet = `Opravovanie - ${semester?.year}/${semester?.season_code === 0 ? 'zima' : 'leto'} (${
+          semester?.school_year
+        })`
       } else if (displayWholeSemesterOnResults) {
         pageTitleToSet = semesterTitle
       } else if (series) {
@@ -55,14 +57,6 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
   }, [displayWholeSemesterOnResults, semester, series, page, setPageTitle])
 
   const dropdownSemesterList = semesterList.map((semester) => {
-    if (page === 'admin/opravovanie') {
-      return {
-        id: semester.id,
-        text: `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
-        link: `/${seminar}/${page}/${semester.id}`,
-        selected: semester.id === selectedItem.semesterId,
-      }
-    }
     return {
       id: semester.id,
       text: `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,

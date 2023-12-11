@@ -74,7 +74,7 @@ export const MenuMain: FC = () => {
           </Stack>
           {hasPermissions && (
             <Stack sx={{mt: 4, mx: 2, borderTop: '8px dashed white', pt: 4}}>
-              <MenuMainItem caption="TODO: Opravovanie" url={`/${seminar}/admin/opravovanie/${id.semesterId}`} />
+              <MenuMainItem caption="Opravovanie" url={`/${seminar}/admin/opravovanie/`} />
               <MenuMainItem caption="Admin" url="/admin" />
             </Stack>
           )}
