@@ -1,12 +1,13 @@
 import {FormatAlignJustify, Grading} from '@mui/icons-material'
-import {Typography} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
 import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
-import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competition'
+import {ProblemWithSolutions, SemesterWithProblems, SolutionAdministration} from '@/types/api/competition'
+import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button} from '../Clickable/Button'
@@ -20,6 +21,7 @@ import styles from './ProblemAdministration.module.scss'
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
   const {params} = router.query
+  const {setPageTitle} = PageTitleContainer.useContainer()
 
   const problemId = params && params[0]
 
@@ -34,6 +36,21 @@ export const ProblemAdministration: FC = () => {
     enabled: problemId !== undefined,
   })
   const problem = problemData?.data
+
+  const semesterId = problem?.series.semester
+  const {data: semesterData, isLoading: semesterIsLoading} = useQuery({
+    queryKey: ['competition', 'semester', semesterId],
+    queryFn: () => axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
+    // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
+    enabled: semesterId !== undefined,
+  })
+  const semester = semesterData?.data
+  const semesterName = semester?.season_code === 0 ? 'zima' : 'leto'
+  const semesterUrl = `${semester?.year}/${semesterName}`
+
+  useEffect(() => {
+    !!problem && !!semester && setPageTitle(`${problem?.order}. úloha - ${semesterUrl} (${semester?.school_year})`)
+  }, [problem, semester, semesterUrl, setPageTitle])
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
@@ -91,7 +108,7 @@ export const ProblemAdministration: FC = () => {
     },
   })
 
-  if (permissionsIsLoading || problemIsLoading) return <Loading />
+  if (permissionsIsLoading || problemIsLoading || semesterIsLoading) return <Loading />
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
   if (problemId === undefined || !problem)
     return <Typography>Nevalidné číslo úlohy (problemId) v URL alebo ju proste nevieme fetchnúť z BE.</Typography>
@@ -99,14 +116,14 @@ export const ProblemAdministration: FC = () => {
   const handleSavePoints = () => uploadPoints(problemId)
 
   return (
-    <div className={styles.container}>
-      <Typography variant="h2">Opravovanie {problem.order}. úlohy</Typography>
+    <Stack gap={2}>
+      <Stack direction="row" justifyContent="space-between">
+        <Typography variant="h2">Opravovanie {problem.order}. úlohy</Typography>
 
-      <div className={styles.rightButton}>
-        <Link variant="button2" href={`/strom/admin/opravovanie/${problem.series.semester}`}>
+        <Link variant="button2" href={`/strom/admin/opravovanie/${semesterUrl}`}>
           Späť na semester
         </Link>
-      </div>
+      </Stack>
 
       <Latex>{problem.text ?? 'Načítavam...'}</Latex>
 
@@ -129,11 +146,11 @@ export const ProblemAdministration: FC = () => {
         />
       </div>
 
-      <div className={styles.rightButton}>
+      <Stack alignItems="end">
         <Link variant="button2" href={`/api/competition/problem/${problemId}/download-solutions`}>
           Stiahnuť riešenia
         </Link>
-      </div>
+      </Stack>
 
       <FileDropZone
         getRootProps={getRootProps}
@@ -141,7 +158,7 @@ export const ProblemAdministration: FC = () => {
         text="Vlož opravené riešenia vo formáte zip"
       />
 
-      <form className={styles.container}>
+      <form>
         <div className={styles.table}>
           <div className={styles.tableHeader}>
             <div>Riešiteľ</div>
@@ -207,12 +224,12 @@ export const ProblemAdministration: FC = () => {
           ))}
         </div>
 
-        <div className={styles.rightButton}>
+        <Stack alignItems="end" mt={1.5}>
           <Button variant="button2" onClick={handleSavePoints}>
             Uložiť body
           </Button>
-        </div>
+        </Stack>
       </form>
-    </div>
+    </Stack>
   )
 }
