@@ -2,7 +2,7 @@ import {Stack, Typography} from '@mui/material'
 import clsx from 'clsx'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
-import {FC} from 'react'
+import {FC, useMemo} from 'react'
 
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
@@ -15,7 +15,17 @@ export const TopGrid: FC = () => {
   const {seminar} = useSeminarInfo()
 
   // z napr. `/matik/zadania(/*)` vytiahne `zadania`
-  const page = useRouter().pathname.split('/')[2]
+  const pathname = useRouter().pathname.split('/')
+
+  const semesterPickerPage = useMemo(() => {
+    if (pathname[2] === 'zadania' || pathname[2] === 'vysledky') {
+      return pathname[2]
+    }
+    if (pathname[2] === 'admin' && pathname[3] === 'opravovanie') {
+      return 'admin/opravovanie'
+    }
+    return undefined
+  }, [pathname])
 
   const {pageTitle} = PageTitleContainer.useContainer()
 
@@ -42,9 +52,9 @@ export const TopGrid: FC = () => {
         <Typography variant="h1" className={styles.title}>
           {pageTitle}
         </Typography>
-        {(page === 'zadania' || page === 'vysledky') && (
+        {semesterPickerPage && (
           <div className={styles.semesterPicker}>
-            <SemesterPicker page={page} />
+            <SemesterPicker page={semesterPickerPage} />
           </div>
         )}
       </div>

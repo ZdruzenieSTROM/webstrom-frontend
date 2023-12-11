@@ -96,9 +96,6 @@ export const SemesterAdministration: FC = () => {
 
   return (
     <>
-      <div className={styles.semesterPicker}>
-        <SemesterPicker page="admin/opravovanie" />
-      </div>
       <Typography variant="h1">
         {semester.year}. ročník ({semester.school_year}) - {semester.season_code === 0 ? 'zima' : 'leto'}
       </Typography>

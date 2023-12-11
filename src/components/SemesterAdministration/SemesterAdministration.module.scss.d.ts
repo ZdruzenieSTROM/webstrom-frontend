@@ -1,5 +1,4 @@
 export type Styles = {
-  semesterPicker: string
   textarea: string
 }
 
