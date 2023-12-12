@@ -29,8 +29,8 @@ export const Posts: FC = () => {
         <Post
           key={post.id}
           {...post}
-          isDialogOpen={post.id === activePostDetailId}
-          openDialog={() => setActivePostDetailId(post.id)}
+          isDetailOpen={post.id === activePostDetailId}
+          openDetail={() => setActivePostDetailId(post.id)}
         />
       ))}
     </Stack>

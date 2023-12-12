@@ -17,11 +17,11 @@ export interface IPost {
   visible_after: string
   visible_until: string
   sites: number[]
-  isDialogOpen: boolean
-  openDialog: () => void
+  isDetailOpen: boolean
+  openDetail: () => void
 }
 
-export const Post: FC<IPost> = ({caption, short_text, links, details, sites, added_at, isDialogOpen, openDialog}) => {
+export const Post: FC<IPost> = ({caption, short_text, links, details, sites, added_at, isDetailOpen, openDetail}) => {
   const {seminarId} = useSeminarInfo()
 
   if (!sites.includes(seminarId)) return null
@@ -36,7 +36,7 @@ export const Post: FC<IPost> = ({caption, short_text, links, details, sites, add
         {/* alignItems so the links don't stretch */}
         <Stack gap={0.5} alignItems="start">
           {details.length > 0 && (
-            <Button onClick={openDialog} variant="button2">
+            <Button onClick={openDetail} variant="button2">
               Podrobnosti
             </Button>
           )}
@@ -51,7 +51,7 @@ export const Post: FC<IPost> = ({caption, short_text, links, details, sites, add
         </Typography>
       </Stack>
 
-      {isDialogOpen && (
+      {isDetailOpen && (
         <Stack
           gap={4}
           p={2}
