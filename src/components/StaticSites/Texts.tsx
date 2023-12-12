@@ -2,11 +2,11 @@ import {Typography} from '@mui/material'
 import {FC, ReactNode} from 'react'
 import {
   HeadingProps,
-  LiProps,
   OrderedListProps,
   ReactMarkdownProps,
   TableDataCellProps,
   TableHeaderCellProps,
+  UnorderedListProps,
 } from 'react-markdown/lib/ast-to-react'
 
 import {Link} from '../Clickable/Link'
@@ -45,8 +45,8 @@ export const Ol: FC<OrderedListProps> = ({children}) => (
   </Typography>
 )
 
-export const Li: FC<LiProps> = ({children}) => (
-  <Typography variant="body1" mt={1} component="li">
+export const Ul: FC<UnorderedListProps> = ({children}) => (
+  <Typography variant="body1" component="ul">
     {children}
   </Typography>
 )
@@ -58,19 +58,19 @@ export const P: FC<ReactMarkdownProps> = ({children}) => (
 )
 
 export const H1: FC<HeadingProps> = ({children}) => (
-  <Typography variant="h1" mt={10}>
+  <Typography variant="h1" mt={10} component="div">
     {children}
   </Typography>
 )
 
 export const H2: FC<HeadingProps> = ({children}) => (
-  <Typography variant="h2" mt={5}>
+  <Typography variant="h2" mt={5} component="div">
     {children}
   </Typography>
 )
 
 export const H3: FC<HeadingProps> = ({children}) => (
-  <Typography variant="h3" mt={3}>
+  <Typography variant="h3" mt={3} component="div">
     {children}
   </Typography>
 )
