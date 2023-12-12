@@ -6,6 +6,7 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Button'
 import {Link} from '../Clickable/Link'
+import {PostMarkdown} from './PostMarkdown'
 
 export interface IPost {
   id: number
@@ -53,7 +54,6 @@ export const Post: FC<IPost> = ({caption, short_text, links, details, sites, add
 
       {isDetailOpen && (
         <Stack
-          gap={4}
           p={2}
           sx={{
             position: 'absolute',
@@ -63,12 +63,10 @@ export const Post: FC<IPost> = ({caption, short_text, links, details, sites, add
             backgroundColor: 'white',
           }}
         >
-          <Typography variant="postTitle" textTransform="uppercase" fontStyle="italic">
+          <Typography variant="postTitle" textTransform="uppercase" fontStyle="italic" mb={4}>
             {caption}
           </Typography>
-          <Typography variant="postBody" fontWeight={300} sx={{whiteSpace: 'pre-line'}}>
-            {details}
-          </Typography>
+          <PostMarkdown content={details} />
         </Stack>
       )}
     </Stack>
