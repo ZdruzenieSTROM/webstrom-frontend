@@ -1,10 +1,8 @@
 export type Styles = {
   centerCell: string
-  container: string
   icon: string
   iconDisabled: string
   input: string
-  rightButton: string
   row: string
   table: string
   tableBody: string

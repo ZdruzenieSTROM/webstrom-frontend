@@ -10,7 +10,6 @@ import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
 import Menu from '@/svg/menu.svg'
 import {MenuItemShort} from '@/types/api/cms'
-import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -19,7 +18,6 @@ import styles from './MenuMain.module.scss'
 
 export const MenuMain: FC = () => {
   const {seminar, seminarId} = useSeminarInfo()
-  const {id} = useDataFromURL()
 
   const {hasPermissions} = useHasPermissions()
 
@@ -74,7 +72,7 @@ export const MenuMain: FC = () => {
           </Stack>
           {hasPermissions && (
             <Stack sx={{mt: 4, mx: 2, borderTop: '8px dashed white', pt: 4}}>
-              <MenuMainItem caption="TODO: Opravovanie" url={`/${seminar}/admin/opravovanie/${id.semesterId}`} />
+              <MenuMainItem caption="Opravovanie" url={`/${seminar}/admin/opravovanie/`} />
               <MenuMainItem caption="Admin" url="/admin" />
             </Stack>
           )}

@@ -1,13 +1,13 @@
 import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
-import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {SemesterWithProblems} from '@/types/api/generated/competition'
 import {formatDateTime} from '@/utils/formatDate'
+import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Loading} from '../Loading/Loading'
@@ -26,10 +26,10 @@ interface PostalCard {
 }
 
 export const SemesterAdministration: FC = () => {
-  const router = useRouter()
-  const {params} = router.query
-
-  const semesterId = params && params[0]
+  const {
+    id: {semesterId},
+    loading: urlDataLoading,
+  } = useDataFromURL()
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
@@ -84,8 +84,14 @@ export const SemesterAdministration: FC = () => {
     )
   }
 
-  if (permissionsIsLoading || semesterIsLoading) return <Loading />
-  if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
+  if (
+    urlDataLoading.currentSeriesIsLoading ||
+    urlDataLoading.semesterListIsLoading ||
+    permissionsIsLoading ||
+    semesterIsLoading
+  )
+    return <Loading />
+  if (!hasPermissions) return <Typography variant="body1">Nemáš oprávnenie na zobrazenie tejto stránky.</Typography>
   if (semesterId === undefined || !semester)
     return (
       <Typography variant="body1">
@@ -95,10 +101,7 @@ export const SemesterAdministration: FC = () => {
 
   return (
     <>
-      <Typography variant="h1">
-        {semester.year}. ročník ({semester.school_year}) - {semester.season_code === 0 ? 'zima' : 'leto'}
-      </Typography>
-      <Typography variant="body1">Administrácia semestra pre opravovateľov.</Typography>
+      <Typography variant="h3">Administrácia semestra pre opravovateľov.</Typography>
       {semester.series_set.map((series) => (
         <Stack key={series.id} gap={1} mt={5}>
           <Typography variant="h2">{series.order}. séria</Typography>

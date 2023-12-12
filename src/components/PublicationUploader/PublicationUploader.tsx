@@ -8,7 +8,7 @@ import {Link} from '../Clickable/Link'
 import {FileUploader} from '../FileUploader/FileUploader'
 
 interface PublicationUploaderProps {
-  semesterId: string
+  semesterId: number
   order: number
   semesterData: SemesterWithProblems
 }
@@ -20,7 +20,7 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
 
   const appendFormData = (formData: FormData) => {
     formData.append('publication_type', 'Časopisy')
-    formData.append('event', semesterId)
+    formData.append('event', semesterId.toString())
     formData.append('order', order.toString())
   }
 
