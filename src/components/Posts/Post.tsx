@@ -6,7 +6,6 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Button'
 import {Link} from '../Clickable/Link'
-import {PostMarkdown} from './PostMarkdown'
 
 export interface IPost {
   id: number
@@ -18,17 +17,16 @@ export interface IPost {
   visible_after: string
   visible_until: string
   sites: number[]
-  isDetailOpen: boolean
   openDetail: () => void
 }
 
-export const Post: FC<IPost> = ({caption, short_text, links, details, sites, added_at, isDetailOpen, openDetail}) => {
+export const Post: FC<IPost> = ({caption, short_text, links, details, sites, added_at, openDetail}) => {
   const {seminarId} = useSeminarInfo()
 
   if (!sites.includes(seminarId)) return null
 
   return (
-    <Stack sx={{position: 'relative'}}>
+    <Stack>
       <Typography variant="postTitle">{caption}</Typography>
 
       <Typography variant="postBody">{short_text}</Typography>
@@ -51,24 +49,6 @@ export const Post: FC<IPost> = ({caption, short_text, links, details, sites, add
           {formatDate(added_at)}
         </Typography>
       </Stack>
-
-      {isDetailOpen && (
-        <Stack
-          p={2}
-          sx={{
-            position: 'absolute',
-            left: '25vw',
-            width: '30vw',
-            border: '1rem solid black',
-            backgroundColor: 'white',
-          }}
-        >
-          <Typography variant="postTitle" textTransform="uppercase" fontStyle="italic" mb={4}>
-            {caption}
-          </Typography>
-          <PostMarkdown content={details} />
-        </Stack>
-      )}
     </Stack>
   )
 }
