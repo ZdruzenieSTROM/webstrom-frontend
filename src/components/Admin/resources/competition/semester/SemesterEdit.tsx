@@ -29,9 +29,9 @@ export const SemesterEdit: FC = () => (
         <ReferenceInput source="competition" reference="competition/competition">
           <SelectInput fullWidth validate={required()} />
         </ReferenceInput>
-        <NumberInput source="year" fullWidth />
+        <NumberInput source="year" helperText="ročník súťaže, napr. 48" fullWidth />
         <NumberInput source="season_code" fullWidth />
-        <TextInput source="school_year" fullWidth />
+        <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth />
         <DateTimeInput source="start" fullWidth />
         <DateTimeInput source="end" fullWidth />
         <TextInput source="additional_name" fullWidth />
