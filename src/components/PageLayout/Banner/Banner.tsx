@@ -10,7 +10,6 @@ export const Banner: FC = () => {
   return (
     <Box
       sx={{
-        width: '100vw',
         bgcolor: 'black',
         color: 'white',
         border: 'none',
