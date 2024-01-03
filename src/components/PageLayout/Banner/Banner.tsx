@@ -12,26 +12,12 @@ export const Banner: FC = () => {
       sx={{
         bgcolor: 'black',
         color: 'white',
-        border: 'none',
-        display: 'flex',
-        alignItems: 'center',
         zIndex: 3,
-        mb: '0.5rem',
-        p: '0.2rem 0',
+        py: '0.2rem',
       }}
     >
       <Marquee gradient={false} speed={100}>
-        <Typography
-          variant="h2"
-          component="span"
-          sx={{
-            whiteSpace: 'nowrap',
-            p: 0,
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
+        <Typography variant="h2" component="span" sx={{whiteSpace: 'nowrap'}}>
           {bannerText || '\u00A0'}
         </Typography>
       </Marquee>
