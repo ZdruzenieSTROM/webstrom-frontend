@@ -1,4 +1,6 @@
-import {Grid, Stack, Typography} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
+// new MUI Grid without spacing issues: https://mui.com/material-ui/react-grid2/
+import Grid from '@mui/material/Unstable_Grid2'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC, useState} from 'react'
@@ -27,28 +29,32 @@ export const Posts: FC = () => {
   return (
     <>
       {activePostDetailIndex !== 0 && (
-        <Grid display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={5} mb={5}>
-          <Stack gap={5} gridColumn="span 4">
-            {posts.slice(0, activePostDetailIndex).map((post, index) => (
-              <Post key={post.id} {...post} openDetail={() => setActivePostDetailIndex(index)} />
-            ))}
-          </Stack>
+        <Grid container columnSpacing={5} mb={5}>
+          <Grid xs={4}>
+            <Stack gap={5}>
+              {posts.slice(0, activePostDetailIndex).map((post, index) => (
+                <Post key={post.id} {...post} openDetail={() => setActivePostDetailIndex(index)} />
+              ))}
+            </Stack>
+          </Grid>
         </Grid>
       )}
       {activePostDetailIndex !== undefined && (
-        <Grid display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={5}>
-          <Stack gap={5} gridColumn="span 4">
-            {posts.slice(activePostDetailIndex).map((post, index) => (
-              <Post
-                key={post.id}
-                {...post}
-                openDetail={() => setActivePostDetailIndex(activePostDetailIndex + index)}
-              />
-            ))}
-          </Stack>
-          <Stack gridColumn="span 5">
+        <Grid container columnSpacing={5}>
+          <Grid xs={4}>
+            <Stack gap={5}>
+              {posts.slice(activePostDetailIndex).map((post, index) => (
+                <Post
+                  key={post.id}
+                  {...post}
+                  openDetail={() => setActivePostDetailIndex(activePostDetailIndex + index)}
+                />
+              ))}
+            </Stack>
+          </Grid>
+          <Grid xs={5}>
             <PostDetail caption={posts[activePostDetailIndex].caption} details={posts[activePostDetailIndex].details} />
-          </Stack>
+          </Grid>
         </Grid>
       )}
     </>
