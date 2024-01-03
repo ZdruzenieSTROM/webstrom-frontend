@@ -3,12 +3,12 @@ import {FC} from 'react'
 
 import {PostMarkdown} from './PostMarkdown'
 
-export interface IPost {
+type PostDetailProps = {
   caption: string
   details: string
 }
 
-export const PostDetail: FC<IPost> = ({caption, details}) => {
+export const PostDetail: FC<PostDetailProps> = ({caption, details}) => {
   return (
     <Stack
       p={2}
