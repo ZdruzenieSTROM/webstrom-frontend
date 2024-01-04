@@ -31,7 +31,7 @@ export const Post: FC<IPost> = ({caption, short_text, links, details, sites, add
 
       <Typography variant="postBody">{short_text}</Typography>
 
-      <Stack direction="row" justifyContent="space-between" alignItems="end">
+      <Stack direction="row" justifyContent="space-between" gap={0.5}>
         {/* alignItems so the links don't stretch */}
         <Stack gap={0.5} alignItems="start">
           {details.length > 0 && (
