@@ -16,7 +16,7 @@ export const PostDetail: FC<PostDetailProps> = ({caption, details}) => {
         border: '1rem solid black',
         backgroundColor: 'white',
         maxHeight: '60vh',
-        overflow: 'scroll',
+        overflow: 'auto',
       }}
     >
       <Typography variant="postTitle" textTransform="uppercase" fontStyle="italic" mb={4}>
