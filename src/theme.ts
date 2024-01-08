@@ -66,7 +66,7 @@ const _theme = createTheme({
           button1: 'span',
           button2: 'span',
           button3: 'span',
-          postTitle: 'span',
+          postTitle: 'h1',
           postBody: 'span',
         },
       },

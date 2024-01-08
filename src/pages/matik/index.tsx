@@ -1,12 +1,9 @@
 import {NextPage} from 'next'
 
-import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {Posts} from '@/components/Posts/Posts'
+import Page from '../strom/index'
 
-const Matik: NextPage = () => (
-  <PageLayout title="Novinky" contentWidth={1}>
-    <Posts />
-  </PageLayout>
-)
+const Matik: NextPage = () => {
+  return <Page />
+}
 
 export default Matik
