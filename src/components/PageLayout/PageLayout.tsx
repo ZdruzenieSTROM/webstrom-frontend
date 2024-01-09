@@ -29,13 +29,14 @@ const seminarTitle: Record<Seminar, string> = {
 // ked budeme potrebovat top-level stranky ako `/ina-stranka`, budeme musiet upravit, ako sa pracuje s `useSeminarInfo`
 export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', children}) => {
   const {seminar} = useSeminarInfo()
+  const browserTitlePrefix = title && `${title} | `
+  const browserTitle = `${browserTitlePrefix}${seminarTitle[seminar]}`
+
   return (
     <>
       <Head>
-        <title>
-          {title && `${title} | `}
-          {seminarTitle[seminar]}
-        </title>
+        {/* mali sme tu pred zmenou warning, musi to byt jeden text child: `A title element received an array with more than 1 element as children.` */}
+        <title>{browserTitle}</title>
       </Head>
       <PageTitleContainer.Provider initialState={title}>
         <BannerContainer.Provider>
