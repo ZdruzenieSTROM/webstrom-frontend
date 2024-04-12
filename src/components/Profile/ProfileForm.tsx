@@ -31,7 +31,7 @@ const defaultValues: ProfileFormValues = {
   without_school: false,
   school: null,
   school_not_found: false,
-  grade: '',
+  grade: null,
 }
 
 export const ProfileForm: FC = () => {
@@ -52,7 +52,7 @@ export const ProfileForm: FC = () => {
     without_school: profile?.school_id === 1,
     school: ({id: profile?.school.code, label: profile?.school.verbose_name} as SelectOption) ?? null,
     school_not_found: profile?.school_id === 0,
-    grade: profile?.grade ?? '',
+    grade: ({id: profile?.grade, label: profile?.grade_name} as SelectOption) ?? null,
   }
 
   const {handleSubmit, control, watch, setValue} = useForm<ProfileFormValues>({
@@ -80,7 +80,7 @@ export const ProfileForm: FC = () => {
       school: data.school?.id,
       phone: data.phone?.replaceAll(/\s+/gu, ''),
       parent_phone: data.parent_phone?.replaceAll(/\s+/gu, ''),
-      grade: data.grade,
+      grade: data.grade?.id,
     },
     new_school_description: data.new_school_description || '',
   })

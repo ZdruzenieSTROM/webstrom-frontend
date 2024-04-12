@@ -11,14 +11,14 @@ import {ISchool} from '@/types/api/personal'
 import {FormAutocomplete} from '../FormItems/FormAutocomplete/FormAutocomplete'
 import {FormCheckbox} from '../FormItems/FormCheckbox/FormCheckbox'
 import {FormInput} from '../FormItems/FormInput/FormInput'
-import {FormSelect, SelectOption} from '../FormItems/FormSelect/FormSelect'
+import {SelectOption} from '../FormItems/FormSelect/FormSelect'
 
 export type SchoolSubFormValues = {
   new_school_description?: string
   without_school: boolean
   school?: SelectOption | null
   school_not_found: boolean
-  grade: number | ''
+  grade: SelectOption | null
 }
 
 type SchoolSubFormProps<T extends SchoolSubFormValues> = {
@@ -33,6 +33,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
 
   const otherSchoolItem = useRef<SelectOption>()
   const withoutSchoolItem = useRef<SelectOption>()
+  const noGradeItem = useRef<SelectOption>()
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   const {data: gradesData} = useQuery({
@@ -56,16 +57,18 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   otherSchoolItem.current = emptySchoolItems.find(({id}) => id === 0)
   withoutSchoolItem.current = emptySchoolItems.find(({id}) => id === 1)
   const schoolItems = allSchoolItems.filter(({id}) => ![0, 1].includes(id))
+  noGradeItem.current = gradeItems.find(({id}) => id === 13)
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre užívateľa po škole
   useUpdateEffect(() => {
     if (without_school) {
       setValue('school', withoutSchoolItem.current)
-      setValue('grade', 13)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      setValue('grade', noGradeItem.current!)
       setValue('school_not_found', false)
     } else {
       setValue('school', null)
-      setValue('grade', '')
+      setValue('grade', null)
     }
   }, [without_school])
 
@@ -105,7 +108,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
           sx={{mb: '1rem'}}
         />
       )}
-      <FormSelect
+      <FormAutocomplete
         control={control}
         name="grade"
         label="ročník*"
