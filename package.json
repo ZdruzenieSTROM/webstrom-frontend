@@ -33,7 +33,7 @@
     "mathjax-react": "^2.0.1",
     "next": "^13.4.12",
     "react": "^18.2.0",
-    "react-admin": "^4.10.2",
+    "react-admin": "^4.16.15",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
