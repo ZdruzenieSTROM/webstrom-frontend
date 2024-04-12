@@ -1,12 +1,10 @@
 import {FC} from 'react'
-import {Datagrid, DateField, FunctionField, List, NumberField, RaRecord, TextField} from 'react-admin'
-
-import {CompetitionField} from '@/components/Admin/custom/CompetitionField'
+import {Datagrid, DateField, FunctionField, List, NumberField, RaRecord, ReferenceField, TextField} from 'react-admin'
 
 export const EventList: FC = () => (
   <List>
     <Datagrid rowClick="show">
-      <CompetitionField source="competition" />
+      <ReferenceField source="competition" reference="competition/event" />
       <NumberField source="year" />
       <NumberField source="season_code" />
       <TextField source="school_year" />
