@@ -39,7 +39,7 @@ const defaultValues: RegisterFormValues = {
   without_school: false,
   school: null,
   school_not_found: false,
-  grade: '',
+  grade: null,
 }
 
 export const RegisterForm: FC = () => {
@@ -69,7 +69,7 @@ export const RegisterForm: FC = () => {
       school: data.school?.id,
       phone: data.phone?.replaceAll(/\s+/gu, ''),
       parent_phone: data.parent_phone?.replaceAll(/\s+/gu, ''),
-      grade: data.grade,
+      grade: data.grade?.id,
     },
     new_school_description: data.new_school_description || '',
   })
