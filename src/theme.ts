@@ -10,6 +10,7 @@ declare module '@mui/material/styles' {
     button3: React.CSSProperties
     postTitle: React.CSSProperties
     postBody: React.CSSProperties
+    postDate: React.CSSProperties
   }
 
   // allow configuration using `createTheme`
@@ -20,6 +21,7 @@ declare module '@mui/material/styles' {
     button3?: React.CSSProperties
     postTitle?: React.CSSProperties
     postBody?: React.CSSProperties
+    postDate?: React.CSSProperties
   }
 }
 
@@ -32,6 +34,7 @@ declare module '@mui/material/Typography' {
     button3: true
     postTitle: true
     postBody: true
+    postDate: true
     // disable these variants
     h4: false
     h5: false
@@ -45,7 +48,7 @@ declare module '@mui/material/Typography' {
 }
 export const font = Poppins({
   subsets: ['latin'],
-  weight: ['400', '600', '700', '800'],
+  weight: ['300', '400', '600', '700', '800'],
 })
 
 const _theme = createTheme({
@@ -115,6 +118,11 @@ const _theme = createTheme({
       ...font.style,
       fontWeight: 400,
     },
+    postDate: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 300,
+    },
   },
   components: {
     MuiTypography: {
@@ -128,6 +136,7 @@ const _theme = createTheme({
           button3: 'span',
           postTitle: 'h1',
           postBody: 'span',
+          postDate: 'span',
         },
       },
     },
@@ -275,6 +284,16 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(24)},
       [lg]: {fontSize: pxToRem(24)},
       [xl]: {fontSize: pxToRem(30)},
+      lineHeight: 1.5,
+    },
+    postDate: {
+      ..._theme.typography.postDate,
+      // original Figma fontSize: 20px
+      fontSize: pxToRem(14),
+      [sm]: {fontSize: pxToRem(16)},
+      [md]: {fontSize: pxToRem(16)},
+      [lg]: {fontSize: pxToRem(18)},
+      [xl]: {fontSize: pxToRem(20)},
       lineHeight: 1.5,
     },
   },

@@ -45,9 +45,7 @@ export const Post: FC<IPost> = ({caption, short_text, links, details, sites, add
             </Link>
           ))}
         </Stack>
-        <Typography variant="body1" fontWeight={275} textTransform="uppercase">
-          {formatDate(added_at)}
-        </Typography>
+        <Typography variant="postDate">{formatDate(added_at)}</Typography>
       </Stack>
     </Stack>
   )
