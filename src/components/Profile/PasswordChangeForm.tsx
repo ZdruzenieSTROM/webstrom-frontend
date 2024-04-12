@@ -82,7 +82,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack gap={2}>
+        <Stack gap={2} mt={4} height="350px">
           <FormInput
             control={control}
             name="old_password"

@@ -17,7 +17,7 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
-import {LoginFormWrapper} from '../PageLayout/LoginFormWrapper/LoginFormWrapper'
+import {LoginForm} from '../PageLayout/LoginForm/LoginForm'
 import {Discussion} from './Discussion'
 import {Problem} from './Problem'
 import styles from './Problems.module.scss'
@@ -161,7 +161,7 @@ export const Problems: FC = () => {
       <Dialog open={displayLoginDialog} close={closeLoginDialog} title="Prihlásenie">
         <Stack alignItems={'center'} gap={3}>
           <Typography variant="body1">Pre odovzdanie sa prihlás.</Typography>
-          <LoginFormWrapper closeDialog={closeLoginDialog} />
+          <LoginForm closeDialog={closeLoginDialog} />
         </Stack>
       </Dialog>
 
