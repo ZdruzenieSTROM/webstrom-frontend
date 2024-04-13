@@ -1,5 +1,13 @@
 import {FC} from 'react'
-import {ImageField, NumberField, RecordRepresentation, ReferenceField, Show, SimpleShowLayout} from 'react-admin'
+import {
+  FileField,
+  ImageField,
+  NumberField,
+  RecordRepresentation,
+  ReferenceField,
+  Show,
+  SimpleShowLayout,
+} from 'react-admin'
 
 import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
@@ -11,6 +19,7 @@ export const ProblemShow: FC = () => (
       <NumberField source="order" />
       <TruncatedTextField source="text" maxTextWidth={100} expandable />
       <ImageField source="image" sx={{'& .RaImageField-image': {width: 400, height: 300}}} />
+      <FileField source="solution_pdf" title="Vzorák" />
       <NumberField source="num_comments" />
     </SimpleShowLayout>
   </Show>

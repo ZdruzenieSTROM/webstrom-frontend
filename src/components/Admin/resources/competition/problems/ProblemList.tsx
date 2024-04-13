@@ -1,5 +1,14 @@
 import {FC} from 'react'
-import {Datagrid, ImageField, List, NumberField, ReferenceField} from 'react-admin'
+import {
+  BooleanField,
+  Datagrid,
+  FunctionField,
+  ImageField,
+  List,
+  NumberField,
+  RaRecord,
+  ReferenceField,
+} from 'react-admin'
 
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
@@ -10,6 +19,10 @@ export const ProblemList: FC = () => (
       <NumberField source="order" />
       <TruncatedTextField source="text" maxTextWidth={50} />
       <ImageField source="image" sx={{'& .RaImageField-image': {width: 100, height: 75}}} />
+      <FunctionField<RaRecord>
+        label="Má vzorák"
+        render={(record) => record && <BooleanField record={{xxx: !!record['solution_pdf']}} source="xxx" />}
+      />
       <NumberField source="num_comments" />
     </Datagrid>
   </List>

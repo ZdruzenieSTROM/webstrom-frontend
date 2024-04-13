@@ -12,8 +12,9 @@ export const createProblemFormData = ({
   solution_pdf?: {rawFile: File}
 }) => {
   const formData = new FormData()
+  // vzdy appendneme kazdy kluc, aj tieto fily, len null sa tu neda pouzit. null znamena, ze file odstranujeme
   formData.append('image', image?.rawFile ?? '')
-  solution_pdf?.rawFile && formData.append('solution_pdf', solution_pdf.rawFile)
+  formData.append('solution_pdf', solution_pdf?.rawFile ?? '')
   Object.entries(data).forEach(([key, value]) => {
     if (value) formData.append(key, value.toString())
   })

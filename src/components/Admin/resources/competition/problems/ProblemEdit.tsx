@@ -1,8 +1,9 @@
 import {FC} from 'react'
-import {FormTab, ImageInput, ReferenceInput, required, SelectInput, TabbedForm, TextInput} from 'react-admin'
+import {FileInput, FormTab, ImageInput, ReferenceInput, required, SelectInput, TabbedForm, TextInput} from 'react-admin'
 
 import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
+import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
 
 import {createProblemFormData} from './createProblemFormData'
@@ -25,6 +26,9 @@ export const ProblemEdit: FC = () => (
         <ImageInput source="image" accept="image/*">
           <MyImageField />
         </ImageInput>
+        <FileInput source="solution_pdf" accept="application/pdf">
+          <MyFileField />
+        </FileInput>
       </FormTab>
     </TabbedForm>
   </MyEdit>
