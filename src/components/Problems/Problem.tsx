@@ -5,6 +5,7 @@ import {Dispatch, FC, SetStateAction, useState} from 'react'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {Problem as ProblemType} from '@/types/api/competition'
+import {AuthContainer} from '@/utils/AuthContainer'
 
 import {Latex} from '../Latex/Latex'
 import styles from './Problem.module.scss'
@@ -47,12 +48,13 @@ export const Problem: FC<{
       }
     })
   }
+  const {isAuthed} = AuthContainer.useContainer()
 
   const handleUploadClick = () => {
-    if (!registered && canRegister) {
-      displayRegisterDialog()
-    } else if (!registered && !canRegister) {
+    if (!isAuthed) {
       displayLoginDialog()
+    } else if (!registered) {
+      displayRegisterDialog()
     } else {
       setDisplayProblemUploadForm((prevState) => !prevState)
       setDisplayActions(false)
@@ -119,7 +121,7 @@ export const Problem: FC<{
           <Button onClick={handleDiscussionButtonClick} variant="button2">
             diskusia ({problem.num_comments}){' '}
           </Button>
-          <Button onClick={handleUploadClick} disabled={!canSubmit} variant="button2">
+          <Button onClick={handleUploadClick} disabled={!canSubmit || (isAuthed && !canRegister)} variant="button2">
             odovzdať
           </Button>
         </Stack>
