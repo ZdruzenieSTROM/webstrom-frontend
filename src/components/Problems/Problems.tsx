@@ -191,25 +191,6 @@ export const Problems: FC = () => {
             displayLoginDialog={() => setDisplayLoginDialog(true)}
           />
         ))}
-
-        {/* TODO: odstranit z produkcie */}
-        <div className={styles.debug}>
-          <span>debug sekcia:</span>
-          <div>
-            <Button onClick={toggleIsRegistered}>Override isRegistered:</Button>
-            <span style={{color: '#A00', fontWeight: 600}}>
-              {' '}
-              {overrideIsRegistered === undefined ? 'no override' : overrideIsRegistered ? 'on' : 'off'}
-            </span>
-          </div>
-          <div>
-            <Button onClick={toggleCanRegister}>Override canRegister:</Button>
-            <span style={{color: '#A00', fontWeight: 600}}>
-              {' '}
-              {overrideCanRegister === undefined ? 'no override' : overrideCanRegister ? 'on' : 'off'}
-            </span>
-          </div>
-        </div>
       </Stack>
       <div className={styles.sideContainer}>
         {displaySideContent.type === 'discussion' && (

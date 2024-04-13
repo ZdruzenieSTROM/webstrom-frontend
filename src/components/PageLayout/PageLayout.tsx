@@ -6,7 +6,6 @@ import {BannerContainer} from '@/utils/BannerContainer'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {Seminar, useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {DebugFooter} from './DebugFooter/DebugFooter'
 import {Footer} from './Footer/Footer'
 import {MenuMain} from './MenuMain/MenuMain'
 import styles from './PageLayout.module.scss'
@@ -57,7 +56,6 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
               </div>
             </div>
             <Footer />
-            <DebugFooter />
           </div>
         </BannerContainer.Provider>
       </PageTitleContainer.Provider>
