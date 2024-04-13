@@ -12,7 +12,7 @@ export type LoginFormWrapperProps = {
   closeDialog: () => void
 }
 
-export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeDialog: closeDialog}) => {
+export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeDialog}) => {
   const router = useRouter()
   const [form, changeForm] = useState('login')
 
@@ -35,10 +35,21 @@ export const LoginFormWrapper: FC<LoginFormWrapperProps> = ({closeDialog: closeD
     )
 
   return (
-    <PasswordResetRequestForm
-      closeDialog={() => {
-        router.push(`/${seminar}/reset-sent`)
-      }}
-    />
+    <Stack gap={2}>
+      <PasswordResetRequestForm
+        closeDialog={() => {
+          router.push(`/${seminar}/reset-sent`)
+        }}
+      />
+      <Stack alignItems="center" mt={2}>
+        <Button
+          onClick={() => {
+            changeForm('login')
+          }}
+        >
+          Prihlásenie
+        </Button>
+      </Stack>
+    </Stack>
   )
 }

@@ -35,12 +35,9 @@ export const Authentication: FC = () => {
           <Link href={`/${seminar}/registracia`}>Registrovať</Link>
           <span onClick={toggleDisplayAuthenticationDialog}>Prihlásiť</span>
         </div>
-        <Dialog
-          open={displayAuthenticationDialog}
-          close={toggleDisplayAuthenticationDialog}
-          title="Prihlásenie"
-          contentText={<LoginFormWrapper closeDialog={toggleDisplayAuthenticationDialog} />}
-        />
+        <Dialog open={displayAuthenticationDialog} close={toggleDisplayAuthenticationDialog} title="Prihlásenie">
+          <LoginFormWrapper closeDialog={toggleDisplayAuthenticationDialog} />
+        </Dialog>
       </>
     )
   } else {

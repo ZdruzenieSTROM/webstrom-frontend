@@ -40,20 +40,22 @@ export const LoginForm: FC<LoginFormWrapperProps> = ({closeDialog: closeDialog})
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap={2}>
-        <FormInput
-          control={control}
-          name="email"
-          label="Email"
-          rules={{
-            ...requiredRule,
-            pattern: {
-              value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-              message: '* Vložte správnu emailovú adresu.',
-            },
-          }}
-        />
-        <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
+      <Stack justifyContent="space-between" height="260px">
+        <Stack gap={2}>
+          <FormInput
+            control={control}
+            name="email"
+            label="Email"
+            rules={{
+              ...requiredRule,
+              pattern: {
+                value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
+                message: '* Vložte správnu emailovú adresu.',
+              },
+            }}
+          />
+          <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
+        </Stack>
         <Stack alignItems="center" mt={2}>
           <Button variant="button2" type="submit">
             Prihlásiť
