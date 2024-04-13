@@ -57,7 +57,7 @@ export const ProfileDetail: FC = () => {
         <ProfileLine label={'tel. č.'} value={profile?.phone || '-'} />
         <ProfileLine label={'tel. č. na rodiča'} value={profile?.parent_phone || '-'} />
       </Stack>
-      <Stack direction={'row'} mt={3} gap={5}>
+      <Stack direction="row" justifyContent="flex-end" mt={3} gap={4}>
         <Link variant="button2" href={`/${seminar}/profil/uprava`}>
           Upraviť údaje
         </Link>

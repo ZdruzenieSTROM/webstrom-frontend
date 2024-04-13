@@ -1,5 +1,7 @@
-import {Dialog as MuiDialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material'
+import {Box, Dialog as MuiDialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material'
 import {FC, ReactNode} from 'react'
+
+import {CloseButton} from '../CloseButton/CloseButton'
 
 type DialogProps = {
   open: boolean
@@ -13,20 +15,14 @@ type DialogProps = {
 // inspired by: https://mui.com/material-ui/react-dialog/#alerts
 export const Dialog: FC<DialogProps> = ({open, close, title, contentText, children, actions}) => {
   return (
-    <MuiDialog
-      open={open}
-      onClose={close}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      {title && (
-        <DialogTitle id="alert-dialog-title" variant="h2">
-          {title}
-        </DialogTitle>
-      )}
+    <MuiDialog open={open} onClose={close}>
+      <Box position="absolute" top={16} right={16}>
+        <CloseButton size={30} onClick={close} invertColors />
+      </Box>
+      {title && <DialogTitle variant="h2">{title}</DialogTitle>}
       {(contentText || children) && (
         <DialogContent>
-          {contentText && <DialogContentText id="alert-dialog-description">{contentText}</DialogContentText>}
+          {contentText && <DialogContentText>{contentText}</DialogContentText>}
           {children}
         </DialogContent>
       )}

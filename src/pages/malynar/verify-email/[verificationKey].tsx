@@ -1,12 +1,9 @@
 import {NextPage} from 'next'
 
-import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {VerifyEmail} from '@/components/VerifyEmail/VerifyEmail'
+import Page from '../../strom/verify-email/[verificationKey]'
 
-const Verify: NextPage = () => (
-  <PageLayout>
-    <VerifyEmail />
-  </PageLayout>
-)
+const Verify: NextPage = () => {
+  return <Page />
+}
 
 export default Verify

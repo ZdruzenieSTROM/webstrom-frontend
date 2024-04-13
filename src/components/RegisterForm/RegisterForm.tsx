@@ -78,6 +78,7 @@ export const RegisterForm: FC = () => {
     mutationFn: (data: RegisterFormValues) => {
       return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
     },
+    // TODO: show alert/toast and redirect to homepage instead of redirect to info page
     onSuccess: () => router.push(`${router.asPath}/../verifikacia`),
     onError: (error: AxiosError<RegisterErrorResponseData>) => {
       if (error.response?.status === 400) {
@@ -153,7 +154,7 @@ export const RegisterForm: FC = () => {
           Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so zákonom
           o ochrane osobných údajov. Bližšie informácie nájdete <Link href={`./gdpr`}>tu</Link>.
         </Typography>
-        <Stack alignItems="center" mt={2}>
+        <Stack direction="row" justifyContent="flex-end" mt={3}>
           <Button variant="button2" type="submit" onClick={scrollToTop}>
             Registrovať
           </Button>

@@ -152,9 +152,9 @@ const _theme = createTheme({
     MuiDialogActions: {
       styleOverrides: {
         root: {
-          paddingBottom: '20px',
-          paddingLeft: '20px',
-          paddingRight: '20px',
+          padding: '20px',
+          justifyContent: 'space-between',
+          flexDirection: 'row-reverse',
         },
       },
     },
@@ -162,6 +162,8 @@ const _theme = createTheme({
       styleOverrides: {
         root: {
           textAlign: 'center',
+          paddingRight: '50px',
+          paddingLeft: '50px',
         },
       },
     },

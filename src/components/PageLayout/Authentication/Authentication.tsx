@@ -6,7 +6,7 @@ import {AuthContainer} from '@/utils/AuthContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Dialog} from '../../Dialog/Dialog'
-import {LoginFormWrapper} from '../LoginFormWrapper/LoginFormWrapper'
+import {LoginForm} from '../LoginForm/LoginForm'
 import styles from './Authentication.module.scss'
 
 export const Authentication: FC = () => {
@@ -36,7 +36,7 @@ export const Authentication: FC = () => {
           <span onClick={toggleDisplayAuthenticationDialog}>Prihlásiť</span>
         </div>
         <Dialog open={displayAuthenticationDialog} close={toggleDisplayAuthenticationDialog} title="Prihlásenie">
-          <LoginFormWrapper closeDialog={toggleDisplayAuthenticationDialog} />
+          <LoginForm closeDialog={toggleDisplayAuthenticationDialog} />
         </Dialog>
       </>
     )
