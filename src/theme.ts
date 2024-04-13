@@ -1,4 +1,5 @@
 import {createTheme, Theme} from '@mui/material/styles'
+import {Poppins} from 'next/font/google'
 
 // https://mui.com/material-ui/customization/typography/#adding-amp-disabling-variants
 declare module '@mui/material/styles' {
@@ -9,6 +10,7 @@ declare module '@mui/material/styles' {
     button3: React.CSSProperties
     postTitle: React.CSSProperties
     postBody: React.CSSProperties
+    postDate: React.CSSProperties
   }
 
   // allow configuration using `createTheme`
@@ -19,6 +21,7 @@ declare module '@mui/material/styles' {
     button3?: React.CSSProperties
     postTitle?: React.CSSProperties
     postBody?: React.CSSProperties
+    postDate?: React.CSSProperties
   }
 }
 
@@ -31,6 +34,7 @@ declare module '@mui/material/Typography' {
     button3: true
     postTitle: true
     postBody: true
+    postDate: true
     // disable these variants
     h4: false
     h5: false
@@ -42,10 +46,14 @@ declare module '@mui/material/Typography' {
     subtitle2: false
   }
 }
+export const font = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '600', '700', '800'],
+})
 
 const _theme = createTheme({
   typography: {
-    fontFamily: ['Poppins', 'sans-serif'].join(','),
+    ...font.style,
     // disable these variants
     h4: undefined,
     h5: undefined,
@@ -55,6 +63,66 @@ const _theme = createTheme({
     overline: undefined,
     subtitle1: undefined,
     subtitle2: undefined,
+    h1: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
+    },
+    h2: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
+    },
+    h3: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 800,
+    },
+    body1: {
+      ...font.style,
+      fontWeight: 400,
+    },
+    body2: {
+      ...font.style,
+      fontWeight: 400,
+    },
+    body3: {
+      ...font.style,
+      fontWeight: 400,
+    },
+    button1: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
+    },
+    button2: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
+    },
+    button3: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
+    },
+    postTitle: {
+      ...font.style,
+      fontWeight: 800,
+    },
+    postBody: {
+      ...font.style,
+      fontWeight: 400,
+    },
+    postDate: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 300,
+    },
   },
   components: {
     MuiTypography: {
@@ -68,6 +136,7 @@ const _theme = createTheme({
           button3: 'span',
           postTitle: 'h1',
           postBody: 'span',
+          postDate: 'span',
         },
       },
     },
@@ -108,110 +177,124 @@ export const theme: Theme = {
   typography: {
     ..._theme.typography,
     h1: {
+      ..._theme.typography.h1,
       // original Figma fontSize: 40px
       fontSize: pxToRem(32),
       [sm]: {fontSize: pxToRem(32)},
       [md]: {fontSize: pxToRem(32)},
       [lg]: {fontSize: pxToRem(32)},
       [xl]: {fontSize: pxToRem(40)},
-      textTransform: 'uppercase',
-      fontWeight: 800,
-      fontStyle: 'italic',
+      lineHeight: 1.5,
     },
     h2: {
+      ..._theme.typography.h2,
       // original Figma fontSize: 30px
       fontSize: pxToRem(24),
       [sm]: {fontSize: pxToRem(24)},
       [md]: {fontSize: pxToRem(24)},
       [lg]: {fontSize: pxToRem(24)},
       [xl]: {fontSize: pxToRem(30)},
-      textTransform: 'uppercase',
-      fontWeight: 800,
-      fontStyle: 'italic',
+      lineHeight: 1.5,
     },
     h3: {
+      ..._theme.typography.h3,
       // original Figma fontSize: 24px
       fontSize: pxToRem(18),
       [sm]: {fontSize: pxToRem(18)},
       [md]: {fontSize: pxToRem(18)},
       [lg]: {fontSize: pxToRem(18)},
       [xl]: {fontSize: pxToRem(24)},
-      textTransform: 'uppercase',
-      fontWeight: 800,
+      lineHeight: 1.5,
     },
     body1: {
+      ..._theme.typography.body1,
       // original Figma fontSize: 20px
       fontSize: pxToRem(14),
       [sm]: {fontSize: pxToRem(16)},
       [md]: {fontSize: pxToRem(16)},
       [lg]: {fontSize: pxToRem(18)},
       [xl]: {fontSize: pxToRem(20)},
+      lineHeight: 1.5,
     },
     body2: {
+      ..._theme.typography.body2,
       // original Figma fontSize: 16px
       fontSize: pxToRem(10),
       [sm]: {fontSize: pxToRem(12)},
       [md]: {fontSize: pxToRem(12)},
       [lg]: {fontSize: pxToRem(14)},
       [xl]: {fontSize: pxToRem(16)},
+      lineHeight: 1.5,
     },
     body3: {
+      ..._theme.typography.body3,
       // original Figma fontSize: 12px
       fontSize: pxToRem(8),
       [sm]: {fontSize: pxToRem(8)},
       [md]: {fontSize: pxToRem(8)},
       [lg]: {fontSize: pxToRem(10)},
       [xl]: {fontSize: pxToRem(12)},
+      lineHeight: 1.5,
     },
     button1: {
+      ..._theme.typography.button1,
       // original Figma fontSize: 30px
       fontSize: pxToRem(24),
       [sm]: {fontSize: pxToRem(24)},
       [md]: {fontSize: pxToRem(24)},
       [lg]: {fontSize: pxToRem(24)},
       [xl]: {fontSize: pxToRem(30)},
-      textTransform: 'uppercase',
-      fontWeight: 800,
-      fontStyle: 'italic',
+      lineHeight: 1.5,
     },
     button2: {
+      ..._theme.typography.button2,
       // original Figma fontSize: 20px
       fontSize: pxToRem(14),
       [sm]: {fontSize: pxToRem(16)},
       [md]: {fontSize: pxToRem(16)},
       [lg]: {fontSize: pxToRem(18)},
       [xl]: {fontSize: pxToRem(20)},
-      textTransform: 'uppercase',
-      fontWeight: 800,
-      fontStyle: 'italic',
+      lineHeight: 1.5,
     },
     button3: {
+      ..._theme.typography.button3,
       // original Figma fontSize: 14px
       fontSize: pxToRem(10),
       [sm]: {fontSize: pxToRem(10)},
       [md]: {fontSize: pxToRem(10)},
       [lg]: {fontSize: pxToRem(12)},
       [xl]: {fontSize: pxToRem(14)},
-      textTransform: 'uppercase',
-      fontWeight: 800,
-      fontStyle: 'italic',
+      lineHeight: 1.5,
     },
     postTitle: {
+      ..._theme.typography.postTitle,
       // original Figma fontSize: 36px
       fontSize: pxToRem(30),
       [sm]: {fontSize: pxToRem(30)},
       [md]: {fontSize: pxToRem(30)},
       [lg]: {fontSize: pxToRem(30)},
       [xl]: {fontSize: pxToRem(36)},
-      fontWeight: 800,
+      lineHeight: 1.5,
     },
     postBody: {
+      ..._theme.typography.postBody,
       // original Figma fontSize: 30px
       fontSize: pxToRem(24),
       [sm]: {fontSize: pxToRem(24)},
       [md]: {fontSize: pxToRem(24)},
       [lg]: {fontSize: pxToRem(24)},
       [xl]: {fontSize: pxToRem(30)},
+      lineHeight: 1.5,
+    },
+    postDate: {
+      ..._theme.typography.postDate,
+      // original Figma fontSize: 20px
+      fontSize: pxToRem(14),
+      [sm]: {fontSize: pxToRem(16)},
+      [md]: {fontSize: pxToRem(16)},
+      [lg]: {fontSize: pxToRem(18)},
+      [xl]: {fontSize: pxToRem(20)},
+      lineHeight: 1.5,
     },
   },
 }

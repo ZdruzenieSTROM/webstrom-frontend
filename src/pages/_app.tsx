@@ -78,6 +78,14 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
         <title>React App</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+      {/* ak pouzijeme vsade <Typography>, nemuseli by sme mat takyto globalny styl... ale je to teda
+          safe a krajsie, nech kazdy maly (ah debug) textik je aspon nasim fontom a ne v Times :D
+          source: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts#apply-the-font-in-head */}
+      <style jsx global>{`
+        html {
+          font-family: ${theme.typography.fontFamily};
+        }
+      `}</style>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
         <CookiesProvider>
