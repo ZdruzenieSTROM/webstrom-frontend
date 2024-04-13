@@ -8,8 +8,6 @@ import {Button} from '@/components/Clickable/Button'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
 
-import {LoginFormWrapperProps} from '../LoginFormWrapper/LoginFormWrapper'
-
 type PasswordResetRequestFormValues = {
   email: string
 }
@@ -18,7 +16,11 @@ const defaultValues: PasswordResetRequestFormValues = {
   email: '',
 }
 
-export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeDialog: closeDialog}) => {
+type PasswordResetRequestFormmProps = {
+  closeDialog: () => void
+}
+
+export const PasswordResetRequestForm: FC<PasswordResetRequestFormmProps> = ({closeDialog}) => {
   const {handleSubmit, control} = useForm<PasswordResetRequestFormValues>({defaultValues})
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}

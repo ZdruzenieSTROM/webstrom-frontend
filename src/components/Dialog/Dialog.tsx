@@ -13,20 +13,11 @@ type DialogProps = {
 // inspired by: https://mui.com/material-ui/react-dialog/#alerts
 export const Dialog: FC<DialogProps> = ({open, close, title, contentText, children, actions}) => {
   return (
-    <MuiDialog
-      open={open}
-      onClose={close}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      {title && (
-        <DialogTitle id="alert-dialog-title" variant="h2">
-          {title}
-        </DialogTitle>
-      )}
+    <MuiDialog open={open} onClose={close}>
+      {title && <DialogTitle variant="h2">{title}</DialogTitle>}
       {(contentText || children) && (
         <DialogContent>
-          {contentText && <DialogContentText id="alert-dialog-description">{contentText}</DialogContentText>}
+          {contentText && <DialogContentText>{contentText}</DialogContentText>}
           {children}
         </DialogContent>
       )}
