@@ -39,7 +39,7 @@ export const PasswordResetRequestForm: FC<LoginFormWrapperProps> = ({closeDialog
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap={2}>
+      <Stack justifyContent="space-between" height="160px">
         <FormInput
           control={control}
           name="email"

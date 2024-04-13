@@ -17,7 +17,7 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
-import {LoginFormWrapper} from '../PageLayout/LoginFormWrapper/LoginFormWrapper'
+import {LoginForm} from '../PageLayout/LoginForm/LoginForm'
 import {Discussion} from './Discussion'
 import {Problem} from './Problem'
 import styles from './Problems.module.scss'
@@ -127,26 +127,6 @@ export const Problems: FC = () => {
         open={displayRegisterDialog}
         close={closeRegisterDialog}
         title="Skontroluj prosím, čí údaje o ročníku a škole sú správne."
-        contentText={
-          <Stack gap={2}>
-            <Stack direction={'row'} gap={1}>
-              <Typography variant="h3" component="span">
-                Škola
-              </Typography>
-              <Typography variant="h3" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
-                {profile?.school.verbose_name}
-              </Typography>
-            </Stack>
-            <Stack direction={'row'} gap={1}>
-              <Typography variant="h3" component="span">
-                Ročník
-              </Typography>
-              <Typography variant="h3" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
-                {profile?.grade_name}
-              </Typography>
-            </Stack>
-          </Stack>
-        }
         actions={
           <Stack direction="row" gap={2}>
             <Button variant="button2" onClick={editProfile}>
@@ -157,18 +137,34 @@ export const Problems: FC = () => {
             </Button>
           </Stack>
         }
-      />
-      <Dialog
-        open={displayLoginDialog}
-        close={closeLoginDialog}
-        title="Prihlásenie"
-        contentText={
-          <Stack alignItems={'center'} gap={3}>
-            <Typography variant="body1">Pre odovzdanie sa prihlás.</Typography>
-            <LoginFormWrapper closeDialog={closeLoginDialog} />
+      >
+        <Stack gap={2}>
+          <Stack direction={'row'} gap={1}>
+            <Typography variant="h3" component="span">
+              Škola
+            </Typography>
+            <Typography variant="h3" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
+              {profile?.school.verbose_name}
+            </Typography>
           </Stack>
-        }
-      />
+          <Stack direction={'row'} gap={1}>
+            <Typography variant="h3" component="span">
+              Ročník
+            </Typography>
+            <Typography variant="h3" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
+              {profile?.grade_name}
+            </Typography>
+          </Stack>
+        </Stack>
+      </Dialog>
+
+      <Dialog open={displayLoginDialog} close={closeLoginDialog} title="Prihlásenie">
+        <Stack alignItems={'center'} gap={3}>
+          <Typography variant="body1">Pre odovzdanie sa prihlás.</Typography>
+          <LoginForm closeDialog={closeLoginDialog} />
+        </Stack>
+      </Dialog>
+
       <Stack gap={5}>
         {(loading.semesterListIsLoading ||
           loading.currentSeriesIsLoading ||

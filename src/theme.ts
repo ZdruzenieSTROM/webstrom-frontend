@@ -145,6 +145,7 @@ const _theme = createTheme({
         paper: {
           '& > div.MuiDialogContent-root': {paddingTop: '20px'},
           border: '10px solid black',
+          width: '100%',
         },
       },
     },
@@ -152,6 +153,8 @@ const _theme = createTheme({
       styleOverrides: {
         root: {
           paddingBottom: '20px',
+          paddingLeft: '20px',
+          paddingRight: '20px',
         },
       },
     },
