@@ -1,19 +1,11 @@
 import {FC} from 'react'
-import {
-  FileField,
-  ImageField,
-  NumberField,
-  RecordRepresentation,
-  ReferenceField,
-  Show,
-  SimpleShowLayout,
-} from 'react-admin'
+import {FileField, ImageField, NumberField, ReferenceField, SimpleShowLayout} from 'react-admin'
 
-import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
+import {MyShow} from '@/components/Admin/custom/MyShow'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
 export const ProblemShow: FC = () => (
-  <Show actions={<MyShowActions />} title={<RecordRepresentation />}>
+  <MyShow>
     <SimpleShowLayout>
       <ReferenceField source="series" reference="competition/series" link="show" />
       <NumberField source="order" />
@@ -22,5 +14,5 @@ export const ProblemShow: FC = () => (
       <FileField source="solution_pdf" title="Vzorák" />
       <NumberField source="num_comments" />
     </SimpleShowLayout>
-  </Show>
+  </MyShow>
 )

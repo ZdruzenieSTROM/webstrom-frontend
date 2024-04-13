@@ -47,28 +47,39 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/competition"
-        // helps with option names in ReferenceInput
         recordRepresentation="name"
         list={CompetitionList}
         edit={CompetitionEdit}
         show={CompetitionShow}
         // nedovolujeme create na competition - velmi rare flow, ani nemame BE POST endpoint na to
       />
-      <Resource name="competition/event" list={EventList} edit={EventEdit} show={EventShow} create={EventCreate} />
+      <Resource
+        name="competition/event"
+        recordRepresentation="verbose_name"
+        list={EventList}
+        edit={EventEdit}
+        show={EventShow}
+        create={EventCreate}
+      />
       <Resource
         name="competition/semester"
-        // helps with option names in ReferenceInput
-        recordRepresentation={(semester) =>
-          `competition:${semester.competition},year:${semester.year},season:${semester.season_code}`
-        }
+        recordRepresentation="verbose_name"
         list={SemesterList}
         edit={SemesterEdit}
         show={SemesterShow}
         create={SemesterCreate}
       />
-      <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} create={SeriesCreate} />
+      <Resource
+        name="competition/series"
+        recordRepresentation="verbose_name"
+        list={SeriesList}
+        edit={SeriesEdit}
+        show={SeriesShow}
+        create={SeriesCreate}
+      />
       <Resource
         name="competition/problem"
+        recordRepresentation="verbose_name"
         list={ProblemList}
         edit={ProblemEdit}
         show={ProblemShow}
