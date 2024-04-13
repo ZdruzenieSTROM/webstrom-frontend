@@ -39,7 +39,9 @@ export const EventShow: FC = () => (
             <Datagrid>
               <TextField source="name" />
               <TextField source="file" />
-              <NumberField source="publication_type" />
+              <ReferenceField source="publication_type" reference="competition/publication-type">
+                <TextField source="name" />
+              </ReferenceField>
               <NumberField source="event" />
               <NumberField source="order" />
             </Datagrid>
