@@ -1,6 +1,7 @@
 import {FC} from 'react'
 import {FormTab, ImageInput, ReferenceInput, required, SelectInput, TabbedForm, TextInput} from 'react-admin'
 
+import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
 
@@ -19,6 +20,7 @@ export const ProblemEdit: FC = () => (
           <SelectInput fullWidth validate={required()} />
         </ReferenceInput>
         <TextInput source="text" multiline fullWidth validate={required()} />
+        <LatexPreview source="text" />
         <TextInput source="order" fullWidth validate={required()} />
         <ImageInput source="image" accept="image/*">
           <MyImageField />
