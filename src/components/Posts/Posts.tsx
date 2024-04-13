@@ -5,6 +5,8 @@ import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC, useState} from 'react'
 
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
+
 import {Loading} from '../Loading/Loading'
 import {IPost, Post} from './Post'
 import {PostDetail} from './PostDetail'
@@ -19,6 +21,8 @@ export const Posts: FC = () => {
     queryFn: () => axios.get<IPost[]>('/api/cms/post/visible'),
   })
   const posts = postsData?.data ?? []
+
+  const {seminarId} = useSeminarInfo()
 
   const [activePostDetailIndex, setActivePostDetailIndex] = useState<number>()
 
@@ -35,9 +39,10 @@ export const Posts: FC = () => {
         <Grid container columnSpacing={5} mb={5}>
           <Grid xs={4}>
             <Stack gap={5}>
-              {posts.slice(0, activePostDetailIndex).map((post, index) => (
-                <Post key={post.id} {...post} openDetail={() => setActivePostDetailIndex(index)} />
-              ))}
+              {posts.slice(0, activePostDetailIndex).map((post, index) => {
+                if (!post.sites.includes(seminarId)) return null
+                return <Post key={post.id} {...post} openDetail={() => setActivePostDetailIndex(index)} />
+              })}
             </Stack>
           </Grid>
         </Grid>
@@ -46,13 +51,16 @@ export const Posts: FC = () => {
         <Grid container columnSpacing={5}>
           <Grid xs={4}>
             <Stack gap={5}>
-              {posts.slice(activePostDetailIndex).map((post, index) => (
-                <Post
-                  key={post.id}
-                  {...post}
-                  openDetail={() => setActivePostDetailIndex(activePostDetailIndex + index)}
-                />
-              ))}
+              {posts.slice(activePostDetailIndex).map((post, index) => {
+                if (!post.sites.includes(seminarId)) return null
+                return (
+                  <Post
+                    key={post.id}
+                    {...post}
+                    openDetail={() => setActivePostDetailIndex(activePostDetailIndex + index)}
+                  />
+                )
+              })}
             </Stack>
           </Grid>
           <Grid xs={5}>
