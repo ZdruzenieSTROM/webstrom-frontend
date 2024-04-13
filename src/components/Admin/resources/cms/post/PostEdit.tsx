@@ -2,6 +2,7 @@ import {FC} from 'react'
 import {ArrayInput, DateTimeInput, FormTab, required, SimpleFormIterator, TabbedForm, TextInput} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
+import {PostPreview} from '@/components/Admin/custom/PostPreview'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
 export const PostEdit: FC = () => (
@@ -23,6 +24,9 @@ export const PostEdit: FC = () => (
             <TextInput source="url" fullWidth validate={required()} />
           </SimpleFormIterator>
         </ArrayInput>
+      </FormTab>
+      <FormTab label="preview">
+        <PostPreview />
       </FormTab>
     </TabbedForm>
   </MyEdit>
