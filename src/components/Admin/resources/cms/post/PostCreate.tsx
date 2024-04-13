@@ -1,20 +1,9 @@
 import {FC} from 'react'
-import {
-  ArrayInput,
-  DateTimeInput,
-  FormDataConsumer,
-  FormTab,
-  required,
-  SimpleFormIterator,
-  TabbedForm,
-  TextInput,
-} from 'react-admin'
+import {ArrayInput, DateTimeInput, FormTab, required, SimpleFormIterator, TabbedForm, TextInput} from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {PostPreview} from '@/components/Admin/custom/PostPreview'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
-import {IPost, Post} from '@/components/Posts/Post'
-import {PostMarkdown} from '@/components/Posts/PostMarkdown'
 
 export const PostCreate: FC = () => {
   return (

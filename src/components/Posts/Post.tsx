@@ -19,7 +19,6 @@ export interface IPost {
   openDetail: () => void
 }
 
-
 export const Post: FC<IPost> = ({caption, short_text, links, details, added_at, openDetail}) => (
   <Stack>
     <Typography variant="postTitle">{caption}</Typography>
