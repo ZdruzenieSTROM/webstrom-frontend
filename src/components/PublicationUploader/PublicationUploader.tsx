@@ -31,7 +31,7 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
       <Typography variant="body1">{order}. Časopis:</Typography>
       {publication && (
         <Link variant="button2" href={`/api/competition/publication/${publication.id}/download`}>
-          {publication.name}.pdf
+          {publication.name}
         </Link>
       )}
       <FileUploader
