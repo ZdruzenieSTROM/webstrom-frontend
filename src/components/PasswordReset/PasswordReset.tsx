@@ -66,7 +66,8 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap={2}>
+      <Typography variant="body1">Zadaj svoje nové heslo</Typography>
+      <Stack gap={2} mt={3}>
         <FormInput
           control={control}
           name="password1"
@@ -92,11 +93,11 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
             },
           }}
         />
-        <Stack alignItems="center" mt={2}>
-          <Button variant="button2" type="submit">
-            Resetovať heslo
-          </Button>
-        </Stack>
+      </Stack>
+      <Stack direction={'row'} mt={3} justifyContent="flex-end">
+        <Button variant="button2" type="submit">
+          Resetovať heslo
+        </Button>
       </Stack>
     </form>
   )

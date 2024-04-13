@@ -9,13 +9,13 @@ type QueryType = {
   }
 }
 
-const Verify: NextPage<PasswordResetFormProps> = ({uid, token}) => (
-  <PageLayout title="Zabudnuté heslo">
+const PasswordReset: NextPage<PasswordResetFormProps> = ({uid, token}) => (
+  <PageLayout title="Zabudnuté heslo" contentWidth={1}>
     <PasswordResetForm uid={uid} token={token} />
   </PageLayout>
 )
 
-export default Verify
+export default PasswordReset
 
 export const getServerSideProps = async ({query}: QueryType) => {
   const errorRedirect = {redirect: {destination: '/', permanent: false}}
