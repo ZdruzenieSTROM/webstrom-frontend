@@ -53,9 +53,9 @@ export const Problem: FC<{
   const handleUploadClick = () => {
     if (!isAuthed) {
       displayLoginDialog()
-    } else if (!registered && canRegister) {
+    } else if (!registered) {
       displayRegisterDialog()
-    } else if (registered) {
+    } else {
       setDisplayProblemUploadForm((prevState) => !prevState)
       setDisplayActions(false)
     }
@@ -121,7 +121,7 @@ export const Problem: FC<{
           <Button onClick={handleDiscussionButtonClick} variant="button2">
             diskusia ({problem.num_comments}){' '}
           </Button>
-          <Button onClick={handleUploadClick} disabled={!canSubmit || !canRegister} variant="button2">
+          <Button onClick={handleUploadClick} disabled={!canSubmit || (isAuthed && !canRegister)} variant="button2">
             odovzdať
           </Button>
         </Stack>
