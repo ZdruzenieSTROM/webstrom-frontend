@@ -73,12 +73,14 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
       close={close}
       title="Zmena hesla"
       actions={
-        <Stack direction="row" gap={2}>
-          <Button onClick={onClose}>Zavrieť</Button>
-          <Button type="submit" onClick={handleSubmit(onSubmit)}>
+        <>
+          <Button variant="button2" type="submit" onClick={handleSubmit(onSubmit)}>
             Potvrdiť
           </Button>
-        </Stack>
+          <Button variant="button2" onClick={onClose}>
+            Zavrieť
+          </Button>
+        </>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

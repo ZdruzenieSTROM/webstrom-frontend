@@ -126,16 +126,16 @@ export const Problems: FC = () => {
       <Dialog
         open={displayRegisterDialog}
         close={closeRegisterDialog}
-        title="Skontroluj prosím, čí údaje o ročníku a škole sú správne."
+        title="Skontroluj prosím, či údaje o&nbsp;ročníku a škole sú správne."
         actions={
-          <Stack direction="row" gap={2}>
-            <Button variant="button2" onClick={editProfile}>
-              Zmeniť údaje
-            </Button>
+          <>
             <Button variant="button2" onClick={agree}>
               Údaje sú správne
             </Button>
-          </Stack>
+            <Button variant="button2" onClick={editProfile}>
+              Zmeniť údaje
+            </Button>
+          </>
         }
       >
         <Stack gap={2}>

@@ -96,14 +96,14 @@ export const UploadProblemForm: FC<{
         title="Pozor"
         contentText={alertMessage}
         actions={
-          <Stack direction="row" gap={2}>
-            <Button variant="button2" onClick={cancel}>
-              Zrušiť
-            </Button>
+          <>
             <Button variant="button2" onClick={closeAlertDialog}>
               Pokračovať
             </Button>
-          </Stack>
+            <Button variant="button2" onClick={cancel}>
+              Zrušiť
+            </Button>
+          </>
         }
       />
       <div className={styles.inputWrapper}>
