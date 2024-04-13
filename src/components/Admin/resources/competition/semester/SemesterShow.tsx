@@ -54,7 +54,9 @@ export const SemesterShow: FC = () => (
             <Datagrid>
               <TextField source="name" />
               <TextField source="file" />
-              <NumberField source="publication_type" />
+              <ReferenceField source="publication_type" reference="competition/publication-type" link="show">
+                <TextField source="name" />
+              </ReferenceField>
               <NumberField source="event" />
               <NumberField source="order" />
             </Datagrid>

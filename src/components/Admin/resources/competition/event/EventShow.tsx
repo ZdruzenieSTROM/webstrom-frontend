@@ -4,6 +4,7 @@ import {
   Datagrid,
   DateField,
   NumberField,
+  ReferenceField,
   Show,
   SimpleShowLayout,
   Tab,
@@ -11,7 +12,6 @@ import {
   TextField,
 } from 'react-admin'
 
-import {CompetitionField} from '@/components/Admin/custom/CompetitionField'
 import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
 
 export const EventShow: FC = () => (
@@ -19,7 +19,7 @@ export const EventShow: FC = () => (
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
-          <CompetitionField source="competition" />
+          <ReferenceField source="competition" reference="competition/competition" link="show" />
           <NumberField source="year" />
           <NumberField source="season_code" />
           <TextField source="school_year" />
@@ -39,7 +39,9 @@ export const EventShow: FC = () => (
             <Datagrid>
               <TextField source="name" />
               <TextField source="file" />
-              <NumberField source="publication_type" />
+              <ReferenceField source="publication_type" reference="competition/publication-type" link="show">
+                <TextField source="name" />
+              </ReferenceField>
               <NumberField source="event" />
               <NumberField source="order" />
             </Datagrid>

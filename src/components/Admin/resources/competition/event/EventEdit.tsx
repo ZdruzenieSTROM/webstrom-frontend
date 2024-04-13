@@ -1,8 +1,16 @@
 import {Checkbox, FormControlLabel} from '@mui/material'
 import {FC, useState} from 'react'
-import {DateTimeInput, Labeled, NumberInput, required, SimpleForm, TextInput} from 'react-admin'
+import {
+  DateTimeInput,
+  Labeled,
+  NumberInput,
+  ReferenceInput,
+  required,
+  SelectInput,
+  SimpleForm,
+  TextInput,
+} from 'react-admin'
 
-import {CompetitionInput} from '@/components/Admin/custom/CompetitionInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
 export const EventEdit: FC = () => {
@@ -25,7 +33,9 @@ export const EventEdit: FC = () => {
         <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth validate={required()} />
         <DateTimeInput source="start" fullWidth validate={required()} />
         <DateTimeInput source="end" fullWidth validate={required()} />
-        <CompetitionInput source="competition" fullWidth validate={required()} />
+        <ReferenceInput source="competition" reference="competition/competition">
+          <SelectInput fullWidth validate={required()} />
+        </ReferenceInput>
         <FormControlLabel
           control={<Checkbox checked={includeRegLink} onChange={(e) => setIncludeRegLink(e.target.checked)} />}
           label="Upraviť registračný link"
