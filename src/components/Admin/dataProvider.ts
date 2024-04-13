@@ -79,8 +79,13 @@ export const dataProvider: DataProvider = {
     }
   },
   update: async (resource, params) => {
-    const {id, ...input} = params.data
-    const {data} = await axios.patch(`${apiUrl}/${resource}/${id}`, input)
+    const {id, formData, ...input} = params.data
+
+    // create/update problemu moze obsahovat obrazok a tym padom to musime poslat ako form data.
+    // ked existuju formData, ktore sme do recordu pridali v `transform` v `MyEdit`, pouzijeme tie
+    const body = formData ?? input
+
+    const {data} = await axios.patch(`${apiUrl}/${resource}/${id}`, body)
 
     return {data}
   },
@@ -90,7 +95,11 @@ export const dataProvider: DataProvider = {
     return {data: data.map(({data}) => data)}
   },
   create: async (resource, params) => {
-    const {data} = await axios.post(`${apiUrl}/${resource}`, params.data)
+    const {formData, ...input} = params.data
+
+    const body = formData ?? input
+
+    const {data} = await axios.post(`${apiUrl}/${resource}`, body)
 
     return {data}
   },
