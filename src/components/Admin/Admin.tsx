@@ -18,6 +18,10 @@ import {EventCreate} from './resources/competition/event/EventCreate'
 import {EventEdit} from './resources/competition/event/EventEdit'
 import {EventList} from './resources/competition/event/EventList'
 import {EventShow} from './resources/competition/event/EventShow'
+import {ProblemCreate} from './resources/competition/problems/ProblemCreate'
+import {ProblemEdit} from './resources/competition/problems/ProblemEdit'
+import {ProblemList} from './resources/competition/problems/ProblemList'
+import {ProblemShow} from './resources/competition/problems/ProblemShow'
 import {SemesterCreate} from './resources/competition/semester/SemesterCreate'
 import {SemesterEdit} from './resources/competition/semester/SemesterEdit'
 import {SemesterList} from './resources/competition/semester/SemesterList'
@@ -63,6 +67,13 @@ export const Admin: FC = () => {
         create={SemesterCreate}
       />
       <Resource name="competition/series" list={SeriesList} edit={SeriesEdit} show={SeriesShow} create={SeriesCreate} />
+      <Resource
+        name="competition/problem"
+        list={ProblemList}
+        edit={ProblemEdit}
+        show={ProblemShow}
+        create={ProblemCreate}
+      />
     </ReactAdmin>
   )
 }
