@@ -14,7 +14,7 @@ import {
 export const SemesterList: FC = () => (
   <List>
     <Datagrid rowClick="show">
-      <ReferenceField source="competition" reference="competition/competition" />
+      <ReferenceField source="competition" reference="competition/competition" link={false} />
       <NumberField source="year" />
       <NumberField source="season_code" />
       <TextField source="school_year" />
