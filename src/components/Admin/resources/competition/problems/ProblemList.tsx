@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {Datagrid, List, NumberField, ReferenceField, TextField} from 'react-admin'
+import {Datagrid, ImageField, List, NumberField, ReferenceField} from 'react-admin'
 
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
@@ -9,7 +9,7 @@ export const ProblemList: FC = () => (
       <ReferenceField source="series" reference="competition/series" link={false} />
       <NumberField source="order" />
       <TruncatedTextField source="text" maxTextWidth={50} />
-      <TextField source="image" record={{image: 'TODO'}} />
+      <ImageField source="image" sx={{'& .RaImageField-image': {width: 100, height: 75}}} />
       <NumberField source="num_comments" />
     </Datagrid>
   </List>
