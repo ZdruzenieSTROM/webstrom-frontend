@@ -29,7 +29,7 @@ export const Post: FC<IPost> = ({caption, short_text, links, details, added_at, 
       {/* alignItems so the links don't stretch */}
       <Stack gap={0.5} alignItems="start">
         {details.length > 0 && (
-          <Button onClick={openDetail} variant="button2">
+          <Button type="button" onClick={openDetail} variant="button2">
             Podrobnosti
           </Button>
         )}
