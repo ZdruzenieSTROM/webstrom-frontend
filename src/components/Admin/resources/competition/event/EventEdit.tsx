@@ -37,7 +37,7 @@ export const EventEdit: FC = () => {
               <TextInput source="registration_link.url" fullWidth validate={required()} />
               <DateTimeInput source="registration_link.start" fullWidth validate={required()} />
               <DateTimeInput source="registration_link.end" fullWidth validate={required()} />
-              <TextInput source="registration_link.additional_info" fullWidth validate={required()} />
+              <TextInput source="registration_link.additional_info" fullWidth />
             </>
           </Labeled>
         )}

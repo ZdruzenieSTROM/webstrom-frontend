@@ -12,7 +12,7 @@ export interface RegistrationLink {
   url: string
   start: string
   end: string
-  additional_info: string
+  additional_info: string | null
   event: any
 }
 
