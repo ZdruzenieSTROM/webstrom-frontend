@@ -21,7 +21,3 @@ export const MyArrayField: FC<MyArrayFieldProps> = ({source, formatNumber}) => {
     </>
   )
 }
-
-{
-  /* <Labeled label="Author"></Labeled> ? */
-}
