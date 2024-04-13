@@ -19,7 +19,7 @@ export const EventShow: FC = () => (
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
-          <ReferenceField source="competition" reference="competition/event" />
+          <ReferenceField source="competition" reference="competition/competition" link="show" />
           <NumberField source="year" />
           <NumberField source="season_code" />
           <TextField source="school_year" />

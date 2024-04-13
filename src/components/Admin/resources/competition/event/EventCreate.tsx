@@ -31,7 +31,7 @@ export const EventCreate: FC = () => {
         <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth validate={required()} />
         <DateTimeInput source="start" fullWidth validate={required()} />
         <DateTimeInput source="end" fullWidth validate={required()} />
-        <ReferenceInput source="competition" reference="competition/event">
+        <ReferenceInput source="competition" reference="competition/competition">
           <SelectInput fullWidth validate={required()} />
         </ReferenceInput>
         <FormControlLabel
