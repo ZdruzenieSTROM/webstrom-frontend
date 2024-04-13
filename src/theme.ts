@@ -162,6 +162,8 @@ const _theme = createTheme({
       styleOverrides: {
         root: {
           textAlign: 'center',
+          paddingRight: '50px',
+          paddingLeft: '50px',
         },
       },
     },

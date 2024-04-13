@@ -126,7 +126,7 @@ export const Problems: FC = () => {
       <Dialog
         open={displayRegisterDialog}
         close={closeRegisterDialog}
-        title="Skontroluj prosím, či údaje o&nbsp;ročníku a škole sú správne."
+        title="Kontrola údajov"
         actions={
           <>
             <Button variant="button2" onClick={agree}>
@@ -139,6 +139,9 @@ export const Problems: FC = () => {
         }
       >
         <Stack gap={2}>
+          <Typography variant="h3" component="span" textAlign="center">
+            Skontroluj prosím, či údaje o&nbsp;ročníku a škole sú správne.
+          </Typography>
           <Stack direction={'row'} gap={1}>
             <Typography variant="h3" component="span">
               Škola
