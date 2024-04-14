@@ -1,25 +1,29 @@
-import {Typography, TypographyProps} from '@mui/material'
-import clsx from 'clsx'
+import {SxProps, Theme, Typography, TypographyProps} from '@mui/material'
 import {ButtonHTMLAttributes, FC, ReactNode} from 'react'
 
-import styles from './Clickable.module.scss'
+import {buttonCommonSx, buttonDisabledSx} from './buttonStyles'
 
 type ButtonProps = {
   onClick?: () => void
   disabled?: boolean
   children: ReactNode
   variant?: TypographyProps['variant']
+  sx?: SxProps<Theme>
 } & Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>
 
-export const Button: FC<ButtonProps> = ({children, onClick, disabled, type, variant}) => {
+export const Button: FC<ButtonProps> = ({children, onClick, disabled, type, variant, sx}) => {
   return (
     <Typography
       variant={variant ?? 'button3'}
       component="button"
       onClick={onClick}
-      className={clsx(styles.actionButton, disabled && styles.disabled)}
       disabled={disabled}
       type={type}
+      sx={{
+        ...buttonCommonSx,
+        ...(disabled ? buttonDisabledSx : {}),
+        ...sx,
+      }}
     >
       {children}
     </Typography>
