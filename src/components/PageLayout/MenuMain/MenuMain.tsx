@@ -13,7 +13,7 @@ import {MenuItemShort} from '@/types/api/cms'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Authentication} from '../Authentication/Authentication'
+import {BottomButtons} from './BottomButtons'
 import styles from './MenuMain.module.scss'
 
 export const MenuMain: FC = () => {
@@ -85,7 +85,7 @@ export const MenuMain: FC = () => {
             </Stack>
           )}
         </Box>
-        <Authentication />
+        <BottomButtons />
       </Drawer>
     </>
   )

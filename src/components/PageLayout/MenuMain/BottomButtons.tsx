@@ -10,7 +10,7 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 import {Dialog} from '../../Dialog/Dialog'
 import {LoginForm} from '../LoginForm/LoginForm'
 
-export const Authentication: FC = () => {
+export const BottomButtons: FC = () => {
   const [displayAuthenticationDialog, setDisplayAuthenticationDialog] = useState(false)
   const {logout, isAuthed} = AuthContainer.useContainer()
 
