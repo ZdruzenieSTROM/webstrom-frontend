@@ -49,6 +49,7 @@ declare module '@mui/material/Typography' {
 export const font = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '600', '700', '800'],
+  display: 'swap',
 })
 
 const _theme = createTheme({
