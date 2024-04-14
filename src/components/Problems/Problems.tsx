@@ -121,6 +121,8 @@ export const Problems: FC = () => {
   const [displayLoginDialog, setDisplayLoginDialog] = useState<boolean>(false)
   const closeLoginDialog = () => setDisplayLoginDialog(false)
 
+  const rulesLink = `/${seminar}/akcie/${seminar}/pravidla`
+
   return (
     <>
       <Dialog
@@ -168,6 +170,11 @@ export const Problems: FC = () => {
         </Stack>
       </Dialog>
 
+      <Stack direction="row" justifyContent="end" gap={5} mb={5}>
+        <Link variant="button1" href={rulesLink}>
+          Pravidlá
+        </Link>
+      </Stack>
       <Stack gap={5}>
         {(loading.semesterListIsLoading ||
           loading.currentSeriesIsLoading ||
