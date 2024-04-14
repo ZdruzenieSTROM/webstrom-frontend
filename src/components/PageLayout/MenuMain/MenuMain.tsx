@@ -1,4 +1,4 @@
-import {Box, Stack, Theme, Typography, useMediaQuery} from '@mui/material'
+import {Box, Drawer, Stack, Theme, Typography, useMediaQuery} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
@@ -40,17 +40,25 @@ export const MenuMain: FC = () => {
           <Menu width={iconSize} height={iconSize} />
         </div>
       )}
-      <Stack
+      <Drawer
+        open={isVisible}
+        onClose={toggleMenu}
+        // sits on the same layer as other content, allows us to scroll while the drawer is open
+        variant="persistent"
+        anchor="top"
+        hideBackdrop
         sx={{
-          position: 'fixed',
-          width: '25%',
-          height: '100%',
-          left: 0,
-          top: isVisible ? 0 : '-100%',
-          overflow: 'auto',
-          backgroundColor: 'black',
-          transition: '750ms',
-          zIndex: 100,
+          // we want a full-height left drawer to appear from the top. MUI Drawer doesn't
+          // support this out of the box, so we use a top-anchored drawer with some position
+          // args manually unset/zeroed here
+          bottom: 'unset',
+          right: 'unset',
+          '& .MuiDrawer-paper': {
+            backgroundColor: 'black',
+            right: 'unset',
+            bottom: 0,
+            width: '25%',
+          },
         }}
       >
         <Box flexGrow={1}>
@@ -78,7 +86,7 @@ export const MenuMain: FC = () => {
           )}
         </Box>
         <Authentication />
-      </Stack>
+      </Drawer>
     </>
   )
 }
