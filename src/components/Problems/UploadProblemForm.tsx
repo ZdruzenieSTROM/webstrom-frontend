@@ -1,4 +1,4 @@
-import {Stack} from '@mui/material'
+import {Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
@@ -8,6 +8,7 @@ import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {niceBytes} from '@/utils/niceBytes'
 
 import {Button} from '../Clickable/Button'
+import {Link} from '../Clickable/Link'
 import {Dialog} from '../Dialog/Dialog'
 import {FileDropZone} from '../FileDropZone/FileDropZone'
 import styles from './UploadProblemForm.module.scss'
@@ -115,6 +116,15 @@ export const UploadProblemForm: FC<{
               getInputProps={getInputProps}
               text="Vlož riešenie vo formáte pdf"
             />
+            <Typography variant="body2" textAlign="center" component="div">
+              Dbaj na čitateľnosť riešenia - namiesto odfotenia zo zošita ho radšej napíš na čistý papier formátu A4,
+              oskenuj (prípadne využi mobilné aplikácie, ktoré skener nahradia) a nahraj ho správne orientované. Ak máš
+              riešenie v inom formáte ako PDF, skonvertuj ho napríklad pomocou stránky{' '}
+              <Link variant="button3" href="https://www.ilovepdf.com/" sx={{textTransform: 'unset'}}>
+                ilovepdf.com
+              </Link>
+              .
+            </Typography>
           </>
         )}
         {files?.name && (
