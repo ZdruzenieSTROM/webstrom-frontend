@@ -35,6 +35,9 @@
   .displayOptions {
     display: grid;
     grid-template-columns: max-content;
+    // random constant to make sure the dropdown is not too long (around 8 options)
+    max-height: 19rem;
+    overflow-y: auto;
   }
 
   .option {
