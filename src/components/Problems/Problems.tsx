@@ -22,12 +22,6 @@ import {Discussion} from './Discussion'
 import {Problem} from './Problem'
 import styles from './Problems.module.scss'
 
-const overrideCycle = (prev: boolean | undefined) => {
-  if (prev === undefined) return true
-  if (prev === true) return false
-  return undefined
-}
-
 export const Problems: FC = () => {
   const {id, seminar, loading} = useDataFromURL()
 
@@ -56,6 +50,14 @@ export const Problems: FC = () => {
     queryFn: () => axios.get<SeriesWithProblems>(`/api/competition/series/${id.seriesId}`),
     enabled: id.seriesId !== -1,
   })
+
+  const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
+    queryKey: [id.seriesId],
+    queryFn: () => axios.get(`/api/cms/info-banner/?series=${id.seriesId}`),
+    enabled: id.seriesId !== -1,
+  })
+
+  const infoMessage = bannerMessage?.data
   const series = seriesData?.data
   const problems = series?.problems ?? []
   const semesterId = series?.semester ?? -1
@@ -72,30 +74,19 @@ export const Problems: FC = () => {
     isAfterDeadline ? null : 500,
   )
 
-  const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
-  const [overrideIsRegistered, setOverrideIsRegistered] = useState<boolean>()
-  const toggleCanRegister = () => setOverrideCanRegister((prevState) => overrideCycle(prevState))
-  const toggleIsRegistered = () => setOverrideIsRegistered((prevState) => overrideCycle(prevState))
-
-  const canRegister = overrideCanRegister ?? series?.can_participate ?? false
-  const isRegistered = overrideIsRegistered ?? series?.is_registered ?? false
+  const canRegister = series?.can_participate ?? false
+  const isRegistered = series?.is_registered ?? false
 
   const queryClient = useQueryClient()
 
   const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', id.seriesId]})
 
   useEffect(() => {
-    if (seriesData === undefined) {
-      setBannerText('')
-    } else {
-      const deadline = formatDateTime(seriesData.data.deadline)
-      if (seriesData?.data.can_submit) {
-        setBannerText(`Termín série: ${deadline}`)
-      } else {
-        setBannerText(`Séria je uzavretá.`)
-      }
+    if (isBannerLoading || infoMessage === undefined) {
+      if (series === undefined) setBannerText('')
+      else setBannerText(series.can_submit ? `Termín série: ${formatDateTime(series.deadline)}` : 'Séria je uzavretá')
     }
-  }, [seriesData, setBannerText])
+  }, [series, setBannerText, isBannerLoading, infoMessage])
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),
