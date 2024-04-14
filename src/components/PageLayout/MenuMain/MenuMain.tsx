@@ -57,7 +57,7 @@ export const MenuMain: FC = () => {
             backgroundColor: 'black',
             right: 'unset',
             bottom: 0,
-            width: '25%',
+            width: {xs: '100%', md: '25%'},
           },
         }}
       >
