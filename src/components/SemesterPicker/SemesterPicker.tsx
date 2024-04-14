@@ -1,32 +1,14 @@
 import {FC, useEffect} from 'react'
 
+import {getSemesterName} from '@/utils/getSemesterName'
+import {getSemesterYear} from '@/utils/getSemesterYear'
+import {getSeriesName} from '@/utils/getSeriesName'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Dropdown, DropdownOption} from './Dropdown'
 import styles from './SemesterPicker.module.scss'
-
-interface SeriesListItem {
-  id: number
-  order: number
-  deadline: string
-  complete: boolean
-  semester: number
-}
-
-export interface SemesterListItem {
-  id: number
-  year: number
-  school_year: string
-  season_code: number
-  start: string
-  end: string
-  frozen_results: boolean
-  competition: number
-  late_tags: string[]
-  series_set: SeriesListItem[]
-}
 
 export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovanie'}> = ({page}) => {
   const {seminar} = useSeminarInfo()
@@ -41,15 +23,15 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
     // setPageTitle using selectedItem variable
     let pageTitleToSet = ''
     if (semester) {
-      const semesterTitle = `${semester?.year}. ročník - ${semester?.season_code === 0 ? 'zimný' : 'letný'} semester`
+      const semesterTitle = `${getSemesterYear(semester)} - ${getSemesterName(semester)}`
       if (page === 'admin/opravovanie') {
-        pageTitleToSet = `Opravovanie - ${semester?.year}/${semester?.season_code === 0 ? 'zima' : 'leto'} (${
-          semester?.school_year
+        pageTitleToSet = `Opravovanie - ${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'} (${
+          semester.school_year
         })`
       } else if (displayWholeSemesterOnResults) {
         pageTitleToSet = semesterTitle
       } else if (series) {
-        pageTitleToSet = `${semesterTitle}${series?.order ? ` - ${series?.order}. séria` : ''}`
+        pageTitleToSet = `${semesterTitle}${series.order ? ` - ${getSeriesName(series)}` : ''}`
       }
     }
     setPageTitle(pageTitleToSet)
@@ -59,7 +41,7 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
   const dropdownSemesterList = semesterList.map((semester) => {
     return {
       id: semester.id,
-      text: `${semester.year}. ročník - ${semester.season_code === 0 ? 'zimný' : 'letný'} semester`,
+      text: `${getSemesterYear(semester)} - ${getSemesterName(semester)}`,
       link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
       selected: semester.id === selectedItem.semesterId,
     }

@@ -7,21 +7,20 @@ import {
   FunctionField,
   NumberField,
   RaRecord,
-  Show,
   SimpleShowLayout,
   Tab,
   TabbedShowLayout,
   TextField,
 } from 'react-admin'
 
-import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
+import {MyShow} from '@/components/Admin/custom/MyShow'
 import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
 import {UpcomingOrCurrentEvent} from './UpcomingOrCurrentEvent'
 
 export const CompetitionShow: FC = () => (
-  <Show actions={<MyShowActions />}>
+  <MyShow>
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
@@ -58,5 +57,5 @@ export const CompetitionShow: FC = () => (
         </SimpleShowLayout>
       </Tab>
     </TabbedShowLayout>
-  </Show>
+  </MyShow>
 )

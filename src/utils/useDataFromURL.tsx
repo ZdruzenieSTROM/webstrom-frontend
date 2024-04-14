@@ -3,8 +3,7 @@ import axios from 'axios'
 import {useRouter} from 'next/router'
 import {useMemo} from 'react'
 
-import {SemesterListItem} from '@/components/SemesterPicker/SemesterPicker'
-import {SeriesWithProblems} from '@/types/api/competition'
+import {Semester, SeriesWithProblems} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 export const useDataFromURL = () => {
@@ -13,7 +12,7 @@ export const useDataFromURL = () => {
 
   const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery({
     queryKey: ['competition', 'semester-list', {competition: seminarId}],
-    queryFn: () => axios.get<SemesterListItem[]>(`/api/competition/semester-list?competition=${seminarId}`),
+    queryFn: () => axios.get<Semester[]>(`/api/competition/semester-list?competition=${seminarId}`),
   })
   // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
   const semesterList = useMemo(() => semesterListData?.data || [], [semesterListData])

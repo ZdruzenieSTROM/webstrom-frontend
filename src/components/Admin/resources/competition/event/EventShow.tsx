@@ -5,17 +5,16 @@ import {
   DateField,
   NumberField,
   ReferenceField,
-  Show,
   SimpleShowLayout,
   Tab,
   TabbedShowLayout,
   TextField,
 } from 'react-admin'
 
-import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
+import {MyShow} from '@/components/Admin/custom/MyShow'
 
 export const EventShow: FC = () => (
-  <Show actions={<MyShowActions />}>
+  <MyShow>
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
@@ -49,5 +48,5 @@ export const EventShow: FC = () => (
         </SimpleShowLayout>
       </Tab>
     </TabbedShowLayout>
-  </Show>
+  </MyShow>
 )

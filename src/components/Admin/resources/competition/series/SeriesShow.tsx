@@ -5,18 +5,17 @@ import {
   Datagrid,
   DateField,
   ReferenceField,
-  Show,
   SimpleShowLayout,
   Tab,
   TabbedShowLayout,
   TextField,
 } from 'react-admin'
 
-import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
+import {MyShow} from '@/components/Admin/custom/MyShow'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
 export const SeriesShow: FC = () => (
-  <Show actions={<MyShowActions />}>
+  <MyShow>
     <TabbedShowLayout>
       <Tab label="general">
         <SimpleShowLayout>
@@ -36,5 +35,5 @@ export const SeriesShow: FC = () => (
         </SimpleShowLayout>
       </Tab>
     </TabbedShowLayout>
-  </Show>
+  </MyShow>
 )
