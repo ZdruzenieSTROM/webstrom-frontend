@@ -4,9 +4,11 @@ import {FC, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {Button} from '@/components/Clickable/Button'
+import {Link} from '@/components/Clickable/Link'
 import {Dialog} from '@/components/Dialog/Dialog'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {PasswordResetRequestForm} from '../PasswordResetRequest/PasswordResetRequest'
 
@@ -27,6 +29,7 @@ type LoginFormProps = {
 export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
   const {login} = AuthContainer.useContainer()
   const {handleSubmit, control} = useForm<LoginFormValues>({defaultValues})
+  const {seminar} = useSeminarInfo()
 
   const router = useRouter()
 
@@ -77,12 +80,19 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
             <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
           </Stack>
           <Stack direction={'row'} mt={3} gap={2} justifyContent="space-between">
-            <Button variant="button2" type="button" onClick={toggleForgottenDialog}>
-              Zabudnuté heslo
-            </Button>
-            <Button variant="button2" type="submit">
-              Prihlásiť
-            </Button>
+            <Stack gap={2} alignItems="start">
+              <Button variant="button3" type="button" onClick={toggleForgottenDialog}>
+                Zabudol som heslo
+              </Button>
+              <Link variant="button3" href={`${seminar}/registracia`}>
+                Chcem sa registrovať
+              </Link>
+            </Stack>
+            <Stack direction={'column'} gap={2} alignItems="end" justifyContent="end">
+              <Button variant="button2" type="submit">
+                Prihlásiť sa
+              </Button>
+            </Stack>
           </Stack>
         </Stack>
       </form>
