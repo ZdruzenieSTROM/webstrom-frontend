@@ -162,6 +162,9 @@ export const Problems: FC = () => {
         <Link variant="button1" href={rulesLink}>
           Pravidlá
         </Link>
+        <Link variant="button1" href={`/${seminar}/ako-riesit`}>
+          Pár tipov
+        </Link>
       </Stack>
       <Stack gap={5}>
         {(loading.semesterListIsLoading ||
