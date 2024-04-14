@@ -57,6 +57,15 @@ export const font = Poppins({
 })
 
 const _theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0, // defualt
+      sm: 640, // defualt = 640
+      md: 900, // defualt = 900
+      lg: 1366, // changed to HD, default = 1200
+      xl: 1921, // changed to fullHD, default = 1536
+    },
+  },
   typography: {
     ...font.style,
     // disable these variants
@@ -176,10 +185,10 @@ const _theme = createTheme({
 })
 
 const pxToRem = _theme.typography.pxToRem
-const sm = _theme.breakpoints.up('sm') // 600px
+const sm = _theme.breakpoints.up('sm') // 640px
 const md = _theme.breakpoints.up('md') // 900px
-const lg = _theme.breakpoints.up('lg') // 1200px
-const xl = _theme.breakpoints.up('xl') // 1536px
+const lg = _theme.breakpoints.up('lg') // 1366px
+const xl = _theme.breakpoints.up('xl') // 1920px
 
 // manual font sizes
 export const theme: Theme = {
