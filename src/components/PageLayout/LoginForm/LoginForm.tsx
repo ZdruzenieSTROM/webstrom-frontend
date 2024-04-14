@@ -80,7 +80,7 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
             <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
           </Stack>
           <Stack direction={'row'} mt={3} gap={2} justifyContent="space-between">
-            <Stack direction={'column'} gap={2}>
+            <Stack gap={2} alignItems="start">
               <Button variant="button3" type="button" onClick={toggleForgottenDialog}>
                 Zabudol som heslo
               </Button>
@@ -88,7 +88,7 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
                 Chcem sa registrovať
               </Link>
             </Stack>
-            <Stack direction={'column-reverse'} gap={2}>
+            <Stack direction={'column'} gap={2} alignItems="end" justifyContent="end">
               <Button variant="button2" type="submit">
                 Prihlásiť sa
               </Button>
