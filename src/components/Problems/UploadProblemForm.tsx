@@ -1,4 +1,4 @@
-import {Stack} from '@mui/material'
+import {Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
@@ -115,6 +115,11 @@ export const UploadProblemForm: FC<{
               getInputProps={getInputProps}
               text="Vlož riešenie vo formáte pdf"
             />
+            <Typography>
+              Dbaj na čitateľnosť riešenia - namiesto odfotenia zo zošita ho radšej napíš na čistý papier formátu A4,
+              oskenuj (prípadne využi mobilné aplikácie, ktoré skener nahradia) a nahraj ho správne orientované. Ak máš
+              riešenie v inom formáte ako PDF, skonvertuj ho napríklad pomocou stránky ilovepdf.com.
+            </Typography>
           </>
         )}
         {files?.name && (
