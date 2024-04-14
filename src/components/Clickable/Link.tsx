@@ -1,4 +1,4 @@
-import {Typography, TypographyProps} from '@mui/material'
+import {SxProps, Theme, Typography, TypographyProps} from '@mui/material'
 import clsx from 'clsx'
 import NextLink from 'next/link'
 import {ComponentProps, FC, ReactNode} from 'react'
@@ -10,9 +10,10 @@ type LinkProps = {
   disabled?: boolean
   children: ReactNode
   variant?: TypographyProps['variant']
+  sx?: SxProps<Theme>
 } & Pick<ComponentProps<typeof NextLink>, 'target'>
 
-export const Link: FC<LinkProps> = ({children, href, disabled, target, variant}) => {
+export const Link: FC<LinkProps> = ({children, href, disabled, target, variant, sx}) => {
   // https://a11y-guidelines.orange.com/en/articles/disable-elements/#disable-a-link
   return disabled ? (
     <Typography
@@ -21,6 +22,7 @@ export const Link: FC<LinkProps> = ({children, href, disabled, target, variant})
       className={clsx(styles.actionButton, styles.disabled)}
       aria-disabled
       role="link"
+      sx={sx}
     >
       {children}
     </Typography>
@@ -31,6 +33,7 @@ export const Link: FC<LinkProps> = ({children, href, disabled, target, variant})
       href={href ?? ''}
       target={target}
       className={clsx(styles.actionButton)}
+      sx={sx}
     >
       {children}
     </Typography>
