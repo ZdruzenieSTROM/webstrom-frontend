@@ -92,7 +92,16 @@ export const Problem: FC<{
         />
       )}
       {displayActions && (
-        <Stack direction="row" mt={0.5} justifyContent="end" gap={4}>
+        <Stack
+          direction="row"
+          sx={{
+            mt: 0.5,
+            justifyContent: 'end',
+            gap: 4,
+            // ked sa jeden dlhsi text wrapne, tak aby nenabrali vsetky buttony taku velku vysku
+            alignItems: 'start',
+          }}
+        >
           {problem.solution_pdf && (
             <Link href={problem.solution_pdf} target="_blank" variant="button2">
               vzorové riešenie

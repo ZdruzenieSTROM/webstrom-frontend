@@ -1,27 +1,40 @@
-import {Typography, TypographyProps} from '@mui/material'
-import clsx from 'clsx'
+import {Box, SxProps, Theme, Typography, TypographyProps} from '@mui/material'
 import {ButtonHTMLAttributes, FC, ReactNode} from 'react'
 
-import styles from './Clickable.module.scss'
+import {buttonTextSx, getButtonWrapperSx} from './buttonStyles'
 
 type ButtonProps = {
   onClick?: () => void
   disabled?: boolean
   children: ReactNode
   variant?: TypographyProps['variant']
+  invertColors?: boolean
+  sx?: SxProps<Theme>
+  textSx?: SxProps<Theme>
 } & Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>
 
-export const Button: FC<ButtonProps> = ({children, onClick, disabled, type, variant}) => {
+export const Button: FC<ButtonProps> = ({children, onClick, disabled, type, variant, invertColors, sx, textSx}) => {
   return (
-    <Typography
-      variant={variant ?? 'button3'}
+    // tento wrapper je tu kvoli lepsej kontrole paddingov atd.
+    <Box
       component="button"
       onClick={onClick}
-      className={clsx(styles.actionButton, disabled && styles.disabled)}
       disabled={disabled}
       type={type}
+      sx={{
+        ...getButtonWrapperSx({invertColors, disabled}),
+        ...sx,
+      }}
     >
-      {children}
-    </Typography>
+      <Typography
+        variant={variant ?? 'button3'}
+        sx={{
+          ...buttonTextSx,
+          ...textSx,
+        }}
+      >
+        {children}
+      </Typography>
+    </Box>
   )
 }

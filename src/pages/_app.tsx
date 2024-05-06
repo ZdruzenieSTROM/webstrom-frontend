@@ -79,7 +79,7 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       {/* ak pouzijeme vsade <Typography>, nemuseli by sme mat takyto globalny styl... ale je to teda
-          safe a krajsie, nech kazdy maly (ah debug) textik je aspon nasim fontom a ne v Times :D
+          safe a krajsie, nech kazdy maly (aj debug) textik je aspon nasim fontom a ne v Times :D
           source: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts#apply-the-font-in-head */}
       <style jsx global>{`
         html {

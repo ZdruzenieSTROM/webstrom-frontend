@@ -1,11 +1,11 @@
-import {Box, Drawer, Stack, Theme, Typography, useMediaQuery} from '@mui/material'
+import {Box, Drawer, Stack, Theme, useMediaQuery} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
-import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
+import {Link} from '@/components/Clickable/Link'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
 import Menu from '@/svg/menu.svg'
@@ -13,7 +13,7 @@ import {MenuItemShort} from '@/types/api/cms'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Authentication} from '../Authentication/Authentication'
+import {BottomButtons} from './BottomButtons'
 import styles from './MenuMain.module.scss'
 
 export const MenuMain: FC = () => {
@@ -72,20 +72,23 @@ export const MenuMain: FC = () => {
               <Loading />
             </div>
           )}
-          <Stack mt="176px">
+          <Stack sx={{mt: '176px'}}>
             {menuItems.map(({id, caption, url}) => (
               // `url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
               <MenuMainItem key={id} caption={caption} url={`/${seminar}${url}`} />
             ))}
           </Stack>
           {hasPermissions && (
-            <Stack sx={{mt: 4, mx: 2, borderTop: '8px dashed white', pt: 4}}>
-              <MenuMainItem caption="Opravovanie" url={`/${seminar}/admin/opravovanie/`} />
-              <MenuMainItem caption="Admin" url="/admin" />
-            </Stack>
+            <>
+              <Box sx={{my: 4, mx: 2, borderBottom: '6px dashed white'}} />
+              <Stack>
+                <MenuMainItem caption="Opravovanie" url={`/${seminar}/admin/opravovanie/`} />
+                <MenuMainItem caption="Admin" url="/admin" />
+              </Stack>
+            </>
           )}
         </Box>
-        <Authentication />
+        <BottomButtons />
       </Drawer>
     </>
   )
@@ -110,10 +113,23 @@ const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
   }
 
   return (
-    <div className={clsx(styles.menuItem, active && styles.active)}>
-      <Typography variant="button1" fontStyle="normal">
-        <Link href={url}>{caption}</Link>
-      </Typography>
-    </div>
+    <Link
+      variant="button1"
+      href={url}
+      invertColors
+      active={active}
+      sx={{
+        justifyContent: 'center',
+        // tazko povedat z dizajnu, cele je to nastavene nejak aby bolo dobre
+        py: '4px',
+        px: '8px',
+      }}
+      textSx={{
+        fontStyle: 'normal',
+        textAlign: 'center',
+      }}
+    >
+      {caption}
+    </Link>
   )
 }

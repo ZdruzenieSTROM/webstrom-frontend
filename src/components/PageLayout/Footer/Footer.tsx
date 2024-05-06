@@ -1,4 +1,4 @@
-import {Stack} from '@mui/material'
+import {Box, Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC} from 'react'
@@ -8,8 +8,6 @@ import {Loading} from '@/components/Loading/Loading'
 import {ILogo, Logo} from '@/components/PageLayout/Footer/Logo'
 import {MenuItemShort} from '@/types/api/cms'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
-
-import styles from './Footer.module.scss'
 
 export const Footer: FC = () => {
   const {seminar, seminarId} = useSeminarInfo()
@@ -35,16 +33,24 @@ export const Footer: FC = () => {
   const logos = logosData?.data.filter((logo) => !logo.disabled) ?? []
 
   return (
-    <div className={styles.container}>
-      <div className={styles.content}>
+    <Box
+      sx={{
+        width: '100%',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        bgcolor: 'black',
+        color: 'white',
+        // bottom offset because of sticky debug footer
+        pb: '1rem',
+      }}
+    >
+      <Box sx={{gridColumnStart: 2, gridColumnEnd: 4}}>
         <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
           {menuItemsIsLoading && <Loading />}
           {menuItems.map((item) => (
-            <div key={item.id} className={styles.menuItem}>
-              <Link variant="button2" href={`/${seminar}${item.url}`}>
-                {item.caption}
-              </Link>
-            </div>
+            <Link key={item.id} variant="button2" href={`/${seminar}${item.url}`} invertColors>
+              {item.caption}
+            </Link>
           ))}
           {menuItemsError && <p>{menuItemsError.message}</p>}
         </Stack>
@@ -55,7 +61,7 @@ export const Footer: FC = () => {
           ))}
           {logosError && <p>{logosError.message}</p>}
         </Stack>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
