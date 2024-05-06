@@ -18,7 +18,6 @@
   color: black;
   background-color: white;
 
-  &.active,
   &:hover {
     color: white;
     background-color: black;
@@ -41,30 +40,4 @@
   left: 0;
   right: 0;
   color: white;
-}
-
-.menuItem {
-  background-color: transparent;
-  margin: 0px 40px;
-  padding: 8px 0px;
-  display: grid;
-  place-items: center;
-
-  a {
-    display: inline-block;
-    padding: 0px 5px;
-    border-bottom: 5px solid white;
-    color: white;
-    text-align: center;
-  }
-}
-
-.menuItem.active,
-.menuItem:hover {
-  background-color: white;
-
-  a {
-    color: black;
-    border-color: black;
-  }
 }
