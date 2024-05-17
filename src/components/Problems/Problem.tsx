@@ -127,12 +127,16 @@ export const Problem: FC<{
               </Link>
             </>
           )}
-          <Button onClick={handleDiscussionButtonClick} variant="button2">
-            diskusia ({problem.num_comments})
-          </Button>
-          <Button onClick={handleUploadClick} disabled={!canSubmit || (isAuthed && !canRegister)} variant="button2">
-            odovzdať
-          </Button>
+          {canSubmit && (
+            <>
+              <Button onClick={handleDiscussionButtonClick} variant="button2">
+                diskusia ({problem.num_comments})
+              </Button>
+              <Button onClick={handleUploadClick} disabled={!canSubmit || (isAuthed && !canRegister)} variant="button2">
+                odovzdať
+              </Button>
+            </>
+          )}
         </Stack>
       )}
     </div>
