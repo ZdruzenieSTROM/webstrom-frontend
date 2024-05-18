@@ -31,7 +31,7 @@ export const TopGrid: FC = () => {
 
   return (
     <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: 'white', zIndex: 3}}>
-      <Grid container spacing={1} p={3} columns={{xs: 6, md: 12}}>
+      <Grid container disableEqualOverflow spacing={1} p={3} columns={{xs: 6, md: 12}}>
         {/* first row */}
         <Grid xs={6} md={3}>
           <Stack sx={{alignItems: {xs: 'end', md: 'start'}}}>

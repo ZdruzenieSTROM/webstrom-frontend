@@ -36,7 +36,7 @@ export const Posts: FC = () => {
         - prvy grid su vsetky prispevky do rozbaleneho prispevku - len jeden grid item ako jeden stlpec prispevkov (`xs={4}` ako 4 stlpce z 12)
         - druhy grid su prispevky od rozbaleneho prispevku - dva grid itemy ako jeden stlpec prispevkov (`xs={4}`) a druhy stlpec ako detail prispevku (`xs={5}` - detail je sirsi) */}
       {activePostDetailIndex !== 0 && (
-        <Grid container columnSpacing={5} mb={5}>
+        <Grid container disableEqualOverflow columnSpacing={5} mb={5}>
           <Grid xs={4}>
             <Stack gap={5}>
               {posts.slice(0, activePostDetailIndex).map((post, index) => {
