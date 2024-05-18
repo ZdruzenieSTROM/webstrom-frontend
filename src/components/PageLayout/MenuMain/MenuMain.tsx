@@ -31,7 +31,7 @@ export const MenuMain: FC = () => {
   const menuItems = menuItemsData?.data ?? []
 
   const lg = useMediaQuery<Theme>((theme) => theme.breakpoints.up('lg'))
-  const iconSize = lg ? 40 : 30
+  const iconSize = lg ? 34 : 24
 
   return (
     <>
