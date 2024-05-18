@@ -11,7 +11,6 @@ import {SeriesWithProblems} from '@/types/api/competition'
 import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {BannerContainer} from '@/utils/BannerContainer'
-import {formatDateTime} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
@@ -22,19 +21,13 @@ import {Discussion} from './Discussion'
 import {Problem} from './Problem'
 import styles from './Problems.module.scss'
 
-const overrideCycle = (prev: boolean | undefined) => {
-  if (prev === undefined) return true
-  if (prev === true) return false
-  return undefined
-}
-
 export const Problems: FC = () => {
   const {id, seminar, loading} = useDataFromURL()
 
   const router = useRouter()
 
   const {isAuthed} = AuthContainer.useContainer()
-  const {setBannerText} = BannerContainer.useContainer()
+  const {setBannerMessages} = BannerContainer.useContainer()
 
   const {data} = useQuery({
     queryKey: ['personal', 'profiles', 'myprofile'],
@@ -56,6 +49,14 @@ export const Problems: FC = () => {
     queryFn: () => axios.get<SeriesWithProblems>(`/api/competition/series/${id.seriesId}`),
     enabled: id.seriesId !== -1,
   })
+
+  const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
+    queryKey: ['cms', 'info-banner', 'series-problems', id.seriesId],
+    queryFn: () => axios.get<string[]>(`/api/cms/info-banner/series-problems/${id.seriesId}`),
+    enabled: id.seriesId !== -1,
+  })
+
+  const bannerMessages = bannerMessage?.data
   const series = seriesData?.data
   const problems = series?.problems ?? []
   const semesterId = series?.semester ?? -1
@@ -72,30 +73,17 @@ export const Problems: FC = () => {
     isAfterDeadline ? null : 500,
   )
 
-  const [overrideCanRegister, setOverrideCanRegister] = useState<boolean>()
-  const [overrideIsRegistered, setOverrideIsRegistered] = useState<boolean>()
-  const toggleCanRegister = () => setOverrideCanRegister((prevState) => overrideCycle(prevState))
-  const toggleIsRegistered = () => setOverrideIsRegistered((prevState) => overrideCycle(prevState))
-
-  const canRegister = overrideCanRegister ?? series?.can_participate ?? false
-  const isRegistered = overrideIsRegistered ?? series?.is_registered ?? false
+  const canRegister = series?.can_participate ?? false
+  const isRegistered = series?.is_registered ?? false
 
   const queryClient = useQueryClient()
 
   const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', id.seriesId]})
 
   useEffect(() => {
-    if (seriesData === undefined) {
-      setBannerText('')
-    } else {
-      const deadline = formatDateTime(seriesData.data.deadline)
-      if (seriesData?.data.can_submit) {
-        setBannerText(`Termín série: ${deadline}`)
-      } else {
-        setBannerText(`Séria je uzavretá.`)
-      }
-    }
-  }, [seriesData, setBannerText])
+    if (isBannerLoading || bannerMessages === undefined) setBannerMessages([])
+    else setBannerMessages(bannerMessages)
+  }, [setBannerMessages, isBannerLoading, bannerMessages])
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),

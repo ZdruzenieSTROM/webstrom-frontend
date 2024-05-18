@@ -1,6 +1,8 @@
 import {Stack, Typography} from '@mui/material'
+import {useQuery} from '@tanstack/react-query'
+import axios from 'axios'
 import {useRouter} from 'next/router'
-import {FC} from 'react'
+import {FC, useEffect} from 'react'
 
 import {Link} from '@/components/Clickable/Link'
 import {Competition, Event} from '@/types/api/competition'
@@ -14,13 +16,32 @@ type CompetitionPageProps = {
 }
 
 export const CompetitionPage: FC<CompetitionPageProps> = ({
-  competition: {name, who_can_participate, description, upcoming_or_current_event, competition_type, history_events},
+  competition: {
+    id,
+    name,
+    who_can_participate,
+    description,
+    upcoming_or_current_event,
+    competition_type,
+    history_events,
+  },
 }) => {
-  const {setBannerText} = BannerContainer.useContainer()
+  const {setBannerMessages} = BannerContainer.useContainer()
 
   const startDate = upcoming_or_current_event ? formatDateTime(upcoming_or_current_event.start) : null
   const endDate = upcoming_or_current_event ? formatDateTime(upcoming_or_current_event.end) : null
-  setBannerText(startDate ? `${name} sa bude konať  ${startDate}` : '')
+
+  const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
+    queryKey: ['cms', 'info-banner', 'competition', id],
+    queryFn: () => axios.get<string[]>(`/api/cms/info-banner/competition/${id}`),
+    enabled: id !== -1,
+  })
+
+  const bannerMessages = bannerMessage?.data
+  useEffect(() => {
+    if (isBannerLoading || bannerMessages === undefined) setBannerMessages([])
+    else setBannerMessages(bannerMessages)
+  }, [setBannerMessages, isBannerLoading, bannerMessages])
 
   const router = useRouter()
   const rulesLink = `${router.asPath}/pravidla`
