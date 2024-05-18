@@ -2,12 +2,11 @@
   cursor: pointer;
   display: grid;
   place-items: center;
+
+  padding: 2px;
 }
 
 .menuOpenButton {
-  // more space around icon looks better on hover
-  padding: 7.5px;
-
   color: black;
   background-color: white;
 
@@ -20,11 +19,8 @@
 .menuCloseButton {
   // button taking top-left corner of the rolling menu
   position: absolute;
-  top: 50px;
-  left: 50px;
-
-  // less space around X is enough for hover to look good
-  padding: 2.5px;
+  top: 24px;
+  left: 24px;
 }
 
 .loading {

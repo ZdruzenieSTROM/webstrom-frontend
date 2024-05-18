@@ -1,6 +1,4 @@
 import {Stack} from '@mui/material'
-// new MUI Grid without spacing issues: https://mui.com/material-ui/react-grid2/
-// import {default as Grid} from '@mui/material/Unstable_Grid2'
 import Grid from '@mui/material/Unstable_Grid2'
 import Head from 'next/head'
 import {FC, ReactNode} from 'react'
@@ -42,15 +40,15 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
         <BannerContainer.Provider>
           <Stack sx={{minHeight: '100vh', position: 'relative'}}>
             <TopGrid />
-            <Stack sx={{justifyContent: 'space-between', position: 'relative', height: '100%'}}>
-              <Grid container sx={{pb: 2, height: '100%'}}>
-                <Grid xs={3} sx={{position: 'relative'}}>
-                  <StromLogo />
-                </Grid>
-                <Grid xs={3 * contentWidth}>{children}</Grid>
+            <Grid container sx={{height: '100%', flex: 1}} columns={{xs: 6, md: 12}}>
+              <Grid md={3} sx={{position: 'relative', display: {xs: 'none', md: 'block'}}}>
+                <StromLogo />
               </Grid>
-              <Footer />
-            </Stack>
+              <Grid xs={6} md={contentWidth * 3} sx={{pb: 2, px: 1}}>
+                {children}
+              </Grid>
+            </Grid>
+            <Footer />
           </Stack>
         </BannerContainer.Provider>
       </PageTitleContainer.Provider>
