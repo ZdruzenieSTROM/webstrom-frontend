@@ -1,4 +1,5 @@
-import {Box, Stack} from '@mui/material'
+import {Stack} from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC} from 'react'
@@ -33,18 +34,16 @@ export const Footer: FC = () => {
   const logos = logosData?.data.filter((logo) => !logo.disabled) ?? []
 
   return (
-    <Box
+    <Grid
+      container
       sx={{
         width: '100%',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
         bgcolor: 'black',
         color: 'white',
-        // bottom offset because of sticky debug footer
-        pb: '1rem',
       }}
     >
-      <Box sx={{gridColumnStart: 2, gridColumnEnd: 4}}>
+      <Grid xs={3} sx={{display: {xs: 'none', md: 'block'}}} />
+      <Grid xs={12} md={6}>
         <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
           {menuItemsIsLoading && <Loading />}
           {menuItems.map((item) => (
@@ -61,7 +60,7 @@ export const Footer: FC = () => {
           ))}
           {logosError && <p>{logosError.message}</p>}
         </Stack>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   )
 }
