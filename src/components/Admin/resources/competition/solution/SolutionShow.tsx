@@ -1,8 +1,7 @@
 import {FC} from 'react'
-import {FileField, ImageField, NumberField, ReferenceField, SimpleShowLayout} from 'react-admin'
+import {FileField, ReferenceField, SimpleShowLayout} from 'react-admin'
 
 import {MyShow} from '@/components/Admin/custom/MyShow'
-import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
 export const SolutionShow: FC = () => (
   <MyShow>

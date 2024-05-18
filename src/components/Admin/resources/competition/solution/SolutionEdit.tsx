@@ -1,27 +1,24 @@
 import {FC} from 'react'
-import {
-  AutocompleteInput,
-  FileInput,
-  NumberInput,
-  ReferenceInput,
-  required,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-} from 'react-admin'
+import {AutocompleteInput, FileInput, ReferenceInput, required, SimpleForm} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
-import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
+
+import {createSolutionFormData} from './createSolutionFormData'
 
 export const SolutionEdit: FC = () => (
-  <MyEdit>
+  <MyEdit
+    transform={(record) => {
+      record.formData = createSolutionFormData(record)
+      return record
+    }}
+  >
     <SimpleForm>
       <ReferenceInput source="problem" reference="competition/problem">
-        <SelectInput fullWidth validate={required()} />
+        <AutocompleteInput fullWidth validate={required()} />
       </ReferenceInput>
       <ReferenceInput source="semester_registration" reference="competition/event-registration">
-        <SelectInput optionText="verbose_name" fullWidth validate={required()} />
+        <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
       </ReferenceInput>
       <FileInput source="solution" accept="application/pdf">
         <MyFileField />

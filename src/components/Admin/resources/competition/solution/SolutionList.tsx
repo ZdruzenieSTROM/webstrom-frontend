@@ -1,16 +1,5 @@
 import {FC} from 'react'
-import {
-  BooleanField,
-  Datagrid,
-  FunctionField,
-  ImageField,
-  List,
-  NumberField,
-  RaRecord,
-  ReferenceField,
-} from 'react-admin'
-
-import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
+import {BooleanField, Datagrid, FunctionField, List, RaRecord, ReferenceField} from 'react-admin'
 
 export const SolutionList: FC = () => (
   <List>

@@ -30,6 +30,10 @@ import {SeriesCreate} from './resources/competition/series/SeriesCreate'
 import {SeriesEdit} from './resources/competition/series/SeriesEdit'
 import {SeriesList} from './resources/competition/series/SeriesList'
 import {SeriesShow} from './resources/competition/series/SeriesShow'
+import {SolutionCreate} from './resources/competition/solution/SolutionCreate'
+import {SolutionEdit} from './resources/competition/solution/SolutionEdit'
+import {SolutionList} from './resources/competition/solution/SolutionList'
+import {SolutionShow} from './resources/competition/solution/SolutionShow'
 import {useAuthProvider} from './useAuthProvider'
 
 export const Admin: FC = () => {
@@ -84,6 +88,14 @@ export const Admin: FC = () => {
         edit={ProblemEdit}
         show={ProblemShow}
         create={ProblemCreate}
+      />
+      <Resource
+        name="competition/solution"
+        recordRepresentation="verbose_name"
+        list={SolutionList}
+        edit={SolutionEdit}
+        show={SolutionShow}
+        create={SolutionCreate}
       />
     </ReactAdmin>
   )
