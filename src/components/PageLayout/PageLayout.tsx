@@ -10,7 +10,6 @@ import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {Seminar, useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Footer} from './Footer/Footer'
-import {MenuMain} from './MenuMain/MenuMain'
 import {StromLogo} from './StromLogo/StromLogo'
 import {TopGrid} from './TopGrid/TopGrid'
 
@@ -43,7 +42,6 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
         <BannerContainer.Provider>
           <Stack sx={{minHeight: '100vh', position: 'relative'}}>
             <TopGrid />
-            <MenuMain />
             <Stack sx={{justifyContent: 'space-between', position: 'relative', height: '100%'}}>
               <Grid container sx={{pb: 2, height: '100%'}}>
                 <Grid xs={3} sx={{position: 'relative'}}>

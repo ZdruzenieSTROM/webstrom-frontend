@@ -5,13 +5,6 @@
 }
 
 .menuOpenButton {
-  // button taking top-left corner of the whole screen
-  position: fixed;
-  top: 50px;
-  left: 50px;
-  // index high enough to cover the background, but menu rolls over it
-  z-index: 5;
-
   // more space around icon looks better on hover
   padding: 7.5px;
 
