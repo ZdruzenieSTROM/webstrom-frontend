@@ -5,8 +5,10 @@ import {Marquee} from '@/components/Marquee/Marquee'
 import {BannerContainer} from '@/utils/BannerContainer'
 
 export const Banner: FC = () => {
-  const {bannerText} = BannerContainer.useContainer()
-
+  const {bannerMessages} = BannerContainer.useContainer()
+  const divider = '  -  '
+  if (bannerMessages === undefined || bannerMessages.length === 0) return <></>
+  const bannerTextFormatted = Array(10).fill(bannerMessages).flat().join(divider) + divider
   return (
     <Box
       sx={{
@@ -18,7 +20,7 @@ export const Banner: FC = () => {
     >
       <Marquee gradient={false} speed={100}>
         <Typography variant="h2" component="span" sx={{whiteSpace: 'nowrap'}}>
-          {bannerText || '\u00A0'}
+          {bannerTextFormatted || '\u00A0'}
         </Typography>
       </Marquee>
     </Box>

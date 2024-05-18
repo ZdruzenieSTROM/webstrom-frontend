@@ -11,7 +11,6 @@ import {SeriesWithProblems} from '@/types/api/competition'
 import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {BannerContainer} from '@/utils/BannerContainer'
-import {formatDateTime} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
@@ -28,7 +27,7 @@ export const Problems: FC = () => {
   const router = useRouter()
 
   const {isAuthed} = AuthContainer.useContainer()
-  const {setBannerText} = BannerContainer.useContainer()
+  const {setBannerMessages} = BannerContainer.useContainer()
 
   const {data} = useQuery({
     queryKey: ['personal', 'profiles', 'myprofile'],
@@ -53,11 +52,11 @@ export const Problems: FC = () => {
 
   const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
     queryKey: [id.seriesId],
-    queryFn: () => axios.get(`/api/cms/info-banner/?series=${id.seriesId}`),
+    queryFn: () => axios.get(`/api/cms/info-banner/series-problems/${id.seriesId}`),
     enabled: id.seriesId !== -1,
   })
 
-  const infoMessage = bannerMessage?.data
+  const bannerMessages = bannerMessage?.data
   const series = seriesData?.data
   const problems = series?.problems ?? []
   const semesterId = series?.semester ?? -1
@@ -82,11 +81,9 @@ export const Problems: FC = () => {
   const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', id.seriesId]})
 
   useEffect(() => {
-    if (isBannerLoading || infoMessage === undefined) {
-      if (series === undefined) setBannerText('')
-      else setBannerText(series.can_submit ? `Termín série: ${formatDateTime(series.deadline)}` : 'Séria je uzavretá')
-    }
-  }, [series, setBannerText, isBannerLoading, infoMessage])
+    if (isBannerLoading || bannerMessages === undefined) setBannerMessages([])
+    else setBannerMessages(bannerMessages)
+  }, [setBannerMessages, isBannerLoading, bannerMessages])
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),

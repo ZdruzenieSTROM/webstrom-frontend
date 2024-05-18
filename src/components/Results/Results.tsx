@@ -1,7 +1,8 @@
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
-import {FC} from 'react'
+import {FC, useEffect} from 'react'
 
+import {BannerContainer} from '@/utils/BannerContainer'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 
 import {Loading} from '../Loading/Loading'
@@ -20,6 +21,18 @@ export const Results: FC = () => {
     enabled: id.semesterId !== -1 || id.seriesId !== -1,
   })
   const results = resultsData?.data ?? []
+  const {setBannerMessages} = BannerContainer.useContainer()
+  const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
+    queryKey: [id.seriesId],
+    queryFn: () => axios.get(`/api/cms/info-banner/series-results/${id.seriesId}`),
+    enabled: id.seriesId !== -1,
+  })
+
+  const bannerMessages = bannerMessage?.data
+  useEffect(() => {
+    if (isBannerLoading || bannerMessages === undefined) setBannerMessages([])
+    else setBannerMessages(bannerMessages)
+  }, [setBannerMessages, isBannerLoading, bannerMessages])
 
   return (
     <div>
