@@ -1,4 +1,7 @@
-import clsx from 'clsx'
+import {Stack} from '@mui/material'
+// new MUI Grid without spacing issues: https://mui.com/material-ui/react-grid2/
+// import {default as Grid} from '@mui/material/Unstable_Grid2'
+import Grid from '@mui/material/Unstable_Grid2'
 import Head from 'next/head'
 import {FC, ReactNode} from 'react'
 
@@ -8,7 +11,6 @@ import {Seminar, useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Footer} from './Footer/Footer'
 import {MenuMain} from './MenuMain/MenuMain'
-import styles from './PageLayout.module.scss'
 import {StromLogo} from './StromLogo/StromLogo'
 import {TopGrid} from './TopGrid/TopGrid'
 
@@ -39,24 +41,19 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
       </Head>
       <PageTitleContainer.Provider initialState={title}>
         <BannerContainer.Provider>
-          <div className={styles.pageContainer}>
+          <Stack sx={{minHeight: '100vh', position: 'relative'}}>
             <TopGrid />
             <MenuMain />
-            <StromLogo />
-            <div className={styles.grid}>
-              <div
-                className={clsx(
-                  styles.mainContent,
-                  contentWidth === 1 && styles.col1,
-                  contentWidth === 2 && styles.col2,
-                  contentWidth === 3 && styles.col3,
-                )}
-              >
-                {children}
-              </div>
-            </div>
-            <Footer />
-          </div>
+            <Stack sx={{justifyContent: 'space-between', position: 'relative', height: '100%'}}>
+              <Grid container sx={{pb: 2, height: '100%'}}>
+                <Grid xs={3} sx={{position: 'relative'}}>
+                  <StromLogo />
+                </Grid>
+                <Grid xs={3 * contentWidth}>{children}</Grid>
+              </Grid>
+              <Footer />
+            </Stack>
+          </Stack>
         </BannerContainer.Provider>
       </PageTitleContainer.Provider>
     </>
