@@ -33,7 +33,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
 
   const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
     queryKey: ['cms', 'info-banner', 'competition', id],
-    queryFn: () => axios.get(`/api/cms/info-banner/competition/${id}`),
+    queryFn: () => axios.get<string[]>(`/api/cms/info-banner/competition/${id}`),
     enabled: id !== -1,
   })
 
