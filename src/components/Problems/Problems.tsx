@@ -156,7 +156,7 @@ export const Problems: FC = () => {
         </Stack>
       </Dialog>
       <Stack gap={5}>
-        <Typography variant="body1">
+        <Typography variant="body1" display="inline-flex">
           Ak si nevieš poradiť s niektorou z úloh, pozri si{' '}
           <Link variant="button2" href={`/${seminar}/ako-riesit`}>
             pár tipov
