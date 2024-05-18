@@ -1,4 +1,5 @@
 import {Typography} from '@mui/material'
+import Tooltip from '@mui/material/Tooltip'
 import {FC} from 'react'
 
 import styles from './ResultsRow.module.scss'
@@ -66,17 +67,21 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
                 {solution.points}
               </Typography>
             ))}
-            <Typography variant="body2" fontWeight={600} className={styles.subtotal}>
-              {subtotal[index]}
-            </Typography>
+            <Tooltip title={`Súčet bodov za ${index + 1}. sériu po uplatnení bonifikácie`}>
+              <Typography variant="body2" fontWeight={600} className={styles.subtotal}>
+                {subtotal[index]}
+              </Typography>
+            </Tooltip>
           </div>
         ))}
       </div>
-      <div className={styles.totalScore}>
-        <Typography variant="h3" component="span" fontStyle="italic">
-          {total}
-        </Typography>
-      </div>
+      <Tooltip title="Celkový súčet bodov po uplatnení bonifikácie">
+        <div className={styles.totalScore}>
+          <Typography variant="h3" component="span" fontStyle="italic">
+            {total}
+          </Typography>
+        </div>
+      </Tooltip>
     </div>
   )
 }
