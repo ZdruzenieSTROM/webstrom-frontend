@@ -51,7 +51,7 @@ export const Problems: FC = () => {
   })
 
   const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
-    queryKey: [id.seriesId],
+    queryKey: ['cms', 'info-banner', 'series-problems', id.seriesId],
     queryFn: () => axios.get(`/api/cms/info-banner/series-problems/${id.seriesId}`),
     enabled: id.seriesId !== -1,
   })

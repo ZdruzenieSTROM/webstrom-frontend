@@ -23,7 +23,7 @@ export const Results: FC = () => {
   const results = resultsData?.data ?? []
   const {setBannerMessages} = BannerContainer.useContainer()
   const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
-    queryKey: [id.seriesId],
+    queryKey: ['cms', 'info-banner', 'series-results', id.seriesId],
     queryFn: () => axios.get(`/api/cms/info-banner/series-results/${id.seriesId}`),
     enabled: id.seriesId !== -1,
   })
