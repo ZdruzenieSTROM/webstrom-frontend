@@ -7,8 +7,9 @@ import {BannerContainer} from '@/utils/BannerContainer'
 export const Banner: FC = () => {
   const {bannerMessages} = BannerContainer.useContainer()
   const divider = '  -  '
-  if (bannerMessages === undefined || bannerMessages.length === 0) return <></>
-  const bannerTextFormatted = Array(10).fill(bannerMessages).flat().join(divider) + divider
+
+  const bannerTextFormatted =
+    bannerMessages.length > 0 ? Array(10).fill(bannerMessages).flat().join(divider) + divider : undefined
   return (
     <Box
       sx={{
