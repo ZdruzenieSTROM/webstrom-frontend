@@ -12,7 +12,7 @@ export const SideContainer: FC<{title: string; children: ReactNode; onClose: () 
   return (
     <aside className={styles.container}>
       <div className={styles.title}>
-        <CloseButton onClick={onClose} size={24} className={styles.closeButton} />
+        <CloseButton onClick={onClose} size={24} sx={{position: 'absolute', right: 12}} />
         <Typography variant="h3">{title}</Typography>
       </div>
       {children}

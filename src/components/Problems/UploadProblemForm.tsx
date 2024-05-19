@@ -110,7 +110,12 @@ export const UploadProblemForm: FC<{
       <div className={styles.inputWrapper}>
         {!files && (
           <>
-            <CloseButton onClick={handleCloseButton} size={24} invertColors className={styles.closeButton} />
+            <CloseButton
+              onClick={handleCloseButton}
+              size={24}
+              invertColors
+              sx={{position: 'absolute', top: 2, right: 2}}
+            />
             <FileDropZone
               getRootProps={getRootProps}
               getInputProps={getInputProps}

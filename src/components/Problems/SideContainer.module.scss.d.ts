@@ -1,5 +1,4 @@
 export type Styles = {
-  closeButton: string
   container: string
   title: string
 }

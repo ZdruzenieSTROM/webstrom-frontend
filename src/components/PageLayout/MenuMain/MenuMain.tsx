@@ -1,7 +1,6 @@
 import {Box, Drawer, Stack, Theme, useMediaQuery} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
-import clsx from 'clsx'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 
@@ -14,7 +13,6 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {BottomButtons} from './BottomButtons'
-import styles from './MenuMain.module.scss'
 
 export const MenuMain: FC = () => {
   const {seminar, seminarId} = useSeminarInfo()
@@ -36,9 +34,12 @@ export const MenuMain: FC = () => {
   return (
     <>
       {!isVisible && (
-        <div className={clsx(styles.menuButton, styles.menuOpenButton)} onClick={toggleMenu}>
+        <Box
+          sx={{cursor: 'pointer', padding: 0.5, '&:hover': {color: 'white', background: 'black'}}}
+          onClick={toggleMenu}
+        >
           <Menu width={iconSize} height={iconSize} />
-        </div>
+        </Box>
       )}
       <Drawer
         open={isVisible}
@@ -62,15 +63,11 @@ export const MenuMain: FC = () => {
         }}
       >
         <Box flexGrow={1}>
-          <CloseButton
-            size={iconSize}
-            onClick={toggleMenu}
-            className={clsx(styles.menuButton, styles.menuCloseButton)}
-          />
+          <CloseButton size={iconSize} onClick={toggleMenu} sx={{position: 'absolute', top: 24, left: 24}} />
           {menuItemsIsLoading && (
-            <div className={styles.loading}>
+            <Box sx={{position: 'absolute', top: '50%', left: 0, right: 0, color: 'white'}}>
               <Loading />
-            </div>
+            </Box>
           )}
           <Stack sx={{mt: '176px'}}>
             {menuItems.map(({id, caption, url}) => (
