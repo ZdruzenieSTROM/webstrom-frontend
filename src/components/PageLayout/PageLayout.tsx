@@ -1,4 +1,5 @@
-import clsx from 'clsx'
+import {Stack} from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
 import Head from 'next/head'
 import {FC, ReactNode} from 'react'
 
@@ -7,8 +8,6 @@ import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {Seminar, useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Footer} from './Footer/Footer'
-import {MenuMain} from './MenuMain/MenuMain'
-import styles from './PageLayout.module.scss'
 import {StromLogo} from './StromLogo/StromLogo'
 import {TopGrid} from './TopGrid/TopGrid'
 
@@ -39,24 +38,18 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
       </Head>
       <PageTitleContainer.Provider initialState={title}>
         <BannerContainer.Provider>
-          <div className={styles.pageContainer}>
+          <Stack sx={{minHeight: '100dvh'}}>
             <TopGrid />
-            <MenuMain />
-            <StromLogo />
-            <div className={styles.grid}>
-              <div
-                className={clsx(
-                  styles.mainContent,
-                  contentWidth === 1 && styles.col1,
-                  contentWidth === 2 && styles.col2,
-                  contentWidth === 3 && styles.col3,
-                )}
-              >
+            <Grid container sx={{flex: 1}}>
+              <Grid xs={0} md={3} sx={{position: 'relative', display: {xs: 'none', md: 'block'}}}>
+                <StromLogo />
+              </Grid>
+              <Grid xs={12} md={contentWidth * 3} sx={{pb: 2, px: 1}}>
                 {children}
-              </div>
-            </div>
+              </Grid>
+            </Grid>
             <Footer />
-          </div>
+          </Stack>
         </BannerContainer.Provider>
       </PageTitleContainer.Provider>
     </>

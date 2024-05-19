@@ -1,3 +1,4 @@
+import {Stack} from '@mui/material'
 import {FC, useEffect} from 'react'
 
 import {getSemesterName} from '@/utils/getSemesterName'
@@ -8,7 +9,6 @@ import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Dropdown, DropdownOption} from './Dropdown'
-import styles from './SemesterPicker.module.scss'
 
 export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovanie'}> = ({page}) => {
   const {seminar} = useSeminarInfo()
@@ -70,9 +70,9 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
   }
 
   return (
-    <div className={styles.menu}>
+    <Stack sx={{flexDirection: 'row', alignItems: 'center', gap: 2, zIndex: 1000, userSelect: 'none'}}>
       {page !== 'admin/opravovanie' && <Dropdown title={'Séria'} options={dropdownSeriesList} />}
       <Dropdown title={'Semester'} options={dropdownSemesterList} />
-    </div>
+    </Stack>
   )
 }

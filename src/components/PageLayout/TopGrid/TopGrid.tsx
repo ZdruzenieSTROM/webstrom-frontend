@@ -1,15 +1,15 @@
 import {Stack, Typography} from '@mui/material'
-import clsx from 'clsx'
-import Link from 'next/link'
+import Grid from '@mui/material/Unstable_Grid2'
 import {useRouter} from 'next/router'
 import {FC, useMemo} from 'react'
 
+import {Link} from '@/components/Clickable/Link'
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Banner} from '../Banner/Banner'
-import styles from './TopGrid.module.scss'
+import {MenuMain} from '../MenuMain/MenuMain'
 
 export const TopGrid: FC = () => {
   const {seminar} = useSeminarInfo()
@@ -30,34 +30,55 @@ export const TopGrid: FC = () => {
   const {pageTitle} = PageTitleContainer.useContainer()
 
   return (
-    <Stack className={styles.container}>
-      <div className={styles.grid}>
-        <div className={styles.menu}>
-          <div className={clsx(styles.menuItem, seminar === 'malynar' && styles.active)}>
-            <Typography variant="button1">
-              <Link href="/malynar">Malynár</Link>
-            </Typography>
-          </div>
-          <div className={clsx(styles.menuItem, seminar === 'matik' && styles.active)}>
-            <Typography variant="button1">
-              <Link href="/matik">Matik</Link>
-            </Typography>
-          </div>
-          <div className={clsx(styles.menuItem, seminar === 'strom' && styles.active)}>
-            <Typography variant="button1">
-              <Link href="/strom">Strom</Link>
-            </Typography>
-          </div>
-        </div>
-        <Typography variant="h1" className={styles.title}>
-          {pageTitle}
-        </Typography>
+    <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: 'white', zIndex: 3}}>
+      <Grid container disableEqualOverflow spacing={1} p={3}>
+        {/* first row */}
+        <Grid xs={12} md={3}>
+          <Stack sx={{alignItems: {xs: 'end', md: 'start'}}}>
+            <MenuMain />
+          </Stack>
+        </Grid>
+        <Grid xs={0} md={6} sx={{display: {xs: 'none', md: 'block'}}} />
+        <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}}>
+          <Stack sx={{flexDirection: 'row', spacing: 2, justifyContent: 'flex-end'}}>
+            <Link
+              href="/malynar"
+              variant="button1"
+              sx={seminar === 'malynar' ? {color: 'white', backgroundColor: 'black'} : {}}
+            >
+              Malynár
+            </Link>
+            <Link
+              variant="button1"
+              href="/matik"
+              sx={seminar === 'matik' ? {color: 'white', backgroundColor: 'black'} : {}}
+            >
+              Matik
+            </Link>
+            <Link
+              variant="button1"
+              href="/strom"
+              sx={seminar === 'strom' ? {color: 'white', backgroundColor: 'black'} : {}}
+            >
+              Strom
+            </Link>
+          </Stack>
+        </Grid>
+
+        {/* second row */}
+        <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}} />
+        <Grid xs={12} md={6}>
+          <Typography variant="h1">{pageTitle}</Typography>
+        </Grid>
         {semesterPickerPage && (
-          <div className={styles.semesterPicker}>
-            <SemesterPicker page={semesterPickerPage} />
-          </div>
+          <Grid xs={12} md={3}>
+            <Stack sx={{alignItems: 'flex-end'}}>
+              <SemesterPicker page={semesterPickerPage} />
+            </Stack>
+          </Grid>
         )}
-      </div>
+      </Grid>
+
       <Banner />
     </Stack>
   )
