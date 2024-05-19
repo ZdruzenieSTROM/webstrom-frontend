@@ -11,7 +11,8 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 0px;
+  // top-level PageLayout padding je vypnuty, odsadzame to rucne tu
+  padding-left: 8px;
 }
 
 .nameAndSchool {
@@ -60,6 +61,8 @@
 }
 
 .totalScore {
+  // top-level PageLayout padding je vypnuty, odsadzame to rucne tu
+  padding-right: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
