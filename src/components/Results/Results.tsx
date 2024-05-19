@@ -1,3 +1,4 @@
+import {Box} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC, useEffect} from 'react'
@@ -6,7 +7,6 @@ import {BannerContainer} from '@/utils/BannerContainer'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 
 import {Loading} from '../Loading/Loading'
-import styles from './Results.module.scss'
 import {Result, ResultsRow} from './ResultsRow'
 
 export const Results: FC = () => {
@@ -37,11 +37,11 @@ export const Results: FC = () => {
   return (
     <div>
       {resultsIsLoading && <Loading />}
-      <div className={styles.results}>
+      <Box sx={{display: 'grid', rowGap: '10px', gridTemplateColumns: 'max-content 1fr repeat(3, max-content)'}}>
         {results.map((result, index) => (
           <ResultsRow result={result} key={index} />
         ))}
-      </div>
+      </Box>
     </div>
   )
 }
