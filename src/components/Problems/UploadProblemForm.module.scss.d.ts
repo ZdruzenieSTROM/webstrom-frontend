@@ -1,7 +1,6 @@
 export type Styles = {
   actions: string
   bottomAction: string
-  closeButton: string
   container: string
   files: string
   inputWrapper: string
