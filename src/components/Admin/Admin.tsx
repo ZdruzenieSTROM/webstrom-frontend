@@ -97,6 +97,7 @@ export const Admin: FC = () => {
         show={SolutionShow}
         create={SolutionCreate}
       />
+      <Resource name="competition/event-registration" recordRepresentation="verbose_name" />
     </ReactAdmin>
   )
 }
