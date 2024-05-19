@@ -2,7 +2,7 @@ import {Box, Drawer, Stack, Theme, useMediaQuery} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
-import {FC, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 
 import {Link} from '@/components/Clickable/Link'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
@@ -21,6 +21,25 @@ export const MenuMain: FC = () => {
 
   const [isVisible, setIsVisible] = useState(true)
   const toggleMenu = () => setIsVisible((currentIsVisible) => !currentIsVisible)
+
+  const fullWidthMenu = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
+  useEffect(() => {
+    fullWidthMenu && setIsVisible(false)
+  }, [fullWidthMenu])
+
+  // Inspired by https://nextjs.org/docs/pages/api-reference/functions/use-router#routerevents
+  const router = useRouter()
+  useEffect(() => {
+    const handleRouteChange = () => {
+      fullWidthMenu && setIsVisible(false)
+    }
+
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router, fullWidthMenu])
 
   const {data: menuItemsData, isLoading: menuItemsIsLoading} = useQuery({
     queryKey: ['cms', 'menu-item', 'on-site', seminarId, '?menu'],
@@ -69,7 +88,7 @@ export const MenuMain: FC = () => {
               <Loading />
             </Box>
           )}
-          <Stack sx={{mt: '176px'}}>
+          <Stack sx={{mt: {xs: 10, md: '164px', lg: '185px', xl: '221px'}}}>
             {menuItems.map(({id, caption, url}) => (
               // `url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
               <MenuMainItem key={id} caption={caption} url={`/${seminar}${url}`} />
