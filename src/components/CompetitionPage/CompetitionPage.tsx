@@ -16,15 +16,7 @@ type CompetitionPageProps = {
 }
 
 export const CompetitionPage: FC<CompetitionPageProps> = ({
-  competition: {
-    id,
-    name,
-    who_can_participate,
-    description,
-    upcoming_or_current_event,
-    competition_type,
-    history_events,
-  },
+  competition: {id, name, who_can_participate, description, upcoming_or_current_event, history_events},
 }) => {
   const {setBannerMessages} = BannerContainer.useContainer()
 
@@ -48,11 +40,17 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
 
   return (
     <Stack gap={3}>
-      {who_can_participate && <Typography variant="body1">Súťaž je určená pre {who_can_participate}</Typography>}
+      <Typography variant="body1">
+        {who_can_participate && `Súťaž je určená pre ${who_can_participate}.`}
+        {description && ` ${description}`}
+      </Typography>
 
-      {description && <Typography variant="body1">{description}</Typography>}
-
-      <Stack alignSelf="center">
+      <Stack
+        sx={{
+          mt: 0.5,
+          alignItems: 'end',
+        }}
+      >
         <Link variant="button2" href={rulesLink}>
           Pravidlá
         </Link>
@@ -73,7 +71,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               </Typography>
             )}
             {upcoming_or_current_event.publication_set.length > 0 && (
-              <Stack alignSelf="center">
+              <Stack sx={{alignItems: 'end'}}>
                 <Link variant="button2" href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>
                   Pozvánka
                 </Link>
@@ -81,15 +79,15 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
             )}
             {upcoming_or_current_event.registration_link && (
               <>
+                <Typography variant="body1">{upcoming_or_current_event.registration_link.additional_info}</Typography>
                 <Typography variant="body1">
                   <b>Registrácia prebieha do:</b> {formatDateTime(upcoming_or_current_event.registration_link.end)}
                 </Typography>
-                <Stack alignSelf="center">
+                <Stack sx={{alignItems: 'end'}}>
                   <Link variant="button2" href={upcoming_or_current_event.registration_link.url}>
                     Registračný formulár
                   </Link>
                 </Stack>
-                <Typography variant="body1">{upcoming_or_current_event.registration_link.additional_info}</Typography>
               </>
             )}
           </Stack>
@@ -99,36 +97,32 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
           </Typography>
         )}
       </Stack>
-
       <Stack>
         <Typography variant="h2">Archív</Typography>
         {/* TODO: asi zjednotit styly, neriesit with/without publications */}
-        {competition_type?.name === 'Tábor' ? (
-          <Stack gap={1}>
-            {history_events.map((event) => (
-              <Typography key={event.id} variant="h3" component="span">
-                {name + ' '} {event.school_year}
+
+        <Stack gap={1}>
+          {history_events.map((event) => (
+            <Stack
+              key={event.id}
+              direction="row"
+              sx={{
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography variant="h3" component="span">
+                {name} {event.school_year}
               </Typography>
-            ))}
-          </Stack>
-        ) : (
-          <Stack gap={1}>
-            {history_events.map((event) => (
-              <Stack key={event.id} direction="row" gap={20}>
-                <Typography variant="h3" component="span">
-                  {name} {event.school_year}
-                </Typography>
-                <Stack direction="row" gap={2}>
-                  {event.publication_set.map((publication) => (
-                    <Link variant="button2" key={publication.id} href={`/api/${publication.file}`}>
-                      {publication.name}
-                    </Link>
-                  ))}
-                </Stack>
+              <Stack direction="row" gap={2}>
+                {event.publication_set.map((publication) => (
+                  <Link variant="button2" key={publication.id} href={`/api/${publication.file}`}>
+                    {publication.name}
+                  </Link>
+                ))}
               </Stack>
-            ))}
-          </Stack>
-        )}
+            </Stack>
+          ))}
+        </Stack>
       </Stack>
     </Stack>
   )
