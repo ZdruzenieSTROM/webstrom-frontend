@@ -18,6 +18,10 @@ import {EventCreate} from './resources/competition/event/EventCreate'
 import {EventEdit} from './resources/competition/event/EventEdit'
 import {EventList} from './resources/competition/event/EventList'
 import {EventShow} from './resources/competition/event/EventShow'
+import {EventRegistrationCreate} from './resources/competition/event-registration/EventRegistrationCreate'
+import {EventRegistrationEdit} from './resources/competition/event-registration/EventRegistrationEdit'
+import {EventRegistrationList} from './resources/competition/event-registration/EventRegistrationList'
+import {EventRegistrationShow} from './resources/competition/event-registration/EventRegistrationShow'
 import {ProblemCreate} from './resources/competition/problems/ProblemCreate'
 import {ProblemEdit} from './resources/competition/problems/ProblemEdit'
 import {ProblemList} from './resources/competition/problems/ProblemList'
@@ -97,7 +101,16 @@ export const Admin: FC = () => {
         show={SolutionShow}
         create={SolutionCreate}
       />
-      <Resource name="competition/event-registration" recordRepresentation="verbose_name" />
+      <Resource
+        name="competition/event-registration"
+        recordRepresentation="verbose_name"
+        list={EventRegistrationList}
+        edit={EventRegistrationEdit}
+        show={EventRegistrationShow}
+        create={EventRegistrationCreate}
+      />
+      <Resource name="personal/schools" recordRepresentation="verbose_name" />
+      <Resource name="personal/profiles" recordRepresentation="verbose_name" />
     </ReactAdmin>
   )
 }
