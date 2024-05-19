@@ -1,7 +1,7 @@
 import {FormatAlignJustify, Grading} from '@mui/icons-material'
 import {Stack, Typography} from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
-import axios from 'axios'
+import axios, {isAxiosError} from 'axios'
 import {useRouter} from 'next/router'
 import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
@@ -82,11 +82,22 @@ export const ProblemAdministration: FC = () => {
     setSolutions(data)
   }
 
-  const {mutate: uploadZipFile} = useMutation({
+  const {mutate: uploadZipFile, error: uploadZipFileError} = useMutation({
     mutationFn: ({data, problemId}: {data: FormData; problemId?: string}) =>
       axios.post(`/api/competition/problem/${problemId}/upload-corrected`, data),
     onSuccess: () => refetchProblem(),
   })
+
+  const uploadZipFileErrorData =
+    isAxiosError(uploadZipFileError) && uploadZipFileError.response && uploadZipFileError.response.data
+  const uploadZipFileErrorArray = Array.isArray(uploadZipFileErrorData) ? uploadZipFileErrorData : []
+  const uploadZipFileErrors = uploadZipFileErrorArray
+    .map((errorObj) => {
+      const filename = 'filename' in errorObj ? `${errorObj.filename}: ` : ''
+      const status = 'status' in errorObj ? `${errorObj.status}` : ''
+      return `${filename}${status}`
+    })
+    .join('\n')
 
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
     (acceptedFiles, fileRejections) => {
@@ -157,6 +168,12 @@ export const ProblemAdministration: FC = () => {
         getInputProps={getInputProps}
         text="Vlož opravené riešenia vo formáte zip"
       />
+      {uploadZipFileError && (
+        <>
+          <Typography>Chyby pri nahrávaní ZIPka:</Typography>
+          <Typography sx={{whiteSpace: 'pre-line'}}>{uploadZipFileErrors}</Typography>
+        </>
+      )}
 
       <form>
         <div className={styles.table}>
