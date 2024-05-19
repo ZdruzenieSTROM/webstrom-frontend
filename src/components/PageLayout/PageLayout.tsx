@@ -38,13 +38,13 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
       </Head>
       <PageTitleContainer.Provider initialState={title}>
         <BannerContainer.Provider>
-          <Stack sx={{minHeight: '100vh', position: 'relative'}}>
+          <Stack sx={{minHeight: '100dvh'}}>
             <TopGrid />
-            <Grid container sx={{height: '100%', flex: 1}} columns={{xs: 6, md: 12}}>
-              <Grid md={3} sx={{position: 'relative', display: {xs: 'none', md: 'block'}}}>
+            <Grid container sx={{flex: 1}}>
+              <Grid xs={0} md={3} sx={{position: 'relative', display: {xs: 'none', md: 'block'}}}>
                 <StromLogo />
               </Grid>
-              <Grid xs={6} md={contentWidth * 3} sx={{pb: 2, px: 1}}>
+              <Grid xs={12} md={contentWidth * 3} sx={{pb: 2, px: 1}}>
                 {children}
               </Grid>
             </Grid>

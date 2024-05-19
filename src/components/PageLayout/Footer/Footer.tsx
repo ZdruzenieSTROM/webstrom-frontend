@@ -42,7 +42,7 @@ export const Footer: FC = () => {
         color: 'white',
       }}
     >
-      <Grid xs={3} sx={{display: {xs: 'none', md: 'block'}}} />
+      <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}} />
       <Grid xs={12} md={6}>
         <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
           {menuItemsIsLoading && <Loading />}

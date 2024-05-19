@@ -59,9 +59,9 @@ export const font = Poppins({
 const _theme = createTheme({
   breakpoints: {
     values: {
-      xs: 0, // defualt
-      sm: 640, // defualt = 640
-      md: 900, // defualt = 900
+      xs: 0, // default
+      sm: 640, // default = 640
+      md: 900, // default = 900
       lg: 1366, // changed to HD, default = 1200
       xl: 1921, // changed to fullHD, default = 1536
     },
@@ -188,7 +188,7 @@ const pxToRem = _theme.typography.pxToRem
 const sm = _theme.breakpoints.up('sm') // 640px
 const md = _theme.breakpoints.up('md') // 900px
 const lg = _theme.breakpoints.up('lg') // 1366px
-const xl = _theme.breakpoints.up('xl') // 1920px
+const xl = _theme.breakpoints.up('xl') // 1921px
 
 // manual font sizes
 export const theme: Theme = {
@@ -198,8 +198,8 @@ export const theme: Theme = {
     h1: {
       ..._theme.typography.h1,
       // original Figma fontSize: 40px
-      fontSize: pxToRem(32),
-      [sm]: {fontSize: pxToRem(32)},
+      fontSize: pxToRem(26),
+      [sm]: {fontSize: pxToRem(26)},
       [md]: {fontSize: pxToRem(26)},
       [lg]: {fontSize: pxToRem(32)},
       [xl]: {fontSize: pxToRem(40)},
