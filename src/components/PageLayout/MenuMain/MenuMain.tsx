@@ -36,10 +36,10 @@ export const MenuMain: FC = () => {
       fullWidthMenu && setIsVisible(false)
     }
 
-    router.events.on('routeChangeStart', handleRouteChange)
+    router.events.on('routeChangeComplete', handleRouteChange)
 
     return () => {
-      router.events.off('routeChangeStart', handleRouteChange)
+      router.events.off('routeChangeComplete', handleRouteChange)
     }
   }, [router, fullWidthMenu])
 
