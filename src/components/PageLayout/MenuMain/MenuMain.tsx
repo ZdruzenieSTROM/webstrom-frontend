@@ -72,7 +72,7 @@ export const MenuMain: FC = () => {
               <Loading />
             </div>
           )}
-          <Stack sx={{mt: '176px'}}>
+          <Stack sx={{mt: {xs: 10, md: '164px', lg: '185px', xl: '221px'}}}>
             {menuItems.map(({id, caption, url}) => (
               // `url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
               <MenuMainItem key={id} caption={caption} url={`/${seminar}${url}`} />
