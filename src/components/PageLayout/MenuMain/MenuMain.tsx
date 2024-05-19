@@ -3,7 +3,7 @@ import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import clsx from 'clsx'
 import {useRouter} from 'next/router'
-import {FC, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
 
 import {Link} from '@/components/Clickable/Link'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
@@ -23,6 +23,25 @@ export const MenuMain: FC = () => {
 
   const [isVisible, setIsVisible] = useState(true)
   const toggleMenu = () => setIsVisible((currentIsVisible) => !currentIsVisible)
+
+  const fullWidthMenu = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
+  useEffect(() => {
+    fullWidthMenu && setIsVisible(false)
+  }, [fullWidthMenu])
+
+  // Inspired by https://nextjs.org/docs/pages/api-reference/functions/use-router#routerevents
+  const router = useRouter()
+  useEffect(() => {
+    const handleRouteChange = () => {
+      fullWidthMenu && setIsVisible(false)
+    }
+
+    router.events.on('routeChangeStart', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [router, fullWidthMenu])
 
   const {data: menuItemsData, isLoading: menuItemsIsLoading} = useQuery({
     queryKey: ['cms', 'menu-item', 'on-site', seminarId, '?menu'],
