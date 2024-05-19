@@ -208,8 +208,8 @@ export const theme: Theme = {
     h2: {
       ..._theme.typography.h2,
       // original Figma fontSize: 30px
-      fontSize: pxToRem(24),
-      [sm]: {fontSize: pxToRem(24)},
+      fontSize: pxToRem(20),
+      [sm]: {fontSize: pxToRem(20)},
       [md]: {fontSize: pxToRem(18)},
       [lg]: {fontSize: pxToRem(22)},
       [xl]: {fontSize: pxToRem(30)},
@@ -218,8 +218,8 @@ export const theme: Theme = {
     h3: {
       ..._theme.typography.h3,
       // original Figma fontSize: 24px
-      fontSize: pxToRem(18),
-      [sm]: {fontSize: pxToRem(18)},
+      fontSize: pxToRem(14),
+      [sm]: {fontSize: pxToRem(14)},
       [md]: {fontSize: pxToRem(14)},
       [lg]: {fontSize: pxToRem(18)},
       [xl]: {fontSize: pxToRem(24)},
@@ -228,8 +228,8 @@ export const theme: Theme = {
     body1: {
       ..._theme.typography.body1,
       // original Figma fontSize: 20px
-      fontSize: pxToRem(14),
-      [sm]: {fontSize: pxToRem(16)},
+      fontSize: pxToRem(13),
+      [sm]: {fontSize: pxToRem(13)},
       [md]: {fontSize: pxToRem(13)},
       [lg]: {fontSize: pxToRem(16)},
       [xl]: {fontSize: pxToRem(20)},
@@ -239,7 +239,7 @@ export const theme: Theme = {
       ..._theme.typography.body2,
       // original Figma fontSize: 16px
       fontSize: pxToRem(10),
-      [sm]: {fontSize: pxToRem(12)},
+      [sm]: {fontSize: pxToRem(10)},
       [md]: {fontSize: pxToRem(10)},
       [lg]: {fontSize: pxToRem(13)},
       [xl]: {fontSize: pxToRem(16)},
@@ -258,8 +258,8 @@ export const theme: Theme = {
     button1: {
       ..._theme.typography.button1,
       // original Figma fontSize: 30px
-      fontSize: pxToRem(24),
-      [sm]: {fontSize: pxToRem(24)},
+      fontSize: pxToRem(20),
+      [sm]: {fontSize: pxToRem(20)},
       [md]: {fontSize: pxToRem(18)},
       [lg]: {fontSize: pxToRem(22)},
       [xl]: {fontSize: pxToRem(30)},
@@ -268,8 +268,8 @@ export const theme: Theme = {
     button2: {
       ..._theme.typography.button2,
       // original Figma fontSize: 20px
-      fontSize: pxToRem(14),
-      [sm]: {fontSize: pxToRem(16)},
+      fontSize: pxToRem(12),
+      [sm]: {fontSize: pxToRem(12)},
       [md]: {fontSize: pxToRem(13)},
       [lg]: {fontSize: pxToRem(16)},
       [xl]: {fontSize: pxToRem(20)},
@@ -278,8 +278,8 @@ export const theme: Theme = {
     button3: {
       ..._theme.typography.button3,
       // original Figma fontSize: 14px
-      fontSize: pxToRem(10),
-      [sm]: {fontSize: pxToRem(10)},
+      fontSize: pxToRem(11),
+      [sm]: {fontSize: pxToRem(11)},
       [md]: {fontSize: pxToRem(9)},
       [lg]: {fontSize: pxToRem(11)},
       [xl]: {fontSize: pxToRem(14)},
@@ -288,8 +288,8 @@ export const theme: Theme = {
     postTitle: {
       ..._theme.typography.postTitle,
       // original Figma fontSize: 36px
-      fontSize: pxToRem(30),
-      [sm]: {fontSize: pxToRem(30)},
+      fontSize: pxToRem(22),
+      [sm]: {fontSize: pxToRem(22)},
       [md]: {fontSize: pxToRem(22)},
       [lg]: {fontSize: pxToRem(28)},
       [xl]: {fontSize: pxToRem(36)},
@@ -298,8 +298,8 @@ export const theme: Theme = {
     postBody: {
       ..._theme.typography.postBody,
       // original Figma fontSize: 30px
-      fontSize: pxToRem(24),
-      [sm]: {fontSize: pxToRem(24)},
+      fontSize: pxToRem(18),
+      [sm]: {fontSize: pxToRem(18)},
       [md]: {fontSize: pxToRem(18)},
       [lg]: {fontSize: pxToRem(22)},
       [xl]: {fontSize: pxToRem(30)},
@@ -308,8 +308,8 @@ export const theme: Theme = {
     postDate: {
       ..._theme.typography.postDate,
       // original Figma fontSize: 20px
-      fontSize: pxToRem(14),
-      [sm]: {fontSize: pxToRem(16)},
+      fontSize: pxToRem(13),
+      [sm]: {fontSize: pxToRem(13)},
       [md]: {fontSize: pxToRem(13)},
       [lg]: {fontSize: pxToRem(16)},
       [xl]: {fontSize: pxToRem(20)},
