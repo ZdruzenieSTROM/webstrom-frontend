@@ -1,7 +1,6 @@
 import {FC} from 'react'
 import {
   CheckboxGroupInput,
-  DateTimeInput,
   FormTab,
   NumberInput,
   ReferenceArrayInput,
@@ -12,6 +11,7 @@ import {
   TextInput,
 } from 'react-admin'
 
+import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
 export const SemesterEdit: FC = () => (
@@ -32,8 +32,8 @@ export const SemesterEdit: FC = () => (
         <NumberInput source="year" helperText="ročník súťaže, napr. 48" fullWidth />
         <NumberInput source="season_code" fullWidth />
         <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth />
-        <DateTimeInput source="start" fullWidth />
-        <DateTimeInput source="end" fullWidth />
+        <MyDateTimeInput source="start" fullWidth />
+        <MyDateTimeInput source="end" fullWidth />
         <TextInput source="additional_name" fullWidth />
         {/* nechavam viditelne disabled nech sa rozhodneme, co s tym. BE nam posiela ID, 
             neviem, ci vieme updatnut cely objekt tym, ze ho pribalim, ako v EventEdit...

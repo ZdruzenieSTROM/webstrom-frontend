@@ -2,7 +2,6 @@ import {FC} from 'react'
 import {
   ArrayField,
   Datagrid,
-  DateField,
   NumberField,
   ReferenceField,
   SimpleShowLayout,
@@ -11,6 +10,7 @@ import {
   TextField,
 } from 'react-admin'
 
+import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
 
 export const EventShow: FC = () => (
@@ -22,13 +22,13 @@ export const EventShow: FC = () => (
           <NumberField source="year" />
           <NumberField source="season_code" />
           <TextField source="school_year" />
-          <DateField source="start" />
-          <DateField source="end" />
+          <DateTimeField source="start" />
+          <DateTimeField source="end" />
           <TextField source="additional_name" />
 
           <TextField source="registration_link.url" />
-          <DateField source="registration_link.start" />
-          <DateField source="registration_link.end" />
+          <DateTimeField source="registration_link.start" />
+          <DateTimeField source="registration_link.end" />
           <TextField source="registration_link.additional_info" />
         </SimpleShowLayout>
       </Tab>

@@ -3,7 +3,6 @@ import {
   ArrayField,
   BooleanField,
   Datagrid,
-  DateField,
   ReferenceField,
   SimpleShowLayout,
   Tab,
@@ -11,6 +10,7 @@ import {
   TextField,
 } from 'react-admin'
 
+import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
@@ -20,7 +20,7 @@ export const SeriesShow: FC = () => (
       <Tab label="general">
         <SimpleShowLayout>
           <ReferenceField source="semester" reference="competition/semester" link="show" />
-          <DateField source="deadline" />
+          <DateTimeField source="deadline" />
           <TextField source="order" />
           <BooleanField source="complete" />
         </SimpleShowLayout>

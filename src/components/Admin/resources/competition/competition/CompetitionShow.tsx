@@ -3,7 +3,6 @@ import {FC} from 'react'
 import {
   ArrayField,
   Datagrid,
-  DateField,
   FunctionField,
   NumberField,
   RaRecord,
@@ -13,6 +12,7 @@ import {
   TextField,
 } from 'react-admin'
 
+import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
 import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
@@ -45,8 +45,8 @@ export const CompetitionShow: FC = () => (
               <NumberField source="year" />
               <NumberField source="season_code" />
               <TextField source="school_year" />
-              <DateField source="start" />
-              <DateField source="end" />
+              <DateTimeField source="start" />
+              <DateTimeField source="end" />
               <FunctionField<RaRecord>
                 source="publication_set"
                 label="Publication count"
