@@ -16,15 +16,7 @@ type CompetitionPageProps = {
 }
 
 export const CompetitionPage: FC<CompetitionPageProps> = ({
-  competition: {
-    id,
-    name,
-    who_can_participate,
-    description,
-    upcoming_or_current_event,
-    competition_type,
-    history_events,
-  },
+  competition: {id, name, who_can_participate, description, upcoming_or_current_event, history_events},
 }) => {
   const {setBannerMessages} = BannerContainer.useContainer()
 
@@ -48,17 +40,14 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
 
   return (
     <Stack gap={3}>
-      {who_can_participate && (
-        <Typography variant="body1">
-          Súťaž je určená pre {who_can_participate}.{description && ` ${description}`}
-        </Typography>
-      )}
+      <Typography variant="body1">
+        {who_can_participate && `Súťaž je určená pre ${who_can_participate}.`}
+        {description && ` ${description}`}
+      </Typography>
 
       <Stack
-        direction="row"
         sx={{
           mt: 0.5,
-          justifyContent: 'end',
           alignItems: 'end',
         }}
       >
@@ -82,7 +71,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               </Typography>
             )}
             {upcoming_or_current_event.publication_set.length > 0 && (
-              <Stack direction="row" sx={{justifyContent: 'end', alignItems: 'end'}}>
+              <Stack sx={{alignItems: 'end'}}>
                 <Link variant="button2" href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>
                   Pozvánka
                 </Link>
@@ -94,7 +83,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
                 <Typography variant="body1">
                   <b>Registrácia prebieha do:</b> {formatDateTime(upcoming_or_current_event.registration_link.end)}
                 </Typography>
-                <Stack direction="row" sx={{justifyContent: 'end', alignItems: 'end'}}>
+                <Stack sx={{alignItems: 'end'}}>
                   <Link variant="button2" href={upcoming_or_current_event.registration_link.url}>
                     Registračný formulár
                   </Link>
@@ -119,7 +108,6 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               direction="row"
               sx={{
                 justifyContent: 'space-between',
-                alignItems: 'end',
               }}
             >
               <Typography variant="h3" component="span">
