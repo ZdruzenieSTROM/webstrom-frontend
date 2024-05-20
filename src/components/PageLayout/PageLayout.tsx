@@ -1,4 +1,4 @@
-import {Stack} from '@mui/material'
+import {Stack, SxProps} from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 import Head from 'next/head'
 import {FC, ReactNode} from 'react'
@@ -15,6 +15,7 @@ type PageLayoutProps = {
   contentWidth?: number
   title?: string
   children: ReactNode
+  sx?: SxProps
 }
 
 const seminarTitle: Record<Seminar, string> = {
@@ -25,7 +26,7 @@ const seminarTitle: Record<Seminar, string> = {
 
 // pre pouzitie len na seminarovych strankach a podstrankach - `/matik(/*)`
 // ked budeme potrebovat top-level stranky ako `/ina-stranka`, budeme musiet upravit, ako sa pracuje s `useSeminarInfo`
-export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', children}) => {
+export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', children, sx}) => {
   const {seminar} = useSeminarInfo()
   const browserTitlePrefix = title && `${title} | `
   const browserTitle = `${browserTitlePrefix}${seminarTitle[seminar]}`
@@ -44,7 +45,7 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
               <Grid xs={0} md={3} sx={{position: 'relative', display: {xs: 'none', md: 'block'}}}>
                 <StromLogo />
               </Grid>
-              <Grid xs={12} md={contentWidth * 3} sx={{pb: 2, px: 1}}>
+              <Grid xs={12} md={contentWidth * 3} sx={{pb: 2, px: 1, ...sx}}>
                 {children}
               </Grid>
             </Grid>
