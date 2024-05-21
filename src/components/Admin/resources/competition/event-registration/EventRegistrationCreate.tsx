@@ -12,6 +12,9 @@ export const EventRegistrationCreate: FC = () => (
       <ReferenceInput source="profile" reference="personal/profiles">
         <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
       </ReferenceInput>
+      <ReferenceInput source="event" reference="competition/event">
+        <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+      </ReferenceInput>
     </SimpleForm>
   </MyCreate>
 )
