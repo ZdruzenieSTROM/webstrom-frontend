@@ -111,6 +111,7 @@ export const Admin: FC = () => {
       />
       <Resource name="personal/schools" recordRepresentation="verbose_name" />
       <Resource name="personal/profiles" recordRepresentation="verbose_name" />
+      <Resource name="competition/late-tag" recordRepresentation="name" />
     </ReactAdmin>
   )
 }

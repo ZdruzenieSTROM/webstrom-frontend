@@ -10,6 +10,8 @@ export const SolutionList: FC = () => (
         label="Má nahraté riešenie"
         render={(record) => record && <BooleanField record={{xxx: !!record['solution']}} source="xxx" />}
       />
+      <ReferenceField source="late_tag" reference="competition/late-tag" label="Po termíne" link={false} />
+      <BooleanField source="is_online" label="Internetové riešenie" />
     </Datagrid>
   </List>
 )
