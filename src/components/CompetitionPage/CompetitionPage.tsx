@@ -1,13 +1,14 @@
 import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
+import {DateTime} from 'luxon'
 import {useRouter} from 'next/router'
 import {FC, useEffect} from 'react'
 
 import {Link} from '@/components/Clickable/Link'
-import {Competition, Event} from '@/types/api/competition'
+import {Competition, Event, RegistrationLink} from '@/types/api/competition'
 import {BannerContainer} from '@/utils/BannerContainer'
-import {formatDateTime} from '@/utils/formatDate'
+import {formatDateTime, formatDateTimeInterval} from '@/utils/formatDate'
 
 type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Event[]}
 
@@ -38,8 +39,25 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
   const router = useRouter()
   const rulesLink = `${router.asPath}/pravidla`
 
+  const upcomingEventDate = upcoming_or_current_event
+    ? formatDateTimeInterval(upcoming_or_current_event.start, upcoming_or_current_event.end)
+    : null
+
+  function getRegistartionInfo(registrationLink: RegistrationLink) {
+    if (!registrationLink) return ``
+    if (DateTime.fromISO(registrationLink.start) > DateTime.now())
+      return `Registrácia bude otvorená od ${formatDateTime(registrationLink.start)}`
+    else if (DateTime.fromISO(registrationLink.end) > DateTime.now())
+      return `Registrácia je otvorená do ${formatDateTime(registrationLink.end)}`
+    return `Registrácia bola ukončená`
+  }
+  const isRegistrationActive = upcoming_or_current_event?.registration_link
+    ? DateTime.fromISO(upcoming_or_current_event.registration_link.start) < DateTime.now() &&
+      DateTime.fromISO(upcoming_or_current_event.registration_link.end) > DateTime.now()
+    : false
+
   return (
-    <Stack gap={3}>
+    <Stack gap={5}>
       <Typography variant="body1">
         {who_can_participate && `Súťaž je určená pre ${who_can_participate}.`}
         {description && ` ${description}`}
@@ -62,36 +80,24 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         <Typography variant="h2">Nadchádzajúci ročník</Typography>
         {upcoming_or_current_event ? (
           <Stack gap={1}>
-            {startDate && (
-              <Typography variant="body1">
-                <b>Od:</b> {startDate}
-              </Typography>
-            )}
-            {endDate && (
-              <Typography variant="body1">
-                <b>Do:</b> {endDate}
-              </Typography>
-            )}
-            {upcoming_or_current_event.publication_set.length > 0 && (
-              <Stack sx={{alignItems: 'end'}}>
+            <Typography variant="body1">
+              <b>
+                {upcoming_or_current_event?.year}. ročník súťaže {name} sa bude konať {upcomingEventDate} v Košiciach.{' '}
+                {getRegistartionInfo(upcoming_or_current_event.registration_link)}
+              </b>
+            </Typography>
+            <Stack sx={{alignItems: 'end'}}>
+              {upcoming_or_current_event.publication_set.length > 0 && (
                 <Link variant="button2" href={`/api/${upcoming_or_current_event.publication_set[0].file}`}>
                   Pozvánka
                 </Link>
-              </Stack>
-            )}
-            {upcoming_or_current_event.registration_link && (
-              <>
-                <Typography variant="body1">{upcoming_or_current_event.registration_link.additional_info}</Typography>
-                <Typography variant="body1">
-                  <b>Registrácia prebieha do:</b> {formatDateTime(upcoming_or_current_event.registration_link.end)}
-                </Typography>
-                <Stack sx={{alignItems: 'end'}}>
-                  <Link variant="button2" href={upcoming_or_current_event.registration_link.url}>
-                    Registračný formulár
-                  </Link>
-                </Stack>
-              </>
-            )}
+              )}
+              {isRegistrationActive && (
+                <Link variant="button2" href={upcoming_or_current_event.registration_link.url}>
+                  Registrácia
+                </Link>
+              )}
+            </Stack>
           </Stack>
         ) : (
           <Typography variant="body1" sx={{marginTop: 1}}>
