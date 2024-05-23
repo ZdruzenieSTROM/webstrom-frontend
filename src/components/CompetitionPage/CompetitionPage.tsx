@@ -17,7 +17,16 @@ type CompetitionPageProps = {
 }
 
 export const CompetitionPage: FC<CompetitionPageProps> = ({
-  competition: {id, name, who_can_participate, description, upcoming_or_current_event, history_events, rules},
+  competition: {
+    id,
+    competition_type,
+    name,
+    who_can_participate,
+    description,
+    upcoming_or_current_event,
+    history_events,
+    rules,
+  },
 }) => {
   const {setBannerMessages} = BannerContainer.useContainer()
 
@@ -43,7 +52,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
     ? formatDateTimeInterval(upcoming_or_current_event.start, upcoming_or_current_event.end)
     : null
 
-  function getRegistartionInfo(registrationLink: RegistrationLink) {
+  function getRegistrationInfo(registrationLink: RegistrationLink | null) {
     if (!registrationLink) return ``
     if (DateTime.fromISO(registrationLink.start) > DateTime.now())
       return `Registrácia bude otvorená od ${formatDateTime(registrationLink.start)}`
@@ -51,6 +60,21 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
       return `Registrácia je otvorená do ${formatDateTime(registrationLink.end)}`
     return `Registrácia bola ukončená`
   }
+
+  function getEventInfo(upcomingEvent: Event | null) {
+    if (competition_type?.short_name === 'súťaž')
+      return `${upcomingEvent?.year}. ročník súťaže ${name} sa bude konať ${upcomingEventDate} ${
+        upcomingEvent?.location || ''
+      }. `
+    else if (competition_type?.short_name === 'tábor')
+      return `${name} v roku ${upcomingEvent?.school_year?.split('/')[1]} sa bude konať ${upcomingEventDate} ${
+        upcomingEvent?.location || ''
+      }.`
+    else if (competition_type?.short_name === 'seminár')
+      return `Aktuálne prebieha ${upcomingEvent?.year}. ročník seminára ${name}`
+    return ''
+  }
+
   const isRegistrationActive = upcoming_or_current_event?.registration_link
     ? DateTime.fromISO(upcoming_or_current_event.registration_link.start) < DateTime.now() &&
       DateTime.fromISO(upcoming_or_current_event.registration_link.end) > DateTime.now()
@@ -59,8 +83,8 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
   return (
     <Stack gap={5}>
       <Typography variant="body1">
-        {who_can_participate && `Súťaž je určená pre ${who_can_participate}.`}
-        {description && ` ${description}`}
+        {description && `${description}`}
+        {who_can_participate && ` Súťaž je určená pre ${who_can_participate}.`}
       </Typography>
 
       {rules && (
@@ -77,13 +101,12 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
       )}
 
       <Stack gap={2}>
-        <Typography variant="h2">Nadchádzajúci ročník</Typography>
         {upcoming_or_current_event ? (
           <Stack gap={1}>
             <Typography variant="body1">
               <b>
-                {upcoming_or_current_event?.year}. ročník súťaže {name} sa bude konať {upcomingEventDate} v Košiciach.{' '}
-                {getRegistartionInfo(upcoming_or_current_event.registration_link)}
+                {getEventInfo(upcoming_or_current_event)}
+                {getRegistrationInfo(upcoming_or_current_event.registration_link)}
               </b>
             </Typography>
             <Stack sx={{alignItems: 'end'}}>
@@ -101,7 +124,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
           </Stack>
         ) : (
           <Typography variant="body1" sx={{marginTop: 1}}>
-            Pripravujeme
+            Ďalší ročník aktuálne pripravujeme
           </Typography>
         )}
       </Stack>
