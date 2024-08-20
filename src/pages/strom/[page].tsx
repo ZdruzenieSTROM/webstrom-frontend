@@ -1,3 +1,4 @@
+import {Typography} from '@mui/material'
 import axios from 'axios'
 import {GetServerSideProps, NextPage} from 'next'
 
@@ -7,15 +8,22 @@ import {FlatPage} from '@/types/api/generated/base'
 import {Seminar} from '@/utils/useSeminarInfo'
 
 type StaticPageProps = {
-  title: string
-  content: string
+  debug?: any
+  data?: {
+    title: string
+    content: string
+  }
 }
 
-const StaticPage: NextPage<StaticPageProps> = ({title, content}) => (
-  <PageLayout title={title}>
-    <Markdown content={content} />
-  </PageLayout>
-)
+const StaticPage: NextPage<StaticPageProps> = ({data, debug}) => {
+  if (!data) return <Typography whiteSpace="pre-wrap">{debug && JSON.stringify(debug, null, 2)}</Typography>
+  const {title, content} = data
+  return (
+    <PageLayout title={title}>
+      <Markdown content={content} />
+    </PageLayout>
+  )
+}
 
 export default StaticPage
 
@@ -27,15 +35,37 @@ export const seminarBasedGetServerSideProps =
     // tento check je hlavne pre typescript - parameter `page` by vzdy mal existovat a vzdy ako string
     if (query?.page && typeof query.page === 'string') {
       const requestedUrl = query.page
-      const {data} = await axios.get<FlatPage | undefined>(
-        `${process.env.NEXT_PUBLIC_BE_PROTOCOL}://${process.env.NEXT_PUBLIC_BE_HOSTNAME}:${process.env.NEXT_PUBLIC_BE_PORT}/base/flat-page/by-url/${requestedUrl}`,
-      )
-      // ked stranka neexistuje, vrati sa `content: ""`. teraz renderujeme stranku len ked je content neprazdny a server rovno vrati redirect.
-      // druha moznost by bola nechat prazdny content handlovat clienta - napriklad zobrazit custom error, ale nechat usera na neplatnej stranke.
-      // tretia moznost je miesto redirectu vratit nextovsku 404
-      if (data?.content) {
+      try {
+        const {data} = await axios.get<FlatPage | undefined>(
+          `${process.env.NEXT_PUBLIC_BE_PROTOCOL}://${process.env.NEXT_PUBLIC_BE_HOSTNAME}:${process.env.NEXT_PUBLIC_BE_PORT}/base/flat-page/by-url/${requestedUrl}`,
+        )
+        // ked stranka neexistuje, vrati sa `content: ""`. teraz renderujeme stranku len ked je content neprazdny a server rovno vrati redirect.
+        // druha moznost by bola nechat prazdny content handlovat clienta - napriklad zobrazit custom error, ale nechat usera na neplatnej stranke.
+        // tretia moznost je miesto redirectu vratit nextovsku 404
+        if (data?.content) {
+          return {
+            props: {data: {content: data.content, title: data.title}},
+          }
+        }
         return {
-          props: {content: data.content, title: data.title},
+          props: {
+            debug: {
+              msg: 'chybaju data',
+              calledUrl: `${process.env.NEXT_PUBLIC_BE_PROTOCOL}://${process.env.NEXT_PUBLIC_BE_HOSTNAME}:${process.env.NEXT_PUBLIC_BE_PORT}/base/flat-page/by-url/${requestedUrl}`,
+            },
+          },
+        }
+      } catch (e: unknown) {
+        console.log('🔴 DEBUG: error in try-catch', e)
+        // return redirectToSeminar
+        return {
+          props: {
+            debug: {
+              msg: 'error in try-catch',
+              error: e instanceof Error ? e.message : "no error message and can't serialize",
+              calledUrl: `${process.env.NEXT_PUBLIC_BE_PROTOCOL}://${process.env.NEXT_PUBLIC_BE_HOSTNAME}:${process.env.NEXT_PUBLIC_BE_PORT}/base/flat-page/by-url/${requestedUrl}`,
+            },
+          },
         }
       }
     }
