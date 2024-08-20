@@ -1,0 +1,20 @@
+services:
+  webstrom-frontend:
+    build:
+      dockerfile: deployment/local-mac/Dockerfile
+      context: ../..
+      args:
+        - NEXT_PUBLIC_BE_PORT=8000
+        - NEXT_PUBLIC_BE_HOSTNAME=host.docker.internal
+
+    image: webstrom-test-frontend
+
+    environment:
+      - PORT=3000
+      - NEXT_PUBLIC_BE_PORT=8000
+      - NEXT_PUBLIC_BE_HOSTNAME=host.docker.internal
+
+    ports:
+      - '3000:3000'
+
+    restart: always
