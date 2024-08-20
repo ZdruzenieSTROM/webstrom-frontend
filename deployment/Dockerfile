@@ -1,8 +1,10 @@
-FROM node:18
+FROM node:20
+
+ARG NEXT_PUBLIC_BE_PORT
 
 WORKDIR /app
 
-COPY . ./
+COPY . /app
 
 RUN yarn && yarn build
 
