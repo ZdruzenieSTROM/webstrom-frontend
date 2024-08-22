@@ -1,4 +1,3 @@
-import {SecurityUpdateSharp} from '@mui/icons-material'
 import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
