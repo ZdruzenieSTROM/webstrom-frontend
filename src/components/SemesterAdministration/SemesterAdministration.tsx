@@ -1,3 +1,4 @@
+import {SecurityUpdateSharp} from '@mui/icons-material'
 import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
@@ -103,9 +104,19 @@ export const SemesterAdministration: FC = () => {
   return (
     <>
       <Typography variant="h3">Administrácia semestra pre opravovateľov.</Typography>
+      <Stack mt={3} pl={2} alignItems="start">
+        <Button variant="button2" onClick={() => axios.post(`/api/competition/semester/${semester.id}/results/freeze`)}>
+          Uzavrieť semester
+        </Button>
+      </Stack>
       {semester.series_set.map((series) => (
         <Stack key={series.id} gap={1} mt={5}>
           <Typography variant="h2">{series.order}. séria</Typography>
+          <Stack pl={2} alignItems="start">
+            <Button variant="button2" onClick={() => axios.post(`/api/competition/series/${series.id}/results/freeze`)}>
+              Uzavrieť sériu
+            </Button>
+          </Stack>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="h3">Opravovanie úloh:</Typography>
             <Typography variant="body1" component="div">
