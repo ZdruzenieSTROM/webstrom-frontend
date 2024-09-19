@@ -1,19 +1,30 @@
-import {Box, SxProps, Theme, Typography, TypographyProps} from '@mui/material'
-import {ButtonHTMLAttributes, FC, ReactNode} from 'react'
+import {Box, Stack, SxProps, Theme, Typography, TypographyProps} from '@mui/material'
+import {ButtonHTMLAttributes, FC, MouseEventHandler, ReactNode} from 'react'
 
-import {buttonTextSx, getButtonWrapperSx} from './buttonStyles'
+import {buttonInnerSx, getButtonWrapperSx} from './buttonStyles'
 
 type ButtonProps = {
-  onClick?: () => void
+  onClick?: MouseEventHandler<HTMLButtonElement>
   disabled?: boolean
-  children: ReactNode
+  children?: ReactNode
+  endElement?: ReactNode
   variant?: TypographyProps['variant']
   invertColors?: boolean
   sx?: SxProps<Theme>
   textSx?: SxProps<Theme>
 } & Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>
 
-export const Button: FC<ButtonProps> = ({children, onClick, disabled, type, variant, invertColors, sx, textSx}) => {
+export const Button: FC<ButtonProps> = ({
+  children,
+  endElement,
+  onClick,
+  disabled,
+  type,
+  variant,
+  invertColors,
+  sx,
+  textSx,
+}) => {
   return (
     // tento wrapper je tu kvoli lepsej kontrole paddingov atd.
     <Box
@@ -26,15 +37,16 @@ export const Button: FC<ButtonProps> = ({children, onClick, disabled, type, vari
         ...sx,
       }}
     >
-      <Typography
-        variant={variant ?? 'button3'}
-        sx={{
-          ...buttonTextSx,
-          ...textSx,
-        }}
+      <Stack
+        direction="row"
+        // toto pridava bottom border
+        sx={buttonInnerSx}
       >
-        {children}
-      </Typography>
+        <Typography variant={variant ?? 'button3'} sx={textSx}>
+          {children}
+        </Typography>
+        {endElement}
+      </Stack>
     </Box>
   )
 }
