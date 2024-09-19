@@ -12,7 +12,7 @@ export const getButtonWrapperSx = ({
   const invert = !!invertColors !== !!active
 
   return {
-    display: 'flex',
+    display: 'inline-flex',
     cursor: disabled ? 'default' : 'pointer',
     // reset default <button> styles
     padding: 0,
