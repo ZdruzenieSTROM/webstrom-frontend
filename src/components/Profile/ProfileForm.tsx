@@ -115,7 +115,7 @@ export const ProfileForm: FC = () => {
         <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={5} />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
-        <p style={{fontWeight: 'bold'}}>* takto označéné polia sú povinné</p>
+        <p style={{fontWeight: 'bold'}}>* takto označené polia sú povinné</p>
         <Stack direction={'row'} mt={3} gap={2} justifyContent="space-between">
           <Button onClick={returnBack} variant="button2">
             Späť

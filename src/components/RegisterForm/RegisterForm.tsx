@@ -148,7 +148,7 @@ export const RegisterForm: FC = () => {
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <Typography variant="body2" fontWeight={800}>
-          * takto označéné polia sú povinné
+          * takto označené polia sú povinné
         </Typography>
         <Typography variant="body2">
           Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so zákonom
