@@ -159,13 +159,15 @@ export const Problems: FC = () => {
       </Dialog>
 
       <Stack gap={5}>
-        <Stack direction="row" justifyContent="space-between">
-          <Typography variant="body1" display="inline-flex">
-            Ak si nevieš poradiť s niektorou z úloh, pozri si{' '}
+        <Stack direction="row" justifyContent="space-between" flexWrap="wrap">
+          <Stack direction="row" flexWrap="wrap">
+            <Typography variant="body1" display="inline-flex" mr={0.5}>
+              Ak si nevieš poradiť s niektorou z úloh, pozri si
+            </Typography>
             <Link variant="button2" href={`/${seminar}/ako-riesit`}>
               pár tipov
             </Link>
-          </Typography>
+          </Stack>
           <Link variant="button2" href={rulesLink}>
             Pravidlá
           </Link>
