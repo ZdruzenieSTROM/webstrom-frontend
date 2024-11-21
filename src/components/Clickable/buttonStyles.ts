@@ -12,7 +12,7 @@ export const getButtonWrapperSx = ({
   const invert = !!invertColors !== !!active
 
   return {
-    display: 'flex',
+    display: 'inline-flex',
     cursor: disabled ? 'default' : 'pointer',
     // reset default <button> styles
     padding: 0,
@@ -29,11 +29,12 @@ export const getButtonWrapperSx = ({
           '--bgcolor': disabled ? '#ccc' : invert ? 'white' : 'black',
           '--color': disabled ? 'white' : invert ? 'black' : 'white',
         },
+    px: '10px',
+    pb: '4px',
   } satisfies SxProps<Theme>
 }
 
-export const buttonTextSx = {
-  mx: '10px',
-  mb: '4px',
+export const buttonInnerSx = {
   borderBottom: '5px solid',
+  alignItems: 'center',
 } satisfies SxProps<Theme>

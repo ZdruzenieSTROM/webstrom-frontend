@@ -189,7 +189,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
             <>
               <textarea className={styles.textArea} value={commentText} onChange={handleCommentChange} />
               <Stack alignSelf="end">
-                <Button variant="button2" onClick={addComment}>
+                <Button variant="button2" onClick={() => addComment()}>
                   Odoslať
                 </Button>
               </Stack>
