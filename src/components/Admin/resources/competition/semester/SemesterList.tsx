@@ -2,7 +2,6 @@ import {FC} from 'react'
 import {
   BooleanField,
   Datagrid,
-  DateField,
   FunctionField,
   List,
   NumberField,
@@ -11,6 +10,8 @@ import {
   TextField,
 } from 'react-admin'
 
+import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
+
 export const SemesterList: FC = () => (
   <List>
     <Datagrid rowClick="show">
@@ -18,8 +19,8 @@ export const SemesterList: FC = () => (
       <NumberField source="year" />
       <NumberField source="season_code" />
       <TextField source="school_year" />
-      <DateField source="start" />
-      <DateField source="end" />
+      <DateTimeField source="start" />
+      <DateTimeField source="end" />
       <BooleanField source="complete" />
       <TextField source="additional_name" />
       <NumberField source="registration_link" />

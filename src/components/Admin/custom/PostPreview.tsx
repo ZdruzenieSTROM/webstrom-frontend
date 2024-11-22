@@ -23,7 +23,7 @@ export const PostPreview: FC = () => {
                   caption={formData?.caption ?? ''}
                   short_text={formData?.short_text ?? ''}
                   details={formData?.details ?? ''}
-                  added_at={formData?.added_at ?? ''}
+                  added_at={formData?.added_at ?? new Date().toISOString()}
                   visible_after={formData?.visible_after ?? ''}
                   visible_until={formData?.visible_until ?? ''}
                   sites={formData?.sites ?? []}

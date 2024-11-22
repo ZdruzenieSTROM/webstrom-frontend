@@ -33,5 +33,25 @@ const AppMenuBar = () => {
 }
 
 export const AdminLayout = (props: LayoutProps) => {
-  return <Layout {...props} appBar={AppMenuBar} />
+  return (
+    <>
+      <Layout {...props} appBar={AppMenuBar} />
+      <Stack
+        style={{
+          position: 'fixed',
+          right: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: 100,
+          padding: 6,
+          textAlign: 'center',
+          backgroundColor: '#efefef',
+        }}
+      >
+        <Typography color={'#000000'} fontSize={'0.8em'}>
+          Všetky časy sú uvedené v časovom pásme Europe/Bratislava
+        </Typography>
+      </Stack>
+    </>
+  )
 }

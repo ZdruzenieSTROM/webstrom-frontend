@@ -3,7 +3,6 @@ import {
   ArrayField,
   BooleanField,
   Datagrid,
-  DateField,
   NumberField,
   ReferenceArrayField,
   ReferenceField,
@@ -13,6 +12,7 @@ import {
   TextField,
 } from 'react-admin'
 
+import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
@@ -25,8 +25,8 @@ export const SemesterShow: FC = () => (
           <NumberField source="year" />
           <NumberField source="season_code" />
           <TextField source="school_year" />
-          <DateField source="start" />
-          <DateField source="end" />
+          <DateTimeField source="start" />
+          <DateTimeField source="end" />
           <BooleanField source="complete" />
           <TextField source="additional_name" />
           <NumberField source="registration_link" />
@@ -36,7 +36,7 @@ export const SemesterShow: FC = () => (
         <SimpleShowLayout>
           <ArrayField source="series_set">
             <Datagrid rowClick={(id) => `/competition/series/${id}/show`}>
-              <DateField source="deadline" />
+              <DateTimeField source="deadline" />
               <TextField source="order" />
               <ArrayField source="problems">
                 <Datagrid>
