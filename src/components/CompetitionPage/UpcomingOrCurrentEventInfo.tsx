@@ -40,7 +40,7 @@ export const UpcomingOrCurrentEventInfo: FC<{event: Event; name: string; shortNa
       <Typography variant="body1" fontWeight={800}>
         {registrationInfo}
       </Typography>
-      <Stack sx={{alignItems: 'end'}}>
+      <Stack direction="row" sx={{justifyContent: 'end', gap: {xs: 1, sm: 2}}}>
         {publication_set.length > 0 && (
           <Link variant="button2" href={`/api/${publication_set[0].file}`}>
             Pozvánka

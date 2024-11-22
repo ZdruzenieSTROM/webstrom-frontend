@@ -87,7 +87,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               <Typography variant="h3" component="span">
                 {name} {event.school_year}
               </Typography>
-              <Stack direction="row" gap={2}>
+              <Stack direction="row" sx={{gap: {xs: 1, sm: 2}}}>
                 {event.publication_set.map((publication) => (
                   <Link variant="button2" key={publication.id} href={`/api/${publication.file}`}>
                     {publication.name}
