@@ -48,7 +48,7 @@ export const Posts: FC = () => {
         </Grid>
       )}
       {activePostDetailIndex !== undefined && (
-        <Grid container columnSpacing={5}>
+        <Grid container disableEqualOverflow columnSpacing={5}>
           <Grid xs={12} sm={6} md={4}>
             <Stack gap={5}>
               {posts.slice(activePostDetailIndex).map((post, index) => {
