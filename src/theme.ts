@@ -12,6 +12,11 @@ declare module '@mui/material/styles' {
     postTitle: React.CSSProperties
     postBody: React.CSSProperties
     postDate: React.CSSProperties
+    resultsOrder: React.CSSProperties
+    resultsName: React.CSSProperties
+    resultsSchool: React.CSSProperties
+    resultsScore: React.CSSProperties
+    resultsTotal: React.CSSProperties
   }
 
   // allow configuration using `createTheme`
@@ -24,6 +29,11 @@ declare module '@mui/material/styles' {
     postTitle?: React.CSSProperties
     postBody?: React.CSSProperties
     postDate?: React.CSSProperties
+    resultsOrder?: React.CSSProperties
+    resultsName?: React.CSSProperties
+    resultsSchool?: React.CSSProperties
+    resultsScore?: React.CSSProperties
+    resultsTotal?: React.CSSProperties
   }
 }
 
@@ -38,6 +48,11 @@ declare module '@mui/material/Typography' {
     postTitle: true
     postBody: true
     postDate: true
+    resultsOrder: true
+    resultsName: true
+    resultsSchool: true
+    resultsScore: true
+    resultsTotal: true
     // disable these variants
     h4: false
     h5: false
@@ -146,6 +161,30 @@ const _theme = createTheme({
       textTransform: 'uppercase',
       fontWeight: 300,
     },
+    resultsOrder: {
+      ...font.style,
+      fontWeight: 800,
+      fontStyle: 'italic',
+    },
+    resultsName: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
+    },
+    resultsSchool: {
+      ...font.style,
+      fontWeight: 400,
+    },
+    resultsScore: {
+      ...font.style,
+      fontWeight: 400,
+    },
+    resultsTotal: {
+      ...font.style,
+      fontWeight: 800,
+      fontStyle: 'italic',
+    },
   },
   components: {
     MuiTypography: {
@@ -161,6 +200,11 @@ const _theme = createTheme({
           postTitle: 'h1',
           postBody: 'span',
           postDate: 'span',
+          resultsOrder: 'span',
+          resultsName: 'span',
+          resultsSchool: 'span',
+          resultsScore: 'span',
+          resultsTotal: 'span',
         },
       },
     },
@@ -333,6 +377,51 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(13)},
       [lg]: {fontSize: pxToRem(16)},
       [xl]: {fontSize: pxToRem(20)},
+      lineHeight: 1.5,
+    },
+    resultsOrder: {
+      ..._theme.typography.resultsOrder,
+      fontSize: pxToRem(20), // design
+      [sm]: {fontSize: pxToRem(26)},
+      [md]: {fontSize: pxToRem(26)},
+      [lg]: {fontSize: pxToRem(32)},
+      [xl]: {fontSize: pxToRem(48)}, // design
+      lineHeight: 1.5,
+    },
+    resultsName: {
+      ..._theme.typography.resultsName,
+      fontSize: pxToRem(11), // design
+      [sm]: {fontSize: pxToRem(16)},
+      [md]: {fontSize: pxToRem(20)},
+      [lg]: {fontSize: pxToRem(24)},
+      [xl]: {fontSize: pxToRem(30)}, // design
+      lineHeight: 1.5,
+    },
+    resultsSchool: {
+      ..._theme.typography.resultsSchool,
+      fontSize: pxToRem(10), // design
+      [sm]: {fontSize: pxToRem(11)},
+      [md]: {fontSize: pxToRem(12)},
+      [lg]: {fontSize: pxToRem(13)},
+      [xl]: {fontSize: pxToRem(14)}, // design
+      lineHeight: 1.5,
+    },
+    resultsScore: {
+      ..._theme.typography.resultsScore,
+      fontSize: pxToRem(10), // design
+      [sm]: {fontSize: pxToRem(12)},
+      [md]: {fontSize: pxToRem(14)},
+      [lg]: {fontSize: pxToRem(16)},
+      [xl]: {fontSize: pxToRem(18)}, // design
+      lineHeight: 1.5,
+    },
+    resultsTotal: {
+      ..._theme.typography.resultsTotal,
+      fontSize: pxToRem(20), // design
+      [sm]: {fontSize: pxToRem(22)},
+      [md]: {fontSize: pxToRem(24)},
+      [lg]: {fontSize: pxToRem(26)},
+      [xl]: {fontSize: pxToRem(30)}, // design
       lineHeight: 1.5,
     },
   },
