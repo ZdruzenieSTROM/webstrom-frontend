@@ -1,5 +1,4 @@
 export type Styles = {
-  textArea: string
   sideContainer: string
   container: string
   title: string

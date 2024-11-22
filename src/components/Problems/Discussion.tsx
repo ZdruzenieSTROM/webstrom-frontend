@@ -154,7 +154,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
                     {hiddenResponseDialogId === comment.id ? (
                       <Stack my={1} gap={1}>
                         <textarea
-                          className={styles.textArea}
+                          style={{width: '100%', height: '60px', border: '3px solid black'}}
                           value={hiddenResponseText}
                           onChange={handleHiddenResponseChange}
                         />
@@ -192,7 +192,11 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
           <Stack gap={1}>
             {isAuthed ? (
               <>
-                <textarea className={styles.textArea} value={commentText} onChange={handleCommentChange} />
+                <textarea
+                  style={{width: '100%', height: '60px', border: '3px solid black'}}
+                  value={commentText}
+                  onChange={handleCommentChange}
+                />
                 <Stack alignSelf="end">
                   <Button variant="button2" onClick={() => addComment()}>
                     Odoslať
