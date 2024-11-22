@@ -30,10 +30,16 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
       }
     }
 
+    const pageExit = (e: BeforeUnloadEvent) => {
+      e.preventDefault()
+    }
+
     router.events.on('routeChangeStart', pageNavigate)
+    window.addEventListener('beforeunload', pageExit)
 
     return () => {
       router.events.off('routeChangeStart', pageNavigate)
+      window.removeEventListener('beforeunload', pageExit)
     }
   }, [shouldBlockNavigation, currentPath, killNavigation, onNavigate, router.events])
 
