@@ -29,6 +29,7 @@ export const SemesterAdministration: FC = () => {
   const {
     id: {semesterId},
     loading: urlDataLoading,
+    seminar,
   } = useDataFromURL()
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
@@ -113,7 +114,7 @@ export const SemesterAdministration: FC = () => {
           </Stack>
           <Stack px={2} direction="row" justifyContent="space-between">
             {series?.problems.map((problem) => (
-              <Link key={problem.id} variant="button2" href={`/strom/admin/opravit-ulohu/${problem.id}`}>
+              <Link key={problem.id} variant="button2" href={`/${seminar}/admin/opravit-ulohu/${problem.id}`}>
                 {problem.order}. úloha
               </Link>
             ))}
