@@ -103,7 +103,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
         <FormInput
           control={control}
           name="new_school_description"
-          label="povedz nám, na akú školu chodíš, aby sme ti ju mohli pridať*"
+          label="názov školy*"
           rules={school_not_found ? requiredRule : {}}
           sx={{mb: '1rem'}}
         />
