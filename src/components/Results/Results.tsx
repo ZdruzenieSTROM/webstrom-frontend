@@ -41,6 +41,7 @@ export const Results: FC = () => {
         sx={{
           display: 'grid',
           rowGap: {xs: '6px', sm: '10px'},
+          mx: {xs: 1, sm: 3, md: undefined},
           gridTemplateColumns: 'max-content 1fr repeat(3, max-content)',
         }}
       >
