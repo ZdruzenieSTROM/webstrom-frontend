@@ -1,11 +1,11 @@
 import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import {FC, useState} from 'react'
 
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
-import {SemesterWithProblems} from '@/types/api/generated/competition'
+import {SemesterWithProblems, SeriesWithProblems} from '@/types/api/generated/competition'
 import {formatDateTime} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
@@ -85,6 +85,35 @@ export const SemesterAdministration: FC = () => {
     )
   }
 
+  const [semesterFreezeError, setSemesterFreezeError] = useState<string>()
+  const [seriesFreezeError, setSeriesFreezeError] = useState<string>()
+
+  const freezeSemester = async (semester: SemesterWithProblems) => {
+    setSemesterFreezeError('')
+    try {
+      await axios.post(`/api/competition/semester/${semester.id}/results/freeze`)
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setSemesterFreezeError(error.response?.data.detail)
+      } else {
+        setSemesterFreezeError('Nastala neznáma chyba.')
+      }
+    }
+  }
+
+  const freezeSeries = async (series: SeriesWithProblems) => {
+    setSeriesFreezeError('')
+    try {
+      await axios.post(`/api/competition/series/${series.id}/results/freeze`)
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setSeriesFreezeError(error.response?.data.detail)
+      } else {
+        setSeriesFreezeError('Nastala neznáma chyba.')
+      }
+    }
+  }
+
   if (
     urlDataLoading.currentSeriesIsLoading ||
     urlDataLoading.semesterListIsLoading ||
@@ -104,17 +133,19 @@ export const SemesterAdministration: FC = () => {
     <>
       <Typography variant="h3">Administrácia semestra pre opravovateľov.</Typography>
       <Stack mt={3} pl={2} alignItems="start">
-        <Button variant="button2" onClick={() => axios.post(`/api/competition/semester/${semester.id}/results/freeze`)}>
+        <Button variant="button2" onClick={() => freezeSemester(semester)}>
           Uzavrieť semester
         </Button>
+        {semesterFreezeError && <Typography variant="body1">{semesterFreezeError}</Typography>}
       </Stack>
       {semester.series_set.map((series) => (
         <Stack key={series.id} gap={1} mt={5}>
           <Typography variant="h2">{series.order}. séria</Typography>
           <Stack pl={2} alignItems="start">
-            <Button variant="button2" onClick={() => axios.post(`/api/competition/series/${series.id}/results/freeze`)}>
+            <Button variant="button2" onClick={() => freezeSeries(series)}>
               Uzavrieť sériu
             </Button>
+            {seriesFreezeError && <Typography variant="body1">{seriesFreezeError}</Typography>}
           </Stack>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="h3">Opravovanie úloh:</Typography>
