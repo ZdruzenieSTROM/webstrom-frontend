@@ -11,26 +11,12 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 import {Banner} from '../Banner/Banner'
 import {MenuMain} from '../MenuMain/MenuMain'
 
-export const TopGrid: FC = () => {
-  const {seminar} = useSeminarInfo()
-
-  // z napr. `/matik/zadania(/*)` vytiahne `zadania`
-  const pathname = useRouter().pathname.split('/')
-
-  const semesterPickerPage = useMemo(() => {
-    if (pathname[2] === 'zadania' || pathname[2] === 'vysledky') {
-      return pathname[2]
-    }
-    if (pathname[2] === 'admin' && pathname[3] === 'opravovanie') {
-      return 'admin/opravovanie'
-    }
-    return undefined
-  }, [pathname])
-
-  const {pageTitle} = PageTitleContainer.useContainer()
-
-  const links = (
-    <>
+type SeminarButtonsProps = {
+  seminar: string
+}
+const SeminarButtons: FC<SeminarButtonsProps> = ({seminar}) => {
+  return (
+    <Stack sx={{flexDirection: 'row', gap: 1, justifyContent: 'end', flexWrap: 'wrap'}}>
       <Link
         href="/malynar"
         variant="seminarButton"
@@ -52,8 +38,27 @@ export const TopGrid: FC = () => {
       >
         Strom
       </Link>
-    </>
+    </Stack>
   )
+}
+
+export const TopGrid: FC = () => {
+  const {seminar} = useSeminarInfo()
+
+  // z napr. `/matik/zadania(/*)` vytiahne `zadania`
+  const pathname = useRouter().pathname.split('/')
+
+  const semesterPickerPage = useMemo(() => {
+    if (pathname[2] === 'zadania' || pathname[2] === 'vysledky') {
+      return pathname[2]
+    }
+    if (pathname[2] === 'admin' && pathname[3] === 'opravovanie') {
+      return 'admin/opravovanie'
+    }
+    return undefined
+  }, [pathname])
+
+  const {pageTitle} = PageTitleContainer.useContainer()
 
   return (
     <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: 'white', zIndex: 3}}>
@@ -65,12 +70,12 @@ export const TopGrid: FC = () => {
           </Stack>
         </Grid>
         <Grid xs={0} md={9} sx={{display: {xs: 'none', md: 'block'}}}>
-          <Stack sx={{flexDirection: 'row', gap: 1, justifyContent: 'end'}}>{links}</Stack>
+          <SeminarButtons seminar={seminar} />
         </Grid>
         <Grid xs={12} md={0} sx={{display: {xs: 'block', md: 'none'}}}>
           <Stack sx={{flexDirection: 'row', gap: 2, justifyContent: 'end'}}>
-            <Stack sx={{flexDirection: 'row', gap: 1}}>{links}</Stack>
-            <Stack>
+            <SeminarButtons seminar={seminar} />
+            <Stack sx={{flexShrink: 0}}>
               <MenuMain />
             </Stack>
           </Stack>

@@ -71,7 +71,7 @@ export const MenuMain: FC = () => {
     <>
       {!isVisible && (
         <Box
-          sx={{cursor: 'pointer', padding: 0.5, flexShrink: 0, '&:hover': {color: 'white', background: 'black'}}}
+          sx={{cursor: 'pointer', padding: 0.5, '&:hover': {color: 'white', background: 'black'}}}
           onClick={toggleMenu}
         >
           <Menu width={iconSize} height={iconSize} />
