@@ -86,7 +86,7 @@ export const RegisterForm: FC = () => {
           setError('email', {type: 'custom', message: `* ${error.response.data.email[0]}`})
         }
       } else {
-        alert('Neznáma chyba pri registrácii. Skúste to prosím neskôr.')
+        alert('Neznáma chyba pri registrácii. Skús to prosím neskôr.')
       }
     },
   })
@@ -113,7 +113,7 @@ export const RegisterForm: FC = () => {
             ...requiredRule,
             pattern: {
               value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-              message: '* Vložte správnu emailovú adresu.',
+              message: '* Vlož správnu emailovú adresu.',
             },
           }}
         />
