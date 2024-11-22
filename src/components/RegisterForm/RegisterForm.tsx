@@ -152,7 +152,11 @@ export const RegisterForm: FC = () => {
         </Typography>
         <Typography variant="body2">
           Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so zákonom
-          o ochrane osobných údajov. Bližšie informácie nájdete <Link href={`./gdpr`}>tu</Link>.
+          o ochrane osobných údajov. Bližšie informácie nájdete{' '}
+          <Link href={`./gdpr`} target="_blank">
+            tu
+          </Link>
+          .
         </Typography>
         <Stack direction="row" justifyContent="flex-end" mt={3}>
           <Button variant="button2" type="submit" onClick={scrollToTop}>
