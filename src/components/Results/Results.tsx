@@ -37,7 +37,13 @@ export const Results: FC = () => {
   return (
     <div>
       {resultsIsLoading && <Loading />}
-      <Box sx={{display: 'grid', rowGap: '10px', gridTemplateColumns: 'max-content 1fr repeat(3, max-content)'}}>
+      <Box
+        sx={{
+          display: 'grid',
+          rowGap: {xs: '6px', sm: '10px'},
+          gridTemplateColumns: 'max-content 1fr repeat(3, max-content)',
+        }}
+      >
         {results.map((result, index) => (
           <ResultsRow result={result} key={index} />
         ))}

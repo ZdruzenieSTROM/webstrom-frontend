@@ -1,4 +1,4 @@
-import {Box, Stack, Typography} from '@mui/material'
+import {Box, Stack, Theme, Typography, useMediaQuery} from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
 import {FC} from 'react'
 
@@ -42,9 +42,11 @@ export interface Result {
 export const ResultsRow: FC<{result: Result}> = ({result}) => {
   const {solutions, rank_changed, rank_start, registration, subtotal, total} = result
 
+  const smUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up('sm'))
+
   return (
     // `display: 'contents'` je taka HTML verzia fragmentu - tento div sa v strukture nepocita pre ucely parent gridu,
-    // miesto toho sa pouzivaju jednotlive children. preto aj hover tu targetuje children divy, lebo parent v podstate nema velkost
+    // miesto toho sa pouzivaju jednotlive children. preto aj hover tu targetuje children divy, lebo parent v podstate nema velkost.
     // takisto `justifyContent: 'center'` je na vsetkych elementoch osobitne
     <Box sx={{display: 'contents', ':hover > div': {bgcolor: 'black', color: 'white'}}}>
       <Stack
@@ -54,33 +56,42 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
           pl: 1,
         }}
       >
-        <Typography variant="h1" component="span">
-          {rank_changed && rank_start + '.'}
-        </Typography>
+        <Typography variant="resultsOrder">{rank_changed && rank_start + '.'}</Typography>
       </Stack>
-      <Stack sx={{px: '10px', justifyContent: 'center'}}>
-        <Typography variant="h3" component="span">
+      <Stack sx={{px: {xs: '6px', sm: '10px'}, justifyContent: 'center'}}>
+        <Typography variant="resultsName">
           {registration.profile.first_name + ' ' + registration.profile.last_name}
         </Typography>
-        <Typography variant="body3">
-          {registration.school.name + ' ' + registration.school.street + ' ' + registration.school.city}
+        <Typography variant="resultsSchool">
+          {smUp
+            ? `${registration.school.name} ${registration.school.street} ${registration.school.city}`
+            : registration.school.abbreviation}
         </Typography>
       </Stack>
       <Stack sx={{justifyContent: 'center'}}>
-        <Typography variant="h3" component="span" fontWeight={400} fontStyle="italic">
+        {/* reused resultsName font */}
+        <Typography variant="resultsName" fontWeight={400}>
           {registration.grade.tag}
         </Typography>
       </Stack>
-      <Stack sx={{justifyContent: 'center', px: '10px'}}>
+      <Stack sx={{justifyContent: 'center', px: {xs: '6px', sm: '10px'}}}>
         {solutions.map((series, index) => (
           <Stack key={index} direction="row">
             {series.map((solution, index) => (
-              <Typography key={index} variant="body2" sx={{width: '18px', textAlign: 'center'}}>
+              <Typography
+                key={index}
+                variant="resultsScore"
+                sx={{width: {xs: '12px', sm: '18px'}, textAlign: 'center'}}
+              >
                 {solution.points}
               </Typography>
             ))}
             <Tooltip title={`Súčet bodov za ${index + 1}. sériu po uplatnení bonifikácie`}>
-              <Typography variant="body2" fontWeight={600} sx={{width: '25px', textAlign: 'center'}}>
+              <Typography
+                variant="resultsScore"
+                fontWeight={600}
+                sx={{width: {xs: '18px', sm: '25px'}, textAlign: 'center'}}
+              >
                 {subtotal[index]}
               </Typography>
             </Tooltip>
@@ -95,9 +106,7 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
             pr: 1,
           }}
         >
-          <Typography variant="h3" component="span" fontStyle="italic">
-            {total}
-          </Typography>
+          <Typography variant="resultsTotal">{total}</Typography>
         </Stack>
       </Tooltip>
     </Box>
