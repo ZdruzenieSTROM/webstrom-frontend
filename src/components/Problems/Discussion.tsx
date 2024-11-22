@@ -9,10 +9,10 @@ import {AuthContainer} from '@/utils/AuthContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button} from '../Clickable/Button'
+import {CloseButton} from '../CloseButton/CloseButton'
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 import styles from './Discussion.module.scss'
-import {SideContainer} from './SideContainer'
 
 interface DiscussionProps {
   problemId: number
@@ -101,106 +101,112 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
   }
 
   return (
-    <SideContainer title={'Diskusia - úloha ' + problemNumber} onClose={closeDiscussion}>
-      {/* delete comment dialog */}
-      <Dialog
-        open={deleteDialogId !== undefined}
-        close={close}
-        title="Vymazať komentár?"
-        contentText="Komentár bude nenávratne vymazaný."
-        actions={
-          <>
-            <Button variant="button2" onClick={agree}>
-              Potvrdiť
-            </Button>
-            <Button variant="button2" onClick={close}>
-              Zavrieť
-            </Button>
-          </>
-        }
-      />
-      <Stack my={1} mx={2} gap={1} sx={{overflow: 'hidden'}}>
-        <Stack gap={1} sx={{overflowY: 'auto', overscrollBehaviorY: 'contain'}}>
-          {commentsIsLoading && <Loading />}
-          {comments &&
-            comments.map((comment) => {
-              const isPostedByMe = userId === comment.posted_by
-
-              return (
-                <Stack sx={comment.state !== CommentState.Published ? {color: 'gray'} : {}} key={comment.id}>
-                  <Typography variant="h3" component="span">
-                    {comment.posted_by_name}
-                  </Typography>
-                  <Typography variant="body1">{comment.text}</Typography>
-                  {comment.hidden_response && (
-                    <Stack ml={2}>
-                      <Typography variant="h3" component="span">
-                        Vedúci:
-                      </Typography>
-                      <Typography variant="body1">{comment.hidden_response}</Typography>
-                    </Stack>
-                  )}
-                  {comment.state === CommentState.WaitingForReview && (
-                    <Typography variant="body3">* komentár čaká na schválenie</Typography>
-                  )}
-                  {comment.state === CommentState.Hidden && (
-                    <Typography variant="body3">* tento komentár nie je verejný</Typography>
-                  )}
-                  {hiddenResponseDialogId === comment.id ? (
-                    <Stack my={1} gap={1}>
-                      <textarea
-                        className={styles.textArea}
-                        value={hiddenResponseText}
-                        onChange={handleHiddenResponseChange}
-                      />
-                      <Stack alignSelf="end">
-                        <Button onClick={() => hideComment({id: comment.id, hiddenResponseText})} variant="button3">
-                          Odoslať
-                        </Button>
-                      </Stack>
-                    </Stack>
-                  ) : (
-                    <Stack gap={1} alignSelf="end" direction="row">
-                      {comment.state !== CommentState.Published && hasPermissions && (
-                        <Button onClick={() => publishComment(comment.id)} variant="button3">
-                          Zverejniť
-                        </Button>
-                      )}
-                      {comment.state !== CommentState.Hidden && hasPermissions && (
-                        <Button onClick={() => sethiddenResponseDialogId(comment.id)} variant="button3">
-                          Skryť
-                        </Button>
-                      )}
-                      {/* veduci moze zmazat svoj komentar v hocijakom stave, ucastnik moze zmazat svoj nepublishnuty komentar */}
-                      {isPostedByMe && (hasPermissions || comment.state !== CommentState.Published) && (
-                        <Button onClick={() => setDeleteDialogId(comment.id)} variant="button3">
-                          Vymazať
-                        </Button>
-                      )}
-                    </Stack>
-                  )}
-                </Stack>
-              )
-            })}
-        </Stack>
-
-        <Stack gap={1}>
-          {isAuthed ? (
+    <div className={styles.sideContainer}>
+      <aside className={styles.container}>
+        <div className={styles.title}>
+          <CloseButton onClick={closeDiscussion} size={24} sx={{position: 'absolute', right: 12}} />
+          <Typography variant="h3">Diskusia - úloha {problemNumber}</Typography>
+        </div>
+        {/* delete comment dialog */}
+        <Dialog
+          open={deleteDialogId !== undefined}
+          close={close}
+          title="Vymazať komentár?"
+          contentText="Komentár bude nenávratne vymazaný."
+          actions={
             <>
-              <textarea className={styles.textArea} value={commentText} onChange={handleCommentChange} />
-              <Stack alignSelf="end">
-                <Button variant="button2" onClick={() => addComment()}>
-                  Odoslať
-                </Button>
-              </Stack>
+              <Button variant="button2" onClick={agree}>
+                Potvrdiť
+              </Button>
+              <Button variant="button2" onClick={close}>
+                Zavrieť
+              </Button>
             </>
-          ) : (
-            <Typography variant="body2" sx={{color: 'gray'}}>
-              Prispievať do diskusie môžu len prihlásení uživatelia.
-            </Typography>
-          )}
+          }
+        />
+        <Stack my={1} mx={2} gap={1} sx={{overflow: 'hidden'}}>
+          <Stack gap={1} sx={{overflowY: 'auto', overscrollBehaviorY: 'contain'}}>
+            {commentsIsLoading && <Loading />}
+            {comments &&
+              comments.map((comment) => {
+                const isPostedByMe = userId === comment.posted_by
+
+                return (
+                  <Stack sx={comment.state !== CommentState.Published ? {color: 'gray'} : {}} key={comment.id}>
+                    <Typography variant="h3" component="span">
+                      {comment.posted_by_name}
+                    </Typography>
+                    <Typography variant="body1">{comment.text}</Typography>
+                    {comment.hidden_response && (
+                      <Stack ml={2}>
+                        <Typography variant="h3" component="span">
+                          Vedúci:
+                        </Typography>
+                        <Typography variant="body1">{comment.hidden_response}</Typography>
+                      </Stack>
+                    )}
+                    {comment.state === CommentState.WaitingForReview && (
+                      <Typography variant="body3">* komentár čaká na schválenie</Typography>
+                    )}
+                    {comment.state === CommentState.Hidden && (
+                      <Typography variant="body3">* tento komentár nie je verejný</Typography>
+                    )}
+                    {hiddenResponseDialogId === comment.id ? (
+                      <Stack my={1} gap={1}>
+                        <textarea
+                          className={styles.textArea}
+                          value={hiddenResponseText}
+                          onChange={handleHiddenResponseChange}
+                        />
+                        <Stack alignSelf="end">
+                          <Button onClick={() => hideComment({id: comment.id, hiddenResponseText})} variant="button3">
+                            Odoslať
+                          </Button>
+                        </Stack>
+                      </Stack>
+                    ) : (
+                      <Stack gap={1} alignSelf="end" direction="row">
+                        {comment.state !== CommentState.Published && hasPermissions && (
+                          <Button onClick={() => publishComment(comment.id)} variant="button3">
+                            Zverejniť
+                          </Button>
+                        )}
+                        {comment.state !== CommentState.Hidden && hasPermissions && (
+                          <Button onClick={() => sethiddenResponseDialogId(comment.id)} variant="button3">
+                            Skryť
+                          </Button>
+                        )}
+                        {/* veduci moze zmazat svoj komentar v hocijakom stave, ucastnik moze zmazat svoj nepublishnuty komentar */}
+                        {isPostedByMe && (hasPermissions || comment.state !== CommentState.Published) && (
+                          <Button onClick={() => setDeleteDialogId(comment.id)} variant="button3">
+                            Vymazať
+                          </Button>
+                        )}
+                      </Stack>
+                    )}
+                  </Stack>
+                )
+              })}
+          </Stack>
+
+          <Stack gap={1}>
+            {isAuthed ? (
+              <>
+                <textarea className={styles.textArea} value={commentText} onChange={handleCommentChange} />
+                <Stack alignSelf="end">
+                  <Button variant="button2" onClick={() => addComment()}>
+                    Odoslať
+                  </Button>
+                </Stack>
+              </>
+            ) : (
+              <Typography variant="body2" sx={{color: 'gray'}}>
+                Prispievať do diskusie môžu len prihlásení uživatelia.
+              </Typography>
+            )}
+          </Stack>
         </Stack>
-      </Stack>
-    </SideContainer>
+      </aside>
+    </div>
   )
 }

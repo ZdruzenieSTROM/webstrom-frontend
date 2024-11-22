@@ -198,16 +198,14 @@ export const Problems: FC = () => {
           />
         ))}
       </Stack>
-      <div className={styles.sideContainer}>
-        {displaySideContent.type === 'discussion' && (
-          <Discussion
-            problemId={displaySideContent.problemId}
-            problemNumber={displaySideContent.problemNumber}
-            closeDiscussion={() => setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})}
-            invalidateSeriesQuery={invalidateSeriesQuery}
-          />
-        )}
-      </div>
+      {displaySideContent.type === 'discussion' && (
+        <Discussion
+          problemId={displaySideContent.problemId}
+          problemNumber={displaySideContent.problemNumber}
+          closeDiscussion={() => setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})}
+          invalidateSeriesQuery={invalidateSeriesQuery}
+        />
+      )}
     </>
   )
 }
