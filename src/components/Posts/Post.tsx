@@ -25,9 +25,9 @@ export const Post: FC<IPost> = ({caption, short_text, links, details, added_at, 
 
     <Typography variant="postBody">{short_text}</Typography>
 
-    <Stack direction="row" justifyContent="space-between" gap={0.5}>
+    <Stack direction="row" justifyContent="space-between" gap={0.5} mt={0.5}>
       {/* alignItems so the links don't stretch */}
-      <Stack gap={0.5} alignItems="start">
+      <Stack gap={0.5} alignItems="start" ml="-10px">
         {details.length > 0 && (
           <Button type="button" onClick={openDetail} variant="button2">
             Podrobnosti

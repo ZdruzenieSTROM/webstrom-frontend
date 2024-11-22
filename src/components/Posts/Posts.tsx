@@ -37,7 +37,7 @@ export const Posts: FC = () => {
         - druhy grid su prispevky od rozbaleneho prispevku - dva grid itemy ako jeden stlpec prispevkov (`xs={4}`) a druhy stlpec ako detail prispevku (`xs={5}` - detail je sirsi) */}
       {activePostDetailIndex !== 0 && (
         <Grid container disableEqualOverflow columnSpacing={5} mb={5}>
-          <Grid xs={4}>
+          <Grid xs={12} sm={6} md={4}>
             <Stack gap={5}>
               {posts.slice(0, activePostDetailIndex).map((post, index) => {
                 if (!post.sites.includes(seminarId)) return null
@@ -49,7 +49,7 @@ export const Posts: FC = () => {
       )}
       {activePostDetailIndex !== undefined && (
         <Grid container columnSpacing={5}>
-          <Grid xs={4}>
+          <Grid xs={12} sm={6} md={4}>
             <Stack gap={5}>
               {posts.slice(activePostDetailIndex).map((post, index) => {
                 if (!post.sites.includes(seminarId)) return null
@@ -63,7 +63,7 @@ export const Posts: FC = () => {
               })}
             </Stack>
           </Grid>
-          <Grid xs={5}>
+          <Grid xs={12} sm={6} lg={5} mt={{xs: 2, sm: 0}}>
             <PostDetail caption={posts[activePostDetailIndex].caption} details={posts[activePostDetailIndex].details} />
           </Grid>
         </Grid>
