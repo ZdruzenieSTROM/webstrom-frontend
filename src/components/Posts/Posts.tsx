@@ -63,7 +63,7 @@ export const Posts: FC = () => {
               })}
             </Stack>
           </Grid>
-          <Grid xs={12} sm={6} lg={5} mt={{xs: 2, sm: 0}}>
+          <Grid xs={12} sm={6} mt={{xs: 2, sm: 0}}>
             <PostDetail caption={posts[activePostDetailIndex].caption} details={posts[activePostDetailIndex].details} />
           </Grid>
         </Grid>
