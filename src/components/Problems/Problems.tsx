@@ -43,6 +43,8 @@ export const Problems: FC = () => {
     problemSubmitted?: boolean
   }>({type: '', problemId: -1, problemNumber: -1, problemSubmitted: false})
 
+  const closeDiscussion = () => setDisplayDiscussion({type: '', problemId: -1, problemNumber: -1})
+
   const {data: seriesData, isLoading: seriesIsLoading} = useQuery({
     queryKey: ['competition', 'series', id.seriesId],
     queryFn: () => axios.get<SeriesWithProblems>(`/api/competition/series/${id.seriesId}`),
@@ -199,13 +201,13 @@ export const Problems: FC = () => {
       </Stack>
       <Dialog
         open={displayDiscussion.type === 'discussion'}
-        close={() => setDisplayDiscussion({type: '', problemId: -1, problemNumber: -1})}
+        close={closeDiscussion}
         title={`Diskusia - úloha ${displayDiscussion.problemNumber}`}
       >
         <Discussion
           problemId={displayDiscussion.problemId}
           problemNumber={displayDiscussion.problemNumber}
-          closeDiscussion={() => setDisplayDiscussion({type: '', problemId: -1, problemNumber: -1})}
+          closeDiscussion={closeDiscussion}
           invalidateSeriesQuery={invalidateSeriesQuery}
         />
       </Dialog>
