@@ -26,6 +26,7 @@ export const EventCreate: FC = () => {
         <ReferenceInput source="competition" reference="competition/competition">
           <SelectInput fullWidth validate={required()} />
         </ReferenceInput>
+        <TextInput source="location" fullWidth />
         <FormControlLabel
           control={<Checkbox checked={includeRegLink} onChange={(e) => setIncludeRegLink(e.target.checked)} />}
           label="Pridať registračný link"

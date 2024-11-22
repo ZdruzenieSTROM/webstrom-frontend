@@ -12,6 +12,7 @@ export const EventList: FC = () => (
       <TextField source="school_year" />
       <DateTimeField source="start" />
       <DateTimeField source="end" />
+      <TextField source="location" />
       <TextField source="additional_name" />
       <TextField source="registration_link.url" />
       <FunctionField<RaRecord>
