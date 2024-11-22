@@ -16,7 +16,7 @@ type CompetitionPageProps = {
 }
 
 export const CompetitionPage: FC<CompetitionPageProps> = ({
-  competition: {id, name, who_can_participate, description, upcoming_or_current_event, history_events},
+  competition: {id, name, who_can_participate, description, upcoming_or_current_event, history_events, rules},
 }) => {
   const {setBannerMessages} = BannerContainer.useContainer()
 
@@ -45,16 +45,18 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         {description && ` ${description}`}
       </Typography>
 
-      <Stack
-        sx={{
-          mt: 0.5,
-          alignItems: 'end',
-        }}
-      >
-        <Link variant="button2" href={rulesLink}>
-          Pravidlá
-        </Link>
-      </Stack>
+      {rules && (
+        <Stack
+          sx={{
+            mt: 0.5,
+            alignItems: 'end',
+          }}
+        >
+          <Link variant="button2" href={rulesLink}>
+            Pravidlá
+          </Link>
+        </Stack>
+      )}
 
       <Stack gap={2}>
         <Typography variant="h2">Nadchádzajúci ročník</Typography>
