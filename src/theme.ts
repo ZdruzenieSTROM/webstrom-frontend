@@ -179,6 +179,7 @@ const _theme = createTheme({
           padding: '20px',
           justifyContent: 'space-between',
           flexDirection: 'row-reverse',
+          '& > :not(:first-of-type)': {marginLeft: 0},
         },
       },
     },

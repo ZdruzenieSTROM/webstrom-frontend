@@ -1,4 +1,4 @@
-import {Dialog, DialogActions, DialogContent, DialogTitle, Stack, Typography} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
@@ -12,6 +12,7 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 import {useNavigationTrap} from '../../utils/useNavigationTrap'
 import {Button} from '../Clickable/Button'
 import {Link} from '../Clickable/Link'
+import {Dialog} from '../Dialog/Dialog'
 import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
 interface RegisterFormValues extends SchoolSubFormValues {
@@ -117,23 +118,27 @@ export const RegisterForm: FC = () => {
 
   return (
     <>
-      <Dialog open={dialogOpen}>
-        <DialogTitle>Neuložené zmeny</DialogTitle>
-        <DialogContent>Máš neuložené zmeny. Naozaj chceš opustiť stránku?</DialogContent>
-        <DialogActions style={{paddingLeft: 2}}>
-          <Button variant="button2" onClick={continueNavigation}>
-            Opustiť stránku
-          </Button>
-          <Button
-            variant="button2"
-            onClick={() => {
-              setDialogOpen(false)
-            }}
-          >
-            Zostať na stránke
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Dialog
+        open={dialogOpen}
+        title="Neuložené zmeny"
+        contentText="Máš neuložené zmeny. Naozaj chceš opustiť stránku?"
+        actions={
+          <>
+            <Button variant="button2" onClick={continueNavigation}>
+              Opustiť stránku
+            </Button>
+            <Button
+              variant="button2"
+              onClick={() => {
+                setDialogOpen(false)
+              }}
+            >
+              Zostať na stránke
+            </Button>
+          </>
+        }
+      />
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack gap={2}>
           <FormInput
