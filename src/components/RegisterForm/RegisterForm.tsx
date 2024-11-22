@@ -183,9 +183,9 @@ export const RegisterForm: FC = () => {
           </Typography>
           <Typography variant="body2">
             Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so
-            zákonom o ochrane osobných údajov. Bližšie informácie nájdete
+            zákonom o ochrane osobných údajov. Bližšie informácie
             <Link href={`./gdpr`} target="_blank">
-              tu
+              nájdete tu
             </Link>
             .
           </Typography>
