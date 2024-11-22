@@ -33,30 +33,29 @@ export const TopGrid: FC = () => {
     <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: 'white', zIndex: 3}}>
       <Grid container disableEqualOverflow spacing={1} p={3}>
         {/* first row */}
-        <Grid xs={12} md={3}>
-          <Stack sx={{alignItems: {xs: 'end', md: 'start'}}}>
+        <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}}>
+          <Stack sx={{alignItems: 'start'}}>
             <MenuMain />
           </Stack>
         </Grid>
-        <Grid xs={0} md={6} sx={{display: {xs: 'none', md: 'block'}}} />
-        <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}}>
-          <Stack sx={{flexDirection: 'row', spacing: 2, justifyContent: 'flex-end'}}>
+        <Grid xs={9}>
+          <Stack sx={{flexDirection: 'row', gap: 1, justifyContent: {xs: 'start', md: 'end'}}}>
             <Link
               href="/malynar"
-              variant="button1"
+              variant="seminarButton"
               sx={seminar === 'malynar' ? {color: 'white', backgroundColor: 'black'} : {}}
             >
               Malynár
             </Link>
             <Link
-              variant="button1"
+              variant="seminarButton"
               href="/matik"
               sx={seminar === 'matik' ? {color: 'white', backgroundColor: 'black'} : {}}
             >
               Matik
             </Link>
             <Link
-              variant="button1"
+              variant="seminarButton"
               href="/strom"
               sx={seminar === 'strom' ? {color: 'white', backgroundColor: 'black'} : {}}
             >
@@ -64,15 +63,19 @@ export const TopGrid: FC = () => {
             </Link>
           </Stack>
         </Grid>
+        <Grid xs={3} md={0} sx={{display: {xs: 'block', md: 'none'}}}>
+          <Stack sx={{alignItems: 'end'}}>
+            <MenuMain />
+          </Stack>
+        </Grid>
 
         {/* second row */}
-        <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}} />
-        <Grid xs={12} md={6}>
+        <Grid xs={12} md={6} mdOffset={3}>
           <Typography variant="h1">{pageTitle}</Typography>
         </Grid>
         {semesterPickerPage && (
           <Grid xs={12} md={3}>
-            <Stack sx={{alignItems: 'flex-end'}}>
+            <Stack sx={{alignItems: 'end'}}>
               <SemesterPicker page={semesterPickerPage} />
             </Stack>
           </Grid>
