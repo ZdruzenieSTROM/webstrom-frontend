@@ -11,6 +11,37 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 import {Banner} from '../Banner/Banner'
 import {MenuMain} from '../MenuMain/MenuMain'
 
+type SeminarButtonsProps = {
+  seminar: string
+}
+const SeminarButtons: FC<SeminarButtonsProps> = ({seminar}) => {
+  return (
+    <Stack sx={{flexDirection: 'row', gap: 1, justifyContent: 'end', flexWrap: 'wrap'}}>
+      <Link
+        href="/malynar"
+        variant="seminarButton"
+        sx={seminar === 'malynar' ? {color: 'white', backgroundColor: 'black'} : {}}
+      >
+        Malynár
+      </Link>
+      <Link
+        variant="seminarButton"
+        href="/matik"
+        sx={seminar === 'matik' ? {color: 'white', backgroundColor: 'black'} : {}}
+      >
+        Matik
+      </Link>
+      <Link
+        variant="seminarButton"
+        href="/strom"
+        sx={seminar === 'strom' ? {color: 'white', backgroundColor: 'black'} : {}}
+      >
+        Strom
+      </Link>
+    </Stack>
+  )
+}
+
 export const TopGrid: FC = () => {
   const {seminar} = useSeminarInfo()
 
@@ -33,48 +64,30 @@ export const TopGrid: FC = () => {
     <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: 'white', zIndex: 3}}>
       <Grid container disableEqualOverflow spacing={1} p={3}>
         {/* first row */}
-        <Grid xs={12} md={3}>
-          <Stack sx={{alignItems: {xs: 'end', md: 'start'}}}>
+        <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}}>
+          <Stack sx={{alignItems: 'start'}}>
             <MenuMain />
           </Stack>
         </Grid>
-        <Grid xs={0} md={6} sx={{display: {xs: 'none', md: 'block'}}} />
-        <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}}>
-          <Stack sx={{flexDirection: 'row', spacing: 2, justifyContent: 'flex-end'}}>
-            <Link
-              href="/malynar"
-              variant="button1"
-              sx={seminar === 'malynar' ? {color: 'white', backgroundColor: 'black'} : {}}
-            >
-              Malynár
-            </Link>
-            <Link
-              variant="button1"
-              href="/matik"
-              sx={seminar === 'matik' ? {color: 'white', backgroundColor: 'black'} : {}}
-            >
-              Matik
-            </Link>
-            <Link
-              variant="button1"
-              href="/strom"
-              sx={seminar === 'strom' ? {color: 'white', backgroundColor: 'black'} : {}}
-            >
-              Strom
-            </Link>
+        <Grid xs={0} md={9} sx={{display: {xs: 'none', md: 'block'}}}>
+          <SeminarButtons seminar={seminar} />
+        </Grid>
+        <Grid xs={12} md={0} sx={{display: {xs: 'block', md: 'none'}}}>
+          <Stack sx={{flexDirection: 'row', gap: 2, justifyContent: 'end'}}>
+            <SeminarButtons seminar={seminar} />
+            <Stack sx={{flexShrink: 0}}>
+              <MenuMain />
+            </Stack>
           </Stack>
         </Grid>
 
         {/* second row */}
-        <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}} />
-        <Grid xs={12} md={6}>
+        <Grid xs={12} md={6} mdOffset={3}>
           <Typography variant="h1">{pageTitle}</Typography>
         </Grid>
         {semesterPickerPage && (
           <Grid xs={12} md={3}>
-            <Stack sx={{alignItems: 'flex-end'}}>
-              <SemesterPicker page={semesterPickerPage} />
-            </Stack>
+            <SemesterPicker page={semesterPickerPage} />
           </Grid>
         )}
       </Grid>

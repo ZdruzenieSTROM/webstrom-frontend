@@ -99,7 +99,11 @@ export const MenuMain: FC = () => {
         }}
       >
         <Box flexGrow={1}>
-          <CloseButton size={iconSize} onClick={toggleMenu} sx={{position: 'absolute', top: 24, left: 24}} />
+          <CloseButton
+            size={iconSize}
+            onClick={toggleMenu}
+            sx={{position: 'absolute', top: 24, left: {xs: undefined, md: 24}, right: {xs: 24, md: undefined}}}
+          />
           {menuItemsIsLoading && (
             <Box sx={{position: 'absolute', top: '50%', left: 0, right: 0, color: 'white'}}>
               <Loading />

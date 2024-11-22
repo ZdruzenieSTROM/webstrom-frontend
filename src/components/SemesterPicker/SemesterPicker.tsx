@@ -74,12 +74,13 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
       sx={{
         flexDirection: 'row',
         alignItems: 'center',
-        columnGap: 2,
-        // wrap na nizsich rozliseniach
-        flexWrap: 'wrap',
-        rowGap: 1,
+        // wrap na velmi nizkych rozliseniach
+        flexWrap: 'wrap-reverse',
+        rowGap: 0.5,
         zIndex: 1000,
         userSelect: 'none',
+        // pre pouzitie v TopGrid + pri wrapnuti
+        justifyContent: 'end',
       }}
     >
       {page !== 'admin/opravovanie' && <Dropdown title={'Séria'} options={dropdownSeriesList} />}
