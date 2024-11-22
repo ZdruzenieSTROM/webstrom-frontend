@@ -29,6 +29,32 @@ export const TopGrid: FC = () => {
 
   const {pageTitle} = PageTitleContainer.useContainer()
 
+  const links = (
+    <>
+      <Link
+        href="/malynar"
+        variant="seminarButton"
+        sx={seminar === 'malynar' ? {color: 'white', backgroundColor: 'black'} : {}}
+      >
+        Malynár
+      </Link>
+      <Link
+        variant="seminarButton"
+        href="/matik"
+        sx={seminar === 'matik' ? {color: 'white', backgroundColor: 'black'} : {}}
+      >
+        Matik
+      </Link>
+      <Link
+        variant="seminarButton"
+        href="/strom"
+        sx={seminar === 'strom' ? {color: 'white', backgroundColor: 'black'} : {}}
+      >
+        Strom
+      </Link>
+    </>
+  )
+
   return (
     <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: 'white', zIndex: 3}}>
       <Grid container disableEqualOverflow spacing={1} p={3}>
@@ -38,34 +64,15 @@ export const TopGrid: FC = () => {
             <MenuMain />
           </Stack>
         </Grid>
-        <Grid xs={9}>
-          <Stack sx={{flexDirection: 'row', gap: 1, justifyContent: {xs: 'start', md: 'end'}}}>
-            <Link
-              href="/malynar"
-              variant="seminarButton"
-              sx={seminar === 'malynar' ? {color: 'white', backgroundColor: 'black'} : {}}
-            >
-              Malynár
-            </Link>
-            <Link
-              variant="seminarButton"
-              href="/matik"
-              sx={seminar === 'matik' ? {color: 'white', backgroundColor: 'black'} : {}}
-            >
-              Matik
-            </Link>
-            <Link
-              variant="seminarButton"
-              href="/strom"
-              sx={seminar === 'strom' ? {color: 'white', backgroundColor: 'black'} : {}}
-            >
-              Strom
-            </Link>
-          </Stack>
+        <Grid xs={0} md={9} sx={{display: {xs: 'none', md: 'block'}}}>
+          <Stack sx={{flexDirection: 'row', gap: 1, justifyContent: 'end'}}>{links}</Stack>
         </Grid>
-        <Grid xs={3} md={0} sx={{display: {xs: 'block', md: 'none'}}}>
-          <Stack sx={{alignItems: 'end'}}>
-            <MenuMain />
+        <Grid xs={12} md={0} sx={{display: {xs: 'block', md: 'none'}}}>
+          <Stack sx={{flexDirection: 'row', gap: 2, justifyContent: 'end'}}>
+            <Stack sx={{flexDirection: 'row', gap: 1}}>{links}</Stack>
+            <Stack>
+              <MenuMain />
+            </Stack>
           </Stack>
         </Grid>
 
