@@ -1,11 +1,16 @@
 import {FC} from 'react'
-import {Datagrid, List, ReferenceField} from 'react-admin'
+import {Datagrid, FunctionField, List, ReferenceField, TextField} from 'react-admin'
 
 export const EventRegistrationList: FC = () => (
   <List>
     <Datagrid rowClick="show">
-      <ReferenceField source="school" reference="personal/schools" link={false} />
-      <ReferenceField source="profile" reference="personal/profiles" link={false} />
+      <FunctionField
+        source="profile.last_name"
+        label="Meno a priezvisko"
+        render={(record) => `${record.profile.first_name} ${record.profile.last_name}`}
+      />
+      <TextField source="school.abbreviation" label="Škola" />
+      <TextField source="grade.tag" label="Ročník" />
       <ReferenceField source="event" reference="competition/event" link={false} />
     </Datagrid>
   </List>

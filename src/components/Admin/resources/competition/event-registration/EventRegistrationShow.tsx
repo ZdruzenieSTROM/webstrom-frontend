@@ -1,14 +1,19 @@
 import {FC} from 'react'
-import {ReferenceField, SimpleShowLayout} from 'react-admin'
+import {FunctionField, ReferenceField, SimpleShowLayout, TextField} from 'react-admin'
 
 import {MyShow} from '@/components/Admin/custom/MyShow'
 
 export const EventRegistrationShow: FC = () => (
   <MyShow>
     <SimpleShowLayout>
-      <ReferenceField source="school" reference="personal/schools" link="show" />
-      <ReferenceField source="profile" reference="personal/profiles" link="show" />
-      <ReferenceField source="event" reference="competition/event" link="show" />
+      <FunctionField
+        source="profile.last_name"
+        label="Meno a priezvisko"
+        render={(record) => `${record.profile.first_name} ${record.profile.last_name}`}
+      />
+      <TextField source="school.abbreviation" label="Škola" />
+      <TextField source="grade.tag" label="Ročník" />
+      <ReferenceField source="event" reference="competition/event" link={false} />
     </SimpleShowLayout>
   </MyShow>
 )
