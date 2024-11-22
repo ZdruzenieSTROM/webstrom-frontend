@@ -11,8 +11,6 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 import {Button} from '../Clickable/Button'
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
-import styles from './Discussion.module.scss'
-import {SideContainer} from './SideContainer'
 
 interface DiscussionProps {
   problemId: number
@@ -21,7 +19,7 @@ interface DiscussionProps {
   invalidateSeriesQuery: () => Promise<void>
 }
 
-export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, closeDiscussion, invalidateSeriesQuery}) => {
+export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuery}) => {
   const [commentText, setCommentText] = useState('')
   const [hiddenResponseText, setHiddenResponseText] = useState('')
   const [hiddenResponseDialogId, sethiddenResponseDialogId] = useState(-1)
@@ -101,7 +99,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
   }
 
   return (
-    <SideContainer title={'Diskusia - úloha ' + problemNumber} onClose={closeDiscussion}>
+    <>
       {/* delete comment dialog */}
       <Dialog
         open={deleteDialogId !== undefined}
@@ -119,7 +117,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
           </>
         }
       />
-      <Stack my={1} mx={2} gap={1} sx={{overflow: 'hidden'}}>
+      <Stack gap={1} sx={{overflow: 'hidden'}}>
         <Stack gap={1} sx={{overflowY: 'auto', overscrollBehaviorY: 'contain'}}>
           {commentsIsLoading && <Loading />}
           {comments &&
@@ -131,7 +129,9 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
                   <Typography variant="h3" component="span">
                     {comment.posted_by_name}
                   </Typography>
-                  <Typography variant="body1">{comment.text}</Typography>
+                  <Typography variant="body1" style={{wordBreak: 'break-word'}}>
+                    {comment.text}
+                  </Typography>
                   {comment.hidden_response && (
                     <Stack ml={2}>
                       <Typography variant="h3" component="span">
@@ -149,7 +149,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
                   {hiddenResponseDialogId === comment.id ? (
                     <Stack my={1} gap={1}>
                       <textarea
-                        className={styles.textArea}
+                        style={{width: '100%', height: '60px', border: '3px solid black'}}
                         value={hiddenResponseText}
                         onChange={handleHiddenResponseChange}
                       />
@@ -187,7 +187,11 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
         <Stack gap={1}>
           {isAuthed ? (
             <>
-              <textarea className={styles.textArea} value={commentText} onChange={handleCommentChange} />
+              <textarea
+                style={{width: '100%', height: '60px', border: '3px solid black'}}
+                value={commentText}
+                onChange={handleCommentChange}
+              />
               <Stack alignSelf="end">
                 <Button variant="button2" onClick={() => addComment()}>
                   Odoslať
@@ -201,6 +205,6 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
           )}
         </Stack>
       </Stack>
-    </SideContainer>
+    </>
   )
 }

@@ -19,7 +19,6 @@ import {Loading} from '../Loading/Loading'
 import {LoginForm} from '../PageLayout/LoginForm/LoginForm'
 import {Discussion} from './Discussion'
 import {Problem} from './Problem'
-import styles from './Problems.module.scss'
 
 export const Problems: FC = () => {
   const {id, seminar, loading} = useDataFromURL()
@@ -37,12 +36,14 @@ export const Problems: FC = () => {
   const profile = data?.data
 
   // used to display discussions
-  const [displaySideContent, setDisplaySideContent] = useState<{
+  const [displayDiscussion, setDisplayDiscussion] = useState<{
     type: string
     problemId: number
     problemNumber: number
     problemSubmitted?: boolean
   }>({type: '', problemId: -1, problemNumber: -1, problemSubmitted: false})
+
+  const closeDiscussion = () => setDisplayDiscussion({type: '', problemId: -1, problemNumber: -1})
 
   const {data: seriesData, isLoading: seriesIsLoading} = useQuery({
     queryKey: ['competition', 'series', id.seriesId],
@@ -187,7 +188,7 @@ export const Problems: FC = () => {
           <Problem
             key={problem.id}
             problem={problem}
-            setDisplaySideContent={setDisplaySideContent}
+            setDisplaySideContent={setDisplayDiscussion}
             registered={isRegistered}
             canRegister={canRegister}
             canSubmit={problem.submitted ? canResubmit : canSubmit}
@@ -198,16 +199,18 @@ export const Problems: FC = () => {
           />
         ))}
       </Stack>
-      <div className={styles.sideContainer}>
-        {displaySideContent.type === 'discussion' && (
-          <Discussion
-            problemId={displaySideContent.problemId}
-            problemNumber={displaySideContent.problemNumber}
-            closeDiscussion={() => setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})}
-            invalidateSeriesQuery={invalidateSeriesQuery}
-          />
-        )}
-      </div>
+      <Dialog
+        open={displayDiscussion.type === 'discussion'}
+        close={closeDiscussion}
+        title={`Diskusia - úloha ${displayDiscussion.problemNumber}`}
+      >
+        <Discussion
+          problemId={displayDiscussion.problemId}
+          problemNumber={displayDiscussion.problemNumber}
+          closeDiscussion={closeDiscussion}
+          invalidateSeriesQuery={invalidateSeriesQuery}
+        />
+      </Dialog>
     </>
   )
 }
