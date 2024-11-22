@@ -1,5 +1,4 @@
 import {Stack, Typography} from '@mui/material'
-import Grid from '@mui/material/Unstable_Grid2'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -19,7 +18,6 @@ import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 import {LoginForm} from '../PageLayout/LoginForm/LoginForm'
 import {Discussion} from './Discussion'
-// import styles from './Discussion.module.scss'
 import {Problem} from './Problem'
 
 export const Problems: FC = () => {

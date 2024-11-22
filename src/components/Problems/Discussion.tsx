@@ -1,4 +1,4 @@
-import {Stack, Theme, Typography, useMediaQuery} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import {FC, useState} from 'react'
@@ -9,7 +9,6 @@ import {AuthContainer} from '@/utils/AuthContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Button} from '../Clickable/Button'
-import {CloseButton} from '../CloseButton/CloseButton'
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 
@@ -20,14 +19,11 @@ interface DiscussionProps {
   invalidateSeriesQuery: () => Promise<void>
 }
 
-export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, closeDiscussion, invalidateSeriesQuery}) => {
+export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuery}) => {
   const [commentText, setCommentText] = useState('')
   const [hiddenResponseText, setHiddenResponseText] = useState('')
   const [hiddenResponseDialogId, sethiddenResponseDialogId] = useState(-1)
   const [deleteDialogId, setDeleteDialogId] = useState<number | undefined>()
-
-  const lg = useMediaQuery<Theme>((theme) => theme.breakpoints.up('lg'))
-  const iconSize = lg ? 24 : 14
 
   const queryKey = ['competition', 'problem', problemId, 'comments']
   const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
