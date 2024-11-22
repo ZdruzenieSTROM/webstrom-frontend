@@ -102,7 +102,14 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
 
   return (
     <div className={styles.sideContainer}>
-      <div className={styles.container}>
+      <Stack
+        sx={{
+          border: '8px solid black',
+          backgroundColor: 'white',
+          overflow: 'hidden',
+          maxHeight: '100%',
+        }}
+      >
         <Stack sx={{justifyContent: 'center', alignItems: 'center', pb: 1, color: 'white', backgroundColor: 'black'}}>
           <CloseButton onClick={closeDiscussion} size={24} sx={{position: 'absolute', right: 12}} />
           <Typography variant="h3">Diskusia - úloha {problemNumber}</Typography>
@@ -210,7 +217,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
             )}
           </Stack>
         </Stack>
-      </div>
+      </Stack>
     </div>
   )
 }

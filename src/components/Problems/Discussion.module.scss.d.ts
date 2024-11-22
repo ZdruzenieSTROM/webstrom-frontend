@@ -1,6 +1,5 @@
 export type Styles = {
   sideContainer: string
-  container: string
 }
 
 export type ClassNames = keyof Styles
