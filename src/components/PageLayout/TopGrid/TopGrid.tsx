@@ -87,9 +87,7 @@ export const TopGrid: FC = () => {
         </Grid>
         {semesterPickerPage && (
           <Grid xs={12} md={3}>
-            <Stack sx={{alignItems: 'end'}}>
-              <SemesterPicker page={semesterPickerPage} />
-            </Stack>
+            <SemesterPicker page={semesterPickerPage} />
           </Grid>
         )}
       </Grid>
