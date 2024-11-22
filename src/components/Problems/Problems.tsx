@@ -1,4 +1,5 @@
 import {Stack, Typography} from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
@@ -18,8 +19,8 @@ import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 import {LoginForm} from '../PageLayout/LoginForm/LoginForm'
 import {Discussion} from './Discussion'
+// import styles from './Discussion.module.scss'
 import {Problem} from './Problem'
-import styles from './Problems.module.scss'
 
 export const Problems: FC = () => {
   const {id, seminar, loading} = useDataFromURL()
@@ -37,7 +38,7 @@ export const Problems: FC = () => {
   const profile = data?.data
 
   // used to display discussions
-  const [displaySideContent, setDisplaySideContent] = useState<{
+  const [displayDiscussion, setDisplayDiscussion] = useState<{
     type: string
     problemId: number
     problemNumber: number
@@ -187,7 +188,7 @@ export const Problems: FC = () => {
           <Problem
             key={problem.id}
             problem={problem}
-            setDisplaySideContent={setDisplaySideContent}
+            setDisplaySideContent={setDisplayDiscussion}
             registered={isRegistered}
             canRegister={canRegister}
             canSubmit={problem.submitted ? canResubmit : canSubmit}
@@ -198,14 +199,18 @@ export const Problems: FC = () => {
           />
         ))}
       </Stack>
-      {displaySideContent.type === 'discussion' && (
+      <Dialog
+        open={displayDiscussion.type === 'discussion'}
+        close={() => setDisplayDiscussion({type: '', problemId: -1, problemNumber: -1})}
+        title={`Diskusia - úloha ${displayDiscussion.problemNumber}`}
+      >
         <Discussion
-          problemId={displaySideContent.problemId}
-          problemNumber={displaySideContent.problemNumber}
-          closeDiscussion={() => setDisplaySideContent({type: '', problemId: -1, problemNumber: -1})}
+          problemId={displayDiscussion.problemId}
+          problemNumber={displayDiscussion.problemNumber}
+          closeDiscussion={() => setDisplayDiscussion({type: '', problemId: -1, problemNumber: -1})}
           invalidateSeriesQuery={invalidateSeriesQuery}
         />
-      )}
+      </Dialog>
     </>
   )
 }

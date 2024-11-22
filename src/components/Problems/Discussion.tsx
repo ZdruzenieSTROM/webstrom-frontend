@@ -103,28 +103,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
   }
 
   return (
-    <Stack
-      sx={{
-        border: '8px solid black',
-        backgroundColor: 'white',
-        overflow: 'hidden',
-        maxHeight: '100%',
-      }}
-    >
-      <Stack
-        direction="row"
-        sx={{
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          px: 0.5,
-          pb: 1,
-          color: 'white',
-          backgroundColor: 'black',
-        }}
-      >
-        <Typography variant="h3">Diskusia - úloha {problemNumber}</Typography>
-        <CloseButton onClick={closeDiscussion} size={iconSize} />
-      </Stack>
+    <>
       {/* delete comment dialog */}
       <Dialog
         open={deleteDialogId !== undefined}
@@ -142,7 +121,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
           </>
         }
       />
-      <Stack my={1} mx={2} gap={1} sx={{overflow: 'hidden'}}>
+      <Stack gap={1} sx={{overflow: 'hidden'}}>
         <Stack gap={1} sx={{overflowY: 'auto', overscrollBehaviorY: 'contain'}}>
           {commentsIsLoading && <Loading />}
           {comments &&
@@ -154,7 +133,9 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
                   <Typography variant="h3" component="span">
                     {comment.posted_by_name}
                   </Typography>
-                  <Typography variant="body1">{comment.text}</Typography>
+                  <Typography variant="body1" style={{wordBreak: 'break-word'}}>
+                    {comment.text}
+                  </Typography>
                   {comment.hidden_response && (
                     <Stack ml={2}>
                       <Typography variant="h3" component="span">
@@ -228,6 +209,6 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
           )}
         </Stack>
       </Stack>
-    </Stack>
+    </>
   )
 }
