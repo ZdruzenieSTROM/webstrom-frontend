@@ -42,18 +42,32 @@ export const dataProvider: DataProvider = {
     const stringifiedQuery = stringify(query)
     const {data} = await axios.get(`${apiUrl}/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`)
 
+    // client-side filter
+    const filter = params.filter.q
+    let filteredData = data
+    if (filter) {
+      // v podstate vygenerovane Copilotom :D
+      // vyhladava to filter string vo vsetkych fieldoch kazdeho recordu
+      filteredData = data.filter((record: RaRecord) => {
+        return Object.keys(record).some((key) => {
+          const value = record[key]
+          return value && value.toString().toLowerCase().includes(filter.toLowerCase())
+        })
+      })
+    }
+
     // client-side sort
     const {field, order} = params.sort
 
-    data.sort(dynamicSort(field, order))
+    filteredData.sort(dynamicSort(field, order))
 
     // client-side pagination
     const {page, perPage} = params.pagination
-    const pagedData = data.slice((page - 1) * perPage, page * perPage)
+    const pagedData = filteredData.slice((page - 1) * perPage, page * perPage)
 
     return {
       data: pagedData,
-      total: data.length,
+      total: filteredData.length,
     }
   },
   getOne: async (resource, params) => {

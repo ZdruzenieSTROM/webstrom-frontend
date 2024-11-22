@@ -11,7 +11,12 @@ interface Registration {
     city: string
     zip_code: string
   }
-  grade: string
+  grade: {
+    name: string
+    tag: string
+    years_until_graduation: number
+    is_active: boolean
+  }
   profile: {
     first_name: string
     last_name: string
@@ -63,7 +68,7 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
       </Stack>
       <Stack sx={{justifyContent: 'center'}}>
         <Typography variant="h3" component="span" fontWeight={400} fontStyle="italic">
-          {registration.grade}
+          {registration.grade.tag}
         </Typography>
       </Stack>
       <Stack sx={{justifyContent: 'center', px: '10px'}}>
