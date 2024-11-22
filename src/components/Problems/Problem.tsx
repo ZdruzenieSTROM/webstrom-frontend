@@ -97,9 +97,9 @@ export const Problem: FC<{
           sx={{
             mt: 0.5,
             justifyContent: 'end',
-            gap: 4,
-            // ked sa jeden dlhsi text wrapne, tak aby nenabrali vsetky buttony taku velku vysku
-            alignItems: 'start',
+            flexWrap: 'wrap',
+            columnGap: {xs: 1, sm: 2, md: 2},
+            rowGap: 1,
           }}
         >
           {problem.solution_pdf && (
