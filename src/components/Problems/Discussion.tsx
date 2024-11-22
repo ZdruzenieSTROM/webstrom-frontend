@@ -102,11 +102,11 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
 
   return (
     <div className={styles.sideContainer}>
-      <aside className={styles.container}>
-        <div className={styles.title}>
+      <div className={styles.container}>
+        <Stack sx={{justifyContent: 'center', alignItems: 'center', pb: 1, color: 'white', backgroundColor: 'black'}}>
           <CloseButton onClick={closeDiscussion} size={24} sx={{position: 'absolute', right: 12}} />
           <Typography variant="h3">Diskusia - úloha {problemNumber}</Typography>
-        </div>
+        </Stack>
         {/* delete comment dialog */}
         <Dialog
           open={deleteDialogId !== undefined}
@@ -210,7 +210,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, problemNumber, close
             )}
           </Stack>
         </Stack>
-      </aside>
+      </div>
     </div>
   )
 }
