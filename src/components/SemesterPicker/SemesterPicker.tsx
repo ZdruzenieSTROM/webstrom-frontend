@@ -74,10 +74,9 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
       sx={{
         flexDirection: 'row',
         alignItems: 'center',
-        columnGap: 2,
-        // wrap na nizsich rozliseniach
+        // wrap na velmi nizkych rozliseniach
         flexWrap: 'wrap',
-        rowGap: 1,
+        rowGap: 0.5,
         zIndex: 1000,
         userSelect: 'none',
       }}
