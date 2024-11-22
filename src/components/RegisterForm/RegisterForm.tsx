@@ -1,14 +1,15 @@
-import {Stack, Typography} from '@mui/material'
+import {Dialog, DialogActions, DialogContent, DialogTitle, Stack, Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
-import {FC} from 'react'
-import {SubmitHandler, useForm} from 'react-hook-form'
+import {FC, useState} from 'react'
+import {SubmitHandler, useForm, useFormState} from 'react-hook-form'
 
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
+import {useNavigationTrap} from '../../utils/useNavigationTrap'
 import {Button} from '../Clickable/Button'
 import {Link} from '../Clickable/Link'
 import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
@@ -47,6 +48,8 @@ export const RegisterForm: FC = () => {
     defaultValues,
     values: defaultValues,
   })
+
+  const {isDirty} = useFormState<RegisterFormValues>({control: control})
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -102,68 +105,94 @@ export const RegisterForm: FC = () => {
         return '* Zadaj telefónne číslo vo formáte +421 123 456 789 alebo +421123456789.'
     },
   }
+
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const {continueNavigation} = useNavigationTrap({
+    shouldBlockNavigation: isDirty,
+    onNavigate: () => {
+      setDialogOpen(true)
+    },
+  })
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap={2}>
-        <FormInput
-          control={control}
-          name="email"
-          label="e-mail*"
-          rules={{
-            ...requiredRule,
-            pattern: {
-              value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-              message: '* Vložte správnu emailovú adresu.',
-            },
-          }}
-        />
-        <FormInput
-          control={control}
-          name="password1"
-          label="heslo*"
-          type="password"
-          rules={{
-            ...requiredRule,
-            minLength: {
-              value: 8,
-              message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
-            },
-          }}
-        />
-        <FormInput
-          control={control}
-          name="password2"
-          label="potvrdenie hesla*"
-          type="password"
-          rules={{
-            ...requiredRule,
-            validate: (val) => {
-              if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
-            },
-          }}
-        />
-        <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
-        <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
-        <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={2} />
-        <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
-        <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
-        <Typography variant="body2" fontWeight={800}>
-          * takto označené polia sú povinné
-        </Typography>
-        <Typography variant="body2">
-          Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so zákonom
-          o ochrane osobných údajov. Bližšie informácie nájdete{' '}
-          <Link href={`./gdpr`} target="_blank">
-            tu
-          </Link>
-          .
-        </Typography>
-        <Stack direction="row" justifyContent="flex-end" mt={3}>
-          <Button variant="button2" type="submit" onClick={scrollToTop}>
-            Registrovať
+    <>
+      <Dialog open={dialogOpen}>
+        <DialogTitle>Dialog content LoremIpsum</DialogTitle>
+        <DialogContent>Dialog content LoremIpsum</DialogContent>
+        <DialogActions>
+          <Button onClick={continueNavigation}>Yes</Button>
+          <Button
+            onClick={() => {
+              setDialogOpen(false)
+            }}
+          >
+            No
           </Button>
+        </DialogActions>
+      </Dialog>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack gap={2}>
+          <FormInput
+            control={control}
+            name="email"
+            label="e-mail*"
+            rules={{
+              ...requiredRule,
+              pattern: {
+                value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
+                message: '* Vložte správnu emailovú adresu.',
+              },
+            }}
+          />
+          <FormInput
+            control={control}
+            name="password1"
+            label="heslo*"
+            type="password"
+            rules={{
+              ...requiredRule,
+              minLength: {
+                value: 8,
+                message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
+              },
+            }}
+          />
+          <FormInput
+            control={control}
+            name="password2"
+            label="potvrdenie hesla*"
+            type="password"
+            rules={{
+              ...requiredRule,
+              validate: (val) => {
+                if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
+              },
+            }}
+          />
+          <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
+          <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
+          <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={2} />
+          <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
+          <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
+          <Typography variant="body2" fontWeight={800}>
+            * takto označené polia sú povinné
+          </Typography>
+          <Typography variant="body2">
+            Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so
+            zákonom o ochrane osobných údajov. Bližšie informácie nájdete{' '}
+            <Link href={`./gdpr`} target="_blank">
+              tu
+            </Link>
+            .
+          </Typography>
+          <Stack direction="row" justifyContent="flex-end" mt={3}>
+            <Button variant="button2" type="submit" onClick={scrollToTop}>
+              Registrovať
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </form>
+      </form>
+    </>
   )
 }
