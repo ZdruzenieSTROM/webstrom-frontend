@@ -6,6 +6,7 @@
   // potrebne, aby sa dodrzali parent hranice komponentu, aj ked tu bude vela contentu.
   // ratame s tym, ze si overflow ten content (napr. div s komentarmi) ohandli sam scrollbarom.
   overflow: hidden;
+  max-height: 100%;
 }
 
 .title {
