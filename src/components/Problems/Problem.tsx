@@ -98,7 +98,7 @@ export const Problem: FC<{
             mt: 0.5,
             justifyContent: 'end',
             flexWrap: 'wrap',
-            columnGap: {xs: 1, sm: 2, md: 2},
+            columnGap: {xs: 1, sm: 2},
             rowGap: 1,
           }}
         >

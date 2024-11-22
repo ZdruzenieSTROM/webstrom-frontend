@@ -31,6 +31,7 @@ export interface Event {
   is_registered: boolean
   publication_set: Publication[]
   registration_link: RegistrationLink
+  location: string | null
   year: number | null
   school_year: string | null
   season_code: number
@@ -43,6 +44,7 @@ export interface Event {
 export interface CompetitionType {
   id: number
   name: string
+  short_name: string
 }
 
 export interface Competition {
