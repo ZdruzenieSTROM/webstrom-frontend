@@ -13,7 +13,6 @@ import {useHasPermissions} from '@/utils/useHasPermissions'
 import {Loading} from '../Loading/Loading'
 import {PublicationUploader} from '../PublicationUploader/PublicationUploader'
 import {Result} from '../Results/ResultsRow'
-import styles from './SemesterAdministration.module.scss'
 
 interface PostalCard {
   code: number
@@ -166,7 +165,7 @@ export const SemesterAdministration: FC = () => {
 
       {textareaContent && (
         <Stack mt={5} gap={2} alignItems="end">
-          <textarea rows={10} value={textareaContent} readOnly className={styles.textarea} />
+          <textarea rows={10} value={textareaContent} readOnly style={{width: '100%'}} />
           <Button variant="button2" onClick={() => navigator.clipboard.writeText(textareaContent)}>
             kopírovať
           </Button>
