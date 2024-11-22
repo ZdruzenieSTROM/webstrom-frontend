@@ -118,16 +118,19 @@ export const RegisterForm: FC = () => {
   return (
     <>
       <Dialog open={dialogOpen}>
-        <DialogTitle>Dialog content LoremIpsum</DialogTitle>
-        <DialogContent>Dialog content LoremIpsum</DialogContent>
-        <DialogActions>
-          <Button onClick={continueNavigation}>Yes</Button>
+        <DialogTitle>Neuložené zmeny</DialogTitle>
+        <DialogContent>Máš neuložené zmeny. Naozaj chceš opustiť stránku?</DialogContent>
+        <DialogActions style={{paddingLeft: 2}}>
+          <Button variant="button2" onClick={continueNavigation}>
+            Opustiť stránku
+          </Button>
           <Button
+            variant="button2"
             onClick={() => {
               setDialogOpen(false)
             }}
           >
-            No
+            Zostať na stránke
           </Button>
         </DialogActions>
       </Dialog>
