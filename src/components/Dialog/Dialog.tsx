@@ -28,7 +28,9 @@ export const Dialog: FC<DialogProps> = ({open, close, title, contentText, childr
           {children}
         </DialogContent>
       )}
-      {actions && <DialogActions>{actions}</DialogActions>}
+      {/* MUI aplikuje nejaky default spacing, ale u nas je to kontraproduktivne, lebo globalne v teme
+          mame `flexDirection:'row-reverse'`. preto `disableSpacing` */}
+      {actions && <DialogActions disableSpacing>{actions}</DialogActions>}
     </MuiDialog>
   )
 }
