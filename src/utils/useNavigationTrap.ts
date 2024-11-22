@@ -11,7 +11,7 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
 
   const currentPath = router.asPath
   const nextPath = useRef('')
-  const navConfirmend = useRef(false)
+  const navConfirmed = useRef(false)
 
   const killNavigation = useCallback(() => {
     router.events.emit('routeChangeError', '', '', {shallow: false})
@@ -22,7 +22,7 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
 
   useEffect(() => {
     const pageNavigate = (path: string) => {
-      if (navConfirmend.current) return
+      if (navConfirmed.current) return
       if (shouldBlockNavigation && path !== currentPath) {
         nextPath.current = path
         onNavigate()
@@ -38,7 +38,7 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
   }, [shouldBlockNavigation, currentPath, killNavigation, onNavigate, router.events])
 
   const continueNavigation = () => {
-    navConfirmend.current = true
+    navConfirmed.current = true
     router.push(nextPath.current)
   }
 
