@@ -1,5 +1,7 @@
 import {FC} from 'react'
-import {Datagrid, DateField, FunctionField, List, NumberField, RaRecord, ReferenceField, TextField} from 'react-admin'
+import {Datagrid, FunctionField, List, NumberField, RaRecord, ReferenceField, TextField} from 'react-admin'
+
+import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 
 export const EventList: FC = () => (
   <List>
@@ -8,8 +10,9 @@ export const EventList: FC = () => (
       <NumberField source="year" />
       <NumberField source="season_code" />
       <TextField source="school_year" />
-      <DateField source="start" />
-      <DateField source="end" />
+      <DateTimeField source="start" />
+      <DateTimeField source="end" />
+      <TextField source="location" />
       <TextField source="additional_name" />
       <TextField source="registration_link.url" />
       <FunctionField<RaRecord>

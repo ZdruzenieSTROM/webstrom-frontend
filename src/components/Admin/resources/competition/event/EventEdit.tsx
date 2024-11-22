@@ -1,16 +1,8 @@
 import {Checkbox, FormControlLabel} from '@mui/material'
 import {FC, useState} from 'react'
-import {
-  DateTimeInput,
-  Labeled,
-  NumberInput,
-  ReferenceInput,
-  required,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-} from 'react-admin'
+import {Labeled, NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput} from 'react-admin'
 
+import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
 export const EventEdit: FC = () => {
@@ -31,11 +23,12 @@ export const EventEdit: FC = () => {
       <SimpleForm>
         <NumberInput source="year" helperText="ročník súťaže, napr. 48" fullWidth validate={required()} />
         <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth validate={required()} />
-        <DateTimeInput source="start" fullWidth validate={required()} />
-        <DateTimeInput source="end" fullWidth validate={required()} />
+        <MyDateTimeInput source="start" fullWidth validate={required()} />
+        <MyDateTimeInput source="end" fullWidth validate={required()} />
         <ReferenceInput source="competition" reference="competition/competition">
           <SelectInput fullWidth validate={required()} />
         </ReferenceInput>
+        <TextInput source="location" fullWidth />
         <FormControlLabel
           control={<Checkbox checked={includeRegLink} onChange={(e) => setIncludeRegLink(e.target.checked)} />}
           label="Upraviť registračný link"
@@ -45,8 +38,8 @@ export const EventEdit: FC = () => {
             <>
               <NumberInput source="registration_link.id" fullWidth disabled />
               <TextInput source="registration_link.url" fullWidth validate={required()} />
-              <DateTimeInput source="registration_link.start" fullWidth validate={required()} />
-              <DateTimeInput source="registration_link.end" fullWidth validate={required()} />
+              <MyDateTimeInput source="registration_link.start" fullWidth validate={required()} />
+              <MyDateTimeInput source="registration_link.end" fullWidth validate={required()} />
               <TextInput source="registration_link.additional_info" fullWidth />
             </>
           </Labeled>

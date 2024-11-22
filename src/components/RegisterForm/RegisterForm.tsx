@@ -89,7 +89,7 @@ export const RegisterForm: FC = () => {
           setError('email', {type: 'custom', message: `* ${error.response.data.email[0]}`})
         }
       } else {
-        alert('Neznáma chyba pri registrácii. Skúste to prosím neskôr.')
+        alert('Neznáma chyba pri registrácii. Skús to prosím neskôr.')
       }
     },
   })
@@ -144,7 +144,7 @@ export const RegisterForm: FC = () => {
               ...requiredRule,
               pattern: {
                 value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-                message: '* Vložte správnu emailovú adresu.',
+                message: '* Vlož správnu emailovú adresu.',
               },
             }}
           />
@@ -155,10 +155,10 @@ export const RegisterForm: FC = () => {
             type="password"
             rules={{
               ...requiredRule,
-              minLength: {
-                value: 8,
-                message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
-              },
+            minLength: {
+              value: 8,
+              message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
+             },
             }}
           />
           <FormInput
@@ -182,9 +182,9 @@ export const RegisterForm: FC = () => {
             * takto označené polia sú povinné
           </Typography>
           <Typography variant="body2">
-            Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so
-            zákonom o ochrane osobných údajov. Bližšie informácie nájdete{' '}
-            <Link href={`./gdpr`} target="_blank">
+            Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so zákonom
+            o ochrane osobných údajov. Bližšie informácie nájdete 
+            <Link href={`./gdpr`} target='_blank'>
               tu
             </Link>
             .

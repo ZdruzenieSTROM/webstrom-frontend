@@ -50,6 +50,23 @@ export const MenuMain: FC = () => {
   const lg = useMediaQuery<Theme>((theme) => theme.breakpoints.up('lg'))
   const iconSize = lg ? 34 : 24
 
+  const constructUrl = (url: string) => {
+    // `url` z databazy z menu item
+    // je vo formate `/vysledky/` alebo `/akcie/matboj/`
+    // kedy sa odkazuje na podstranku v ramci daneho seminara
+    // alebo https://domain.com alebo www.domain.com
+    // v pripade externeho linku kedy presmerujeme priamo na dany link.
+    if (url.startsWith('http') || url.startsWith('www')) {
+      return url
+    }
+
+    if (!url.startsWith('/')) {
+      url = `/${url}`
+    }
+
+    return `/${seminar}${url}`
+  }
+
   return (
     <>
       {!isVisible && (
@@ -82,7 +99,11 @@ export const MenuMain: FC = () => {
         }}
       >
         <Box flexGrow={1}>
-          <CloseButton size={iconSize} onClick={toggleMenu} sx={{position: 'absolute', top: 24, left: 24}} />
+          <CloseButton
+            size={iconSize}
+            onClick={toggleMenu}
+            sx={{position: 'absolute', top: 24, left: {xs: undefined, md: 24}, right: {xs: 24, md: undefined}}}
+          />
           {menuItemsIsLoading && (
             <Box sx={{position: 'absolute', top: '50%', left: 0, right: 0, color: 'white'}}>
               <Loading />
@@ -90,8 +111,7 @@ export const MenuMain: FC = () => {
           )}
           <Stack sx={{mt: {xs: 10, md: '164px', lg: '185px', xl: '221px'}}}>
             {menuItems.map(({id, caption, url}) => (
-              // `url` je vo formate `/vysledky/` alebo `/akcie/matboj/`
-              <MenuMainItem key={id} caption={caption} url={`/${seminar}${url}`} />
+              <MenuMainItem key={id} caption={caption} url={constructUrl(url)} />
             ))}
           </Stack>
           {hasPermissions && (

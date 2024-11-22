@@ -8,6 +8,7 @@ declare module '@mui/material/styles' {
     button1: React.CSSProperties
     button2: React.CSSProperties
     button3: React.CSSProperties
+    seminarButton: React.CSSProperties
     postTitle: React.CSSProperties
     postBody: React.CSSProperties
     postDate: React.CSSProperties
@@ -19,6 +20,7 @@ declare module '@mui/material/styles' {
     button1?: React.CSSProperties
     button2?: React.CSSProperties
     button3?: React.CSSProperties
+    seminarButton?: React.CSSProperties
     postTitle?: React.CSSProperties
     postBody?: React.CSSProperties
     postDate?: React.CSSProperties
@@ -32,6 +34,7 @@ declare module '@mui/material/Typography' {
     button1: true
     button2: true
     button3: true
+    seminarButton: true
     postTitle: true
     postBody: true
     postDate: true
@@ -124,6 +127,12 @@ const _theme = createTheme({
       fontWeight: 800,
       fontStyle: 'italic',
     },
+    seminarButton: {
+      ...font.style,
+      textTransform: 'uppercase',
+      fontWeight: 800,
+      fontStyle: 'italic',
+    },
     postTitle: {
       ...font.style,
       fontWeight: 800,
@@ -148,6 +157,7 @@ const _theme = createTheme({
           button1: 'span',
           button2: 'span',
           button3: 'span',
+          seminarButton: 'span',
           postTitle: 'h1',
           postBody: 'span',
           postDate: 'span',
@@ -283,6 +293,16 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(9)},
       [lg]: {fontSize: pxToRem(11)},
       [xl]: {fontSize: pxToRem(14)},
+      lineHeight: 1.5,
+    },
+    seminarButton: {
+      ..._theme.typography.seminarButton,
+      // original Figma fontSize: 30px, mobile non-existent
+      fontSize: pxToRem(14),
+      [sm]: {fontSize: pxToRem(16)},
+      [md]: {fontSize: pxToRem(18)},
+      [lg]: {fontSize: pxToRem(22)},
+      [xl]: {fontSize: pxToRem(30)},
       lineHeight: 1.5,
     },
     postTitle: {

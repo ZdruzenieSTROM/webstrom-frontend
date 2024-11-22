@@ -1,6 +1,7 @@
 import {FC} from 'react'
-import {ArrayField, Datagrid, DateField, Show, SimpleShowLayout, Tab, TabbedShowLayout, TextField} from 'react-admin'
+import {ArrayField, Datagrid, Show, SimpleShowLayout, Tab, TabbedShowLayout, TextField} from 'react-admin'
 
+import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
 import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 
@@ -12,9 +13,9 @@ export const PostShow: FC = () => (
           <TextField source="caption" />
           <TextField source="short_text" />
           <TextField source="details" />
-          <DateField source="added_at" />
-          <DateField source="visible_after" />
-          <DateField source="visible_until" />
+          <DateTimeField source="added_at" />
+          <DateTimeField source="visible_after" />
+          <DateTimeField source="visible_until" />
           <SitesArrayField source="sites" />
         </SimpleShowLayout>
       </Tab>

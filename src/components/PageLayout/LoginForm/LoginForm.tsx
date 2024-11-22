@@ -84,7 +84,7 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
               <Button variant="button3" type="button" onClick={toggleForgottenDialog}>
                 Zabudol som heslo
               </Button>
-              <Link variant="button3" href={`${seminar}/registracia`}>
+              <Link variant="button3" href={`/${seminar}/registracia`}>
                 Chcem sa registrovať
               </Link>
             </Stack>

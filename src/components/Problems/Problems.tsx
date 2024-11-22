@@ -109,6 +109,8 @@ export const Problems: FC = () => {
   const [displayLoginDialog, setDisplayLoginDialog] = useState<boolean>(false)
   const closeLoginDialog = () => setDisplayLoginDialog(false)
 
+  const rulesLink = `/${seminar}/akcie/${seminar}/pravidla`
+
   return (
     <>
       <Dialog
@@ -155,13 +157,21 @@ export const Problems: FC = () => {
           <LoginForm closeDialog={closeLoginDialog} />
         </Stack>
       </Dialog>
+
       <Stack gap={5}>
-        <Typography variant="body1" display="inline-flex">
-          Ak si nevieš poradiť s niektorou z úloh, pozri si{' '}
-          <Link variant="button2" href={`/${seminar}/ako-riesit`}>
-            pár tipov
+        <Stack direction="row" justifyContent="space-between" flexWrap="wrap">
+          <Stack direction="row" flexWrap="wrap">
+            <Typography variant="body1" display="inline-flex" mr={0.5}>
+              Ak si nevieš poradiť s niektorou z úloh, pozri si
+            </Typography>
+            <Link variant="button2" href={`/${seminar}/ako-riesit`}>
+              pár tipov
+            </Link>
+          </Stack>
+          <Link variant="button2" href={rulesLink}>
+            Pravidlá
           </Link>
-        </Typography>
+        </Stack>
         {(loading.semesterListIsLoading ||
           loading.currentSeriesIsLoading ||
           seriesIsLoading ||
