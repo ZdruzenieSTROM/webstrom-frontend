@@ -84,7 +84,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   return (
     <Stack gap={gap}>
-      <FormCheckbox control={control} name="without_school" label="nie som študent základnej ani strednej školy." />
+      <FormCheckbox control={control} name="without_school" label="nie som študent základnej ani strednej školy" />
       <FormAutocomplete
         control={control}
         name="school"
@@ -96,7 +96,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
       <FormCheckbox
         control={control}
         name="school_not_found"
-        label="moja škola sa v zozname nenachádza."
+        label="moja škola sa v zozname nenachádza"
         disabled={without_school}
       />
       {school_not_found && (
