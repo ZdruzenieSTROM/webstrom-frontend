@@ -5,7 +5,7 @@ import {CloseButton} from '../CloseButton/CloseButton'
 
 type DialogProps = {
   open: boolean
-  close: () => void
+  close?: () => void
   title?: ReactNode
   contentText?: string
   children?: ReactNode
@@ -16,9 +16,11 @@ type DialogProps = {
 export const Dialog: FC<DialogProps> = ({open, close, title, contentText, children, actions}) => {
   return (
     <MuiDialog open={open} onClose={close}>
-      <Box position="absolute" top={16} right={16}>
-        <CloseButton size={30} onClick={close} invertColors />
-      </Box>
+      {close && (
+        <Box position="absolute" top={16} right={16}>
+          <CloseButton size={30} onClick={close} invertColors />
+        </Box>
+      )}
       {title && <DialogTitle variant="h2">{title}</DialogTitle>}
       {(contentText || children) && (
         <DialogContent>
@@ -26,7 +28,9 @@ export const Dialog: FC<DialogProps> = ({open, close, title, contentText, childr
           {children}
         </DialogContent>
       )}
-      {actions && <DialogActions>{actions}</DialogActions>}
+      {/* MUI aplikuje nejaky default spacing, ale u nas je to kontraproduktivne, lebo globalne v teme
+          mame `flexDirection:'row-reverse'`. preto `disableSpacing` */}
+      {actions && <DialogActions disableSpacing>{actions}</DialogActions>}
     </MuiDialog>
   )
 }
