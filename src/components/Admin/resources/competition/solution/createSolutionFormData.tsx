@@ -10,7 +10,7 @@ export const createSolutionFormData = ({
   // vzdy appendneme kazdy kluc, aj tieto fily, len null sa tu neda pouzit. null znamena, ze file odstranujeme
   formData.append('solution', solution?.rawFile ?? '')
   Object.entries(data).forEach(([key, value]) => {
-    if (value) formData.append(key, value.toString())
+    if (value != null) formData.append(key, value.toString())
   })
 
   return formData
