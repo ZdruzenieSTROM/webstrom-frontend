@@ -1,17 +1,6 @@
 import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
-  // docs: https://nextjs.org/docs/api-reference/next.config.js/redirects
-  async redirects() {
-    return [
-      // redirect home stranky na strom podstranku
-      {
-        source: '/',
-        destination: '/strom',
-        permanent: true,
-      },
-    ]
-  },
   // docs: https://nextjs.org/docs/api-reference/next.config.js/rewrites
   async rewrites() {
     return [
