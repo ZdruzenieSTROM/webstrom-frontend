@@ -75,7 +75,7 @@
     "eslint-plugin-unicorn": "^56.0.1",
     "prettier": "^3.3.3",
     "sass": "^1.81.0",
-    "typed-scss-modules": "^7.1.4"
+    "typed-scss-modules": "^8.0.1"
   },
   "packageManager": "yarn@3.5.1",
   "resolutions": {
