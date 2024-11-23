@@ -33,4 +33,3 @@ export const SchoolCreate: FC = () => (
     </SimpleForm>
   </MyCreate>
 )
-

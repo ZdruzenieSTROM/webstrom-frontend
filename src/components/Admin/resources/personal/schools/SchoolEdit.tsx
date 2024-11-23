@@ -33,4 +33,3 @@ export const SchoolEdit: FC = () => (
     </SimpleForm>
   </MyEdit>
 )
-
