@@ -14,12 +14,9 @@ export const UpcomingOrCurrentEventInfo: FC<{event: Event; name: string; shortNa
 }) => {
   const {year, school_year, location, registration_link, publication_set, start, end} = event
 
-  const hasInvitation = publication_set.some(
+  const invitationFile = publication_set.find(
     (publication) => publication.publication_type === PublicationTypes.INVITATION.id,
   )
-  const invitationFileName = hasInvitation
-    ? publication_set.find((publication) => publication.publication_type === PublicationTypes.INVITATION.id)?.file
-    : null
 
   const upcomingEventDate = event ? formatDateTimeInterval(start, end) : null
 
@@ -49,8 +46,8 @@ export const UpcomingOrCurrentEventInfo: FC<{event: Event; name: string; shortNa
         {registrationInfo}
       </Typography>
       <Stack direction="row" sx={{justifyContent: 'end', gap: {xs: 1, sm: 2}}}>
-        {hasInvitation && (
-          <Link variant="button2" href={`/api/${invitationFileName}`}>
+        {invitationFile && (
+          <Link variant="button2" href={`/api/${invitationFile.name}`}>
             Pozvánka
           </Link>
         )}
