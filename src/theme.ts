@@ -244,6 +244,13 @@ const _theme = createTheme({
         },
       },
     },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: 'inherit',
+        },
+      },
+    },
   },
 })
 

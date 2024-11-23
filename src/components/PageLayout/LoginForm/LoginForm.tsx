@@ -1,4 +1,5 @@
-import {Box, Stack} from '@mui/material'
+import {Visibility, VisibilityOff} from '@mui/icons-material'
+import {Box, IconButton, Stack} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
@@ -53,6 +54,8 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
     setDisplayForgottenDialog((prev) => !prev)
   }
 
+  const [showPassword, setShowPassword] = useState(false)
+
   return (
     <>
       <Dialog open={displayForgottenDialog} close={toggleForgottenDialog} title="Zabudnuté heslo">
@@ -79,7 +82,20 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
                 },
               }}
             />
-            <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
+            <FormInput
+              control={control}
+              name="password"
+              label="Heslo"
+              type={showPassword ? 'text' : 'password'}
+              rules={requiredRule}
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                ),
+              }}
+            />
             <Box alignSelf="end">
               <Button variant="button3" type="button" onClick={toggleForgottenDialog}>
                 Zabudnuté heslo
