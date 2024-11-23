@@ -36,11 +36,6 @@ const nextConfig: NextConfig = {
     ],
   },
   reactStrictMode: true,
-  modularizeImports: {
-    '@mui/material': {
-      transform: '@mui/material/{{member}}',
-    },
-  },
   // https://react-svgr.com/docs/next/
   webpack(config) {
     // Grab the existing rule that handles SVG imports
