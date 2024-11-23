@@ -38,6 +38,9 @@ import {SolutionCreate} from './resources/competition/solution/SolutionCreate'
 import {SolutionEdit} from './resources/competition/solution/SolutionEdit'
 import {SolutionList} from './resources/competition/solution/SolutionList'
 import {SolutionShow} from './resources/competition/solution/SolutionShow'
+import {ProfileCreate} from './resources/personal/profiles/ProfileCreate'
+import {ProfileList} from './resources/personal/profiles/ProfileList'
+import {ProfileShow} from './resources/personal/profiles/ProfileShow'
 import {useAuthProvider} from './useAuthProvider'
 
 export const Admin: FC = () => {
@@ -110,7 +113,13 @@ export const Admin: FC = () => {
         create={EventRegistrationCreate}
       />
       <Resource name="personal/schools" recordRepresentation="verbose_name" />
-      <Resource name="personal/profiles" recordRepresentation="verbose_name" />
+      <Resource
+        name="personal/profiles"
+        recordRepresentation="verbose_name"
+        list={ProfileList}
+        show={ProfileShow}
+        create={ProfileCreate}
+      />
       <Resource name="competition/late-tag" recordRepresentation="name" />
     </ReactAdmin>
   )
