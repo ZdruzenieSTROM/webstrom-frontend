@@ -45,7 +45,15 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
               <Grid xs={0} md={3} sx={{position: 'relative', display: {xs: 'none', md: 'block'}}}>
                 <StromLogo />
               </Grid>
-              <Grid xs={12} md={contentWidth * 3} sx={{py: 2, px: 1, ...sx}}>
+              <Grid
+                xs={12}
+                md={contentWidth * 3}
+                sx={{
+                  py: {xs: 4, md: 8, lg: 12},
+                  px: 2,
+                  ...sx,
+                }}
+              >
                 {children}
               </Grid>
             </Grid>
