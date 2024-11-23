@@ -27,7 +27,7 @@ export const VerifyEmail: FC = () => {
   })
 
   useEffect(() => {
-    typeof verificationKey === 'string' && verifyEmailMutate(verificationKey)
+    if (typeof verificationKey === 'string') verifyEmailMutate(verificationKey)
   }, [verificationKey, verifyEmailMutate])
 
   if (!isError && !isVerified) return <Loading />
