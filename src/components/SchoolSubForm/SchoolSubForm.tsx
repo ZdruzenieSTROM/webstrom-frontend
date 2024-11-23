@@ -31,9 +31,9 @@ type SchoolSubFormProps<T extends SchoolSubFormValues> = {
 export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProps<SchoolSubFormValues>) => {
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
-  const otherSchoolItem = useRef<SelectOption>()
-  const withoutSchoolItem = useRef<SelectOption>()
-  const noGradeItem = useRef<SelectOption>()
+  const otherSchoolItem = useRef<SelectOption>(undefined)
+  const withoutSchoolItem = useRef<SelectOption>(undefined)
+  const noGradeItem = useRef<SelectOption>(undefined)
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   const {data: gradesData} = useQuery({
