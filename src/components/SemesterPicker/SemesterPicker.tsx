@@ -21,20 +21,20 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
 
   useEffect(() => {
     // setPageTitle using selectedItem variable
-    let pageTitleToSet = ''
     if (semester) {
       const semesterTitle = `${getSemesterYear(semester)} - ${getSemesterName(semester)}`
+      let pageTitleToSet = semesterTitle
       if (page === 'admin/opravovanie') {
         pageTitleToSet = `Opravovanie - ${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'} (${
           semester.school_year
         })`
-      } else if (displayWholeSemesterOnResults) {
-        pageTitleToSet = semesterTitle
-      } else if (series) {
+        // ak je page vysledky a zobrazujeme cely semester, tak sa nezobrazuje seria v nazve
+        // pre seriu sa chceme stale pokusit zobrazit nazov serie
+      } else if (!(page === 'vysledky' && displayWholeSemesterOnResults) && series) {
         pageTitleToSet = `${semesterTitle}${series.order ? ` - ${getSeriesName(series)}` : ''}`
       }
+      setPageTitle(pageTitleToSet)
     }
-    setPageTitle(pageTitleToSet)
     // `semester` a `series` su nami vytiahnute objekty, tak mozu triggerovat effekt kazdy render. nemalo by vadit
   }, [displayWholeSemesterOnResults, semester, series, page, setPageTitle])
 
