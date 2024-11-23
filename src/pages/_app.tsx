@@ -9,7 +9,9 @@ import Head from 'next/head'
 import {FC} from 'react'
 import {CookiesProvider} from 'react-cookie'
 
+import {AlertBox} from '@/components/Alert/AlertBox'
 import {theme} from '@/theme'
+import {AlertContainer} from '@/utils/AlertContainer'
 import {AuthContainer} from '@/utils/AuthContainer'
 
 const ReactQueryDevtools = dynamic(
@@ -86,16 +88,19 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
           font-family: ${theme.typography.fontFamily};
         }
       `}</style>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools />
-        <CookiesProvider>
-          <AuthContainer.Provider>
-            <ThemeProvider theme={theme}>
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </AuthContainer.Provider>
-        </CookiesProvider>
-      </QueryClientProvider>
+      <AlertContainer.Provider>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools />
+          <CookiesProvider>
+            <AuthContainer.Provider>
+              <ThemeProvider theme={theme}>
+                <AlertBox />
+                <Component {...pageProps} />
+              </ThemeProvider>
+            </AuthContainer.Provider>
+          </CookiesProvider>
+        </QueryClientProvider>
+      </AlertContainer.Provider>
     </>
   )
 }
