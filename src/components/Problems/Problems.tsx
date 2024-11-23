@@ -68,7 +68,7 @@ export const Problems: FC = () => {
   useInterval(
     () => {
       const isAfterDeadlineNew = new Date(series?.deadline ?? '') < new Date()
-      isAfterDeadlineNew !== isAfterDeadline && setIsAfterDeadline(isAfterDeadlineNew)
+      if (isAfterDeadlineNew !== isAfterDeadline) setIsAfterDeadline(isAfterDeadlineNew)
     },
     // Delay to null to stop it after deadline
     isAfterDeadline ? null : 500,
@@ -103,7 +103,7 @@ export const Problems: FC = () => {
     router.push(`/${seminar}/profil/uprava`)
   }
   const agree = () => {
-    displayRegisterDialog && registerToSemester(semesterId)
+    if (displayRegisterDialog) registerToSemester(semesterId)
     closeRegisterDialog()
   }
 

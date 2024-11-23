@@ -61,7 +61,7 @@ export const ProblemAdministration: FC = () => {
   const semesterUrl = `${semester?.year}/${semesterName}`
 
   useEffect(() => {
-    !!problem && !!semester && setPageTitle(`${problem?.order}. úloha - ${semesterUrl} (${semester?.school_year})`)
+    if (!!problem && !!semester) setPageTitle(`${problem?.order}. úloha - ${semesterUrl} (${semester?.school_year})`)
   }, [problem, semester, semesterUrl, setPageTitle])
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()

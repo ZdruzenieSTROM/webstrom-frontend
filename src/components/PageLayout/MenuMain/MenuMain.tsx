@@ -24,14 +24,14 @@ export const MenuMain: FC = () => {
 
   const fullWidthMenu = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
   useEffect(() => {
-    fullWidthMenu && setIsVisible(false)
+    if (fullWidthMenu) setIsVisible(false)
   }, [fullWidthMenu])
 
   // Inspired by https://nextjs.org/docs/pages/api-reference/functions/use-router#routerevents
   const router = useRouter()
   useEffect(() => {
     const handleRouteChange = () => {
-      fullWidthMenu && setIsVisible(false)
+      if (fullWidthMenu) setIsVisible(false)
     }
 
     router.events.on('routeChangeComplete', handleRouteChange)

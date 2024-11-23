@@ -1,5 +1,7 @@
 // ESLint config - most of this file is taken from the config on one of Riso's previous projects in Vacuumlabs.
+// EDIT: vela kokocin asi. snazme sa pouzivat co najviac extendovanych configov a co najmenej explicitnych rules
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const restrictedGlobals = require('confusing-browser-globals')
 
 module.exports = {
@@ -31,7 +33,8 @@ module.exports = {
 
     // Baseline configurations
     'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    // 'plugin:@typescript-eslint/strict',
 
     // Disable ESLint rules conflicting with Prettier
     'prettier',
@@ -45,7 +48,7 @@ module.exports = {
     'plugin:promise/recommended',
 
     // Detect common patterns that can lead to security issues
-    'plugin:security/recommended',
+    'plugin:security/recommended-legacy',
 
     // Run Prettier as an ESLint plugin (not separately after ESLint)
     'plugin:prettier/recommended',
@@ -71,29 +74,7 @@ module.exports = {
     // additional React rules not included in recommended set
     'react/self-closing-comp': 'error',
 
-    // Rules coming @typescript-eslint/recommended, but with level adjusted to warning
-    '@typescript-eslint/adjacent-overload-signatures': 'warn',
     '@typescript-eslint/ban-ts-comment': 'warn',
-    '@typescript-eslint/ban-types': 'warn',
-    '@typescript-eslint/explicit-module-boundary-types': 'warn',
-    'no-array-constructor': 'off',
-    '@typescript-eslint/no-array-constructor': 'warn',
-    'no-empty-function': 'off',
-    '@typescript-eslint/no-empty-function': 'warn',
-    '@typescript-eslint/no-empty-interface': 'warn',
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-extra-non-null-assertion': 'warn',
-    'no-extra-semi': 'off',
-    '@typescript-eslint/no-inferrable-types': 'warn',
-    '@typescript-eslint/no-misused-new': 'warn',
-    '@typescript-eslint/no-namespace': 'warn',
-    '@typescript-eslint/no-non-null-asserted-optional-chain': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'warn',
-    '@typescript-eslint/no-this-alias': 'warn',
-    '@typescript-eslint/prefer-as-const': 'warn',
-    '@typescript-eslint/prefer-namespace-keyword': 'warn',
-    '@typescript-eslint/triple-slash-reference': 'warn',
-    'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['warn', {argsIgnorePattern: '^_', ignoreRestSiblings: true}],
 
     // Use === instead of == for everything, except for comparison with null and other special
@@ -229,7 +210,17 @@ module.exports = {
     // Rules specific to TypeScript files
     {
       files: ['*.ts', '*.tsx'],
-      extends: ['plugin:import/typescript'],
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: __dirname,
+      },
+      extends: [
+        'plugin:import/typescript',
+        // TODO: allow for stricter rules
+        //  'plugin:@typescript-eslint/recommended-type-checked'
+        // TODO: consider moving this further to strict
+        //  'plugin:@typescript-eslint/strict-type-checked'
+      ],
       rules: {
         // Unsupported syntax will be transpiled by TypeScript anyway
         'node/no-unsupported-features/es-syntax': 'off',
@@ -241,9 +232,6 @@ module.exports = {
 
         // Disable const x = require("module") syntax (use imports instead)
         '@typescript-eslint/no-var-requires': 'warn',
-
-        // Always annotate caught errors with `unknown`, forcing explicit type checking
-        '@typescript-eslint/no-implicit-any-catch': 'warn',
       },
     },
 
