@@ -1,7 +1,23 @@
-import clsx from 'clsx'
+import {Box} from '@mui/material'
 import {FC, useEffect, useRef, useState} from 'react'
 
-import styles from './Marquee.module.scss'
+const marqueeSx = {
+  display: 'flex',
+  flexDirection: 'row',
+  marginRight: 'var(--margin-right)',
+  animation: 'scroll var(--duration) linear var(--delay) infinite',
+  animationPlayState: 'var(--play)',
+  animationDelay: 'var(--delay)',
+  animationDirection: 'var(--direction)',
+  '@keyframes scroll': {
+    '0%': {
+      transform: 'translateX(0)',
+    },
+    '100%': {
+      transform: 'translateX(calc(-100% - var(--margin-right)))',
+    },
+  },
+}
 
 interface MarqueeProps {
   /**
@@ -10,12 +26,6 @@ interface MarqueeProps {
    * Default: {}
    */
   style?: React.CSSProperties
-  /**
-   * Class name to style the container div
-   * Type: string
-   * Default: ""
-   */
-  className?: string
   /**
    * Whether to play or pause the marquee
    * Type: boolean
@@ -79,9 +89,8 @@ interface MarqueeProps {
 }
 
 // tento komponent je z https://github.com/justin-chu/react-fast-marquee/blob/master/src/components/Marquee.tsx
+// ale prepisali sme si ho MUI stylmi
 export const Marquee: FC<MarqueeProps> = ({
-  style = {},
-  className = '',
   play = true,
   pauseOnHover = false,
   pauseOnClick = false,
@@ -123,54 +132,80 @@ export const Marquee: FC<MarqueeProps> = ({
   // Gradient color in an unfinished rgba format
   const rgbaGradientColor = `rgba(${gradientColor[0]}, ${gradientColor[1]}, ${gradientColor[2]}`
 
+  const element = (
+    <Box
+      ref={marqueeRef}
+      sx={{
+        ...marqueeSx,
+        '--play': play ? 'running' : 'paused',
+        '--direction': direction === 'left' ? 'normal' : 'reverse',
+        '--duration': `${duration}s`,
+        '--delay': `${delay}s`,
+        '--margin-right': `${marqueeWidth < containerWidth ? containerWidth - marqueeWidth : 0}px`,
+      }}
+    >
+      {children}
+    </Box>
+  )
+
   return (
     <>
       {!isMounted ? null : (
-        <div
+        <Box
           ref={containerRef}
-          style={{
-            ...style,
-            ['--pause-on-hover' as string]: pauseOnHover ? 'paused' : 'running',
-            ['--pause-on-click' as string]: pauseOnClick ? 'paused' : 'running',
+          sx={{
+            overflowX: 'hidden !important',
+            display: 'flex !important',
+            flexDirection: 'row !important',
+            position: 'relative',
+            height: '100%',
+            width: '100%',
+            animationPlayState: 'running',
+            '&:hover div': {
+              animationPlayState: 'var(--pause-on-hover)',
+            },
+            '&:active div': {
+              animationPlayState: 'var(--pause-on-click)',
+            },
+            '--pause-on-hover': pauseOnHover ? 'paused' : 'running',
+            '--pause-on-click': pauseOnClick ? 'paused' : 'running',
           }}
-          className={clsx(className, styles.marqueeContainer)}
         >
           {gradient && (
-            <div
-              style={{
-                ['--gradient-color' as string]: `${rgbaGradientColor}, 1), ${rgbaGradientColor}, 0)`,
-                ['--gradient-width' as string]:
-                  typeof gradientWidth === 'number' ? `${gradientWidth}px` : gradientWidth,
+            <Box
+              sx={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+
+                '&::before, &::after': {
+                  background: 'linear-gradient(to right, var(--gradient-color))',
+                  content: '',
+                  height: '100%',
+                  position: 'absolute',
+                  width: 'var(--gradient-width)',
+                  zIndex: 2,
+                },
+
+                '&::after': {
+                  right: 0,
+                  top: 0,
+                  transform: 'rotateZ(180deg)',
+                },
+
+                '&::before': {
+                  left: 0,
+                  top: 0,
+                },
+
+                '--gradient-color': `${rgbaGradientColor}, 1), ${rgbaGradientColor}, 0)`,
+                '--gradient-width': typeof gradientWidth === 'number' ? `${gradientWidth}px` : gradientWidth,
               }}
-              className={styles.overlay}
             />
           )}
-          <div
-            ref={marqueeRef}
-            style={{
-              ['--play' as string]: play ? 'running' : 'paused',
-              ['--direction' as string]: direction === 'left' ? 'normal' : 'reverse',
-              ['--duration' as string]: `${duration}s`,
-              ['--delay' as string]: `${delay}s`,
-              ['--margin-right' as string]: `${marqueeWidth < containerWidth ? containerWidth - marqueeWidth : 0}px`,
-            }}
-            className={styles.marquee}
-          >
-            {children}
-          </div>
-          <div
-            style={{
-              ['--play' as string]: play ? 'running' : 'paused',
-              ['--direction' as string]: direction === 'left' ? 'normal' : 'reverse',
-              ['--duration' as string]: `${duration}s`,
-              ['--delay' as string]: `${delay}s`,
-              ['--margin-right' as string]: `${marqueeWidth < containerWidth ? containerWidth - marqueeWidth : 0}px`,
-            }}
-            className={styles.marquee}
-          >
-            {children}
-          </div>
-        </div>
+          {element}
+          {element}
+        </Box>
       )}
     </>
   )
