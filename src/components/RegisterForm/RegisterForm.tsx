@@ -45,7 +45,7 @@ const defaultValues: RegisterFormValues = {
 }
 
 export const RegisterForm: FC = () => {
-  const {handleSubmit, control, watch, setValue, getValues, setError} = useForm<RegisterFormValues>({
+  const {handleSubmit, control, watch, setValue, getValues, setError, reset} = useForm<RegisterFormValues>({
     defaultValues,
     values: defaultValues,
   })
@@ -96,6 +96,7 @@ export const RegisterForm: FC = () => {
   })
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
+    reset({}, {keepValues: true})
     submitFormData(data)
   }
 
