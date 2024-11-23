@@ -1,4 +1,4 @@
-import {Box, Stack, Typography} from '@mui/material'
+import {Box, Stack, Theme, Typography, useMediaQuery} from '@mui/material'
 import {FC} from 'react'
 
 import {CloseButton} from '../CloseButton/CloseButton'
@@ -11,6 +11,9 @@ type PostDetailProps = {
 }
 
 export const PostDetail: FC<PostDetailProps> = ({caption, details, closeDetail}) => {
+  const lg = useMediaQuery<Theme>((theme) => theme.breakpoints.up('lg'))
+  const iconSize = lg ? 34 : 24
+
   return (
     <Stack
       p={2}
@@ -22,12 +25,12 @@ export const PostDetail: FC<PostDetailProps> = ({caption, details, closeDetail})
         position: 'relative',
       }}
     >
-      <Box position="absolute" top={16} right={16}>
-        <CloseButton size={30} onClick={closeDetail} invertColors />
-      </Box>
-      <Typography variant="postTitle" textTransform="uppercase" fontStyle="italic" mb={4}>
-        {caption}
-      </Typography>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" mb={4}>
+        <Typography variant="postTitle" textTransform="uppercase" fontStyle="italic">
+          {caption}
+        </Typography>
+        <CloseButton size={iconSize} onClick={closeDetail} invertColors />
+      </Stack>
       <PostMarkdown content={details} />
     </Stack>
   )
