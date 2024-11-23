@@ -1,4 +1,4 @@
-import {Stack} from '@mui/material'
+import {Box, Stack} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
@@ -80,21 +80,19 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
               }}
             />
             <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
+            <Box alignSelf="end">
+              <Button variant="button3" type="button" onClick={toggleForgottenDialog}>
+                Zabudnuté heslo
+              </Button>
+            </Box>
           </Stack>
           <Stack direction={'row'} mt={3} gap={2} justifyContent="space-between">
-            <Stack gap={2} alignItems="start">
-              <Button variant="button3" type="button" onClick={toggleForgottenDialog}>
-                Zabudol som heslo
-              </Button>
-              <Link variant="button3" href={`/${seminar}/registracia`}>
-                Chcem sa registrovať
-              </Link>
-            </Stack>
-            <Stack direction={'column'} gap={2} alignItems="end" justifyContent="end">
-              <Button variant="button2" type="submit">
-                Prihlásiť sa
-              </Button>
-            </Stack>
+            <Link variant="button2" href={`/${seminar}/registracia`}>
+              Registrovať sa
+            </Link>
+            <Button variant="button2" type="submit">
+              Prihlásiť sa
+            </Button>
           </Stack>
         </Stack>
       </form>
