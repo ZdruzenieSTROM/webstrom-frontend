@@ -77,8 +77,6 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
         // wrap na velmi nizkych rozliseniach
         flexWrap: 'wrap',
         rowGap: 0.5,
-        zIndex: 1000,
-        userSelect: 'none',
         // pre pouzitie v TopGrid + pri wrapnuti
         justifyContent: 'end',
       }}
