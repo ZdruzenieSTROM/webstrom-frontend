@@ -96,7 +96,7 @@ export const RegisterForm: FC = () => {
   })
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
-    reset({}, {keepValues: true})
+    reset(undefined, {keepValues: true})
     submitFormData(data)
   }
 
