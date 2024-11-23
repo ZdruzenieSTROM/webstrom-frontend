@@ -30,7 +30,7 @@ export interface Event {
   can_participate: boolean
   is_registered: boolean
   publication_set: Publication[]
-  registration_link: RegistrationLink
+  registration_link?: RegistrationLink
   location: string | null
   year: number | null
   school_year: string | null
