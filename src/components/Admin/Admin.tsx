@@ -41,6 +41,10 @@ import {SolutionShow} from './resources/competition/solution/SolutionShow'
 import {ProfileCreate} from './resources/personal/profiles/ProfileCreate'
 import {ProfileList} from './resources/personal/profiles/ProfileList'
 import {ProfileShow} from './resources/personal/profiles/ProfileShow'
+import {SchoolCreate} from './resources/personal/schools/SchoolCreate'
+import {SchoolEdit} from './resources/personal/schools/SchoolEdit'
+import {SchoolList} from './resources/personal/schools/SchoolList'
+import {SchoolShow} from './resources/personal/schools/SchoolShow'
 import {useAuthProvider} from './useAuthProvider'
 
 export const Admin: FC = () => {
@@ -112,7 +116,14 @@ export const Admin: FC = () => {
         show={EventRegistrationShow}
         create={EventRegistrationCreate}
       />
-      <Resource name="personal/schools" recordRepresentation="verbose_name" />
+      <Resource
+        name="personal/schools"
+        recordRepresentation="verbose_name"
+        list={SchoolList}
+        show={SchoolShow}
+        edit={SchoolEdit}
+        create={SchoolCreate}
+      />
       <Resource
         name="personal/profiles"
         recordRepresentation="verbose_name"
@@ -121,6 +132,12 @@ export const Admin: FC = () => {
         create={ProfileCreate}
       />
       <Resource name="competition/late-tag" recordRepresentation="name" />
+      <Resource
+        name="personal/districts"
+        recordRepresentation={(record) => {
+          return `${record.name} ${record.abbreviation ? `(${record.abbreviation})` : ''}`
+        }}
+      />
     </ReactAdmin>
   )
 }
