@@ -132,6 +132,7 @@ export const UploadProblemForm: FC<{
             </Typography>
           </>
         )}
+        {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
         {files?.name && (
           <div className={styles.files}>
             <div>
@@ -149,8 +150,6 @@ export const UploadProblemForm: FC<{
                 Zrušiť
               </Button>
             </div>
-
-            {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
           </div>
         )}
       </div>
