@@ -5,6 +5,7 @@ import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {IGeneralPostResponse} from '@/types/api/general'
+import {useAlert} from '@/utils/useAlert'
 
 import {Button} from '../Clickable/Button'
 import {Dialog} from '../Dialog/Dialog'
@@ -33,6 +34,7 @@ interface ChangePasswordErrorResponseData {
 
 export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close}) => {
   const {handleSubmit, reset, control, getValues, setError} = useForm<PasswordChangeDialogValues>({defaultValues})
+  const {alert} = useAlert()
 
   const onSuccess = () => {
     alert('Zmena hesla prebehla úspešne.')
