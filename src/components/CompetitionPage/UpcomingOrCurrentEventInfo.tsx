@@ -2,7 +2,7 @@ import {Stack, Typography} from '@mui/material'
 import {DateTime} from 'luxon'
 import {FC} from 'react'
 
-import {Event} from '@/types/api/competition'
+import {Event, PublicationTypes} from '@/types/api/competition'
 import {DateFormat, formatDateTimeInterval} from '@/utils/formatDate'
 
 import {Link} from '../Clickable/Link'
@@ -13,6 +13,13 @@ export const UpcomingOrCurrentEventInfo: FC<{event: Event; name: string; shortNa
   shortName,
 }) => {
   const {year, school_year, location, registration_link, publication_set, start, end} = event
+
+  const hasInvitation = publication_set.some(
+    (publication) => publication.publication_type === PublicationTypes.INVITATION.id,
+  )
+  const invitationFileName = hasInvitation
+    ? publication_set.find((publication) => publication.publication_type === PublicationTypes.INVITATION.id)?.file
+    : null
 
   const upcomingEventDate = event ? formatDateTimeInterval(start, end) : null
 
@@ -42,8 +49,8 @@ export const UpcomingOrCurrentEventInfo: FC<{event: Event; name: string; shortNa
         {registrationInfo}
       </Typography>
       <Stack direction="row" sx={{justifyContent: 'end', gap: {xs: 1, sm: 2}}}>
-        {publication_set.length > 0 && (
-          <Link variant="button2" href={`/api/${publication_set[0].file}`}>
+        {hasInvitation && (
+          <Link variant="button2" href={`/api/${invitationFileName}`}>
             Pozvánka
           </Link>
         )}
