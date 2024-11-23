@@ -102,7 +102,7 @@ export const MenuMain: FC = () => {
           <CloseButton
             size={iconSize}
             onClick={toggleMenu}
-            sx={{position: 'absolute', top: 24, left: {xs: undefined, md: 24}, right: {xs: 24, md: undefined}}}
+            sx={{position: 'absolute', top: 24, left: {xs: 'auto', md: 24}, right: {xs: 24, md: 'auto'}}}
           />
           {menuItemsIsLoading && (
             <Box sx={{position: 'absolute', top: '50%', left: 0, right: 0, color: 'white'}}>
