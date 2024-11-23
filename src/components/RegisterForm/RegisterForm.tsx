@@ -103,7 +103,7 @@ export const RegisterForm: FC = () => {
   const phoneRule = {
     validate: (val?: string) => {
       if (val && !/^(\+\d{10,12})$/u.test(val.replaceAll(/\s+/gu, '')))
-        return '* Zadaj telefónne číslo vo formáte +421 123 456 789.'
+        return '* Zadaj telefónne číslo vo formáte s predvoľbou (napr. +421 123 456 789).'
     },
   }
 
