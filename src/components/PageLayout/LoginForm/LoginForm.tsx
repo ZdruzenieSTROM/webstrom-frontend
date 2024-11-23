@@ -8,6 +8,7 @@ import {Link} from '@/components/Clickable/Link'
 import {Dialog} from '@/components/Dialog/Dialog'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
+import {useAlert} from '@/utils/useAlert'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {PasswordResetRequestForm} from '../PasswordResetRequest/PasswordResetRequest'
@@ -30,6 +31,7 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
   const {login} = AuthContainer.useContainer()
   const {handleSubmit, control} = useForm<LoginFormValues>({defaultValues})
   const {seminar} = useSeminarInfo()
+  const {alert} = useAlert()
 
   const router = useRouter()
 
