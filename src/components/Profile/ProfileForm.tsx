@@ -50,9 +50,9 @@ export const ProfileForm: FC = () => {
     parent_phone: profile?.parent_phone ?? '',
     new_school_description: '',
     without_school: profile?.school_id === 1,
-    school: ({id: profile?.school.code, label: profile?.school.verbose_name} as SelectOption) ?? null,
+    school: profile ? ({id: profile.school.code, label: profile.school.verbose_name} as SelectOption) : null,
     school_not_found: profile?.school_id === 0,
-    grade: ({id: profile?.grade, label: profile?.grade_name} as SelectOption) ?? null,
+    grade: profile ? ({id: profile.grade, label: profile.grade_name} as SelectOption) : null,
   }
 
   const {handleSubmit, control, watch, setValue} = useForm<ProfileFormValues>({
