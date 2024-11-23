@@ -76,7 +76,6 @@ export const ProblemAdministration: FC = () => {
 
   const {mutate: uploadPoints} = useMutation({
     mutationFn: (id: string) => {
-      console.log(isDirty)
       return axios.post(`/api/competition/problem-administration/${id}/upload-points`, {
         solution_set: solutions,
       })
@@ -85,7 +84,6 @@ export const ProblemAdministration: FC = () => {
   })
 
   const updatePoints = (index: number, newPointsInput: string) => {
-    console.log(solutions && solutions[index].corrected_solution)
     const newPoints = Number.parseInt(newPointsInput)
     // nevalidny input spravi NaN
     const newScore = Number.isNaN(newPoints) ? null : newPoints
