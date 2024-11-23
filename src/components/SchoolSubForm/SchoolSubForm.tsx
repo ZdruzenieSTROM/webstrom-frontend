@@ -1,9 +1,8 @@
 import {Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
-import {useRef} from 'react'
+import {useEffect, useRef} from 'react'
 import {Control, UseFormSetValue, UseFormWatch} from 'react-hook-form'
-import {useUpdateEffect} from 'usehooks-ts'
 
 import {IGrade} from '@/types/api/competition'
 import {ISchool} from '@/types/api/personal'
@@ -31,9 +30,11 @@ type SchoolSubFormProps<T extends SchoolSubFormValues> = {
 export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProps<SchoolSubFormValues>) => {
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
-  const otherSchoolItem = useRef<SelectOption>()
-  const withoutSchoolItem = useRef<SelectOption>()
-  const noGradeItem = useRef<SelectOption>()
+  const otherSchoolItem = useRef<SelectOption>(undefined)
+  const withoutSchoolItem = useRef<SelectOption>(undefined)
+  const noGradeItem = useRef<SelectOption>(undefined)
+
+  const firstRender = useRef(true)
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   const {data: gradesData} = useQuery({
@@ -60,10 +61,11 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   noGradeItem.current = gradeItems.find(({id}) => id === 13)
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre užívateľa po škole
-  useUpdateEffect(() => {
+  useEffect(() => {
+    if (firstRender.current) return
+
     if (without_school) {
       setValue('school', withoutSchoolItem.current)
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       setValue('grade', noGradeItem.current!)
       setValue('school_not_found', false)
     } else {
@@ -73,13 +75,21 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   }, [without_school])
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre neznámu školu
-  useUpdateEffect(() => {
+  useEffect(() => {
+    if (firstRender.current) return
+
     if (school_not_found) {
       setValue('school', otherSchoolItem.current)
     } else if (!without_school) {
       setValue('school', null)
     }
   }, [school_not_found])
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false
+    }
+  }, [])
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   return (

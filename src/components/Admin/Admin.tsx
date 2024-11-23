@@ -42,6 +42,9 @@ import {SchoolCreate} from './resources/personal/schools/SchoolCreate'
 import {SchoolEdit} from './resources/personal/schools/SchoolEdit'
 import {SchoolList} from './resources/personal/schools/SchoolList'
 import {SchoolShow} from './resources/personal/schools/SchoolShow'
+import {ProfileCreate} from './resources/personal/profiles/ProfileCreate'
+import {ProfileList} from './resources/personal/profiles/ProfileList'
+import {ProfileShow} from './resources/personal/profiles/ProfileShow'
 import {useAuthProvider} from './useAuthProvider'
 
 export const Admin: FC = () => {
@@ -121,7 +124,13 @@ export const Admin: FC = () => {
         edit={SchoolEdit}
         create={SchoolCreate}
       />
-      <Resource name="personal/profiles" recordRepresentation="verbose_name" />
+      <Resource
+        name="personal/profiles"
+        recordRepresentation="verbose_name"
+        list={ProfileList}
+        show={ProfileShow}
+        create={ProfileCreate}
+      />
       <Resource name="competition/late-tag" recordRepresentation="name" />
       <Resource
         name="personal/districts"

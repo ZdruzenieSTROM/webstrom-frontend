@@ -35,13 +35,13 @@ export const Results: FC = () => {
   }, [setBannerMessages, isBannerLoading, bannerMessages])
 
   return (
-    <div>
+    <>
       {resultsIsLoading && <Loading />}
       <Box
         sx={{
           display: 'grid',
           rowGap: {xs: '6px', sm: '10px'},
-          mx: {xs: 1, sm: 3, md: undefined},
+          mx: {xs: 1, sm: 3, md: 'auto'},
           gridTemplateColumns: 'max-content 1fr repeat(3, max-content)',
         }}
       >
@@ -49,6 +49,6 @@ export const Results: FC = () => {
           <ResultsRow result={result} key={index} />
         ))}
       </Box>
-    </div>
+    </>
   )
 }

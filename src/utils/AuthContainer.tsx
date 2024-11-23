@@ -32,7 +32,7 @@ const useAuth = () => {
     // zistime, ci ma user platne sessionid - request na nejaky autentikovany endpoint
     ;(async () => {
       const success = await testAuth()
-      success && setIsAuthed(true)
+      if (success) setIsAuthed(true)
     })()
 
     // interceptor pre auth
@@ -93,7 +93,7 @@ const useAuth = () => {
 
       // testAuth ma vlastny error handling, necrashne
       const success = await testAuth()
-      success && setIsAuthed(true)
+      if (success) setIsAuthed(true)
     },
   })
 

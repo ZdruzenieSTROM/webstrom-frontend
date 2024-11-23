@@ -2,6 +2,7 @@ import {Stack, Typography} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
 import {FC} from 'react'
 
+import {PublicationTypes} from '@/types/api/competition'
 import {SemesterWithProblems} from '@/types/api/generated/competition'
 
 import {Link} from '../Clickable/Link'
@@ -19,7 +20,7 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
   const refetch = () => queryClient.invalidateQueries({queryKey: ['competition', 'semester', semesterId]})
 
   const appendFormData = (formData: FormData) => {
-    formData.append('publication_type', 'Časopisy')
+    formData.append('publication_type', PublicationTypes.LEAFLET.name)
     formData.append('event', semesterId.toString())
     formData.append('order', order.toString())
   }

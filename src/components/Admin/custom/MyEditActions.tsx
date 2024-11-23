@@ -19,9 +19,9 @@ export const MyEditActions: FC = () => {
   return (
     <TopToolbar>
       {/* the `to` prop was omitted from ShowButton in recent RA version, but it's still working
-            and RA doesn't provide better way to do this
-          eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          @ts-ignore */}
+            and RA doesn't provide better way to do this 
+            TODO: try again after RA upgrade */}
+      {/* @ts-ignore */}
       <ShowButton to={to} />
       <ListButton label="Back to list" />
     </TopToolbar>

@@ -32,7 +32,13 @@ export const PostPreview: FC = () => {
               </Stack>
             </Grid>
             <Grid xs={5}>
-              {isDetailOpen && <PostDetail caption={formData?.caption ?? ''} details={formData?.details ?? ''} />}
+              {isDetailOpen && (
+                <PostDetail
+                  closeDetail={() => openDetail(false)}
+                  caption={formData?.caption ?? ''}
+                  details={formData?.details ?? ''}
+                />
+              )}
             </Grid>
           </Grid>
         )}

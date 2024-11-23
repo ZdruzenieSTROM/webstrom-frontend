@@ -24,14 +24,14 @@ export const MenuMain: FC = () => {
 
   const fullWidthMenu = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
   useEffect(() => {
-    fullWidthMenu && setIsVisible(false)
+    if (fullWidthMenu) setIsVisible(false)
   }, [fullWidthMenu])
 
   // Inspired by https://nextjs.org/docs/pages/api-reference/functions/use-router#routerevents
   const router = useRouter()
   useEffect(() => {
     const handleRouteChange = () => {
-      fullWidthMenu && setIsVisible(false)
+      if (fullWidthMenu) setIsVisible(false)
     }
 
     router.events.on('routeChangeComplete', handleRouteChange)
@@ -102,7 +102,13 @@ export const MenuMain: FC = () => {
           <CloseButton
             size={iconSize}
             onClick={toggleMenu}
-            sx={{position: 'absolute', top: 24, left: {xs: undefined, md: 24}, right: {xs: 24, md: undefined}}}
+            sx={{
+              position: 'absolute',
+              top: 24,
+              left: {xs: 'auto', md: 24},
+              right: {xs: 24, md: 'auto'},
+              display: {xs: 'block', md: 'none'},
+            }}
           />
           {menuItemsIsLoading && (
             <Box sx={{position: 'absolute', top: '50%', left: 0, right: 0, color: 'white'}}>

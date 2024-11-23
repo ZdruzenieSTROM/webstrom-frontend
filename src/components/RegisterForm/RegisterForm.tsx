@@ -7,6 +7,7 @@ import {SubmitHandler, useForm, useFormState} from 'react-hook-form'
 
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
+import {useAlert} from '@/utils/useAlert'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {useNavigationTrap} from '../../utils/useNavigationTrap'
@@ -62,6 +63,7 @@ export const RegisterForm: FC = () => {
   const router = useRouter()
 
   const {seminar} = useSeminarInfo()
+  const {alert} = useAlert()
 
   const transformFormData = (data: RegisterFormValues) => ({
     email: data.email,

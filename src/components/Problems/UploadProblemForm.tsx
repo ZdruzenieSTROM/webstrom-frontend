@@ -6,6 +6,7 @@ import {useDropzone} from 'react-dropzone'
 
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {niceBytes} from '@/utils/niceBytes'
+import {useAlert} from '@/utils/useAlert'
 
 import {Button} from '../Clickable/Button'
 import {Link} from '../Clickable/Link'
@@ -28,6 +29,8 @@ export const UploadProblemForm: FC<{
   isAfterDeadline,
   invalidateSeriesQuery,
 }) => {
+  const {alert} = useAlert()
+
   const {mutate: uploadSolution} = useMutation({
     mutationFn: (formData: FormData) => axios.post(`/api/competition/problem/${problemId}/upload-solution`, formData),
     onSuccess: (response) => {
@@ -132,6 +135,7 @@ export const UploadProblemForm: FC<{
             </Typography>
           </>
         )}
+        {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
         {files?.name && (
           <div className={styles.files}>
             <div>
@@ -149,8 +153,6 @@ export const UploadProblemForm: FC<{
                 Zrušiť
               </Button>
             </div>
-
-            {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
           </div>
         )}
       </div>

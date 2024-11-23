@@ -16,6 +16,30 @@ export interface Publication {
   order: number | null
 }
 
+// webstrom-backend/competition/fixtures/publication_type.json
+export const PublicationTypes = {
+  PROBLEMS: {
+    id: 0,
+    name: 'Zadania',
+  },
+  RESULTS: {
+    id: 1,
+    name: 'Výsledky',
+  },
+  SOLUTIONS: {
+    id: 2,
+    name: 'Brožúra',
+  },
+  INVITATION: {
+    id: 3,
+    name: 'Pozvánka',
+  },
+  LEAFLET: {
+    id: 4,
+    name: 'Časopisy',
+  },
+}
+
 export interface RegistrationLink {
   id: number
   url: string
