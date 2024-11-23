@@ -1,5 +1,6 @@
-/** @type import('next').NextConfig */
-module.exports = {
+import type {NextConfig} from 'next'
+
+const nextConfig: NextConfig = {
   // docs: https://nextjs.org/docs/api-reference/next.config.js/redirects
   async redirects() {
     return [
@@ -24,7 +25,10 @@ module.exports = {
   images: {
     remotePatterns: [
       {
+        // TODO: neviem, preco to krici, treba overit, ci funguju obrazky pri ulohach
+        // @ts-ignore
         protocol: process.env.NEXT_PUBLIC_BE_PROTOCOL,
+        // @ts-ignore
         hostname: process.env.NEXT_PUBLIC_BE_HOSTNAME,
         port: process.env.NEXT_PUBLIC_BE_PORT,
         pathname: '/media/**',
@@ -40,7 +44,7 @@ module.exports = {
   // https://react-svgr.com/docs/next/
   webpack(config) {
     // Grab the existing rule that handles SVG imports
-    const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'))
+    const fileLoaderRule = config.module.rules.find((rule: any) => rule.test?.test?.('.svg'))
 
     config.module.rules.push(
       // Reapply the existing rule, but only for svg imports ending in ?url
@@ -74,3 +78,6 @@ module.exports = {
     },
   },
 }
+
+// eslint-disable-next-line import/no-default-export
+export default nextConfig

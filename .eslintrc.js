@@ -76,6 +76,7 @@ module.exports = {
 
     '@typescript-eslint/ban-ts-comment': 'warn',
     '@typescript-eslint/no-unused-vars': ['warn', {argsIgnorePattern: '^_', ignoreRestSiblings: true}],
+    '@typescript-eslint/no-explicit-any': 'warn',
 
     // Use === instead of == for everything, except for comparison with null and other special
     // cases.
