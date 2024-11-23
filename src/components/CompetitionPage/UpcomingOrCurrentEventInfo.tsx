@@ -16,17 +16,18 @@ export const UpcomingOrCurrentEventInfo: FC<{event: Event; name: string; shortNa
 
   const upcomingEventDate = event ? formatDateTimeInterval(start, end) : null
 
-  const regStart = DateTime.fromISO(registration_link.start)
-  const regEnd = DateTime.fromISO(registration_link.end)
+  const regStart = registration_link && DateTime.fromISO(registration_link.start)
+  const regEnd = registration_link && DateTime.fromISO(registration_link.end)
   const now = DateTime.now()
 
   const registrationInfo = (() => {
+    if (!regStart || !regEnd) return ''
     if (now < regStart) return `Registrácia bude otvorená od ${regStart.toFormat(DateFormat.DATE_TIME)}`
     if (now < regEnd) return `Registrácia je otvorená do ${regEnd.toFormat(DateFormat.DATE_TIME)}`
     return `Registrácia bola ukončená`
   })()
 
-  const isRegistrationActive = regStart < now && regEnd > now
+  const isRegistrationActive = regStart && regEnd && regStart < now && regEnd > now
 
   return (
     <Stack gap={1}>
