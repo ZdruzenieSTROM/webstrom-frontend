@@ -24,7 +24,7 @@ export const PublicationTypes = {
   },
   RESULTS: {
     id: 1,
-    name: 'Výsledky',
+    name: 'Poradia',
   },
   SOLUTIONS: {
     id: 2,

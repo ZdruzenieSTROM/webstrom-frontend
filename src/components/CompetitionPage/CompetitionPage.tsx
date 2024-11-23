@@ -1,11 +1,12 @@
 import {Stack, Typography} from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
 import {useQuery} from '@tanstack/react-query'
 import axios from 'axios'
 import {useRouter} from 'next/router'
-import {FC, useEffect} from 'react'
+import {FC, Fragment, useEffect} from 'react'
 
 import {Link} from '@/components/Clickable/Link'
-import {Competition, Event} from '@/types/api/competition'
+import {Competition, Event, PublicationTypes} from '@/types/api/competition'
 import {BannerContainer} from '@/utils/BannerContainer'
 
 import {UpcomingOrCurrentEventInfo} from './UpcomingOrCurrentEventInfo'
@@ -78,26 +79,36 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
           </Typography>
         )}
       </Stack>
-      <Stack>
-        <Typography variant="h2">Archív</Typography>
 
-        <Stack gap={1}>
-          {history_events.map((event) => (
-            <Stack key={event.id} direction="row" sx={{justifyContent: 'space-between'}}>
-              <Typography variant="h3" component="span">
-                {name} {event.school_year}
-              </Typography>
-              <Stack direction="row" sx={{gap: {xs: 1, sm: 2}}}>
-                {event.publication_set.map((publication) => (
-                  <Link variant="button2" key={publication.id} href={`/api${publication.file}`}>
-                    {publication.name}
+      <Grid container spacing={2}>
+        {history_events.map((event) => {
+          const results = event.publication_set.find((p) => p.publication_type === PublicationTypes.RESULTS.id)
+          const problems = event.publication_set.find((p) => p.publication_type === PublicationTypes.PROBLEMS.id)
+          return (
+            <Fragment key={event.id}>
+              <Grid xs={8}>
+                <Typography variant="h2" component="span">
+                  {name} {event.school_year}
+                </Typography>
+              </Grid>
+              <Grid xs={2} display="flex" justifyContent="end">
+                {results && (
+                  <Link variant="button2" key={results.id} href={`/api${results.file}`}>
+                    {results.name}
                   </Link>
-                ))}
-              </Stack>
-            </Stack>
-          ))}
-        </Stack>
-      </Stack>
+                )}
+              </Grid>
+              <Grid xs={2} display="flex" justifyContent="end">
+                {problems && (
+                  <Link variant="button2" key={problems.id} href={`/api${problems.file}`}>
+                    {problems.name}
+                  </Link>
+                )}
+              </Grid>
+            </Fragment>
+          )
+        })}
+      </Grid>
     </Stack>
   )
 }
