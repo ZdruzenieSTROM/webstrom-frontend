@@ -10,7 +10,7 @@ type PostDetailProps = {
   closeDetail: () => void
 }
 
-export const PostDetail: FC<PostDetailProps> = ({caption, details, closeDetail: closeDetail}) => {
+export const PostDetail: FC<PostDetailProps> = ({caption, details, closeDetail}) => {
   return (
     <Stack
       p={2}
