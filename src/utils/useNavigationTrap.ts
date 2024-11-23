@@ -31,7 +31,7 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
     }
 
     const pageExit = (e: BeforeUnloadEvent) => {
-      e.preventDefault()
+      if (shouldBlockNavigation) e.preventDefault()
     }
 
     router.events.on('routeChangeStart', pageNavigate)
