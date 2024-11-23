@@ -62,7 +62,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre užívateľa po škole
   useEffect(() => {
-    if (!firstRender) return
+    if (firstRender.current) return
 
     if (without_school) {
       setValue('school', withoutSchoolItem.current)
@@ -76,7 +76,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre neznámu školu
   useEffect(() => {
-    if (!firstRender) return
+    if (firstRender.current) return
 
     if (school_not_found) {
       setValue('school', otherSchoolItem.current)
