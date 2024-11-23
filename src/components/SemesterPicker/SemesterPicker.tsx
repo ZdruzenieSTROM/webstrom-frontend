@@ -75,16 +75,14 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
         flexDirection: 'row',
         alignItems: 'center',
         // wrap na velmi nizkych rozliseniach
-        flexWrap: 'wrap-reverse',
+        flexWrap: 'wrap',
         rowGap: 0.5,
-        zIndex: 1000,
-        userSelect: 'none',
         // pre pouzitie v TopGrid + pri wrapnuti
         justifyContent: 'end',
       }}
     >
-      {page !== 'admin/opravovanie' && <Dropdown title={'Séria'} options={dropdownSeriesList} />}
       <Dropdown title={'Semester'} options={dropdownSemesterList} />
+      {page !== 'admin/opravovanie' && <Dropdown title={'Séria'} options={dropdownSeriesList} />}
     </Stack>
   )
 }
