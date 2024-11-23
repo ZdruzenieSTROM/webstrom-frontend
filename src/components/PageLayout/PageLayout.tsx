@@ -52,6 +52,7 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
                   py: {xs: 4, md: 8, lg: 12},
                   px: 2,
                   ...sx,
+                  '> :first-child': {mt: 0, pt: 0},
                 }}
               >
                 {children}
