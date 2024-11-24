@@ -13,7 +13,7 @@ import {
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 
-import {seasonCodeStrings} from './seasonCodeStrings'
+import {seasonCodeStrings} from '../../../seasonCodeStrings'
 
 export const SemesterCreate: FC = () => (
   <MyCreate>
