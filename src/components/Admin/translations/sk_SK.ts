@@ -1,7 +1,9 @@
 import slovakMessages from 'ra-language-slovak'
 
 export const sk_SK = {
-  ...slovakMessages,
+  ra: {
+    ...slovakMessages.ra,
+  },
   resources: {
     'cms/post': {
       name: 'Príspevky',
@@ -17,7 +19,14 @@ export const sk_SK = {
       },
     },
     'base/flat-page': {
-      name: 'Test123',
+      name: 'flat-pages',
+      fields: {
+        id: 'ID',
+        url: 'URL',
+        title: 'Názov',
+        content: 'Obsah',
+        sites: 'Stránky',
+      },
     },
     'competition/competition': {
       name: 'Súťaže',
@@ -35,22 +44,120 @@ export const sk_SK = {
         min_years_until_graduation: 'min_years_until_graduation',
       },
     },
-    events: '',
-    semesters: '',
-    series: '',
-    problems: '',
-    solutions: '',
-    schools: '',
+    'competition/event': {
+      name: 'competition/event',
+      fields: {
+        competition: 'Súťaž',
+        year: 'Ročník',
+        season_code: 'season_code',
+        school_year: 'Školský rok',
+        start: 'Začiatok',
+        end: 'Koniec',
+        location: 'location',
+        additional_name: 'additional_name',
+        registration_link: {
+          id: 'ID',
+          url: 'Odkaz na registráciu',
+          start: 'registration_link.start',
+          end: 'registration_link.end',
+          additional_info: 'Ďalšie informácie',
+        },
+        publication_set: 'Pubikácie',
+      },
+    },
+    'competition/semester': {
+      name: 'competition/semester',
+      fields: {
+        competition: 'Súťaž',
+        year: 'Ročník',
+        season_code: 'season_code',
+        school_year: 'Školský rok',
+        start: 'Začiatok',
+        end: 'Koniec',
+        complete: 'complete',
+        additional_name: 'AddditionalName',
+        registration_link: 'Odkaz na registráciu',
+        series_set: 'Série',
+        publication_set: 'Publikácie',
+        late_tags: 'late_tags',
+      },
+    },
+    'competition/series': {
+      name: 'competition/series',
+      fields: {
+        semester: 'Semester',
+        deadline: 'Deadline',
+        order: 'Poradie',
+        complete: 'Complete',
+        problems: 'Úlohy',
+      },
+    },
+    'competition/problem': {
+      name: 'Úlohy',
+      fields: {
+        series: 'Séria',
+        order: 'Poradie',
+        text: 'Zadanie',
+        image: 'Obrázok',
+        num_comments: 'Počet komentárov',
+      },
+    },
+    'competition/solution': {
+      name: 'Riešenia',
+      fields: {
+        problem: 'Úloha',
+        semester_registration: 'Riešiteľ',
+        late_tag: 'Po termíne',
+        is_online: 'Internetové riešenie',
+        solution: 'Riešenie',
+      },
+    },
+    'competition/event-registration': {
+      name: 'event-registration',
+      fields: {
+        school: {
+          abbreviation: 'Škola',
+        },
+        grade: {
+          tag: 'Ročník',
+        },
+        event: 'Event',
+      },
+    },
+    'personal/schools': {
+      name: 'Školy',
+      fields: {
+        name: 'Názov školy',
+        street: 'Ulica',
+        city: 'Mesto',
+        zip_code: 'PSČ',
+        district: 'Okres',
+        abbreviation: 'Skratka školy',
+        email: 'Email',
+      },
+    },
+    'personal/profiles': {
+      name: 'Uživateľské profily',
+      fields: {
+        first_name: 'Meno',
+        last_name: 'Priezvisko',
+        school: {
+          verbose_name: 'Škola',
+        },
+        grade: 'Ročník',
+      },
+    },
   },
 
   controls: {
-    create: '',
-    edit: '',
-    export: '',
-    show: '',
-    back_to_list: '',
-    back_home: '',
+    back_home: 'Späť na hlavnú stránku',
     logout: 'Odhlásiť sa',
-    test: 'Test',
+  },
+
+  content: {
+    labels: {},
+    footer: {
+      timezone_message: 'Všetky časy sú uvedené v časovom pásme Europe/Bratislava',
+    },
   },
 }

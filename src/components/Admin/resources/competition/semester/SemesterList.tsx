@@ -29,17 +29,14 @@ export const SemesterList: FC = () => (
       <NumberField source="registration_link" />
       <FunctionField<RaRecord>
         source="series_set"
-        label="Series count"
         render={(record) => record && <span>{record['series_set'].length}</span>}
       />
       <FunctionField<RaRecord>
         source="publication_set"
-        label="Publication count"
         render={(record) => record && <span>{record['publication_set'].length}</span>}
       />
       <FunctionField<RaRecord>
         source="late_tags"
-        label="Late tags count"
         render={(record) => record && <span>{record['late_tags'].length}</span>}
       />
     </Datagrid>
