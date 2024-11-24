@@ -89,7 +89,7 @@ export const SemesterAdministration: FC = () => {
   }
 
   const [semesterFreezeError, setSemesterFreezeError] = useState<string>()
-  const [seriesFreezeError, setSeriesFreezeError] = useState<string>()
+  const [seriesFreezeErrors, setSeriesFreezeErrors] = useState<Map<number, string>>()
 
   const {mutate: freezeSemester} = useMutation({
     mutationFn: (semester: SemesterWithProblems) =>
@@ -107,11 +107,11 @@ export const SemesterAdministration: FC = () => {
   const {mutate: freezeSeries} = useMutation({
     mutationFn: (series: SeriesWithProblems) => axios.post(`/api/competition/series/${series.id}/results/freeze`),
     onSuccess: () => refetch(),
-    onError: (error: unknown) => {
+    onError: (error: unknown, variables: SeriesWithProblems) => {
       if (error instanceof AxiosError) {
-        setSeriesFreezeError(error.response?.data.detail)
+        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, error.response?.data.detail))
       } else {
-        setSeriesFreezeError('Nastala neznáma chyba.')
+        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, 'Nastala neznáma chyba.'))
       }
     },
   })
@@ -155,7 +155,9 @@ export const SemesterAdministration: FC = () => {
                 Uzavrieť sériu
               </Button>
             )}
-            {seriesFreezeError && <Typography variant="body1">{seriesFreezeError}</Typography>}
+            {seriesFreezeErrors?.get(series.id) && (
+              <Typography variant="body1">{seriesFreezeErrors?.get(series.id)}</Typography>
+            )}
           </Stack>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="body1" component="div">
