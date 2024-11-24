@@ -54,7 +54,7 @@ export const Admin: FC = () => {
     <ReactAdmin authProvider={authProvider} dataProvider={dataProvider} layout={AdminLayout}>
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
       <Resource
-        name="base/flat-page"
+        name="cms/flat-page"
         list={FlatpageList}
         edit={FlatpageEdit}
         show={FlatpageShow}
