@@ -8,6 +8,7 @@ import {SubmitHandler, useForm} from 'react-hook-form'
 import {Button} from '@/components/Clickable/Button'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {LoginForm} from '../PageLayout/LoginForm/LoginForm'
 
@@ -28,6 +29,7 @@ const defaultValues: PasswordResetForm = {
 
 export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
   const router = useRouter()
+  const {seminar} = useSeminarInfo()
 
   const {handleSubmit, control, getValues} = useForm<PasswordResetForm>({defaultValues})
 
@@ -58,7 +60,7 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
         <Typography variant="body1">Heslo úspešne zmenené, môžeš sa prihlásiť</Typography>
         <LoginForm
           closeDialog={() => {
-            router.push('/')
+            router.push(`/${seminar}`)
           }}
         />
       </Stack>

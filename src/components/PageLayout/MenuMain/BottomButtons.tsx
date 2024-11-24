@@ -25,7 +25,7 @@ export const BottomButtons: FC = () => {
   const redirectLogout = () => {
     logout()
     if (router.asPath.endsWith('profil') || router.asPath.endsWith('profil/uprava')) {
-      router.push('/')
+      router.push(`/${seminar}`)
     }
   }
 

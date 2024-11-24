@@ -38,7 +38,7 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
   const redirectClose = () => {
     closeDialog()
     if (router.asPath.endsWith('registracia')) {
-      router.push('/')
+      router.push(`/${seminar}`)
     }
   }
 
