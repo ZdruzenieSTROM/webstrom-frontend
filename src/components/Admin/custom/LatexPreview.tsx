@@ -7,7 +7,7 @@ export const LatexPreview: FC<FieldProps> = ({source}) => {
   if (!source) return null
 
   return (
-    <Labeled label="Preview">
+    <Labeled label="content.labels.preview">
       <FormDataConsumer>
         {({formData}) => {
           const data = formData[source]

@@ -23,10 +23,10 @@ export const SolutionEdit: FC = () => (
       <FileInput source="solution" accept="application/pdf">
         <MyFileField />
       </FileInput>
-      <ReferenceInput source="late_tag" reference="competition/late-tag" label="Je riešenie po termíne?">
+      <ReferenceInput source="late_tag" reference="competition/late-tag" label="content.labels.is_late">
         <AutocompleteInput optionText="name" fullWidth />
       </ReferenceInput>
-      <BooleanInput source="is_online" label="Je to internetové riešenie?" />
+      <BooleanInput source="is_online" label="content.labels.is_online" />
     </SimpleForm>
   </MyEdit>
 )

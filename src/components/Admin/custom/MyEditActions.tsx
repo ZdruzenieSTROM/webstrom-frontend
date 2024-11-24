@@ -23,7 +23,7 @@ export const MyEditActions: FC = () => {
             TODO: try again after RA upgrade */}
       {/* @ts-ignore */}
       <ShowButton to={to} />
-      <ListButton label="Back to list" />
+      <ListButton label="content.labels.back_to_list" />
     </TopToolbar>
   )
 }

@@ -9,7 +9,7 @@ export const EventRegistrationShow: FC = () => (
     <SimpleShowLayout>
       <FunctionField
         source="profile.last_name"
-        label="Meno a priezvisko"
+        label="content.labels.name"
         render={(record: EventRegistration) => `${record.profile.first_name} ${record.profile.last_name}`}
       />
       <TextField source="school.abbreviation" />
