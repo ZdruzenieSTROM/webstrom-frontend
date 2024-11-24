@@ -118,14 +118,17 @@ const _theme = createTheme({
     body1: {
       ...font.style,
       fontWeight: 400,
+      textAlign: 'justify',
     },
     body2: {
       ...font.style,
       fontWeight: 400,
+      textAlign: 'justify',
     },
     body3: {
       ...font.style,
       fontWeight: 400,
+      textAlign: 'justify',
     },
     button1: {
       ...font.style,
@@ -163,6 +166,7 @@ const _theme = createTheme({
     postBody: {
       ...font.style,
       fontWeight: 400,
+      textAlign: 'justify',
     },
     postDate: {
       ...font.style,
