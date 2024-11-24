@@ -14,7 +14,7 @@ export const PostCreate: FC = () => {
           <TextInput source="caption" fullWidth validate={required()} />
           <TextInput source="short_text" fullWidth validate={maxLength(200, 'Text musí mať najviac 200 znakov.')} />
           <TextInput source="details" multiline fullWidth />
-          <MyDateTimeInput source="added_at" fullWidth disabled defaultValue={new Date().toISOString()} />
+          {/* <MyDateTimeInput source="added_at" fullWidth disabled /> */}
           <MyDateTimeInput source="visible_after" fullWidth validate={required()} />
           <MyDateTimeInput source="visible_until" fullWidth validate={required()} />
           <SitesCheckboxInput source="sites" validate={required()} />
