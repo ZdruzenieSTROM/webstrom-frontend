@@ -26,9 +26,9 @@ export const AlertBox: FC = () => {
       contentText={container.alertBox?.message}
       close={closeContainer}
     >
-      <Stack direction={'row'} mt={3} justifyContent="center">
-        <Button variant="button1" onClick={closeContainer}>
-          Dobre
+      <Stack direction={'row'} mt={3} justifyContent="end">
+        <Button variant="button2" onClick={closeContainer}>
+          Potvrdiť
         </Button>
       </Stack>
     </Dialog>

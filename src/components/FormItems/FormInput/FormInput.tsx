@@ -12,6 +12,7 @@ export const FormInput = <
   label,
   type,
   rules,
+  ...props
 }: TextFieldProps &
   Pick<ControllerProps<TFieldValues, TName>, 'name' | 'control' | 'rules'> & {
     label: string
@@ -31,6 +32,7 @@ export const FormInput = <
         helperText={error?.message}
         focused={false}
         sx={formItemStyle}
+        {...props}
       />
     )}
   />

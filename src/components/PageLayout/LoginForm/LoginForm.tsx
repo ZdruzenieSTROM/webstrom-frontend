@@ -1,10 +1,10 @@
-import {Stack} from '@mui/material'
+import {Visibility, VisibilityOff} from '@mui/icons-material'
+import {Box, IconButton, Stack} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {Button} from '@/components/Clickable/Button'
-import {Link} from '@/components/Clickable/Link'
 import {Dialog} from '@/components/Dialog/Dialog'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
@@ -53,6 +53,8 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
     setDisplayForgottenDialog((prev) => !prev)
   }
 
+  const [showPassword, setShowPassword] = useState(false)
+
   return (
     <>
       <Dialog open={displayForgottenDialog} close={toggleForgottenDialog} title="Zabudnuté heslo">
@@ -79,22 +81,40 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
                 },
               }}
             />
-            <FormInput control={control} name="password" label="Heslo" type="password" rules={requiredRule} />
+            <FormInput
+              control={control}
+              name="password"
+              label="Heslo"
+              type={showPassword ? 'text' : 'password'}
+              rules={requiredRule}
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                ),
+              }}
+            />
+            <Box alignSelf="end">
+              <Button variant="button3" type="button" onClick={toggleForgottenDialog}>
+                Zabudnuté heslo
+              </Button>
+            </Box>
           </Stack>
           <Stack direction={'row'} mt={3} gap={2} justifyContent="space-between">
-            <Stack gap={2} alignItems="start">
-              <Button variant="button3" type="button" onClick={toggleForgottenDialog}>
-                Zabudol som heslo
-              </Button>
-              <Link variant="button3" href={`/${seminar}/registracia`}>
-                Chcem sa registrovať
-              </Link>
-            </Stack>
-            <Stack direction={'column'} gap={2} alignItems="end" justifyContent="end">
-              <Button variant="button2" type="submit">
-                Prihlásiť sa
-              </Button>
-            </Stack>
+            <Button
+              variant="button2"
+              type="button"
+              onClick={() => {
+                closeDialog() // We want to force th dialog to close also on the registration page
+                router.push(`/${seminar}/registracia`)
+              }}
+            >
+              Registrovať
+            </Button>
+            <Button variant="button2" type="submit">
+              Prihlásiť
+            </Button>
           </Stack>
         </Stack>
       </form>

@@ -166,10 +166,6 @@ const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
         py: '4px',
         px: '8px',
       }}
-      textSx={{
-        fontStyle: 'normal',
-        textAlign: 'center',
-      }}
     >
       {caption}
     </Link>

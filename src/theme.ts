@@ -131,7 +131,6 @@ const _theme = createTheme({
       ...font.style,
       textTransform: 'uppercase',
       fontWeight: 800,
-      fontStyle: 'italic',
     },
     button2: {
       ...font.style,
@@ -242,6 +241,13 @@ const _theme = createTheme({
           textAlign: 'center',
           paddingRight: '50px',
           paddingLeft: '50px',
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: 'inherit',
         },
       },
     },

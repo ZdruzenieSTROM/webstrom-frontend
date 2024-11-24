@@ -1,7 +1,8 @@
-import {Stack} from '@mui/material'
+import {Visibility, VisibilityOff} from '@mui/icons-material'
+import {IconButton, Stack} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
-import {FC} from 'react'
+import {FC, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {IGeneralPostResponse} from '@/types/api/general'
@@ -69,6 +70,10 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
 
+  const [showPassword1, setShowPassword1] = useState(false)
+  const [showPassword2, setShowPassword2] = useState(false)
+  const [showPassword3, setShowPassword3] = useState(false)
+
   return (
     <Dialog
       open={open}
@@ -91,14 +96,21 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
             control={control}
             name="old_password"
             label="aktuálne heslo"
-            type="password"
+            type={showPassword1 ? 'text' : 'password'}
             rules={requiredRule}
+            InputProps={{
+              endAdornment: (
+                <IconButton onClick={() => setShowPassword1(!showPassword1)}>
+                  {showPassword1 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
+            }}
           />
           <FormInput
             control={control}
             name="new_password1"
             label="nové heslo"
-            type="password"
+            type={showPassword2 ? 'text' : 'password'}
             rules={{
               ...requiredRule,
               minLength: {
@@ -106,17 +118,31 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
                 message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
               },
             }}
+            InputProps={{
+              endAdornment: (
+                <IconButton onClick={() => setShowPassword2(!showPassword2)}>
+                  {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
+            }}
           />
           <FormInput
             control={control}
             name="new_password2"
             label="nové heslo znovu"
-            type="password"
+            type={showPassword3 ? 'text' : 'password'}
             rules={{
               ...requiredRule,
               validate: (val) => {
                 if (val !== getValues().new_password1) return '* Zadané heslá sa nezhodujú.'
               },
+            }}
+            InputProps={{
+              endAdornment: (
+                <IconButton onClick={() => setShowPassword3(!showPassword3)}>
+                  {showPassword3 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
             }}
           />
         </Stack>

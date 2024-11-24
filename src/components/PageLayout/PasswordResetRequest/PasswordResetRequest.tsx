@@ -54,7 +54,7 @@ export const PasswordResetRequestForm: FC<PasswordResetRequestFormmProps> = ({cl
             },
           }}
         />
-        <Stack alignItems="center">
+        <Stack alignItems="end">
           <Button variant="button2" type="submit">
             Resetovať heslo
           </Button>

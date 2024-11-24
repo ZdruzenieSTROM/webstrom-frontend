@@ -1,4 +1,5 @@
-import {Stack, Typography} from '@mui/material'
+import {Visibility, VisibilityOff} from '@mui/icons-material'
+import {IconButton, Stack, Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
@@ -128,6 +129,9 @@ export const RegisterForm: FC = () => {
     },
   })
 
+  const [showPassword1, setShowPassword1] = useState(false)
+  const [showPassword2, setShowPassword2] = useState(false)
+
   return (
     <>
       <Dialog
@@ -169,7 +173,7 @@ export const RegisterForm: FC = () => {
             control={control}
             name="password1"
             label="heslo*"
-            type="password"
+            type={showPassword1 ? 'text' : 'password'}
             rules={{
               ...requiredRule,
               minLength: {
@@ -177,24 +181,38 @@ export const RegisterForm: FC = () => {
                 message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
               },
             }}
+            InputProps={{
+              endAdornment: (
+                <IconButton onClick={() => setShowPassword1(!showPassword1)}>
+                  {showPassword1 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
+            }}
           />
           <FormInput
             control={control}
             name="password2"
             label="potvrdenie hesla*"
-            type="password"
+            type={showPassword2 ? 'text' : 'password'}
             rules={{
               ...requiredRule,
               validate: (val) => {
                 if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
               },
             }}
+            InputProps={{
+              endAdornment: (
+                <IconButton onClick={() => setShowPassword2(!showPassword2)}>
+                  {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
+            }}
           />
           <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
           <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
           <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={2} />
-          <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
-          <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
+          <FormInput control={control} name="phone" label="telefón v tvare +421 ..." rules={phoneRule} />
+          <FormInput control={control} name="parent_phone" label="telefón na rodiča" rules={phoneRule} />
           <Typography variant="body2" fontWeight={800}>
             * takto označené polia sú povinné
           </Typography>

@@ -29,27 +29,23 @@ export const BottomButtons: FC = () => {
     }
   }
 
-  const separator = <Box sx={{borderLeft: '2px solid white'}} />
-
   return (
-    <Stack direction="row" sx={{mt: '1rem', justifyContent: 'center', gap: '10px'}}>
+    <Stack direction="row" flexWrap="wrap-reverse" sx={{mt: '1rem', justifyContent: 'center', gap: '10px'}}>
       {!isAuthed ? (
         <>
-          <Link invertColors variant="button2" href={`/${seminar}/registracia`}>
+          <Link invertColors variant="button1" href={`/${seminar}/registracia`}>
             Registrovať
           </Link>
-          {separator}
-          <Button invertColors variant="button2" onClick={toggleDisplayAuthenticationDialog}>
+          <Button invertColors variant="button1" onClick={toggleDisplayAuthenticationDialog}>
             Prihlásiť
           </Button>
         </>
       ) : (
         <>
-          <Link invertColors variant="button2" href={`/${seminar}/profil`}>
+          <Link invertColors variant="button1" href={`/${seminar}/profil`}>
             Profil
           </Link>
-          {separator}
-          <Button invertColors variant="button2" onClick={redirectLogout}>
+          <Button invertColors variant="button1" onClick={redirectLogout}>
             Odhlásiť
           </Button>
         </>

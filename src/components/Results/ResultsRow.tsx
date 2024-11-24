@@ -54,11 +54,12 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
           justifyContent: 'center',
           // top-level PageLayout padding je vypnuty, odsadzame to rucne tu
           pl: 1,
+          pr: {xs: '3px', sm: '5px'},
         }}
       >
         <Typography variant="resultsOrder">{rank_changed && rank_start + '.'}</Typography>
       </Stack>
-      <Stack sx={{px: {xs: '6px', sm: '10px'}, justifyContent: 'center'}}>
+      <Stack sx={{px: {xs: '3px', sm: '5px'}, justifyContent: 'center'}}>
         <Typography variant="resultsName">
           {registration.profile.first_name + ' ' + registration.profile.last_name}
         </Typography>
@@ -68,13 +69,13 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
             : registration.school.abbreviation}
         </Typography>
       </Stack>
-      <Stack sx={{justifyContent: 'center'}}>
+      <Stack sx={{px: {xs: '3px', sm: '5px'}, justifyContent: 'center'}}>
         {/* reused resultsName font */}
         <Typography variant="resultsName" fontWeight={400}>
           {registration.grade.tag}
         </Typography>
       </Stack>
-      <Stack sx={{justifyContent: 'center', px: {xs: '6px', sm: '10px'}}}>
+      <Stack sx={{justifyContent: 'center', px: {xs: '3px', sm: '5px'}, zIndex: -1}}>
         {solutions.map((series, index) => (
           <Stack key={index} direction="row">
             {series.map((solution, index) => (
@@ -101,6 +102,7 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
       <Tooltip title="Celkový súčet bodov po uplatnení bonifikácie">
         <Stack
           sx={{
+            pl: {xs: '3px', sm: '5px'},
             justifyContent: 'center',
             // top-level PageLayout padding je vypnuty, odsadzame to rucne tu
             pr: 1,
