@@ -36,7 +36,7 @@ export const Crossroad: React.FC = () => {
       <Grid container disableEqualOverflow columnSpacing={{xs: 2, md: 3, lg: 4}} mt={'30vh'} flexGrow={1}>
         <Grid xs={0} md={3} display={{xs: 'none', md: 'flex'}} height="70dvh" justifyContent="end">
           <Box>
-            <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" />
+            <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
           </Box>
         </Grid>
         <Grid xs={12} md={9}>

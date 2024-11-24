@@ -107,7 +107,6 @@ export const MenuMain: FC = () => {
               top: 24,
               left: {xs: 'auto', md: 24},
               right: {xs: 24, md: 'auto'},
-              display: {xs: 'block', md: 'none'},
             }}
           />
           {menuItemsIsLoading && (

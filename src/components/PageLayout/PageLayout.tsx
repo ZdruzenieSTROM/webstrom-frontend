@@ -41,7 +41,7 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
         <BannerContainer.Provider>
           <Stack sx={{minHeight: '100dvh'}}>
             <TopGrid />
-            <Grid container sx={{flex: 1}}>
+            <Grid container disableEqualOverflow sx={{flex: 1}}>
               <Grid xs={0} md={3} sx={{position: 'relative', display: {xs: 'none', md: 'block'}}}>
                 <StromLogo />
               </Grid>
