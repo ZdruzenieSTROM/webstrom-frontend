@@ -29,6 +29,7 @@ export const FormInput = <
         type={type}
         variant="outlined"
         fullWidth
+        error={!!error}
         helperText={error?.message}
         focused={false}
         sx={formItemStyle}

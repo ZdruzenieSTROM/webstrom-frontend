@@ -44,6 +44,7 @@ export const FormAutocomplete = <
               label={label}
               variant="outlined"
               fullWidth
+              // error={!!error}
               helperText={error?.message}
               focused={false}
             />
