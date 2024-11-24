@@ -130,8 +130,8 @@ export const SemesterAdministration: FC = () => {
 
   return (
     <>
-      <Typography variant="h3">Administrácia semestra pre opravovateľov.</Typography>
-      <Stack mt={3} pl={2} alignItems="start">
+      <Stack alignItems="start" direction="row" spacing={2}>
+        <Typography variant="h2">Semester</Typography>
         <Button variant="button2" onClick={() => freezeSemester(semester)}>
           Uzavrieť semester
         </Button>
@@ -139,15 +139,17 @@ export const SemesterAdministration: FC = () => {
       </Stack>
       {semester.series_set.map((series) => (
         <Stack key={series.id} gap={1} mt={5}>
-          <Typography variant="h2">{series.order}. séria</Typography>
-          <Stack pl={2} alignItems="start">
+          <Stack alignItems="start" direction="row" spacing={2}>
+            <Typography variant="h3">{series.order}. séria</Typography>
             <Button variant="button2" onClick={() => freezeSeries(series)}>
               Uzavrieť sériu
             </Button>
             {seriesFreezeError && <Typography variant="body1">{seriesFreezeError}</Typography>}
           </Stack>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography variant="h3">Opravovanie úloh:</Typography>
+            <Typography variant="body1" component="div">
+              <b>Opravovanie úloh:</b>
+            </Typography>
             <Typography variant="body1" component="div">
               <b>Termín série:</b> {formatDateTime(series.deadline)}
             </Typography>
