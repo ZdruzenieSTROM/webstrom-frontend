@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router'
-import {useCallback, useEffect, useRef} from 'react'
+import {useCallback, useEffect, useRef, useState} from 'react'
 
 interface NavigationTrapProps {
   shouldBlockNavigation: boolean
@@ -12,6 +12,7 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
   const currentPath = router.asPath
   const nextPath = useRef('')
   const navConfirmed = useRef(false)
+  const [override, setOverride] = useState(false)
 
   const killNavigation = useCallback(() => {
     router.events.emit('routeChangeError', '', '', {shallow: false})
@@ -22,7 +23,7 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
 
   useEffect(() => {
     const pageNavigate = (path: string) => {
-      if (navConfirmed.current) return
+      if (override || navConfirmed.current) return
       if (shouldBlockNavigation && path !== currentPath) {
         nextPath.current = path
         onNavigate()
@@ -41,12 +42,12 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
       router.events.off('routeChangeStart', pageNavigate)
       window.removeEventListener('beforeunload', pageExit)
     }
-  }, [shouldBlockNavigation, currentPath, killNavigation, onNavigate, router.events])
+  }, [shouldBlockNavigation, currentPath, killNavigation, onNavigate, override, router.events])
 
   const continueNavigation = () => {
     navConfirmed.current = true
     router.push(nextPath.current)
   }
 
-  return {nextPath, continueNavigation}
+  return {nextPath, continueNavigation, setOverride}
 }

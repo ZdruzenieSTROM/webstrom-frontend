@@ -5,6 +5,7 @@ export interface AlertProps {
   isOpen: boolean
   title?: string
   message?: string
+  onCloseCallback?: () => void
 }
 
 const useAlertBox = () => {

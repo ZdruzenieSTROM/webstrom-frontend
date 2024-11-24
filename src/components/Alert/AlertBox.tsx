@@ -16,6 +16,7 @@ export const AlertBox: FC = () => {
       title: container.alertBox?.title ?? '',
       isOpen: false,
     })
+    if (container.alertBox?.onCloseCallback) container.alertBox.onCloseCallback()
   }
 
   return (

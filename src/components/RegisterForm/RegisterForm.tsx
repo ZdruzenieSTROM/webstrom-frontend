@@ -46,7 +46,7 @@ const defaultValues: RegisterFormValues = {
 }
 
 export const RegisterForm: FC = () => {
-  const {handleSubmit, control, watch, setValue, getValues, setError, reset} = useForm<RegisterFormValues>({
+  const {handleSubmit, control, watch, setValue, getValues, setError} = useForm<RegisterFormValues>({
     defaultValues,
     values: defaultValues,
   })
@@ -85,7 +85,17 @@ export const RegisterForm: FC = () => {
       return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
     },
     // TODO: show alert/toast and redirect to homepage instead of redirect to info page
-    onSuccess: () => router.push(`${router.asPath}/../verifikacia`),
+    onSuccess: () =>
+      alert(
+        'Verifikačný e-mail bol odoslaný na zadanú e-mailovú adresu. Ak ho do pár minút neuvidíš, skontroluj, či ti náhodou neprišiel do priečinku spam',
+        {
+          title: 'Registrácia',
+          onCloseCallback: () => {
+            setOverride(true)
+            router.push(`${router.asPath}/../`)
+          },
+        },
+      ),
     onError: (error: AxiosError<RegisterErrorResponseData>) => {
       if (error.response?.status === 400) {
         if (error.response.data.email) {
@@ -98,7 +108,6 @@ export const RegisterForm: FC = () => {
   })
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
-    reset(undefined, {keepValues: true})
     submitFormData(data)
   }
 
@@ -112,7 +121,7 @@ export const RegisterForm: FC = () => {
 
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const {continueNavigation} = useNavigationTrap({
+  const {continueNavigation, setOverride} = useNavigationTrap({
     shouldBlockNavigation: isDirty,
     onNavigate: () => {
       setDialogOpen(true)
