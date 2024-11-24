@@ -3,6 +3,7 @@ import {
   ArrayField,
   BooleanField,
   Datagrid,
+  FunctionField,
   NumberField,
   ReferenceArrayField,
   ReferenceField,
@@ -16,6 +17,8 @@ import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
+import {seasonCodeStrings} from './seasonCodeStrings'
+
 export const SemesterShow: FC = () => (
   <MyShow>
     <TabbedShowLayout>
@@ -23,7 +26,12 @@ export const SemesterShow: FC = () => (
         <SimpleShowLayout>
           <ReferenceField source="competition" reference="competition/competition" link="show" />
           <NumberField source="year" />
-          <NumberField source="season_code" />
+          <FunctionField
+            source="season_code"
+            render={(record) => {
+              return `${seasonCodeStrings[record.season_code].name ?? ''}`
+            }}
+          />
           <TextField source="school_year" />
           <DateTimeField source="start" />
           <DateTimeField source="end" />

@@ -13,6 +13,8 @@ import {
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 
+import {seasonCodeStrings} from './seasonCodeStrings'
+
 export const SemesterCreate: FC = () => (
   <MyCreate>
     <SimpleForm>
@@ -20,7 +22,7 @@ export const SemesterCreate: FC = () => (
         <SelectInput fullWidth validate={required()} />
       </ReferenceInput>
       <NumberInput source="year" helperText="ročník súťaže, napr. 48" fullWidth validate={required()} />
-      <NumberInput source="season_code" fullWidth validate={required()} />
+      <SelectInput source="season_code" choices={seasonCodeStrings} fullWidth validate={required()} />
       <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth />
       <MyDateTimeInput source="start" fullWidth validate={required()} />
       <MyDateTimeInput source="end" fullWidth validate={required()} />
