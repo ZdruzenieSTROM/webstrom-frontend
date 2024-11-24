@@ -8,7 +8,7 @@ export const MyFileField: FC = () => {
 
   return (
     <RecordContextProvider value={myRecord}>
-      <FileField source="src" title={myRecord.title} />
+      <FileField source="src" title={myRecord?.title} />
     </RecordContextProvider>
   )
 }

@@ -1,7 +1,8 @@
 import {Home, Logout} from '@mui/icons-material/'
 import {Button, Stack, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
-import {AppBar, Layout, LayoutProps, useLogout} from 'react-admin'
+import {FC, PropsWithChildren} from 'react'
+import {AppBar, Layout, useLogout} from 'react-admin'
 
 const AppMenuBar = () => {
   const router = useRouter()
@@ -32,10 +33,10 @@ const AppMenuBar = () => {
   )
 }
 
-export const AdminLayout = (props: LayoutProps) => {
+export const AdminLayout: FC<PropsWithChildren> = ({children}) => {
   return (
     <>
-      <Layout {...props} appBar={AppMenuBar} />
+      <Layout appBar={AppMenuBar}>{children}</Layout>
       <Stack
         style={{
           position: 'fixed',

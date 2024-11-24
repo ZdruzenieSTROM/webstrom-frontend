@@ -7,6 +7,7 @@ import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {ProblemWithSolutions, SemesterWithProblems, SolutionAdministration} from '@/types/api/competition'
+import {Accept} from '@/utils/dropzone-accept'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useNavigationTrap} from '@/utils/useNavigationTrap'
@@ -143,9 +144,7 @@ export const ProblemAdministration: FC = () => {
   const {getRootProps, getInputProps} = useDropzone({
     onDrop,
     multiple: false,
-    accept: {
-      'application/zip': ['.zip'],
-    },
+    accept: Accept.Zip,
   })
 
   if (permissionsIsLoading || problemIsLoading || semesterIsLoading) return <Loading />

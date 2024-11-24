@@ -16,6 +16,8 @@ export const UpcomingOrCurrentEvent: FC = () => {
   const record = useRecordContext()
   const redirect = useRedirect()
 
+  if (!record) return null
+
   return (
     <Labeled
       label="Prebiehajúca alebo najbližšia akcia"

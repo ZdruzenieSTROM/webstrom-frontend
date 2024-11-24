@@ -6,7 +6,7 @@ import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
 export const FlatpageList: FC = () => (
   <List>
-    <Datagrid rowClick="show">
+    <Datagrid>
       <NumberField source="id" />
       <TextField source="url" />
       <TextField source="title" />

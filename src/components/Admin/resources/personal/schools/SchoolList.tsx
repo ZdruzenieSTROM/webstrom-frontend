@@ -5,7 +5,7 @@ import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
 export const SchoolList: FC = () => (
   <List>
-    <Datagrid rowClick="show">
+    <Datagrid>
       <TruncatedTextField source="name" maxTextWidth={60} />
       <TextField source="street" />
       <TextField source="city" />

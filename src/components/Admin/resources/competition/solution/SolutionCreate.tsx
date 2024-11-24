@@ -3,6 +3,7 @@ import {AutocompleteInput, BooleanInput, FileInput, ReferenceInput, required, Si
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
+import {Accept} from '@/utils/dropzone-accept'
 
 import {createSolutionFormData} from './createSolutionFormData'
 
@@ -20,7 +21,7 @@ export const SolutionCreate: FC = () => (
       <ReferenceInput source="semester_registration" reference="competition/event-registration">
         <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
       </ReferenceInput>
-      <FileInput source="solution" accept="application/pdf">
+      <FileInput source="solution" accept={Accept.Pdf}>
         <MyFileField />
       </FileInput>
       <ReferenceInput source="late_tag" reference="competition/late-tag" label="Je riešenie po termíne?">
