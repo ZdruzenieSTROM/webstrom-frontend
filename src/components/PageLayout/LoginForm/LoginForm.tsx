@@ -111,10 +111,10 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
                 router.push(`/${seminar}/registracia`)
               }}
             >
-              Registrovať sa
+              Registrovať
             </Button>
             <Button variant="button2" type="submit">
-              Prihlásiť sa
+              Prihlásiť
             </Button>
           </Stack>
         </Stack>
