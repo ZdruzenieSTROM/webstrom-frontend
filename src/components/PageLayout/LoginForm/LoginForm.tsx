@@ -103,9 +103,16 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
             </Box>
           </Stack>
           <Stack direction={'row'} mt={3} gap={2} justifyContent="space-between">
-            <Link variant="button2" href={`/${seminar}/registracia`}>
+            <Button
+              variant="button2"
+              type="button"
+              onClick={() => {
+                closeDialog() // We want to force th dialog to close also on the registration page
+                router.push(`/${seminar}/registracia`)
+              }}
+            >
               Registrovať sa
-            </Link>
+            </Button>
             <Button variant="button2" type="submit">
               Prihlásiť sa
             </Button>
