@@ -13,7 +13,7 @@ const AppMenuBar = () => {
       position="relative"
       toolbar={
         <Stack gap={2} direction="row">
-          <Button color="inherit" onClick={() => router.push('/')}>
+          <Button color="inherit" onClick={() => router.push('/strom')}>
             <Stack gap={1} direction="row">
               <Home />
               <Typography variant="body1">Späť na hlavnú stránku</Typography>
