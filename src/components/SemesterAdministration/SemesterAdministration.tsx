@@ -92,7 +92,10 @@ export const SemesterAdministration: FC = () => {
 
   const {mutate: freezeSeries} = useMutation({
     mutationFn: (series: SeriesWithProblems) => axios.post(`/api/competition/series/${series.id}/results/freeze`),
-    onSuccess: () => refetch(),
+    onSuccess: (_, variables: SeriesWithProblems) => {
+      setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, ''))
+      refetch()
+    },
     onError: (error: unknown, variables: SeriesWithProblems) => {
       if (error instanceof AxiosError) {
         setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, error.response?.data.detail))
