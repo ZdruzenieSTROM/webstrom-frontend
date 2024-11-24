@@ -1,5 +1,5 @@
 import {Stack, Typography} from '@mui/material'
-import {useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {FC, useState} from 'react'
 
@@ -33,7 +33,11 @@ export const SemesterAdministration: FC = () => {
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
-  const {data: semesterData, isLoading: semesterIsLoading} = useQuery({
+  const {
+    data: semesterData,
+    isLoading: semesterIsLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['competition', 'semester', semesterId],
     queryFn: () => axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
@@ -84,34 +88,22 @@ export const SemesterAdministration: FC = () => {
     )
   }
 
-  const [semesterFreezeError, setSemesterFreezeError] = useState<string>()
-  const [seriesFreezeError, setSeriesFreezeError] = useState<string>()
+  const [seriesFreezeErrors, setSeriesFreezeErrors] = useState<Map<number, string>>()
 
-  const freezeSemester = async (semester: SemesterWithProblems) => {
-    setSemesterFreezeError('')
-    try {
-      await axios.post(`/api/competition/semester/${semester.id}/results/freeze`)
-    } catch (error: unknown) {
+  const {mutate: freezeSeries} = useMutation({
+    mutationFn: (series: SeriesWithProblems) => axios.post(`/api/competition/series/${series.id}/results/freeze`),
+    onSuccess: (_, variables: SeriesWithProblems) => {
+      setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, ''))
+      refetch()
+    },
+    onError: (error: unknown, variables: SeriesWithProblems) => {
       if (error instanceof AxiosError) {
-        setSemesterFreezeError(error.response?.data.detail)
+        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, error.response?.data.detail))
       } else {
-        setSemesterFreezeError('Nastala neznáma chyba.')
+        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, 'Nastala neznáma chyba.'))
       }
-    }
-  }
-
-  const freezeSeries = async (series: SeriesWithProblems) => {
-    setSeriesFreezeError('')
-    try {
-      await axios.post(`/api/competition/series/${series.id}/results/freeze`)
-    } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        setSeriesFreezeError(error.response?.data.detail)
-      } else {
-        setSeriesFreezeError('Nastala neznáma chyba.')
-      }
-    }
-  }
+    },
+  })
 
   if (
     urlDataLoading.currentSeriesIsLoading ||
@@ -130,24 +122,29 @@ export const SemesterAdministration: FC = () => {
 
   return (
     <>
-      <Typography variant="h3">Administrácia semestra pre opravovateľov.</Typography>
-      <Stack mt={3} pl={2} alignItems="start">
-        <Button variant="button2" onClick={() => freezeSemester(semester)}>
-          Uzavrieť semester
-        </Button>
-        {semesterFreezeError && <Typography variant="body1">{semesterFreezeError}</Typography>}
+      <Stack alignItems="start" direction="row" spacing={2}>
+        <Typography variant="h2">Semester</Typography>
+        {semester.complete && <Typography variant="body1">Semester je uzavretý</Typography>}
       </Stack>
       {semester.series_set.map((series) => (
         <Stack key={series.id} gap={1} mt={5}>
-          <Typography variant="h2">{series.order}. séria</Typography>
-          <Stack pl={2} alignItems="start">
-            <Button variant="button2" onClick={() => freezeSeries(series)}>
-              Uzavrieť sériu
-            </Button>
-            {seriesFreezeError && <Typography variant="body1">{seriesFreezeError}</Typography>}
+          <Stack alignItems="start" direction="row" spacing={2}>
+            <Typography variant="h3">{series.order}. séria</Typography>
+            {series.complete ? (
+              <Typography variant="body1">Séria je uzavretá</Typography>
+            ) : (
+              <Button variant="button2" onClick={() => freezeSeries(series)}>
+                Uzavrieť sériu
+              </Button>
+            )}
+            {seriesFreezeErrors?.get(series.id) && (
+              <Typography variant="body1">{seriesFreezeErrors?.get(series.id)}</Typography>
+            )}
           </Stack>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography variant="h3">Opravovanie úloh:</Typography>
+            <Typography variant="body1" component="div">
+              <b>Opravovanie úloh:</b>
+            </Typography>
             <Typography variant="body1" component="div">
               <b>Termín série:</b> {formatDateTime(series.deadline)}
             </Typography>
