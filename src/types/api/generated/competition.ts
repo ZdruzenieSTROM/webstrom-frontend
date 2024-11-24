@@ -142,6 +142,7 @@ export interface Semester {
   start: string
   end: string
   additional_name?: string | null
+  complete: boolean
   frozen_results?: string | null
   competition?: any | null
   late_tags?: any[]
@@ -159,6 +160,7 @@ export interface SemesterWithProblems {
   start: string
   end: string
   additional_name?: string | null
+  complete: boolean
   frozen_results?: string | null
   competition?: any | null
   late_tags?: any[]

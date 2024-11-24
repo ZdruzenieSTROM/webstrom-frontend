@@ -132,18 +132,26 @@ export const SemesterAdministration: FC = () => {
     <>
       <Stack alignItems="start" direction="row" spacing={2}>
         <Typography variant="h2">Semester</Typography>
-        <Button variant="button2" onClick={() => freezeSemester(semester)}>
-          Uzavrieť semester
-        </Button>
+        {semester.complete ? (
+          <Typography variant="body1">Semester je uzavretý</Typography>
+        ) : (
+          <Button variant="button2" onClick={() => freezeSemester(semester)}>
+            Uzavrieť semester
+          </Button>
+        )}
         {semesterFreezeError && <Typography variant="body1">{semesterFreezeError}</Typography>}
       </Stack>
       {semester.series_set.map((series) => (
         <Stack key={series.id} gap={1} mt={5}>
           <Stack alignItems="start" direction="row" spacing={2}>
             <Typography variant="h3">{series.order}. séria</Typography>
-            <Button variant="button2" onClick={() => freezeSeries(series)}>
-              Uzavrieť sériu
-            </Button>
+            {series.complete ? (
+              <Typography variant="body1">Séria je uzavretá</Typography>
+            ) : (
+              <Button variant="button2" onClick={() => freezeSeries(series)}>
+                Uzavrieť sériu
+              </Button>
+            )}
             {seriesFreezeError && <Typography variant="body1">{seriesFreezeError}</Typography>}
           </Stack>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
