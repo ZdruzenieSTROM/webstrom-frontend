@@ -16,7 +16,7 @@ import {seasonCodeStrings} from './seasonCodeStrings'
 
 export const SemesterList: FC = () => (
   <List>
-    <Datagrid rowClick="show">
+    <Datagrid>
       <ReferenceField source="competition" reference="competition/competition" link={false} />
       <NumberField source="year" />
       <FunctionField

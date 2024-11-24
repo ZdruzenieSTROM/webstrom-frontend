@@ -22,7 +22,7 @@ export const PostShow: FC = () => (
       <Tab label="links">
         <SimpleShowLayout>
           <ArrayField source="links">
-            <Datagrid>
+            <Datagrid rowClick={false}>
               <TextField source="caption" />
               <TextField source="url" />
             </Datagrid>

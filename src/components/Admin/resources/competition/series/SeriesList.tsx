@@ -5,7 +5,7 @@ import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 
 export const SeriesList: FC = () => (
   <List>
-    <Datagrid rowClick="show">
+    <Datagrid>
       <ReferenceField source="semester" reference="competition/semester" link={false} />
       <DateTimeField source="deadline" />
       <TextField source="order" />

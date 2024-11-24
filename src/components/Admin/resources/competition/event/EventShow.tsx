@@ -36,7 +36,7 @@ export const EventShow: FC = () => (
       <Tab label="publications">
         <SimpleShowLayout>
           <ArrayField source="publication_set">
-            <Datagrid>
+            <Datagrid rowClick={false}>
               <TextField source="name" />
               <TextField source="file" />
               <ReferenceField source="publication_type" reference="competition/publication-type" link="show">

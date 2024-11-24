@@ -5,7 +5,7 @@ import {EventRegistration} from '@/types/api/competition'
 
 export const EventRegistrationList: FC = () => (
   <List>
-    <Datagrid rowClick="show">
+    <Datagrid>
       <FunctionField
         source="profile.last_name"
         label="Meno a priezvisko"

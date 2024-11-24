@@ -3,7 +3,7 @@ import {BooleanField, Datagrid, FunctionField, List, RaRecord, ReferenceField} f
 
 export const SolutionList: FC = () => (
   <List>
-    <Datagrid rowClick="show">
+    <Datagrid>
       <ReferenceField source="problem" reference="competition/problem" link={false} />
       <ReferenceField source="semester_registration" reference="competition/event-registration" link={false} />
       <FunctionField<RaRecord>
