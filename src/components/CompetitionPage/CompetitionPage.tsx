@@ -83,6 +83,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
       <Grid container spacing={2}>
         {history_events.map((event) => {
           const results = event.publication_set.find((p) => p.publication_type === PublicationTypes.RESULTS.id)
+          const solutions = event.publication_set.find((p) => p.publication_type === PublicationTypes.SOLUTIONS.id)
           const problems = event.publication_set.find((p) => p.publication_type === PublicationTypes.PROBLEMS.id)
           return (
             <Fragment key={event.id}>
@@ -94,15 +95,21 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               <Grid xs={2} display="flex" justifyContent="end">
                 {results && (
                   <Link variant="button2" key={results.id} href={`/api${results.file}`}>
-                    {results.name}
+                    {PublicationTypes.RESULTS.display_name}
                   </Link>
                 )}
               </Grid>
               <Grid xs={2} display="flex" justifyContent="end">
-                {problems && (
-                  <Link variant="button2" key={problems.id} href={`/api${problems.file}`}>
-                    {problems.name}
+                {solutions ? (
+                  <Link variant="button2" key={solutions.id} href={`/api${solutions.file}`}>
+                    {PublicationTypes.SOLUTIONS.display_name}
                   </Link>
+                ) : (
+                  problems && (
+                    <Link variant="button2" key={problems.id} href={`/api${problems.file}`}>
+                      {PublicationTypes.PROBLEMS.display_name}
+                    </Link>
+                  )
                 )}
               </Grid>
             </Fragment>

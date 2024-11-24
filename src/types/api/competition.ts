@@ -21,22 +21,27 @@ export const PublicationTypes = {
   PROBLEMS: {
     id: 0,
     name: 'Zadania',
+    display_name: 'Zadania',
   },
   RESULTS: {
     id: 1,
     name: 'Poradia',
+    display_name: 'Poradie',
   },
   SOLUTIONS: {
     id: 2,
     name: 'Brožúra',
+    display_name: 'Brožúra',
   },
   INVITATION: {
     id: 3,
     name: 'Pozvánka',
+    display_name: 'Pozvánka',
   },
   LEAFLET: {
     id: 4,
     name: 'Časopisy',
+    display_name: 'Časopis',
   },
 }
 
