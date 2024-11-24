@@ -13,6 +13,8 @@ import {
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
+import {seasonCodeStrings} from './seasonCodeStrings'
+
 export const SemesterList: FC = () => (
   <List>
     <Datagrid>

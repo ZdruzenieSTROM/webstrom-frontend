@@ -3,6 +3,7 @@ import {
   ArrayField,
   BooleanField,
   Datagrid,
+  FunctionField,
   NumberField,
   ReferenceArrayField,
   ReferenceField,
@@ -16,6 +17,8 @@ import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
 import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
+
+import {seasonCodeStrings} from './seasonCodeStrings'
 
 export const SemesterShow: FC = () => (
   <MyShow>
