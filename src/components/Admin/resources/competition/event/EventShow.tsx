@@ -12,6 +12,7 @@ import {
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
+import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
 export const EventShow: FC = () => (
   <MyShow>
@@ -20,7 +21,7 @@ export const EventShow: FC = () => (
         <SimpleShowLayout>
           <ReferenceField source="competition" reference="competition/competition" link="show" />
           <NumberField source="year" />
-          <NumberField source="season_code" />
+          <SeasonCodeField source="season_code" />
           <TextField source="school_year" />
           <DateTimeField source="start" />
           <DateTimeField source="end" />

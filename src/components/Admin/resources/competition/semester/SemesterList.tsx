@@ -11,20 +11,14 @@ import {
 } from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
-
-import {seasonCodeStrings} from './seasonCodeStrings'
+import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
 export const SemesterList: FC = () => (
   <List>
     <Datagrid rowClick="show">
       <ReferenceField source="competition" reference="competition/competition" link={false} />
       <NumberField source="year" />
-      <FunctionField
-        source="season_code"
-        render={(record) => {
-          return `${seasonCodeStrings[record.season_code].name ?? ''}`
-        }}
-      />
+      <SeasonCodeField source="season_code" />
       <TextField source="school_year" />
       <DateTimeField source="start" />
       <DateTimeField source="end" />

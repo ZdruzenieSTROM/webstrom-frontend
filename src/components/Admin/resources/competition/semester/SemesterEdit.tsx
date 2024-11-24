@@ -14,7 +14,7 @@ import {
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
-import {seasonCodeStrings} from './seasonCodeStrings'
+import {seasonCodeStrings} from '../../../seasonCodeStrings'
 
 export const SemesterEdit: FC = () => (
   <MyEdit

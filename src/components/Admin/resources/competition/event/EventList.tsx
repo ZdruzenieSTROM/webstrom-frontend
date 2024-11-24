@@ -2,13 +2,14 @@ import {FC} from 'react'
 import {Datagrid, FunctionField, List, NumberField, RaRecord, ReferenceField, TextField} from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
+import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
 export const EventList: FC = () => (
   <List>
     <Datagrid rowClick="show">
       <ReferenceField source="competition" reference="competition/competition" link={false} />
       <NumberField source="year" />
-      <NumberField source="season_code" />
+      <SeasonCodeField source="season_code" />
       <TextField source="school_year" />
       <DateTimeField source="start" />
       <DateTimeField source="end" />
