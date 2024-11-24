@@ -12,12 +12,19 @@ import {
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 
+import {seasonCodeStrings} from './seasonCodeStrings'
+
 export const SemesterList: FC = () => (
   <List>
     <Datagrid rowClick="show">
       <ReferenceField source="competition" reference="competition/competition" link={false} />
       <NumberField source="year" />
-      <NumberField source="season_code" />
+      <FunctionField
+        source="season_code"
+        render={(record) => {
+          return `${seasonCodeStrings[record.season_code].name ?? ''}`
+        }}
+      />
       <TextField source="school_year" />
       <DateTimeField source="start" />
       <DateTimeField source="end" />
