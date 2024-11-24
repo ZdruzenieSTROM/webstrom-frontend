@@ -3,6 +3,7 @@ import {Admin as ReactAdmin, Resource} from 'react-admin'
 
 import {AdminLayout} from './AdminLayout'
 import {dataProvider} from './dataProvider'
+import {myI18nProvider} from './i18nProvider'
 import {FlatpageCreate} from './resources/base/flat-page/FlatpageCreate'
 import {FlatpageEdit} from './resources/base/flat-page/FlatpageEdit'
 import {FlatpageList} from './resources/base/flat-page/FlatpageList'
@@ -51,7 +52,12 @@ export const Admin: FC = () => {
   const authProvider = useAuthProvider()
 
   return (
-    <ReactAdmin authProvider={authProvider} dataProvider={dataProvider} layout={AdminLayout}>
+    <ReactAdmin
+      authProvider={authProvider}
+      dataProvider={dataProvider}
+      layout={AdminLayout}
+      i18nProvider={myI18nProvider}
+    >
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
       <Resource
         name="cms/flat-page"
