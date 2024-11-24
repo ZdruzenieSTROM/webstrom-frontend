@@ -5,6 +5,7 @@ import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
+import {Accept} from '@/utils/dropzone-accept'
 
 import {createProblemFormData} from './createProblemFormData'
 
@@ -23,10 +24,10 @@ export const ProblemEdit: FC = () => (
         <TextInput source="text" multiline fullWidth validate={required()} />
         <LatexPreview source="text" />
         <TextInput source="order" fullWidth validate={required()} />
-        <ImageInput source="image" accept="image/*">
+        <ImageInput source="image" accept={Accept.Image}>
           <MyImageField />
         </ImageInput>
-        <FileInput source="solution_pdf" accept="application/pdf">
+        <FileInput source="solution_pdf" accept={Accept.Pdf}>
           <MyFileField />
         </FileInput>
       </FormTab>

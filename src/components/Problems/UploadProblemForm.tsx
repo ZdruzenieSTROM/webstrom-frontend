@@ -5,6 +5,7 @@ import {Dispatch, FC, SetStateAction, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
 import {CloseButton} from '@/components/CloseButton/CloseButton'
+import {Accept} from '@/utils/dropzone-accept'
 import {niceBytes} from '@/utils/niceBytes'
 import {useAlert} from '@/utils/useAlert'
 
@@ -50,9 +51,7 @@ export const UploadProblemForm: FC<{
   const [files, setFiles] = useState<File | undefined>(undefined)
   const {fileRejections, getRootProps, getInputProps} = useDropzone({
     multiple: false,
-    accept: {
-      'application/pdf': ['.pdf'],
-    },
+    accept: Accept.Pdf,
     onDrop: (acceptedFiles) => !!acceptedFiles[0] && setFiles(acceptedFiles[0]),
   })
 
