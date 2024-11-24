@@ -46,7 +46,7 @@ const defaultValues: RegisterFormValues = {
 }
 
 export const RegisterForm: FC = () => {
-  const {handleSubmit, control, watch, setValue, getValues, setError, reset} = useForm<RegisterFormValues>({
+  const {handleSubmit, control, watch, setValue, getValues, setError} = useForm<RegisterFormValues>({
     defaultValues,
     values: defaultValues,
   })
@@ -91,6 +91,7 @@ export const RegisterForm: FC = () => {
         {
           title: 'Registrácia',
           onCloseCallback: () => {
+            setOverride(true)
             router.push(`${router.asPath}/../`)
           },
         },
@@ -107,7 +108,6 @@ export const RegisterForm: FC = () => {
   })
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
-    reset(undefined, {keepValues: true})
     submitFormData(data)
   }
 
@@ -121,7 +121,7 @@ export const RegisterForm: FC = () => {
 
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const {continueNavigation} = useNavigationTrap({
+  const {continueNavigation, setOverride} = useNavigationTrap({
     shouldBlockNavigation: isDirty,
     onNavigate: () => {
       setDialogOpen(true)
