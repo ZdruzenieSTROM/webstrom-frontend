@@ -27,7 +27,7 @@ export const SemesterEdit: FC = () => (
     }}
   >
     <TabbedForm>
-      <FormTab label="general">
+      <FormTab label="content.labels.general">
         <ReferenceInput source="competition" reference="competition/competition">
           <SelectInput fullWidth validate={required()} />
         </ReferenceInput>

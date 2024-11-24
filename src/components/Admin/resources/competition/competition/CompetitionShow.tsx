@@ -22,7 +22,7 @@ import {UpcomingOrCurrentEvent} from './UpcomingOrCurrentEvent'
 export const CompetitionShow: FC = () => (
   <MyShow>
     <TabbedShowLayout>
-      <Tab label="general">
+      <Tab label="content.labels.general">
         <SimpleShowLayout>
           <TextField source="name" />
           <TextField source="slug" />
@@ -38,7 +38,7 @@ export const CompetitionShow: FC = () => (
           <UpcomingOrCurrentEvent />
         </SimpleShowLayout>
       </Tab>
-      <Tab label="history_events">
+      <Tab label="content.labels.history_events">
         <SimpleShowLayout>
           <ArrayField source="history_events">
             <Datagrid rowClick={(id) => `/competition/event/${id}/show`}>

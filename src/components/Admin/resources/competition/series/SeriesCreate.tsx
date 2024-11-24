@@ -7,7 +7,7 @@ import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 export const SeriesCreate: FC = () => (
   <MyCreate>
     <TabbedForm>
-      <FormTab label="general">
+      <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
           <SelectInput fullWidth validate={required()} />
         </ReferenceInput>

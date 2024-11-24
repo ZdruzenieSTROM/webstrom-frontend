@@ -16,7 +16,7 @@ export const ProblemEdit: FC = () => (
     }}
   >
     <TabbedForm>
-      <FormTab label="general">
+      <FormTab label="content.labels.general">
         <ReferenceInput source="series" reference="competition/series">
           <SelectInput fullWidth validate={required()} />
         </ReferenceInput>

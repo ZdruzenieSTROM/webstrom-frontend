@@ -16,7 +16,7 @@ import {MyShow} from '@/components/Admin/custom/MyShow'
 export const EventShow: FC = () => (
   <MyShow>
     <TabbedShowLayout>
-      <Tab label="general">
+      <Tab label="content.labels.general">
         <SimpleShowLayout>
           <ReferenceField source="competition" reference="competition/competition" link="show" />
           <NumberField source="year" />
@@ -33,7 +33,7 @@ export const EventShow: FC = () => (
           <TextField source="registration_link.additional_info" />
         </SimpleShowLayout>
       </Tab>
-      <Tab label="publications">
+      <Tab label="content.labels.publications">
         <SimpleShowLayout>
           <ArrayField source="publication_set">
             <Datagrid>
