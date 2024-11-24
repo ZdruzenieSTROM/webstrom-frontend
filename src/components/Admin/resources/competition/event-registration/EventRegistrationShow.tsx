@@ -12,8 +12,8 @@ export const EventRegistrationShow: FC = () => (
         label="Meno a priezvisko"
         render={(record: EventRegistration) => `${record.profile.first_name} ${record.profile.last_name}`}
       />
-      <TextField source="school.abbreviation" label="Škola" />
-      <TextField source="grade.tag" label="Ročník" />
+      <TextField source="school.abbreviation" />
+      <TextField source="grade.tag" />
       <ReferenceField source="event" reference="competition/event" link={false} />
     </SimpleShowLayout>
   </MyShow>

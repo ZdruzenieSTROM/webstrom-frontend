@@ -9,7 +9,7 @@ import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 export const PostEdit: FC = () => (
   <MyEdit>
     <TabbedForm>
-      <FormTab label="general">
+      <FormTab label="controls.test">
         <TextInput source="caption" fullWidth validate={required()} />
         <TextInput source="short_text" fullWidth validate={maxLength(200, 'Text musí mať najviac 200 znakov.')} />
         <TextInput source="details" multiline fullWidth />

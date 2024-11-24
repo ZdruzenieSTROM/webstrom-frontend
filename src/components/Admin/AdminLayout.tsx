@@ -1,12 +1,12 @@
 import {Home, Logout} from '@mui/icons-material/'
 import {Button, Stack, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
-import {AppBar, Layout, LayoutProps, useLogout} from 'react-admin'
+import {AppBar, Layout, LayoutProps, useLogout, useTranslate} from 'react-admin'
 
 const AppMenuBar = () => {
   const router = useRouter()
   const logout = useLogout()
-
+  const translate = useTranslate()
   return (
     <AppBar
       userMenu={false}
@@ -16,14 +16,14 @@ const AppMenuBar = () => {
           <Button color="inherit" onClick={() => router.push('/')}>
             <Stack gap={1} direction="row">
               <Home />
-              <Typography variant="body1">Späť na hlavnú stránku</Typography>
+              <Typography variant="body1">{translate('controls.back_home')}</Typography>
             </Stack>
           </Button>
 
           <Button color="inherit" onClick={() => logout()}>
             <Stack gap={1} direction="row">
               <Logout />
-              <Typography variant="body1">Odhlásiť</Typography>
+              <Typography variant="body1">{translate('controls.logout')}</Typography>
             </Stack>
           </Button>
         </Stack>
@@ -33,6 +33,7 @@ const AppMenuBar = () => {
 }
 
 export const AdminLayout = (props: LayoutProps) => {
+  const translate = useTranslate()
   return (
     <>
       <Layout {...props} appBar={AppMenuBar} />
@@ -49,7 +50,7 @@ export const AdminLayout = (props: LayoutProps) => {
         }}
       >
         <Typography color={'#000000'} fontSize={'0.8em'}>
-          Všetky časy sú uvedené v časovom pásme Europe/Bratislava
+          {translate('content.footer.timezone_message')}
         </Typography>
       </Stack>
     </>
