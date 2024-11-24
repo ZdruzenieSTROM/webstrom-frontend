@@ -88,21 +88,7 @@ export const SemesterAdministration: FC = () => {
     )
   }
 
-  const [semesterFreezeError, setSemesterFreezeError] = useState<string>()
   const [seriesFreezeErrors, setSeriesFreezeErrors] = useState<Map<number, string>>()
-
-  const {mutate: freezeSemester} = useMutation({
-    mutationFn: (semester: SemesterWithProblems) =>
-      axios.post(`/api/competition/semester/${semester.id}/results/freeze`),
-    onSuccess: () => refetch(),
-    onError: (error: unknown) => {
-      if (error instanceof AxiosError) {
-        setSemesterFreezeError(error.response?.data.detail)
-      } else {
-        setSemesterFreezeError('Nastala neznáma chyba.')
-      }
-    },
-  })
 
   const {mutate: freezeSeries} = useMutation({
     mutationFn: (series: SeriesWithProblems) => axios.post(`/api/competition/series/${series.id}/results/freeze`),
@@ -135,14 +121,7 @@ export const SemesterAdministration: FC = () => {
     <>
       <Stack alignItems="start" direction="row" spacing={2}>
         <Typography variant="h2">Semester</Typography>
-        {semester.complete ? (
-          <Typography variant="body1">Semester je uzavretý</Typography>
-        ) : (
-          <Button variant="button2" onClick={() => freezeSemester(semester)}>
-            Uzavrieť semester
-          </Button>
-        )}
-        {semesterFreezeError && <Typography variant="body1">{semesterFreezeError}</Typography>}
+        {semester.complete && <Typography variant="body1">Semester je uzavretý</Typography>}
       </Stack>
       {semester.series_set.map((series) => (
         <Stack key={series.id} gap={1} mt={5}>
