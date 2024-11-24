@@ -49,7 +49,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
     queryKey: ['personal', 'schools'],
     queryFn: () => axios.get<ISchool[]>(`/api/personal/schools`),
   })
-  const schools = schoolsData?.data ?? []
+  const schools = (schoolsData?.data ?? []).sort((a, b) => a.name.localeCompare(b.name))
   const allSchoolItems: SelectOption[] = schools.map(({code, city, name, street}) => ({
     id: code,
     label: city ? `${name} ${street}, ${city}` : name,
