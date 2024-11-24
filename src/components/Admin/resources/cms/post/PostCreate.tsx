@@ -10,7 +10,7 @@ export const PostCreate: FC = () => {
   return (
     <MyCreate>
       <TabbedForm>
-        <FormTab label="general">
+        <FormTab label="content.labels.general">
           <TextInput source="caption" fullWidth validate={required()} />
           <TextInput source="short_text" fullWidth validate={maxLength(200, 'Text musí mať najviac 200 znakov.')} />
           <TextInput source="details" multiline fullWidth />
@@ -19,7 +19,7 @@ export const PostCreate: FC = () => {
           <MyDateTimeInput source="visible_until" fullWidth validate={required()} />
           <SitesCheckboxInput source="sites" validate={required()} />
         </FormTab>
-        <FormTab label="links">
+        <FormTab label="content.labels.links">
           <ArrayInput source="links" defaultValue={[]}>
             <SimpleFormIterator>
               <TextInput source="caption" fullWidth validate={required()} />
@@ -27,7 +27,7 @@ export const PostCreate: FC = () => {
             </SimpleFormIterator>
           </ArrayInput>
         </FormTab>
-        <FormTab label="preview">
+        <FormTab label="content.labels.preview">
           <PostPreview />
         </FormTab>
       </TabbedForm>

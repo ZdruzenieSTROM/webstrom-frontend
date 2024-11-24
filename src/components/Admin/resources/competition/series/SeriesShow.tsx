@@ -17,7 +17,7 @@ import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 export const SeriesShow: FC = () => (
   <MyShow>
     <TabbedShowLayout>
-      <Tab label="general">
+      <Tab label="content.labels.general">
         <SimpleShowLayout>
           <ReferenceField source="semester" reference="competition/semester" link="show" />
           <DateTimeField source="deadline" />
@@ -25,7 +25,7 @@ export const SeriesShow: FC = () => (
           <BooleanField source="complete" />
         </SimpleShowLayout>
       </Tab>
-      <Tab label="problems">
+      <Tab label="content.labels.problems">
         <SimpleShowLayout>
           <ArrayField source="problems">
             <Datagrid>

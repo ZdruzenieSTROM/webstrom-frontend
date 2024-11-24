@@ -23,7 +23,7 @@ import {seasonCodeStrings} from './seasonCodeStrings'
 export const SemesterShow: FC = () => (
   <MyShow>
     <TabbedShowLayout>
-      <Tab label="general">
+      <Tab label="content.labels.general">
         <SimpleShowLayout>
           <ReferenceField source="competition" reference="competition/competition" link="show" />
           <NumberField source="year" />
@@ -36,7 +36,7 @@ export const SemesterShow: FC = () => (
           <NumberField source="registration_link" />
         </SimpleShowLayout>
       </Tab>
-      <Tab label="series">
+      <Tab label="content.labels.series">
         <SimpleShowLayout>
           <ArrayField source="series_set">
             <Datagrid rowClick={(id) => `/competition/series/${id}/show`}>
@@ -51,7 +51,7 @@ export const SemesterShow: FC = () => (
           </ArrayField>
         </SimpleShowLayout>
       </Tab>
-      <Tab label="publications">
+      <Tab label="content.labels.publications">
         <SimpleShowLayout>
           <ArrayField source="publication_set">
             <Datagrid rowClick={false}>
@@ -66,7 +66,7 @@ export const SemesterShow: FC = () => (
           </ArrayField>
         </SimpleShowLayout>
       </Tab>
-      <Tab label="late tags">
+      <Tab label="content.labels.late_tags">
         <SimpleShowLayout>
           <ReferenceArrayField source="late_tags" reference="competition/late-tag">
             <Datagrid rowClick={false}>

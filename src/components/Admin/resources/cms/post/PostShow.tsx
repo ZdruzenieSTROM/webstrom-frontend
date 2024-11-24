@@ -8,7 +8,7 @@ import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 export const PostShow: FC = () => (
   <Show actions={<MyShowActions />}>
     <TabbedShowLayout>
-      <Tab label="general">
+      <Tab label="content.labels.general">
         <SimpleShowLayout>
           <TextField source="caption" />
           <TextField source="short_text" />
@@ -19,7 +19,7 @@ export const PostShow: FC = () => (
           <SitesArrayField source="sites" />
         </SimpleShowLayout>
       </Tab>
-      <Tab label="links">
+      <Tab label="content.labels.links">
         <SimpleShowLayout>
           <ArrayField source="links">
             <Datagrid rowClick={false}>

@@ -155,7 +155,16 @@ export const sk_SK = {
   },
 
   content: {
-    labels: {},
+    labels: {
+      general: 'Generala',
+      preview: 'Náhľad',
+      links: 'Odkazy',
+      publications: 'Publikácie',
+      series: 'Série',
+      late_tags: 'Late_tags',
+      problems: 'Úlohy',
+      history_events: 'History_Events',
+    },
     footer: {
       timezone_message: 'Všetky časy sú uvedené v časovom pásme Europe/Bratislava',
     },
