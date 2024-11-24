@@ -1,5 +1,5 @@
 import {Stack, Typography} from '@mui/material'
-import {useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
 import {FC, useState} from 'react'
 
@@ -33,7 +33,11 @@ export const SemesterAdministration: FC = () => {
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
-  const {data: semesterData, isLoading: semesterIsLoading} = useQuery({
+  const {
+    data: semesterData,
+    isLoading: semesterIsLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['competition', 'semester', semesterId],
     queryFn: () => axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
@@ -87,31 +91,30 @@ export const SemesterAdministration: FC = () => {
   const [semesterFreezeError, setSemesterFreezeError] = useState<string>()
   const [seriesFreezeError, setSeriesFreezeError] = useState<string>()
 
-  const freezeSemester = async (semester: SemesterWithProblems) => {
-    setSemesterFreezeError('')
-    try {
-      await axios.post(`/api/competition/semester/${semester.id}/results/freeze`)
-    } catch (error: unknown) {
+  const {mutate: freezeSemester} = useMutation({
+    mutationFn: (semester: SemesterWithProblems) =>
+      axios.post(`/api/competition/semester/${semester.id}/results/freeze`),
+    onSuccess: () => refetch(),
+    onError: (error: unknown) => {
       if (error instanceof AxiosError) {
         setSemesterFreezeError(error.response?.data.detail)
       } else {
         setSemesterFreezeError('Nastala neznáma chyba.')
       }
-    }
-  }
+    },
+  })
 
-  const freezeSeries = async (series: SeriesWithProblems) => {
-    setSeriesFreezeError('')
-    try {
-      await axios.post(`/api/competition/series/${series.id}/results/freeze`)
-    } catch (error: unknown) {
+  const {mutate: freezeSeries} = useMutation({
+    mutationFn: (series: SeriesWithProblems) => axios.post(`/api/competition/series/${series.id}/results/freeze`),
+    onSuccess: () => refetch(),
+    onError: (error: unknown) => {
       if (error instanceof AxiosError) {
         setSeriesFreezeError(error.response?.data.detail)
       } else {
         setSeriesFreezeError('Nastala neznáma chyba.')
       }
-    }
-  }
+    },
+  })
 
   if (
     urlDataLoading.currentSeriesIsLoading ||
