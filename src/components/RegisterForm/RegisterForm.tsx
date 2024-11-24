@@ -85,7 +85,16 @@ export const RegisterForm: FC = () => {
       return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
     },
     // TODO: show alert/toast and redirect to homepage instead of redirect to info page
-    onSuccess: () => router.push(`${router.asPath}/../verifikacia`),
+    onSuccess: () =>
+      alert(
+        'Verifikačný e-mail bol odoslaný na zadanú e-mailovú adresu. Ak ho do pár minút neuvidíš, skontroluj, či ti náhodou neprišiel do priečinku spam',
+        {
+          title: 'Registrácia',
+          onCloseCallback: () => {
+            router.push(`${router.asPath}/../`)
+          },
+        },
+      ),
     onError: (error: AxiosError<RegisterErrorResponseData>) => {
       if (error.response?.status === 400) {
         if (error.response.data.email) {

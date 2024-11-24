@@ -5,12 +5,12 @@ import {AlertContainer} from '@/utils/AlertContainer'
 export const useAlert = () => {
   const container = useContainer(AlertContainer)
 
-  const alert = (message: string, title?: string, onCloseCallback?: () => void) => {
+  const alert = (message: string, options?: {title?: string; onCloseCallback?: () => void}) => {
     container.setAlertBox({
       message: message,
-      title: title ?? 'Upozornenie',
+      title: options?.title ?? 'Upozornenie',
       isOpen: true,
-      onCloseCallback: onCloseCallback,
+      onCloseCallback: options?.onCloseCallback,
     })
   }
 
