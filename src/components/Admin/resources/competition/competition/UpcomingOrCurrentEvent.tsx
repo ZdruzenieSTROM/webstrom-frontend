@@ -20,7 +20,7 @@ export const UpcomingOrCurrentEvent: FC = () => {
 
   return (
     <Labeled
-      label="Prebiehajúca alebo najbližšia akcia"
+      label="content.labels.next_event"
       onClick={() => redirect('show', 'competition/event', record.upcoming_or_current_event.competition)}
       sx={{cursor: 'pointer'}}
     >
@@ -39,7 +39,6 @@ export const UpcomingOrCurrentEvent: FC = () => {
 
         <FunctionField<RaRecord>
           source="publication_set"
-          label="Publication count"
           // optional access because of weird behavior of nested FunctionFields for null record
           render={(record) => record && <span>{record['publication_set']?.length}</span>}
         />

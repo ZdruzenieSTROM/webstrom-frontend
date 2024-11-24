@@ -29,7 +29,7 @@ export const CompetitionShow: FC = () => (
           <TextField source="start_year" />
           <TruncatedTextField source="description" maxTextWidth={100} expandable />
           <TruncatedTextField source="rules" maxTextWidth={200} expandable />
-          <TextField source="competition_type.name" label="Competition type" />
+          <TextField source="competition_type.name" label="content.labels.competition_type" />
           <SitesArrayField source="sites" />
           <TextField source="who_can_participate" />
           <NumberField source="min_years_until_graduation" />
@@ -49,7 +49,6 @@ export const CompetitionShow: FC = () => (
               <DateTimeField source="end" />
               <FunctionField<RaRecord>
                 source="publication_set"
-                label="Publication count"
                 render={(record) => record && <span>{record['publication_set'].length}</span>}
               />
             </Datagrid>

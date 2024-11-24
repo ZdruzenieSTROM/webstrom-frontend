@@ -9,8 +9,8 @@ export const SolutionShow: FC = () => (
       <ReferenceField source="problem" reference="competition/problem" link="show" />
       <ReferenceField source="semester_registration" reference="competition/event-registration" link="show" />
       <FileField source="solution" title="Riešenie" />
-      <ReferenceField source="late_tag" reference="competition/late-tag" label="Po termíne" link="show" />
-      <BooleanField source="is_online" label="Internetové riešenie" />
+      <ReferenceField source="late_tag" reference="competition/late-tag" label="content.labels.is_late" link="show" />
+      <BooleanField source="is_online" label="content.labels.is_online" />
     </SimpleShowLayout>
   </MyShow>
 )

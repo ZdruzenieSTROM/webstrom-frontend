@@ -24,7 +24,7 @@ export const MyEditActions: FC = () => {
           we want to link to the specific show tab, not just resource show */}
       {/* @ts-ignore */}
       <ShowButton to={to} />
-      <ListButton label="Back to list" />
+      <ListButton label="content.labels.back_to_list" />
     </TopToolbar>
   )
 }

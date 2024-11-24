@@ -31,10 +31,10 @@ export const EventEdit: FC = () => {
         <TextInput source="location" fullWidth />
         <FormControlLabel
           control={<Checkbox checked={includeRegLink} onChange={(e) => setIncludeRegLink(e.target.checked)} />}
-          label="Upraviť registračný link"
+          label="content.labels.reg_link_add"
         />
         {includeRegLink && (
-          <Labeled label="Registration link">
+          <Labeled label="content.labels.reg_link">
             <>
               <NumberInput source="registration_link.id" fullWidth disabled />
               <TextInput source="registration_link.url" fullWidth validate={required()} />
