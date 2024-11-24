@@ -5,7 +5,6 @@ import {FC, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {Button} from '@/components/Clickable/Button'
-import {Link} from '@/components/Clickable/Link'
 import {Dialog} from '@/components/Dialog/Dialog'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {AuthContainer} from '@/utils/AuthContainer'
