@@ -248,6 +248,59 @@ const _theme = createTheme({
         },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          '&.Mui-error': {
+            backgroundColor: 'black',
+            '& input': {color: 'white'},
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'black',
+          },
+        },
+      },
+    },
+    // MuiFormControl: {
+    //   styleOverrides: {
+    //     root: {
+    //       'MuiTextField-root .MuiInputLabel-root.MuiInputLabel-shrink': {
+    //         color: 'green',
+    //       },
+    //       backgroundColor: 'yellow',
+    //     },
+    //   },
+    // },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          // Root styles for the TextField
+          '& .MuiInputLabel-root.MuiInputLabel-shrink': {
+            color: 'green', // Change label color to black
+            fontWeight: 700, // Set font weight to 700
+            padding: '2px 8px',
+            backgroundColor: 'white',
+            marginLeft: '-1px',
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '&.MuiInputLabel-shrink .': {
+            color: 'green',
+          },
+          color: 'red',
+        },
+      },
+    },
     MuiIconButton: {
       styleOverrides: {
         root: {
