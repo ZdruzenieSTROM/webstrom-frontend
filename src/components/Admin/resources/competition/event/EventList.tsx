@@ -6,7 +6,7 @@ import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
 export const EventList: FC = () => (
   <List>
-    <Datagrid rowClick="show">
+    <Datagrid>
       <ReferenceField source="competition" reference="competition/competition" link={false} />
       <NumberField source="year" />
       <SeasonCodeField source="season_code" />

@@ -40,7 +40,7 @@ export const SemesterShow: FC = () => (
               <DateTimeField source="deadline" />
               <TextField source="order" />
               <ArrayField source="problems">
-                <Datagrid>
+                <Datagrid rowClick={false}>
                   <TruncatedTextField source="text" maxTextWidth={50} />
                 </Datagrid>
               </ArrayField>
@@ -51,10 +51,10 @@ export const SemesterShow: FC = () => (
       <Tab label="publications">
         <SimpleShowLayout>
           <ArrayField source="publication_set">
-            <Datagrid>
+            <Datagrid rowClick={false}>
               <TextField source="name" />
               <TextField source="file" />
-              <ReferenceField source="publication_type" reference="competition/publication-type" link="show">
+              <ReferenceField source="publication_type" reference="competition/publication-type">
                 <TextField source="name" />
               </ReferenceField>
               <NumberField source="event" />
@@ -66,7 +66,7 @@ export const SemesterShow: FC = () => (
       <Tab label="late tags">
         <SimpleShowLayout>
           <ReferenceArrayField source="late_tags" reference="competition/late-tag">
-            <Datagrid>
+            <Datagrid rowClick={false}>
               <TextField source="name" />
               <TextField source="slug" />
               <TextField source="upper_bound" />

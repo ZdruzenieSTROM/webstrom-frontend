@@ -4,6 +4,7 @@ import {FC} from 'react'
 
 import {PublicationTypes} from '@/types/api/competition'
 import {SemesterWithProblems} from '@/types/api/generated/competition'
+import {Accept} from '@/utils/dropzone-accept'
 
 import {Link} from '../Clickable/Link'
 import {FileUploader} from '../FileUploader/FileUploader'
@@ -37,7 +38,7 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
       )}
       <FileUploader
         uploadLink={'/api/competition/publication/upload/'}
-        acceptedFormats={{'application/pdf': ['.pdf']}}
+        acceptedFormats={Accept.Pdf}
         adjustFormData={appendFormData}
         refetch={refetch}
       />

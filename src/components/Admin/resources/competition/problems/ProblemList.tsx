@@ -14,7 +14,7 @@ import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
 export const ProblemList: FC = () => (
   <List>
-    <Datagrid rowClick="show">
+    <Datagrid>
       <ReferenceField source="series" reference="competition/series" link={false} />
       <NumberField source="order" />
       <TruncatedTextField source="text" maxTextWidth={50} />
