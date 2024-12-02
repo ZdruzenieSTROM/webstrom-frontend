@@ -9,6 +9,8 @@ const seminarToId: Record<Seminar, SeminarId> = {
   malynar: 2,
 }
 
+export const seminarIds = Object.values(seminarToId)
+
 export const useSeminarInfo = () => {
   const router = useRouter()
 
