@@ -1,25 +1,38 @@
 import {FC} from 'react'
-import {Datagrid, FunctionField, List, RaRecord, TextField} from 'react-admin'
+import {Datagrid, FilterList, FilterListItem, FunctionField, List, RaRecord, TextField} from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
+import {FilterSidebar} from '@/components/Admin/custom/FilterSidebar'
 import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
+import {seminarIds, seminarIdToName} from '@/utils/useSeminarInfo'
 
 export const PostList: FC = () => (
-  <List>
+  <List aside={<PostListFilters />}>
     <Datagrid>
-      <TextField source="caption" />
-      <TruncatedTextField source="short_text" maxTextWidth={50} />
-      <TruncatedTextField source="details" maxTextWidth={50} />
+      <TextField source="caption" sortable={false} />
+      <TruncatedTextField source="short_text" maxTextWidth={50} sortable={false} />
+      <TruncatedTextField source="details" maxTextWidth={50} sortable={false} />
       <DateTimeField source="added_at" />
       <DateTimeField source="visible_after" />
       <DateTimeField source="visible_until" />
-      <SitesArrayField source="sites" />
+      <SitesArrayField source="sites" sortable={false} />
       <FunctionField<RaRecord>
         source="links"
         label="Link count"
         render={(record) => record && <span>{record['links'].length}</span>}
+        sortable={false}
       />
     </Datagrid>
   </List>
+)
+
+const PostListFilters: FC = () => (
+  <FilterSidebar>
+    <FilterList label="Seminár" icon={null}>
+      {seminarIds.map((seminarId) => (
+        <FilterListItem key={seminarId} label={seminarIdToName[seminarId]} value={{sites: seminarId}} />
+      ))}
+    </FilterList>
+  </FilterSidebar>
 )
