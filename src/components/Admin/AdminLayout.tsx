@@ -2,7 +2,7 @@ import {Home, Logout} from '@mui/icons-material/'
 import {Button, Stack, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, PropsWithChildren} from 'react'
-import {AppBar, Layout, useLogout, useTranslate} from 'react-admin'
+import {AppBar, Layout, ToggleThemeButton, useLogout, useTranslate} from 'react-admin'
 
 const AppMenuBar = () => {
   const router = useRouter()
@@ -20,6 +20,8 @@ const AppMenuBar = () => {
               <Typography variant="body1">{translate('controls.back_home')}</Typography>
             </Stack>
           </Button>
+
+          <ToggleThemeButton />
 
           <Button color="inherit" onClick={() => logout()}>
             <Stack gap={1} direction="row">
