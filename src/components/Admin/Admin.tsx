@@ -1,5 +1,6 @@
+import {deepmerge} from '@mui/utils'
 import {FC} from 'react'
-import {Admin as ReactAdmin, Resource} from 'react-admin'
+import {Admin as ReactAdmin, defaultDarkTheme, defaultLightTheme, RaThemeOptions, Resource} from 'react-admin'
 
 import {AdminLayout} from './AdminLayout'
 import {dataProvider} from './dataProvider'
@@ -47,11 +48,30 @@ import {SchoolList} from './resources/personal/schools/SchoolList'
 import {SchoolShow} from './resources/personal/schools/SchoolShow'
 import {useAuthProvider} from './useAuthProvider'
 
+const themeOverrides: RaThemeOptions = {
+  components: {
+    RaButton: {
+      defaultProps: {
+        size: 'medium',
+      },
+    },
+  },
+}
+
+const lightTheme = deepmerge(defaultLightTheme, themeOverrides)
+const darkTheme = deepmerge(defaultDarkTheme, themeOverrides)
+
 export const Admin: FC = () => {
   const authProvider = useAuthProvider()
 
   return (
-    <ReactAdmin authProvider={authProvider} dataProvider={dataProvider} layout={AdminLayout}>
+    <ReactAdmin
+      authProvider={authProvider}
+      dataProvider={dataProvider}
+      layout={AdminLayout}
+      theme={lightTheme}
+      darkTheme={darkTheme}
+    >
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
       <Resource
         name="cms/flat-page"
