@@ -2901,7 +2901,6 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-query@npm:5.61.0, @tanstack/react-query@npm:^5.21.7":
-"@tanstack/react-query@npm:5.61.0, @tanstack/react-query@npm:^5.21.7":
   version: 5.61.0
   resolution: "@tanstack/react-query@npm:5.61.0"
   dependencies:
@@ -4608,19 +4607,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.19.0":
-  version: 2.30.0
-  resolution: "date-fns@npm:2.30.0"
-  dependencies:
-    "@babel/runtime": ^7.21.0
-  checksum: f7be01523282e9bb06c0cd2693d34f245247a29098527d4420628966a2d9aad154bd0e90a6b1cf66d37adcb769cd108cf8a7bd49d76db0fb119af5cdd13644f4
-  languageName: node
-  linkType: hard
-
 "date-fns@npm:^3.6.0":
   version: 3.6.0
   resolution: "date-fns@npm:3.6.0"
-  checksum: 0daa1e9a436cf99f9f2ae9232b55e11f3dd46132bee10987164f3eebd29f245b2e066d7d7db40782627411ecf18551d8f4c9fcdf2226e48bb66545407d448ab7
+  checksum: 10/cac35c58926a3b5d577082ff2b253612ec1c79eb6754fddef46b6a8e826501ea2cb346ecbd211205f1ba382ddd1f9d8c3f00bf433ad63cc3063454d294e3a6b8
   languageName: node
   linkType: hard
 
@@ -6012,17 +6002,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter3@npm:^4.0.7":
-  version: 4.0.7
-  resolution: "eventemitter3@npm:4.0.7"
-  checksum: 1875311c42fcfe9c707b2712c32664a245629b42bb0a5a84439762dd0fd637fc54d078155ea83c2af9e0323c9ac13687e03cfba79b03af9f40c89b4960099374
-  languageName: node
-  linkType: hard
-
 "eventemitter3@npm:^5.0.1":
   version: 5.0.1
   resolution: "eventemitter3@npm:5.0.1"
-  checksum: 543d6c858ab699303c3c32e0f0f47fc64d360bf73c3daf0ac0b5079710e340d6fe9f15487f94e66c629f5f82cd1a8678d692f3dbb6f6fcd1190e1b97fcad36f8
+  checksum: 10/ac6423ec31124629c84c7077eed1e6987f6d66c31cf43c6fcbf6c87791d56317ce808d9ead483652436df171b526fc7220eccdc9f3225df334e81582c3cf7dd5
   languageName: node
   linkType: hard
 
@@ -6995,14 +6978,7 @@ __metadata:
 "inflection@npm:^3.0.0":
   version: 3.0.0
   resolution: "inflection@npm:3.0.0"
-  checksum: 6a3b21cb011a9bca1c045ef92d199c927cfd8c4b97809152fabc9c325d36789a7499397b50d46157d080efd19843807ac73e38a2fe79d8f2cf291323998fb5b5
-  languageName: node
-  linkType: hard
-
-"inflection@npm:~1.12.0":
-  version: 1.12.0
-  resolution: "inflection@npm:1.12.0"
-  checksum: c640917b7c1ef2151df8eed5e7bc1ea6f6dd7b924e86f1add0bf801db55be8b581eb2d3d767a29e439153e4c06b00679a45853ac58c498ea519c4b4bdcd2a775
+  checksum: 10/e8aae6abb872a8aa19184a1b84470fff7120806329c78011befcf50bce04a7b0d65012ac373f2cc5caeaaf241874c7ae20a26038ff7dbe0cdae0b863f25b5e02
   languageName: node
   linkType: hard
 
@@ -9655,7 +9631,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"query-string@npm:^7.1.1, query-string@npm:^7.1.3":
+"query-string@npm:^7.1.3":
   version: 7.1.3
   resolution: "query-string@npm:7.1.3"
   dependencies:
@@ -9691,33 +9667,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@npm:^5.4.0":
+"ra-i18n-polyglot@npm:^5.4.0":
   version: 5.4.0
-  resolution: "ra-core@npm:5.4.0"
-  dependencies:
-    "@tanstack/react-query": ^5.21.7
-    clsx: ^2.1.1
-    date-fns: ^3.6.0
-    eventemitter3: ^5.0.1
-    inflection: ^3.0.0
-    jsonexport: ^3.2.0
-    lodash: ~4.17.5
-    query-string: ^7.1.3
-    react-error-boundary: ^4.0.13
-    react-is: ^18.2.0
-  peerDependencies:
-    react: ^18.0.0 || ^19.0.0
-    react-dom: ^18.0.0 || ^19.0.0
-    react-hook-form: ^7.53.0
-    react-router: ^6.22.0
-    react-router-dom: ^6.22.0
-  checksum: 44554074e5fc180908bd1f444a7d073329042e4c55203ef89f8d3c6c83f13695553b6dd7c89dd6b52016d3adb355887b9d2cd1e12e32fd252341b0e1cb37b9d9
-  languageName: node
-  linkType: hard
-
-"ra-i18n-polyglot@npm:^4.16.20":
-  version: 4.16.20
-  resolution: "ra-i18n-polyglot@npm:4.16.20"
+  resolution: "ra-i18n-polyglot@npm:5.4.0"
   dependencies:
     node-polyglot: "npm:^2.2.2"
     ra-core: "npm:^5.4.0"
@@ -9725,19 +9677,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-i18n-polyglot@npm:^5.4.0":
+"ra-language-english@npm:^5.4.0":
   version: 5.4.0
-  resolution: "ra-i18n-polyglot@npm:5.4.0"
-  dependencies:
-    node-polyglot: ^2.2.2
-    ra-core: ^5.4.0
-  checksum: 3b277728dce714a80552a459befb37c57df12dccce881e5b198d903e4cbd026decf0e5ed69e21a678ab526b0bcfe970ed410abf53dba30a549b6192455e976ba
-  languageName: node
-  linkType: hard
-
-"ra-language-english@npm:^4.16.20":
-  version: 4.16.20
-  resolution: "ra-language-english@npm:4.16.20"
+  resolution: "ra-language-english@npm:5.4.0"
   dependencies:
     ra-core: "npm:^5.4.0"
   checksum: 10/0c6d885b05f257f2d3a842c2fdf2175c6353e0672d307d7dc0becaaee7827d777eea5ea5948d3b4c8f77facaa0b2ff6f4f2b948833926181c74f3c578b68e714
@@ -9747,13 +9689,13 @@ __metadata:
 "ra-language-slovak@npm:^3.6.2":
   version: 3.6.2
   resolution: "ra-language-slovak@npm:3.6.2"
-  checksum: 4f16c11a9268b856b58f68aee8c08b3ad165fbe6bd9914de777b3212cd14a9a42d970fd0da72111cc3ae6e41136a8a327ca171ab573b7e66a152d9228984c70c
+  checksum: 10/e707ed6519349d56ec10005c72ab31e1ec98ff59894a64c44e2c82faab116eaaabe08188de0fd18fdfbf1057284aa239b19de5e29580da5caa241542d94484ba
   languageName: node
   linkType: hard
 
-"ra-ui-materialui@npm:^4.16.20":
-  version: 4.16.20
-  resolution: "ra-ui-materialui@npm:4.16.20"
+"ra-ui-materialui@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "ra-ui-materialui@npm:5.4.0"
   dependencies:
     "@tanstack/react-query": "npm:^5.21.7"
     autosuggest-highlight: "npm:^3.1.1"
@@ -9852,27 +9794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-error-boundary@npm:^4.0.13":
-  version: 4.1.2
-  resolution: "react-error-boundary@npm:4.1.2"
-  dependencies:
-    "@babel/runtime": ^7.12.5
-  peerDependencies:
-    react: ">=16.13.1"
-  checksum: afe692f1bbbfb5998b49e1001d7682a3cbfdc623dca1318b408e738606f3450d925c28fbbfa5dc84d2cf285d17c2e7f079d59386a27da354dea9c902a935149b
-  languageName: node
-  linkType: hard
-
-"react-hook-form@npm:^7.43.9":
-  version: 7.43.9
-  resolution: "react-hook-form@npm:7.43.9"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 65b94de625f2b7921c4e856bf0abbe142bfe06c052217bd1bcc3a842e2cc37fa3a3e03758119dc038bbcf5edb49e02c29206528b80b201f9a4d601471ef78153
-  languageName: node
-  linkType: hard
-
-"react-hook-form@npm:^7.53.2":
+"react-hook-form@npm:^7.53.0, react-hook-form@npm:^7.53.2":
   version: 7.53.2
   resolution: "react-hook-form@npm:7.53.2"
   peerDependencies:
@@ -11844,66 +11766,66 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "webstrom-frontend@workspace:."
   dependencies:
-    "@emotion/react": ^11.13.5
-    "@emotion/styled": ^11.13.5
-    "@mui/icons-material": ^5.16.7
-    "@mui/material": ^5.16.7
-    "@svgr/webpack": ^8.1.0
-    "@tanstack/react-query": 5.61.0
-    "@tanstack/react-query-devtools": 5.61.0
-    "@testing-library/dom": ^9.3.4
-    "@testing-library/jest-dom": ^5.17.0
-    "@testing-library/react": ^14.3.1
-    "@testing-library/user-event": ^14.5.2
-    "@types/jest": ^29.5.14
-    "@types/katex": ^0.16.7
-    "@types/luxon": ^3.4.2
-    "@types/node": ^20.17.7
-    "@types/react": ^19.0.0-rc.1
-    "@types/react-dom": ^19.0.0-rc.1
-    "@types/react-router-dom": ^5.3.3
-    "@typescript-eslint/eslint-plugin": ^8.15.0
-    "@typescript-eslint/parser": ^8.15.0
-    axios: ^1.7.7
-    clsx: ^2.1.1
-    confusing-browser-globals: ^1.0.11
-    eslint: ^8.57.1
-    eslint-config-next: 15.0.3
-    eslint-config-prettier: ^9.1.0
-    eslint-plugin-eslint-comments: ^3.2.0
-    eslint-plugin-filenames: ^1.3.2
-    eslint-plugin-import: ^2.31.0
-    eslint-plugin-jest: ^28.9.0
-    eslint-plugin-no-secrets: ^1.1.2
-    eslint-plugin-node: ^11.1.0
-    eslint-plugin-prettier: ^5.2.1
-    eslint-plugin-promise: ^7.1.0
-    eslint-plugin-security: ^3.0.1
-    eslint-plugin-simple-import-sort: ^12.1.1
-    eslint-plugin-unicorn: ^56.0.1
-    katex: ^0.16.11
-    luxon: ^3.5.0
-    mathjax-full: ^3.2.2
-    mathjax-react: ^2.0.1
-    next: 15.0.3
-    prettier: ^3.3.3
-    ra-i18n-polyglot: ^5.4.0
-    ra-language-slovak: ^3.6.2
-    react: 19.0.0-rc-66855b96-20241106
-    react-admin: ^4.16.20
-    react-cookie: ^4.1.1
-    react-dom: 19.0.0-rc-66855b96-20241106
-    react-dropzone: ^14.3.5
-    react-hook-form: ^7.53.2
-    react-markdown: ^9.0.1
-    rehype-katex: ^7.0.1
-    remark-gfm: ^4.0.0
-    remark-math: ^6.0.0
-    sass: ^1.81.0
-    typed-scss-modules: ^8.0.1
-    typescript: ^5.7.2
-    unstated-next: ^1.1.0
-    usehooks-ts: ^3.1.0
+    "@emotion/react": "npm:^11.13.5"
+    "@emotion/styled": "npm:^11.13.5"
+    "@mui/icons-material": "npm:^5.16.7"
+    "@mui/material": "npm:^5.16.7"
+    "@svgr/webpack": "npm:^8.1.0"
+    "@tanstack/react-query": "npm:5.61.0"
+    "@tanstack/react-query-devtools": "npm:5.61.0"
+    "@testing-library/dom": "npm:^9.3.4"
+    "@testing-library/jest-dom": "npm:^5.17.0"
+    "@testing-library/react": "npm:^14.3.1"
+    "@testing-library/user-event": "npm:^14.5.2"
+    "@types/jest": "npm:^29.5.14"
+    "@types/katex": "npm:^0.16.7"
+    "@types/luxon": "npm:^3.4.2"
+    "@types/node": "npm:^20.17.7"
+    "@types/react": "npm:^19.0.0-rc.1"
+    "@types/react-dom": "npm:^19.0.0-rc.1"
+    "@types/react-router-dom": "npm:^5.3.3"
+    "@typescript-eslint/eslint-plugin": "npm:^8.15.0"
+    "@typescript-eslint/parser": "npm:^8.15.0"
+    axios: "npm:^1.7.7"
+    clsx: "npm:^2.1.1"
+    confusing-browser-globals: "npm:^1.0.11"
+    eslint: "npm:^8.57.1"
+    eslint-config-next: "npm:15.0.3"
+    eslint-config-prettier: "npm:^9.1.0"
+    eslint-plugin-eslint-comments: "npm:^3.2.0"
+    eslint-plugin-filenames: "npm:^1.3.2"
+    eslint-plugin-import: "npm:^2.31.0"
+    eslint-plugin-jest: "npm:^28.9.0"
+    eslint-plugin-no-secrets: "npm:^1.1.2"
+    eslint-plugin-node: "npm:^11.1.0"
+    eslint-plugin-prettier: "npm:^5.2.1"
+    eslint-plugin-promise: "npm:^7.1.0"
+    eslint-plugin-security: "npm:^3.0.1"
+    eslint-plugin-simple-import-sort: "npm:^12.1.1"
+    eslint-plugin-unicorn: "npm:^56.0.1"
+    katex: "npm:^0.16.11"
+    luxon: "npm:^3.5.0"
+    mathjax-full: "npm:^3.2.2"
+    mathjax-react: "npm:^2.0.1"
+    next: "npm:15.0.3"
+    prettier: "npm:^3.3.3"
+    ra-i18n-polyglot: "npm:^5.4.0"
+    ra-language-slovak: "npm:^3.6.2"
+    react: "npm:19.0.0-rc-66855b96-20241106"
+    react-admin: "npm:^5.4.0"
+    react-cookie: "npm:^4.1.1"
+    react-dom: "npm:19.0.0-rc-66855b96-20241106"
+    react-dropzone: "npm:^14.3.5"
+    react-hook-form: "npm:^7.53.2"
+    react-markdown: "npm:^9.0.1"
+    rehype-katex: "npm:^7.0.1"
+    remark-gfm: "npm:^4.0.0"
+    remark-math: "npm:^6.0.0"
+    sass: "npm:^1.81.0"
+    typed-scss-modules: "npm:^8.0.1"
+    typescript: "npm:^5.7.2"
+    unstated-next: "npm:^1.1.0"
+    usehooks-ts: "npm:^3.1.0"
   languageName: unknown
   linkType: soft
 
