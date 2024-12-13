@@ -19,7 +19,7 @@ export const sk_SK = {
       },
     },
     'base/flat-page': {
-      name: 'flat-pages',
+      name: 'Ploché stránky',
       fields: {
         id: 'ID',
         url: 'URL',
@@ -45,7 +45,7 @@ export const sk_SK = {
       },
     },
     'competition/event': {
-      name: 'competition/event',
+      name: 'Udalosti',
       fields: {
         competition: 'Súťaž',
         year: 'Ročník',
@@ -66,7 +66,7 @@ export const sk_SK = {
       },
     },
     'competition/semester': {
-      name: 'competition/semester',
+      name: 'Semestre',
       fields: {
         competition: 'Súťaž',
         year: 'Ročník',
@@ -83,7 +83,7 @@ export const sk_SK = {
       },
     },
     'competition/series': {
-      name: 'competition/series',
+      name: 'Série',
       fields: {
         semester: 'Semester',
         deadline: 'Deadline',
@@ -113,7 +113,7 @@ export const sk_SK = {
       },
     },
     'competition/event-registration': {
-      name: 'event-registration',
+      name: 'Registácia do súťaží',
       fields: {
         school: {
           abbreviation: 'Škola',
@@ -156,7 +156,7 @@ export const sk_SK = {
 
   content: {
     labels: {
-      general: 'Generala',
+      general: 'Všeobecné',
       preview: 'Náhľad',
       links: 'Odkazy',
       publications: 'Publikácie',
@@ -165,7 +165,7 @@ export const sk_SK = {
       problems: 'Úlohy',
       history_events: 'History_Events',
       back_to_list: 'Späť na list',
-      competition_type: 'competition_type',
+      competition_type: 'Typ súťaže',
       history_events_count: 'HE count',
       name: 'Meno a priezvisko',
       reg_link: 'Odkaz na registráciu',
