@@ -23,7 +23,7 @@ export const Crossroad: React.FC = () => {
         Máš problém?
       </Typography>
       <Stack spacing={2} direction="row">
-        <Link variant="crossroadButton" href="https://r.mtdv.me/articles/mam-problem" invertColors>
+        <Link variant="crossroadButton" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" invertColors>
           Áno
         </Link>
         <Button variant="crossroadButton" onClick={() => setIsProblem(true)} invertColors>
