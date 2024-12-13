@@ -2,7 +2,6 @@ import {FC} from 'react'
 import {NumberField, Show, SimpleShowLayout, TextField} from 'react-admin'
 
 import {MyShowActions} from '@/components/Admin/custom/MyShowActions'
-import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
 export const FlatpageShow: FC = () => (
@@ -12,7 +11,6 @@ export const FlatpageShow: FC = () => (
       <TextField source="url" />
       <TextField source="title" />
       <TruncatedTextField source="content" maxTextWidth={200} expandable />
-      <SitesArrayField source="sites" />
     </SimpleShowLayout>
   </Show>
 )
