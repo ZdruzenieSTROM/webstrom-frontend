@@ -1,4 +1,4 @@
-import {MenuItem, TextField, TextFieldProps} from '@mui/material'
+import {MenuItem, TextField, TextFieldProps, Typography} from '@mui/material'
 import {Controller, ControllerProps, FieldPath, FieldValues} from 'react-hook-form'
 
 import {formItemStyle} from '../styles'
@@ -33,7 +33,14 @@ export const FormSelect = <
         variant="outlined"
         label={label}
         fullWidth
-        helperText={error?.message}
+        error={!!error}
+        helperText={
+          error && (
+            <Typography variant="body2" fontWeight={800}>
+              {error.message}
+            </Typography>
+          )
+        }
         focused={false}
         sx={formItemStyle}
       >

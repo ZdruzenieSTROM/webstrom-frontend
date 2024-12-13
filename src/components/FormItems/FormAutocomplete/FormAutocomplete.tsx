@@ -1,4 +1,4 @@
-import {Autocomplete, TextField, TextFieldProps} from '@mui/material'
+import {Autocomplete, TextField, TextFieldProps, Typography} from '@mui/material'
 import {Controller, ControllerProps, FieldPath, FieldValues} from 'react-hook-form'
 
 import {SelectOption} from '../FormSelect/FormSelect'
@@ -44,7 +44,14 @@ export const FormAutocomplete = <
               label={label}
               variant="outlined"
               fullWidth
-              helperText={error?.message}
+              error={!!error}
+              helperText={
+                error && (
+                  <Typography variant="body2" fontWeight={800}>
+                    {error.message}
+                  </Typography>
+                )
+              }
               focused={false}
             />
           )}

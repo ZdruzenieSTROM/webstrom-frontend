@@ -213,7 +213,7 @@ export const RegisterForm: FC = () => {
           <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={2} />
           <FormInput control={control} name="phone" label="telefón v tvare +421 ..." rules={phoneRule} />
           <FormInput control={control} name="parent_phone" label="telefón na rodiča" rules={phoneRule} />
-          <Typography variant="body2" fontWeight={800}>
+          <Typography variant="body2" fontWeight={800} mx={2} sx={{textTransform: 'uppercase'}}>
             * takto označené polia sú povinné
           </Typography>
           <Typography variant="body2">
