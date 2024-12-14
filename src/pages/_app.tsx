@@ -111,9 +111,12 @@ const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
 
                   // ak nie, ale mame message v `.non_field_errors`, ukazeme ten
                   const nonFieldErrors = 'non_field_errors' in data && data.non_field_errors
-                  const nonFieldError = Array.isArray(nonFieldErrors) && (nonFieldErrors as unknown[])[0]
-                  if (typeof nonFieldError === 'string') {
-                    alert(nonFieldError)
+                  const nonFieldErrorsUnknown = Array.isArray(nonFieldErrors) ? (nonFieldErrors as unknown[]) : []
+                  const nonFieldErrorsJoined = nonFieldErrorsUnknown.every((e) => typeof e === 'string')
+                    ? nonFieldErrorsUnknown.join('\n')
+                    : ''
+                  if (nonFieldErrorsJoined) {
+                    alert(nonFieldErrorsJoined)
                     return
                   }
 

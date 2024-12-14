@@ -1,6 +1,6 @@
-import axios, {AxiosError, AxiosResponse} from 'axios'
+import axios, {isAxiosError} from 'axios'
 import {stringify} from 'querystring'
-import {DataProvider, FilterPayload, /* PaginationPayload, */ RaRecord, SortPayload} from 'react-admin'
+import {DataProvider, FilterPayload, /* PaginationPayload, */ SortPayload} from 'react-admin'
 
 const getFilterQuery = ({q, ...otherSearchParams}: FilterPayload) => ({
   ...otherSearchParams,
@@ -14,10 +14,23 @@ const getOrderingQuery = ({order, field}: SortPayload) => ({ordering: `${order =
 // })
 
 /* field errors by mali byt zachytene uz FE validaciou, dumpujem do 'Nastala neznáma chyba' */
-const parseError = (response: any) => {
-  if (typeof response === 'undefined') return 'Nastala neznáma chyba'
-  if (typeof response.detail !== 'undefined') return response.detail
-  if (response.non_field_errors?.constructor.name === 'Array') return response.non_field_errors.join('\n')
+const parseError = (error: unknown) => {
+  // povacsine matchuje `mutations.onError` v `_app.tsx`
+  if (isAxiosError(error)) {
+    const data = error.response?.data as unknown
+    if (typeof data === 'object' && data) {
+      const detail = 'detail' in data && data.detail
+      if (typeof detail === 'string') return detail
+
+      const nonFieldErrors = 'non_field_errors' in data && data.non_field_errors
+      const nonFieldErrorsUnknown = Array.isArray(nonFieldErrors) ? (nonFieldErrors as unknown[]) : []
+      const nonFieldErrorsJoined = nonFieldErrorsUnknown.every((e) => typeof e === 'string')
+        ? nonFieldErrorsUnknown.join('\n')
+        : ''
+      if (nonFieldErrorsJoined) return nonFieldErrorsJoined
+    }
+  }
+
   return 'Nastala neznáma chyba'
 }
 
@@ -48,24 +61,24 @@ export const dataProvider: DataProvider = {
         data: pagedData,
         total: data.length,
       }
-    } catch (e: any) {
-      throw new Error(parseError(e.response.data))
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   getOne: async (resource, params) => {
     try {
       const {data} = await axios.get(`${apiUrl}/${resource}/${params.id}`)
       return {data}
-    } catch (e: any) {
-      throw new Error(parseError(e.response.data))
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   getMany: async (resource, params) => {
     try {
       const data = await Promise.all(params.ids.map((id) => axios.get(`${apiUrl}/${resource}/${id}`)))
       return {data: data.map(({data}) => data)}
-    } catch (e: any) {
-      throw new Error(parseError(e.response.data))
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   // TODO: ak budeme pouzivat tuto funkciu, upravime podla getList (pagination, sort, filter). uprimne este neviem, pri com sa pouziva
@@ -80,8 +93,8 @@ export const dataProvider: DataProvider = {
         data: data,
         total: data.length,
       }
-    } catch (e: any) {
-      throw new Error(parseError(e.response.data))
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   update: async (resource, params) => {
@@ -94,16 +107,16 @@ export const dataProvider: DataProvider = {
     try {
       const {data} = await axios.patch(`${apiUrl}/${resource}/${id}`, body)
       return {data}
-    } catch (e: any) {
-      throw new Error(parseError(e.response.data))
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   updateMany: async (resource, params) => {
     try {
       const data = await Promise.all(params.ids.map((id) => axios.patch(`${apiUrl}/${resource}/${id}`, params.data)))
       return {data: data.map(({data}) => data)}
-    } catch (e: any) {
-      throw new Error(parseError(e.response.data))
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   create: async (resource, params) => {
@@ -114,24 +127,24 @@ export const dataProvider: DataProvider = {
     try {
       const {data} = await axios.post(`${apiUrl}/${resource}`, body)
       return {data}
-    } catch (e: any) {
-      throw new Error(parseError(e.response.data))
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   delete: async (resource, params) => {
     try {
       const {data} = await axios.delete(`${apiUrl}/${resource}/${params.id}`)
       return {data}
-    } catch (e: any) {
-      throw new Error(parseError(e.response.data))
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   deleteMany: async (resource, params) => {
     try {
       const data = await Promise.all(params.ids.map((id) => axios.delete(`${apiUrl}/${resource}/${id}`)))
       return {data: data.map(({data}) => data.id)}
-    } catch (e: any) {
-      throw new Error(parseError(e.response.data))
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
 }
