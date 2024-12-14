@@ -20,12 +20,11 @@ type MyEvent = Omit<Event, 'publication_set'> & {
 }
 
 const PublicationButton: FC<{
-  publicationId: number
-  publicationName: string
-}> = ({publicationId, publicationName}) => {
+  publication: Publication
+}> = ({publication}) => {
   return (
-    <Link variant="button2" href={`/api/competition/publication/${publicationId}/download`} target="_blank">
-      Časopis {publicationName}
+    <Link variant="button2" href={`/api${publication.file}`} target="_blank">
+      {publication.name}
     </Link>
   )
 }
@@ -79,11 +78,7 @@ export const Archive: FC = () => {
             <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
             <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
             {event.publication_set.map((publication) => (
-              <PublicationButton
-                key={publication.id}
-                publicationId={publication.id}
-                publicationName={publication.name}
-              />
+              <PublicationButton key={publication.id} publication={publication} />
             ))}
           </Stack>
         </Stack>
