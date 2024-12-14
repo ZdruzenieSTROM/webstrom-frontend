@@ -66,6 +66,8 @@ export interface ProblemCorrection {
 export interface Problem {
   id: number
   submitted?: any
+  num_solutions: number
+  num_corrected_solutions: number
   text: string
   order: number
   image?: any | null

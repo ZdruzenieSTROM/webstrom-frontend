@@ -1,7 +1,8 @@
 import {Stack, Typography} from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
-import {FC, useState} from 'react'
+import {FC, Fragment, useState} from 'react'
 
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
@@ -149,13 +150,21 @@ export const SemesterAdministration: FC = () => {
               <b>Termín série:</b> {formatDateTime(series.deadline)}
             </Typography>
           </Stack>
-          <Stack px={2} direction="row" justifyContent="space-between">
-            {series?.problems.map((problem) => (
-              <Link key={problem.id} variant="button2" href={`/${seminar}/admin/opravit-ulohu/${problem.id}`}>
-                {problem.order}. úloha
-              </Link>
-            ))}
-          </Stack>
+          <Grid container spacing={2} xs={12} md={6}>
+            {series?.problems.map((problem) => {
+              return (
+                <Fragment key={problem.id}>
+                  <Grid xs={6}>
+                    <Link key={problem.id} variant="button2" href={`/${seminar}/admin/opravit-ulohu/${problem.id}`}>
+                      {problem.order}. úloha
+                    </Link>
+                  </Grid>
+                  <Grid xs={3}>(0/0)</Grid>
+                  <Grid xs={3}>x</Grid>
+                </Fragment>
+              )
+            })}
+          </Grid>
         </Stack>
       ))}
 
