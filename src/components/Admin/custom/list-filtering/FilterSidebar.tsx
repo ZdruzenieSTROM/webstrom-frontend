@@ -19,6 +19,7 @@ export const FilterSidebar: FC<PropsWithChildren> = ({children}) => {
         <FilterListIcon />
         Filters
       </Button>
+
       <Card sx={{mt: 8, mr: filterOpen ? 2 : 0, width: filterOpen ? 200 : 0, transition: 'width 0.2s'}}>
         <CardContent>
           <FilterLiveSearch />

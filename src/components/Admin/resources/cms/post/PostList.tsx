@@ -2,7 +2,7 @@ import {FC} from 'react'
 import {Datagrid, FilterList, FilterListItem, FunctionField, List, RaRecord, TextField} from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
-import {FilterSidebar} from '@/components/Admin/custom/FilterSidebar'
+import {FilterSidebar} from '@/components/Admin/custom/list-filtering/FilterSidebar'
 import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 import {seminarIds, seminarIdToName} from '@/utils/useSeminarInfo'
