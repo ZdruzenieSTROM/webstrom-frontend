@@ -3,3 +3,31 @@
 <path d="M257 173V412H36L257 173Z" fill="currentColor"/>
 <path d="M257 397V684H0L257 397Z" fill="currentColor"/>
 </svg>
+
+<!-- 4 triangles -->
+<!-- <svg width="293" height="900" viewBox="0 0 293 1000" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M293 0V184H135L293 0Z" fill="currentColor"/>
+  <path d="M293 173V412H72L293 173Z" fill="currentColor"/>
+  <path d="M293 397V684H36L293 397Z" fill="currentColor"/>
+  <path d="M293 665V1000H0L293 665Z" fill="currentColor"/>
+</svg> -->
+
+<!-- 5 triangles -->
+<!-- <svg width="329" height="900" viewBox="0 0 329 1322" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M329 0V184H171L329 0Z" fill="currentColor"/>
+  <path d="M329 173V412H108L329 173Z" fill="currentColor"/>
+  <path d="M329 397V684H72L329 397Z" fill="currentColor"/>
+  <path d="M329 665V1000H36L329 665Z" fill="currentColor"/>
+  <path d="M329 977V1322H0L329 977Z" fill="currentColor"/>
+</svg> -->
+
+
+<!-- 6 triangles -->
+<!-- <svg width="365" height="900" viewBox="0 0 365 1666" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M365 0V184H207L365 0Z" fill="currentColor"/>
+  <path d="M365 173V412H144L365 173Z" fill="currentColor"/>
+  <path d="M365 397V684H108L365 397Z" fill="currentColor"/>
+  <path d="M365 665V1000H72L365 665Z" fill="currentColor"/>
+  <path d="M365 977V1322H36L365 977Z" fill="currentColor"/>
+  <path d="M365 1294V1666H0L365 1294Z" fill="currentColor"/>
+</svg> -->
