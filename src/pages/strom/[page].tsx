@@ -1,8 +1,8 @@
 import axios from 'axios'
 import {GetServerSideProps, NextPage} from 'next'
 
+import {Markdown} from '@/components/Markdown/Markdown'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {Markdown} from '@/components/StaticSites/Markdown'
 import {FlatPage} from '@/types/api/generated/base'
 import {Seminar} from '@/utils/useSeminarInfo'
 

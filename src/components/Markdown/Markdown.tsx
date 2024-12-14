@@ -3,6 +3,7 @@ import 'katex/dist/katex.min.css'
 import {FC} from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeKatex from 'rehype-katex'
+import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 
@@ -12,10 +13,12 @@ type MarkdownProps = {
   content: string
 }
 
+const Empty: FC = () => <></>
+
 export const Markdown: FC<MarkdownProps> = ({content}) => (
   <ReactMarkdown
     remarkPlugins={[remarkGfm, remarkMath]}
-    rehypePlugins={[rehypeKatex]}
+    rehypePlugins={[rehypeKatex, rehypeRaw]}
     components={{
       a: MarkdownLink,
       table: Table,
@@ -30,6 +33,7 @@ export const Markdown: FC<MarkdownProps> = ({content}) => (
       h6: H3,
       ol: Ol,
       ul: Ul,
+      script: Empty,
     }}
   >
     {content}

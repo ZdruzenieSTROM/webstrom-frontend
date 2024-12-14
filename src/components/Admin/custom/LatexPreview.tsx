@@ -1,7 +1,7 @@
 import {FC} from 'react'
 import {FieldProps, FormDataConsumer, Labeled} from 'react-admin'
 
-import {Latex} from '@/components/Latex/Latex'
+import {Markdown} from '@/components/Markdown/Markdown'
 
 export const LatexPreview: FC<FieldProps> = ({source}) => {
   if (!source) return null
@@ -13,7 +13,7 @@ export const LatexPreview: FC<FieldProps> = ({source}) => {
           const data = formData[source]
           if (!data) return null
 
-          return <Latex>{data}</Latex>
+          return <Markdown content={data} />
         }}
       </FormDataConsumer>
     </Labeled>

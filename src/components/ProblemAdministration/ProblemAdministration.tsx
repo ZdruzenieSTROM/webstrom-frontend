@@ -17,8 +17,8 @@ import {Link} from '../Clickable/Link'
 import {Dialog} from '../Dialog/Dialog'
 import {FileDropZone} from '../FileDropZone/FileDropZone'
 import {FileUploader} from '../FileUploader/FileUploader'
-import {Latex} from '../Latex/Latex'
 import {Loading} from '../Loading/Loading'
+import {Markdown} from '../Markdown/Markdown'
 import styles from './ProblemAdministration.module.scss'
 
 export const ProblemAdministration: FC = () => {
@@ -188,7 +188,7 @@ export const ProblemAdministration: FC = () => {
           </Link>
         </Stack>
 
-        <Latex>{problem.text ?? 'Načítavam...'}</Latex>
+        <Markdown content={problem.text ?? 'Načítavam...'} />
 
         <div className={styles.row}>
           <Typography variant="body1" component="div">
