@@ -4,7 +4,7 @@ import {FC, PropsWithChildren, useState} from 'react'
 import {FilterLiveSearch} from 'react-admin'
 
 export const FilterSidebar: FC<PropsWithChildren> = ({children}) => {
-  const [filterOpen, setFilterOpen] = useState(false)
+  const [filterOpen, setFilterOpen] = useState(true)
   const toggleFilter = () => setFilterOpen((prev) => !prev)
 
   return (
