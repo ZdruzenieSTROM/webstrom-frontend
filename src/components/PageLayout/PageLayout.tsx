@@ -43,9 +43,7 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
             <TopGrid />
             <Grid container disableEqualOverflow sx={{flex: 1}}>
               <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}, pt: {xs: 4, md: 8, lg: 12}}}>
-                <Box sx={{position: 'relative'}}>
-                  <StromLogo />
-                </Box>
+                <StromLogo />
               </Grid>
               <Grid
                 xs={12}
