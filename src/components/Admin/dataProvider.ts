@@ -1,6 +1,6 @@
-import axios from 'axios'
+import axios, {isAxiosError} from 'axios'
 import {stringify} from 'querystring'
-import {DataProvider, FilterPayload, /* PaginationPayload, */ RaRecord, SortPayload} from 'react-admin'
+import {DataProvider, FilterPayload, /* PaginationPayload, */ SortPayload} from 'react-admin'
 
 const getFilterQuery = ({q, ...otherSearchParams}: FilterPayload) => ({
   ...otherSearchParams,
@@ -12,6 +12,27 @@ const getOrderingQuery = ({order, field}: SortPayload) => ({ordering: `${order =
 //   offset: page,
 //   limit: perPage,
 // })
+
+/* field errors by mali byt zachytene uz FE validaciou, dumpujem do 'Nastala neznáma chyba' */
+const parseError = (error: unknown) => {
+  // povacsine matchuje `mutations.onError` v `_app.tsx`
+  if (isAxiosError(error)) {
+    const data = error.response?.data as unknown
+    if (typeof data === 'object' && data) {
+      const detail = 'detail' in data && data.detail
+      if (typeof detail === 'string') return detail
+
+      const nonFieldErrors = 'non_field_errors' in data && data.non_field_errors
+      const nonFieldErrorsUnknown = Array.isArray(nonFieldErrors) ? (nonFieldErrors as unknown[]) : []
+      const nonFieldErrorsJoined = nonFieldErrorsUnknown.every((e) => typeof e === 'string')
+        ? nonFieldErrorsUnknown.join('\n')
+        : ''
+      if (nonFieldErrorsJoined) return nonFieldErrorsJoined
+    }
+  }
+
+  return 'Nastala neznáma chyba'
+}
 
 const apiUrl = '/api'
 
@@ -25,40 +46,55 @@ export const dataProvider: DataProvider = {
       // ...getPaginationQuery(pagination),
     }
     const stringifiedQuery = stringify(query)
-    const {data} = await axios.get<any[]>(`${apiUrl}/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`)
 
-    // client-side pagination
-    let pagedData = data
-    if (pagination) {
-      const {page, perPage} = pagination
-      pagedData = data.slice((page - 1) * perPage, page * perPage)
-    }
+    try {
+      const {data} = await axios.get<any[]>(`${apiUrl}/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`)
 
-    return {
-      data: pagedData,
-      total: data.length,
+      // client-side pagination
+      let pagedData = data
+      if (pagination) {
+        const {page, perPage} = pagination
+        pagedData = data.slice((page - 1) * perPage, page * perPage)
+      }
+
+      return {
+        data: pagedData,
+        total: data.length,
+      }
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   getOne: async (resource, params) => {
-    const {data} = await axios.get(`${apiUrl}/${resource}/${params.id}`)
-
-    return {data}
+    try {
+      const {data} = await axios.get(`${apiUrl}/${resource}/${params.id}`)
+      return {data}
+    } catch (e) {
+      throw new Error(parseError(e))
+    }
   },
   getMany: async (resource, params) => {
-    const data = await Promise.all(params.ids.map((id) => axios.get(`${apiUrl}/${resource}/${id}`)))
-
-    return {data: data.map(({data}) => data)}
+    try {
+      const data = await Promise.all(params.ids.map((id) => axios.get(`${apiUrl}/${resource}/${id}`)))
+      return {data: data.map(({data}) => data)}
+    } catch (e) {
+      throw new Error(parseError(e))
+    }
   },
   // TODO: ak budeme pouzivat tuto funkciu, upravime podla getList (pagination, sort, filter). uprimne este neviem, pri com sa pouziva
   getManyReference: async (resource, params) => {
     const query = {
       [params.target]: params.id,
     }
-    const {data} = await axios.get(`${apiUrl}/${resource}/?${stringify(query)}`)
 
-    return {
-      data: data,
-      total: data.length,
+    try {
+      const {data} = await axios.get(`${apiUrl}/${resource}/?${stringify(query)}`)
+      return {
+        data: data,
+        total: data.length,
+      }
+    } catch (e) {
+      throw new Error(parseError(e))
     }
   },
   update: async (resource, params) => {
@@ -68,32 +104,47 @@ export const dataProvider: DataProvider = {
     // ked existuju formData, ktore sme do recordu pridali v `transform` v `MyEdit`, pouzijeme tie
     const body = formData ?? input
 
-    const {data} = await axios.patch(`${apiUrl}/${resource}/${id}`, body)
-
-    return {data}
+    try {
+      const {data} = await axios.patch(`${apiUrl}/${resource}/${id}`, body)
+      return {data}
+    } catch (e) {
+      throw new Error(parseError(e))
+    }
   },
   updateMany: async (resource, params) => {
-    const data = await Promise.all(params.ids.map((id) => axios.patch(`${apiUrl}/${resource}/${id}`, params.data)))
-
-    return {data: data.map(({data}) => data)}
+    try {
+      const data = await Promise.all(params.ids.map((id) => axios.patch(`${apiUrl}/${resource}/${id}`, params.data)))
+      return {data: data.map(({data}) => data)}
+    } catch (e) {
+      throw new Error(parseError(e))
+    }
   },
   create: async (resource, params) => {
     const {formData, ...input} = params.data
 
     const body = formData ?? input
 
-    const {data} = await axios.post(`${apiUrl}/${resource}`, body)
-
-    return {data}
+    try {
+      const {data} = await axios.post(`${apiUrl}/${resource}`, body)
+      return {data}
+    } catch (e) {
+      throw new Error(parseError(e))
+    }
   },
   delete: async (resource, params) => {
-    const {data} = await axios.delete(`${apiUrl}/${resource}/${params.id}`)
-
-    return {data}
+    try {
+      const {data} = await axios.delete(`${apiUrl}/${resource}/${params.id}`)
+      return {data}
+    } catch (e) {
+      throw new Error(parseError(e))
+    }
   },
   deleteMany: async (resource, params) => {
-    const data = await Promise.all(params.ids.map((id) => axios.delete(`${apiUrl}/${resource}/${id}`)))
-
-    return {data: data.map(({data}) => data.id)}
+    try {
+      const data = await Promise.all(params.ids.map((id) => axios.delete(`${apiUrl}/${resource}/${id}`)))
+      return {data: data.map(({data}) => data.id)}
+    } catch (e) {
+      throw new Error(parseError(e))
+    }
   },
 }
