@@ -62,7 +62,7 @@ export const sk_SK = {
           end: 'registration_link.end',
           additional_info: 'Ďalšie informácie',
         },
-        publication_set: 'Pubikácie',
+        publication_set: 'Publikácie',
       },
     },
     'competition/semester': {
