@@ -11,13 +11,13 @@ export const ProfileCreate: FC = () => (
     }}
   >
     <SimpleForm>
-      <TextInput source="first_name" label="Meno" validate={required()} />
-      <TextInput source="last_name" label="Priezvisko" validate={required()} />
+      <TextInput source="first_name" validate={required()} />
+      <TextInput source="last_name" validate={required()} />
       <ReferenceInput source="school" reference="personal/schools">
-        <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} label="Škola" />
+        <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
       </ReferenceInput>
       <ReferenceInput source="grade" reference="competition/grade">
-        <AutocompleteInput optionText="name" fullWidth validate={required()} label="Ročník" />
+        <AutocompleteInput optionText="name" fullWidth validate={required()} />
       </ReferenceInput>
     </SimpleForm>
   </MyCreate>

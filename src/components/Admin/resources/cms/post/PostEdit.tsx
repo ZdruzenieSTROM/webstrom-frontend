@@ -9,7 +9,7 @@ import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 export const PostEdit: FC = () => (
   <MyEdit>
     <TabbedForm>
-      <FormTab label="general">
+      <FormTab label="content.labels.general">
         <TextInput source="caption" fullWidth validate={required()} />
         <TextInput source="short_text" fullWidth validate={maxLength(200, 'Text musí mať najviac 200 znakov.')} />
         <TextInput source="details" multiline fullWidth />
@@ -18,7 +18,7 @@ export const PostEdit: FC = () => (
         <MyDateTimeInput source="visible_until" fullWidth validate={required()} />
         <SitesCheckboxInput source="sites" validate={required()} />
       </FormTab>
-      <FormTab label="links">
+      <FormTab label="content.labels.links">
         <ArrayInput source="links" defaultValue={[]}>
           <SimpleFormIterator>
             <TextInput source="caption" fullWidth validate={required()} />
@@ -26,7 +26,7 @@ export const PostEdit: FC = () => (
           </SimpleFormIterator>
         </ArrayInput>
       </FormTab>
-      <FormTab label="preview">
+      <FormTab label="content.labels.preview">
         <PostPreview />
       </FormTab>
     </TabbedForm>

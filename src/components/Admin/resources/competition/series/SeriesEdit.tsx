@@ -14,7 +14,7 @@ export const SeriesEdit: FC = () => (
     }}
   >
     <TabbedForm>
-      <FormTab label="general">
+      <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
           <SelectInput fullWidth validate={required()} />
         </ReferenceInput>

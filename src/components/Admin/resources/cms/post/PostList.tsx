@@ -15,11 +15,7 @@ export const PostList: FC = () => (
       <DateTimeField source="visible_after" />
       <DateTimeField source="visible_until" />
       <SitesArrayField source="sites" />
-      <FunctionField<RaRecord>
-        source="links"
-        label="Link count"
-        render={(record) => record && <span>{record['links'].length}</span>}
-      />
+      <FunctionField<RaRecord> source="links" render={(record) => record && <span>{record['links'].length}</span>} />
     </Datagrid>
   </List>
 )

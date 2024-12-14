@@ -20,7 +20,7 @@ export const ProblemList: FC = () => (
       <TruncatedTextField source="text" maxTextWidth={50} />
       <ImageField source="image" sx={{'& .RaImageField-image': {width: 100, height: 75}}} />
       <FunctionField<RaRecord>
-        label="Má vzorák"
+        label="content.labels.has_vzorak"
         render={(record) => record && <BooleanField record={{xxx: !!record['solution_pdf']}} source="xxx" />}
       />
       <NumberField source="num_comments" />

@@ -18,7 +18,6 @@ export const EventList: FC = () => (
       <TextField source="registration_link.url" />
       <FunctionField<RaRecord>
         source="publication_set"
-        label="Publication count"
         render={(record) => record && <span>{record['publication_set'].length}</span>}
       />
     </Datagrid>

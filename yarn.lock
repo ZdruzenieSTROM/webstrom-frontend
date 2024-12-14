@@ -9686,6 +9686,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ra-language-slovak@npm:^3.6.2":
+  version: 3.6.2
+  resolution: "ra-language-slovak@npm:3.6.2"
+  checksum: 10/e707ed6519349d56ec10005c72ab31e1ec98ff59894a64c44e2c82faab116eaaabe08188de0fd18fdfbf1057284aa239b19de5e29580da5caa241542d94484ba
+  languageName: node
+  linkType: hard
+
 "ra-ui-materialui@npm:^5.4.0":
   version: 5.4.0
   resolution: "ra-ui-materialui@npm:5.4.0"
@@ -11802,6 +11809,8 @@ __metadata:
     mathjax-react: "npm:^2.0.1"
     next: "npm:15.0.3"
     prettier: "npm:^3.3.3"
+    ra-i18n-polyglot: "npm:^5.4.0"
+    ra-language-slovak: "npm:^3.6.2"
     react: "npm:19.0.0-rc-66855b96-20241106"
     react-admin: "npm:^5.4.0"
     react-cookie: "npm:^4.1.1"
