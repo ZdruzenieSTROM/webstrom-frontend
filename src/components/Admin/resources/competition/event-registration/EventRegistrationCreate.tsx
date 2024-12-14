@@ -30,10 +30,19 @@ export const EventRegistrationCreate: FC = () => {
         <ReferenceInput source="grade" reference="competition/grade">
           <AutocompleteInput optionText="name" fullWidth validate={required()} />
         </ReferenceInput>
-        <ReferenceInput source="event" reference="competition/event">
-          <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
-        </ReferenceInput>
+        <EventReferenceInput />
       </SimpleForm>
     </MyCreate>
+  )
+}
+
+const EventReferenceInput = () => {
+  const {watch} = useFormContext()
+  const grade = watch('grade')
+
+  return (
+    <ReferenceInput source="event" reference="competition/event" filter={{grade, future: true}}>
+      <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+    </ReferenceInput>
   )
 }
