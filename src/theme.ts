@@ -167,6 +167,7 @@ const _theme = createTheme({
       ...font.style,
       fontWeight: 400,
       textAlign: 'justify',
+      overflowWrap: 'break-word',
     },
     postDate: {
       ...font.style,
