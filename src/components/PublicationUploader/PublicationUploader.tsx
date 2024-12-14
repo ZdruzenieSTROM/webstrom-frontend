@@ -21,7 +21,7 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
   const refetch = () => queryClient.invalidateQueries({queryKey: ['competition', 'semester', semesterId]})
 
   const appendFormData = (formData: FormData) => {
-    formData.append('publication_type', PublicationTypes.LEAFLET.name)
+    formData.append('publication_type', PublicationTypes.LEAFLET.id.toString())
     formData.append('event', semesterId.toString())
     formData.append('order', order.toString())
   }
@@ -37,7 +37,7 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
         </Link>
       )}
       <FileUploader
-        uploadLink={'/api/competition/publication/upload/'}
+        uploadLink={'/api/competition/publication/'}
         acceptedFormats={Accept.Pdf}
         adjustFormData={appendFormData}
         refetch={refetch}
