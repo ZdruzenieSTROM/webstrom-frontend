@@ -1,13 +1,14 @@
+import {deepmerge} from '@mui/utils'
 import {FC} from 'react'
-import {Admin as ReactAdmin, Resource} from 'react-admin'
+import {Admin as ReactAdmin, defaultDarkTheme, defaultLightTheme, RaThemeOptions, Resource} from 'react-admin'
 
 import {AdminLayout} from './AdminLayout'
 import {dataProvider} from './dataProvider'
 import {myI18nProvider} from './i18nProvider'
-import {FlatpageCreate} from './resources/base/flat-page/FlatpageCreate'
-import {FlatpageEdit} from './resources/base/flat-page/FlatpageEdit'
-import {FlatpageList} from './resources/base/flat-page/FlatpageList'
-import {FlatpageShow} from './resources/base/flat-page/FlatpageShow'
+import {FlatpageCreate} from './resources/cms/flat-page/FlatpageCreate'
+import {FlatpageEdit} from './resources/cms/flat-page/FlatpageEdit'
+import {FlatpageList} from './resources/cms/flat-page/FlatpageList'
+import {FlatpageShow} from './resources/cms/flat-page/FlatpageShow'
 import {PostCreate} from './resources/cms/post/PostCreate'
 import {PostEdit} from './resources/cms/post/PostEdit'
 import {PostList} from './resources/cms/post/PostList'
@@ -48,6 +49,19 @@ import {SchoolList} from './resources/personal/schools/SchoolList'
 import {SchoolShow} from './resources/personal/schools/SchoolShow'
 import {useAuthProvider} from './useAuthProvider'
 
+const themeOverrides: RaThemeOptions = {
+  components: {
+    RaButton: {
+      defaultProps: {
+        size: 'medium',
+      },
+    },
+  },
+}
+
+const lightTheme = deepmerge(defaultLightTheme, themeOverrides)
+const darkTheme = deepmerge(defaultDarkTheme, themeOverrides)
+
 export const Admin: FC = () => {
   const authProvider = useAuthProvider()
 
@@ -55,8 +69,10 @@ export const Admin: FC = () => {
     <ReactAdmin
       authProvider={authProvider}
       dataProvider={dataProvider}
-      layout={AdminLayout}
       i18nProvider={myI18nProvider}
+      layout={AdminLayout}
+      theme={lightTheme}
+      darkTheme={darkTheme}
     >
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
       <Resource

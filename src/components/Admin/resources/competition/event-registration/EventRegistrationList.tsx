@@ -17,3 +17,5 @@ export const EventRegistrationList: FC = () => (
     </Datagrid>
   </List>
 )
+
+// TODO: filtre a ordering podla  https://github.com/ZdruzenieSTROM/webstrom-backend/pull/460/files#diff-148e08b739e60a78edfc1e546340f501840b75f1646afa58ee524ff82cfc061eR905-R908

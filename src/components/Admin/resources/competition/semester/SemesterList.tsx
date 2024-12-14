@@ -11,32 +11,47 @@ import {
 } from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
+import {CompetitionFilterSection} from '@/components/Admin/custom/list-filtering/CompetitionFilterSection'
+import {FilterSidebar} from '@/components/Admin/custom/list-filtering/FilterSidebar'
 import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
 export const SemesterList: FC = () => (
-  <List>
+  <List aside={<SemesterListFilters />}>
     <Datagrid>
-      <ReferenceField source="competition" reference="competition/competition" link={false} />
+      <ReferenceField source="competition" reference="competition/competition" link={false} sortable={false} />
       <NumberField source="year" />
-      <SeasonCodeField source="season_code" />
-      <TextField source="school_year" />
+      <SeasonCodeField source="season_code" sortable={false} />
+      <TextField source="school_year" sortable={false} />
       <DateTimeField source="start" />
       <DateTimeField source="end" />
-      <BooleanField source="complete" />
-      <TextField source="additional_name" />
-      <NumberField source="registration_link" />
+      <BooleanField source="complete" sortable={false} />
+      <TextField source="additional_name" sortable={false} />
+      <NumberField source="registration_link" sortable={false} />
       <FunctionField<RaRecord>
         source="series_set"
         render={(record) => record && <span>{record['series_set'].length}</span>}
+        sortable={false}
       />
       <FunctionField<RaRecord>
         source="publication_set"
         render={(record) => record && <span>{record['publication_set'].length}</span>}
+        sortable={false}
       />
       <FunctionField<RaRecord>
         source="late_tags"
         render={(record) => record && <span>{record['late_tags'].length}</span>}
+        sortable={false}
       />
     </Datagrid>
   </List>
+)
+
+const SemesterListFilters: FC = () => (
+  <FilterSidebar>
+    <CompetitionFilterSection />
+
+    {/* TODO:
+        - school_year
+        - season_code */}
+  </FilterSidebar>
 )
