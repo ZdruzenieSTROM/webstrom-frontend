@@ -15,7 +15,7 @@ export const Posts: FC = () => {
     error: postsError,
   } = useQuery({
     queryKey: ['cms', 'post', 'visible'],
-    queryFn: () => axios.get<IPost[]>('/api/cms/post/visible'),
+    queryFn: () => axios.get<IPost[]>(`/api/cms/post/visible?sites=${seminarId}`),
   })
   const posts = postsData?.data ?? []
 
@@ -27,11 +27,9 @@ export const Posts: FC = () => {
 
   return (
     <Stack gap={5}>
-      {posts
-        .filter((p) => p.sites.includes(seminarId))
-        .map((post) => (
-          <Post key={post.id} {...post} />
-        ))}
+      {posts.map((post) => (
+        <Post key={post.id} {...post} />
+      ))}
     </Stack>
   )
 }
