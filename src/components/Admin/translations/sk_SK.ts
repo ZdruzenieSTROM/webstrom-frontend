@@ -113,7 +113,7 @@ export const sk_SK = {
       },
     },
     'competition/event-registration': {
-      name: 'Registácia do súťaží',
+      name: 'Registrácia do súťaží',
       fields: {
         school: {
           abbreviation: 'Škola',
