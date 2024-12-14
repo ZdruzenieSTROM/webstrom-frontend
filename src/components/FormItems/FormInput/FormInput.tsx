@@ -1,4 +1,4 @@
-import {TextField, TextFieldProps} from '@mui/material'
+import {TextField, TextFieldProps, Typography} from '@mui/material'
 import {Controller, ControllerProps, FieldPath, FieldValues} from 'react-hook-form'
 
 import {formItemStyle} from '../styles'
@@ -29,7 +29,14 @@ export const FormInput = <
         type={type}
         variant="outlined"
         fullWidth
-        helperText={error?.message}
+        error={!!error}
+        helperText={
+          error && (
+            <Typography variant="body2" fontWeight={800}>
+              {error.message}
+            </Typography>
+          )
+        }
         focused={false}
         sx={formItemStyle}
         {...props}

@@ -1,4 +1,4 @@
-import {Checkbox, CheckboxProps, FormControl, FormControlLabel, FormHelperText} from '@mui/material'
+import {Checkbox, CheckboxProps, FormControl, FormControlLabel, FormHelperText, Typography} from '@mui/material'
 import {Controller, ControllerProps, FieldPath, FieldValues} from 'react-hook-form'
 
 import {formItemStyle} from '../styles'
@@ -27,7 +27,13 @@ export const FormCheckbox = <
           label={label}
           disabled={disabled}
         />
-        <FormHelperText>{error?.message}</FormHelperText>
+        {error && (
+          <FormHelperText>
+            <Typography variant="body2" fontWeight={800}>
+              {error.message}
+            </Typography>
+          </FormHelperText>
+        )}
       </FormControl>
     )}
   />
