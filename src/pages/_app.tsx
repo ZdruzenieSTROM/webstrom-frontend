@@ -143,7 +143,7 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
   return (
     <>
       <Head>
-        <title>React App</title>
+        <title>STROM</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       {/* ak pouzijeme vsade <Typography>, nemuseli by sme mat takyto globalny styl... ale je to teda
