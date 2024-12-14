@@ -7,7 +7,7 @@ import {Link} from '@/components/Clickable/Link'
 import {Problem as ProblemType} from '@/types/api/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
 
-import {Latex} from '../Latex/Latex'
+import {Markdown} from '../Markdown/Markdown'
 import styles from './Problem.module.scss'
 import {UploadProblemForm} from './UploadProblemForm'
 
@@ -69,7 +69,7 @@ export const Problem: FC<{
       <Typography variant="h3" fontStyle="unset">
         {problem.order}. ÚLOHA
       </Typography>
-      <Latex>{problem.text}</Latex>
+      <Markdown content={problem.text} />
       {problem.image && (
         <Stack alignItems="center">
           <Image

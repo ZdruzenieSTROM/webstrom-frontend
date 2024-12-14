@@ -1,6 +1,6 @@
 import {FC} from 'react'
 
-import {Markdown} from '@/components/StaticSites/Markdown'
+import {Markdown} from '@/components/Markdown/Markdown'
 import {Competition} from '@/types/api/generated/competition'
 
 type RulesPageProps = Pick<Competition, 'rules' | 'upcoming_or_current_event' | 'name'>
