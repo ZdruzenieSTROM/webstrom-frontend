@@ -1,4 +1,4 @@
-import {Stack, SxProps} from '@mui/material'
+import {Box, Stack, SxProps} from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 import Head from 'next/head'
 import {FC, ReactNode} from 'react'
@@ -42,8 +42,10 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
           <Stack sx={{minHeight: '100dvh'}}>
             <TopGrid />
             <Grid container disableEqualOverflow sx={{flex: 1}}>
-              <Grid xs={0} md={3} sx={{position: 'relative', display: {xs: 'none', md: 'block'}}}>
-                <StromLogo />
+              <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}, pt: {xs: 4, md: 8, lg: 12}}}>
+                <Box sx={{position: 'relative'}}>
+                  <StromLogo />
+                </Box>
               </Grid>
               <Grid
                 xs={12}
