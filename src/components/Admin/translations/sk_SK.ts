@@ -3,6 +3,14 @@ import slovakMessages from 'ra-language-slovak'
 export const sk_SK = {
   ra: {
     ...slovakMessages.ra,
+    page: {
+      ...slovakMessages.ra.page,
+      list: '%{name}',
+    },
+    sort: {
+      ASC: 'Vzostupne',
+      DESC: 'Zostupne',
+    },
   },
   resources: {
     'cms/post': {
@@ -18,7 +26,7 @@ export const sk_SK = {
         links: 'Odkazy',
       },
     },
-    'base/flat-page': {
+    'cms/flat-page': {
       name: 'Ploché stránky',
       fields: {
         id: 'ID',
@@ -113,7 +121,7 @@ export const sk_SK = {
       },
     },
     'competition/event-registration': {
-      name: 'Registrácia do súťaží',
+      name: 'Registrácie do súťaží',
       fields: {
         school: {
           abbreviation: 'Škola',
@@ -179,6 +187,11 @@ export const sk_SK = {
     },
     footer: {
       timezone_message: 'Všetky časy sú uvedené v časovom pásme Europe/Bratislava',
+    },
+    seasons: {
+      winter: 'Zimný',
+      summer: 'Letný',
+      other: 'Iný',
     },
   },
 }
