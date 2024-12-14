@@ -14,7 +14,7 @@ export const PostPreview: FC = () => {
         {({formData}) => (
           <Grid container columnSpacing={5} sx={{width: '100%'}}>
             <Grid xs={12} md={4}>
-              <Stack gap={5} sx={{background: 'white', ml: '-10px', p: '10px', color: 'black'}}>
+              <Stack gap={5} sx={{color: 'black', background: 'white', p: '10px'}}>
                 <Post
                   id={0}
                   links={formData?.links ?? []}
