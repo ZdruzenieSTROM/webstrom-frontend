@@ -12,7 +12,7 @@ import {
 } from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
-import {CompetitionFilterSection} from '@/components/Admin/custom/list-filtering/CompetitionFilterSection'
+import {CompetitionSeminarFilterSection} from '@/components/Admin/custom/list-filtering/CompetitionSeminarFilterSection'
 import {FilterSidebar} from '@/components/Admin/custom/list-filtering/FilterSidebar'
 import {SemesterFilterSection} from '@/components/Admin/custom/list-filtering/SemesterFilterSection'
 
@@ -34,7 +34,7 @@ export const SeriesList: FC = () => (
 
 const SeriesListFilters: FC = () => (
   <FilterSidebar>
-    <CompetitionFilterSection />
+    <CompetitionSeminarFilterSection />
 
     <SemesterFilterSection />
 

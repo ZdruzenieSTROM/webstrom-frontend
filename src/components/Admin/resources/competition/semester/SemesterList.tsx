@@ -11,8 +11,9 @@ import {
 } from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
-import {CompetitionFilterSection} from '@/components/Admin/custom/list-filtering/CompetitionFilterSection'
+import {CompetitionSeminarFilterSection} from '@/components/Admin/custom/list-filtering/CompetitionSeminarFilterSection'
 import {FilterSidebar} from '@/components/Admin/custom/list-filtering/FilterSidebar'
+import {SeasonCodeFilterList} from '@/components/Admin/custom/list-filtering/SeasonCodeFilterList'
 import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
 export const SemesterList: FC = () => (
@@ -48,10 +49,11 @@ export const SemesterList: FC = () => (
 
 const SemesterListFilters: FC = () => (
   <FilterSidebar>
-    <CompetitionFilterSection />
+    <CompetitionSeminarFilterSection />
+
+    <SeasonCodeFilterList />
 
     {/* TODO:
-        - school_year
-        - season_code */}
+        - school_year */}
   </FilterSidebar>
 )

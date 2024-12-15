@@ -1,11 +1,11 @@
 import {FC} from 'react'
 import {AutocompleteInput, FilterListSection, FilterLiveForm, ReferenceInput} from 'react-admin'
 
-export const CompetitionFilterSection: FC = () => {
+export const GradeFilterSection: FC = () => {
   return (
-    <FilterListSection label="Competition" icon={null}>
+    <FilterListSection label="Grade" icon={null}>
       <FilterLiveForm>
-        <ReferenceInput source="competition" reference="competition/competition">
+        <ReferenceInput source="grade" reference="competition/grade">
           <AutocompleteInput helperText={false} />
         </ReferenceInput>
       </FilterLiveForm>
