@@ -5,14 +5,7 @@ import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 
 export const SeriesCreate: FC = () => (
-  <MyCreate
-    transform={(record) => {
-      // automaticky sa na BE posiela cely record, ale BE read_only (aj neexistujuce) fieldy ignoruje
-      // radsej z payloadu odstranime aspon sety
-      delete record.problems
-      return record
-    }}
-  >
+  <MyCreate>
     <TabbedForm>
       <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
