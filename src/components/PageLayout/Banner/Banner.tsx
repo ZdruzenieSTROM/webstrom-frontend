@@ -1,11 +1,14 @@
-import {Box, Typography} from '@mui/material'
+import {Typography} from '@mui/material'
 import {FC} from 'react'
 
 import {Marquee} from '@/components/Marquee/Marquee'
+import {BannerAnimationContainer} from '@/utils/BannerAnimationProvider'
 import {BannerContainer} from '@/utils/BannerContainer'
 
 export const Banner: FC = () => {
   const {bannerMessages} = BannerContainer.useContainer()
+  const {play, togglePlay} = BannerAnimationContainer.useContainer()
+
   const divider = '  -  '
 
   const bannerTextFormatted =
@@ -16,7 +19,11 @@ export const Banner: FC = () => {
   }
 
   return (
-    <Box
+    <Marquee
+      gradient={false}
+      speed={100}
+      play={play}
+      onClick={togglePlay}
       sx={{
         bgcolor: 'black',
         color: 'white',
@@ -24,11 +31,9 @@ export const Banner: FC = () => {
         py: '0.2rem',
       }}
     >
-      <Marquee gradient={false} speed={100}>
-        <Typography variant="h2" component="span" sx={{whiteSpace: 'nowrap'}}>
-          {bannerTextFormatted}
-        </Typography>
-      </Marquee>
-    </Box>
+      <Typography variant="h2" component="span" sx={{whiteSpace: 'nowrap'}}>
+        {bannerTextFormatted}
+      </Typography>
+    </Marquee>
   )
 }
