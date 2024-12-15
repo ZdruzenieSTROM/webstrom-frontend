@@ -1,9 +1,9 @@
 import {CssBaseline} from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import {isAxiosError} from 'axios'
 import {AppProps} from 'next/app'
-import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import {FC, PropsWithChildren, useMemo} from 'react'
 import {CookiesProvider} from 'react-cookie'
@@ -13,13 +13,6 @@ import {theme} from '@/theme'
 import {AlertContainer} from '@/utils/AlertContainer'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useAlert} from '@/utils/useAlert'
-
-const ReactQueryDevtools = dynamic(
-  () => import('@tanstack/react-query-devtools').then(({ReactQueryDevtools}) => ReactQueryDevtools),
-  {
-    ssr: false,
-  },
-)
 
 const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
   const {alert} = useAlert()
