@@ -19,7 +19,7 @@ export const MenuMain: FC = () => {
 
   const {hasPermissions} = useHasPermissions()
 
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
   const toggleMenu = () => setIsVisible((currentIsVisible) => !currentIsVisible)
 
   const fullWidthMenu = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'))
