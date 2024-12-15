@@ -12,7 +12,7 @@ import {
   ReferenceField,
 } from 'react-admin'
 
-import {CompetitionFilterSection} from '@/components/Admin/custom/list-filtering/CompetitionFilterSection'
+import {CompetitionSeminarFilterSection} from '@/components/Admin/custom/list-filtering/CompetitionSeminarFilterSection'
 import {FilterSidebar} from '@/components/Admin/custom/list-filtering/FilterSidebar'
 import {SemesterFilterSection} from '@/components/Admin/custom/list-filtering/SemesterFilterSection'
 import {SeriesFilterSection} from '@/components/Admin/custom/list-filtering/SeriesFilterSection'
@@ -37,7 +37,7 @@ export const ProblemList: FC = () => (
 
 const ProblemListFilters: FC = () => (
   <FilterSidebar>
-    <CompetitionFilterSection />
+    <CompetitionSeminarFilterSection />
 
     <SemesterFilterSection />
 
