@@ -1,5 +1,14 @@
 import {FC} from 'react'
-import {FileInput, FormTab, ImageInput, ReferenceInput, required, SelectInput, TabbedForm, TextInput} from 'react-admin'
+import {
+  AutocompleteInput,
+  FileInput,
+  FormTab,
+  ImageInput,
+  ReferenceInput,
+  required,
+  TabbedForm,
+  TextInput,
+} from 'react-admin'
 
 import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
@@ -19,7 +28,7 @@ export const ProblemCreate: FC = () => (
     <TabbedForm>
       <FormTab label="content.labels.general">
         <ReferenceInput source="series" reference="competition/series">
-          <SelectInput fullWidth validate={required()} />
+          <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
         </ReferenceInput>
         <TextInput source="text" multiline fullWidth validate={required()} />
         <LatexPreview source="text" />

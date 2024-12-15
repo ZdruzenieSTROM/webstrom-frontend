@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {BooleanInput, FormTab, ReferenceInput, required, SelectInput, TabbedForm, TextInput} from 'react-admin'
+import {AutocompleteInput, FormTab, NumberInput, ReferenceInput, required, TabbedForm} from 'react-admin'
 
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
@@ -16,11 +16,10 @@ export const SeriesEdit: FC = () => (
     <TabbedForm>
       <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
-          <SelectInput fullWidth validate={required()} />
+          <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
         </ReferenceInput>
         <MyDateTimeInput source="deadline" fullWidth validate={required()} />
-        <TextInput source="order" fullWidth validate={required()} />
-        <BooleanInput source="complete" disabled />
+        <NumberInput source="order" fullWidth validate={required()} />
       </FormTab>
     </TabbedForm>
   </MyEdit>
