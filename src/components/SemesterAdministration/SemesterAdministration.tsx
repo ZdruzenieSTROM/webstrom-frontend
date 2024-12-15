@@ -159,13 +159,11 @@ export const SemesterAdministration: FC = () => {
                   </Link>
                 </Grid>
                 <Grid xs={4} textAlign="center">
-                  {problem.num_corrected_solutions === problem.num_solutions ? (
-                    <>{`Opravené (${problem.num_solutions})`}</>
-                  ) : (
-                    <>
-                      {problem.num_corrected_solutions}/{problem.num_solutions}
-                    </>
-                  )}
+                  <Typography variant="body1" component="div">
+                    {problem.num_corrected_solutions === problem.num_solutions
+                      ? `Opravené (${problem.num_solutions})`
+                      : `${problem.num_corrected_solutions}/${problem.num_solutions}`}
+                  </Typography>
                 </Grid>
                 <Grid xs={4} textAlign="center">
                   {problem.solution_pdf ? (
