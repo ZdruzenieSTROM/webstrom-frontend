@@ -159,7 +159,8 @@ export const Marquee: FC<MarqueeProps> = ({
             width: '100%',
             cursor: onClick ? 'pointer' : 'default',
 
-            '--duration': `${duration}s`,
+            // `toFixed` fixes a weird bug with `duration` infinitely changing on pause
+            '--duration': `${duration.toFixed(4)}s`,
             '--delay': `${delay}s`,
             '--direction': direction === 'left' ? 'normal' : 'reverse',
             '--margin-right': `${marqueeWidth < containerWidth ? containerWidth - marqueeWidth : 0}px`,
