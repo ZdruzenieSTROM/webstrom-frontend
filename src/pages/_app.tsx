@@ -12,6 +12,7 @@ import {AlertBox} from '@/components/Alert/AlertBox'
 import {theme} from '@/theme'
 import {AlertContainer} from '@/utils/AlertContainer'
 import {AuthContainer} from '@/utils/AuthContainer'
+import {BannerAnimationContainer} from '@/utils/BannerAnimationProvider'
 import {useAlert} from '@/utils/useAlert'
 
 const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
@@ -91,11 +92,13 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
           <ReactQueryDevtools />
           <CookiesProvider>
             <AuthContainer.Provider>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <AlertBox />
-                <Component {...pageProps} />
-              </ThemeProvider>
+              <BannerAnimationContainer.Provider>
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  <AlertBox />
+                  <Component {...pageProps} />
+                </ThemeProvider>
+              </BannerAnimationContainer.Provider>
             </AuthContainer.Provider>
           </CookiesProvider>
         </ReactQueryProvider>

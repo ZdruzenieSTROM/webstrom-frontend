@@ -1,23 +1,5 @@
-import {Box} from '@mui/material'
+import {Box, Stack, SxProps, Theme} from '@mui/material'
 import {FC, useEffect, useRef, useState} from 'react'
-
-const marqueeSx = {
-  display: 'flex',
-  flexDirection: 'row',
-  marginRight: 'var(--margin-right)',
-  animation: 'scroll var(--duration) linear var(--delay) infinite',
-  animationPlayState: 'var(--play)',
-  animationDelay: 'var(--delay)',
-  animationDirection: 'var(--direction)',
-  '@keyframes scroll': {
-    '0%': {
-      transform: 'translateX(0)',
-    },
-    '100%': {
-      transform: 'translateX(calc(-100% - var(--margin-right)))',
-    },
-  },
-}
 
 interface MarqueeProps {
   /**
@@ -39,11 +21,11 @@ interface MarqueeProps {
    */
   pauseOnHover?: boolean
   /**
-   * Whether to pause the marquee when clicked
+   * Whether to pause the marquee when clicked and held
    * Type: boolean
    * Default: false
    */
-  pauseOnClick?: boolean
+  pauseOnHold?: boolean
   /**
    * The direction the marquee is sliding
    * Type: "left" or "right"
@@ -86,6 +68,8 @@ interface MarqueeProps {
    * Default: null
    */
   children?: React.ReactNode
+  sx?: SxProps<Theme>
+  onClick?: () => void
 }
 
 // tento komponent je z https://github.com/justin-chu/react-fast-marquee/blob/master/src/components/Marquee.tsx
@@ -93,7 +77,7 @@ interface MarqueeProps {
 export const Marquee: FC<MarqueeProps> = ({
   play = true,
   pauseOnHover = false,
-  pauseOnClick = false,
+  pauseOnHold = false,
   direction = 'left',
   speed = 20,
   delay = 0,
@@ -101,6 +85,8 @@ export const Marquee: FC<MarqueeProps> = ({
   gradientColor = [255, 255, 255],
   gradientWidth = 200,
   children,
+  sx,
+  onClick,
 }) => {
   /* React Hooks */
   const [containerWidth, setContainerWidth] = useState(0)
@@ -133,42 +119,57 @@ export const Marquee: FC<MarqueeProps> = ({
   const rgbaGradientColor = `rgba(${gradientColor[0]}, ${gradientColor[1]}, ${gradientColor[2]}`
 
   const element = (
-    <Box
+    <Stack
       ref={marqueeRef}
+      direction="row"
       sx={{
-        ...marqueeSx,
-        '--play': play ? 'running' : 'paused',
-        '--direction': direction === 'left' ? 'normal' : 'reverse',
-        '--duration': `${duration}s`,
-        '--delay': `${delay}s`,
-        '--margin-right': `${marqueeWidth < containerWidth ? containerWidth - marqueeWidth : 0}px`,
+        '@keyframes scroll': {
+          '0%': {
+            transform: 'translateX(0)',
+          },
+          '100%': {
+            transform: 'translateX(calc(-100% - var(--margin-right)))',
+          },
+        },
+
+        // `animation` has to be defined first, next properties adjust its state
+        animation: 'scroll var(--duration) linear var(--delay) infinite',
+        animationDelay: 'var(--delay)',
+        animationDirection: 'var(--direction)',
+        marginRight: 'var(--margin-right)',
+
+        animationPlayState: 'var(--play)',
       }}
     >
       {children}
-    </Box>
+    </Stack>
   )
 
   return (
     <>
       {!isMounted ? null : (
-        <Box
+        <Stack
           ref={containerRef}
+          direction="row"
+          onClick={onClick}
           sx={{
-            overflowX: 'hidden !important',
-            display: 'flex !important',
-            flexDirection: 'row !important',
+            overflowX: 'hidden',
             position: 'relative',
             height: '100%',
             width: '100%',
-            animationPlayState: 'running',
-            '&:hover div': {
-              animationPlayState: 'var(--pause-on-hover)',
-            },
-            '&:active div': {
-              animationPlayState: 'var(--pause-on-click)',
-            },
-            '--pause-on-hover': pauseOnHover ? 'paused' : 'running',
-            '--pause-on-click': pauseOnClick ? 'paused' : 'running',
+            cursor: onClick ? 'pointer' : 'default',
+
+            // `toFixed` fixes a weird bug with `duration` infinitely changing on pause
+            '--duration': `${duration.toFixed(4)}s`,
+            '--delay': `${delay}s`,
+            '--direction': direction === 'left' ? 'normal' : 'reverse',
+            '--margin-right': `${marqueeWidth < containerWidth ? containerWidth - marqueeWidth : 0}px`,
+
+            '--play': play ? 'running' : 'paused',
+            '&:hover': pauseOnHover ? {'--play': 'paused'} : {},
+            '&:active': pauseOnHold ? {'--play': 'paused'} : {},
+
+            ...sx,
           }}
         >
           {gradient && (
@@ -180,7 +181,7 @@ export const Marquee: FC<MarqueeProps> = ({
 
                 '&::before, &::after': {
                   background: 'linear-gradient(to right, var(--gradient-color))',
-                  content: '',
+                  content: '""',
                   height: '100%',
                   position: 'absolute',
                   width: 'var(--gradient-width)',
@@ -205,7 +206,7 @@ export const Marquee: FC<MarqueeProps> = ({
           )}
           {element}
           {element}
-        </Box>
+        </Stack>
       )}
     </>
   )
