@@ -200,6 +200,37 @@ const _theme = createTheme({
     },
   },
   components: {
+    // default: https://github.com/mui/material-ui/blob/68e3b40bc5d21a446e48a5ab651f713ea6337a52/packages/mui-material/src/CssBaseline/CssBaseline.js#L56
+    MuiCssBaseline: {
+      styleOverrides: {
+        /* stuff from Josh Comeau's global CSS reset: https://www.joshwcomeau.com/css/custom-css-reset/ */
+        // 3. Allow percentage-based heights in the application
+        'html,body': {
+          height: '100%',
+        },
+        // 6. Improve media defaults
+        'img,picture,video,canvas,svg': {
+          display: 'block',
+          maxWidth: '100%',
+        },
+        // 7. Remove built-in form typography styles
+        'input,button,textarea,select': {
+          font: 'inherit',
+        },
+        // 8. Avoid text overflows
+        'p,h1,h2,h3,h4,h5,h6': {
+          overflowWrap: 'break-word',
+        },
+        // 9. Create a root stacking context
+        '#root,#__next': {
+          isolation: 'isolate',
+        },
+        /* our stuff */
+        a: {
+          textDecoration: 'none',
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {

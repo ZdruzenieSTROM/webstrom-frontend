@@ -52,7 +52,10 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
                   py: {xs: 4, md: 8, lg: 12},
                   px: 2,
                   ...sx,
-                  '> :first-child': {mt: 0, pt: 0},
+                  // v server-renderi bol v consoli warning, ale first-child je tu asi uplne v pohode selector :D
+                  // https://github.com/emotion-js/emotion/issues/1105#issuecomment-557726922
+                  '> :first-child /* emotion-disable-server-rendering-unsafe-selector-warning-please-do-not-use-this-the-warning-exists-for-a-reason */':
+                    {mt: 0, pt: 0},
                 }}
               >
                 {children}
