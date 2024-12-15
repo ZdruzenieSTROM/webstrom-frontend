@@ -11,6 +11,7 @@ import {formatDateTime} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
+import {ProblemEdit} from '../Admin/resources/competition/problems/ProblemEdit'
 import {Loading} from '../Loading/Loading'
 import {PublicationUploader} from '../PublicationUploader/PublicationUploader'
 import {Result} from '../Results/ResultsRow'
@@ -150,17 +151,33 @@ export const SemesterAdministration: FC = () => {
               <b>Termín série:</b> {formatDateTime(series.deadline)}
             </Typography>
           </Stack>
-          <Grid container spacing={2} xs={12} md={6}>
+          <Grid container spacing={2} xs={12} md={9}>
             {series?.problems.map((problem) => {
               return (
                 <Fragment key={problem.id}>
-                  <Grid xs={6}>
+                  <Grid xs={4}>
                     <Link key={problem.id} variant="button2" href={`/${seminar}/admin/opravit-ulohu/${problem.id}`}>
                       {problem.order}. úloha
                     </Link>
                   </Grid>
-                  <Grid xs={3}>(0/0)</Grid>
-                  <Grid xs={3}>x</Grid>
+                  <Grid xs={4} textAlign="center">
+                    {problem.num_corrected_solutions === problem.num_solutions ? (
+                      <>{`Opravené (${problem.num_solutions})`}</>
+                    ) : (
+                      <>
+                        {problem.num_corrected_solutions}/{problem.num_solutions}
+                      </>
+                    )}
+                  </Grid>
+                  <Grid xs={4} textAlign="center">
+                    {problem.solution_pdf ? (
+                      <Link key={problem.id} variant="button2" href={problem.solution_pdf}>
+                        Vzorák
+                      </Link>
+                    ) : (
+                      <>{'chýba vzorák'}</>
+                    )}
+                  </Grid>
                 </Fragment>
               )
             })}

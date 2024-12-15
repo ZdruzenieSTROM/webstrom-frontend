@@ -72,6 +72,7 @@ export interface Problem {
   order: number
   image?: any | null
   series?: any
+  solution_pdf?: string
 }
 
 export interface Comment {
