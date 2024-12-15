@@ -1,7 +1,8 @@
 import {Stack, Typography} from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
-import {FC, useState} from 'react'
+import {FC, Fragment, useState} from 'react'
 
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
@@ -149,13 +150,35 @@ export const SemesterAdministration: FC = () => {
               <b>Termín série:</b> {formatDateTime(series.deadline)}
             </Typography>
           </Stack>
-          <Stack px={2} direction="row" justifyContent="space-between">
+          <Grid container spacing={2} xs={12} md={9}>
             {series?.problems.map((problem) => (
-              <Link key={problem.id} variant="button2" href={`/${seminar}/admin/opravit-ulohu/${problem.id}`}>
-                {problem.order}. úloha
-              </Link>
+              <Fragment key={problem.id}>
+                <Grid xs={4}>
+                  <Link key={problem.id} variant="button2" href={`/${seminar}/admin/opravit-ulohu/${problem.id}`}>
+                    {problem.order}. úloha
+                  </Link>
+                </Grid>
+                <Grid xs={4} textAlign="center">
+                  {problem.num_corrected_solutions === problem.num_solutions ? (
+                    <>{`Opravené (${problem.num_solutions})`}</>
+                  ) : (
+                    <>
+                      {problem.num_corrected_solutions}/{problem.num_solutions}
+                    </>
+                  )}
+                </Grid>
+                <Grid xs={4} textAlign="center">
+                  {problem.solution_pdf ? (
+                    <Link key={problem.id} variant="button2" href={problem.solution_pdf}>
+                      Vzorák
+                    </Link>
+                  ) : (
+                    <>{'chýba vzorák'}</>
+                  )}
+                </Grid>
+              </Fragment>
             ))}
-          </Stack>
+          </Grid>
         </Stack>
       ))}
 
