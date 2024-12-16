@@ -1,6 +1,8 @@
-import axios, {isAxiosError} from 'axios'
+import {isAxiosError} from 'axios'
 import {stringify} from 'querystring'
 import {DataProvider, FilterPayload, /* PaginationPayload, */ SortPayload} from 'react-admin'
+
+import {apiAxios} from '@/api/apiAxios'
 
 const getFilterQuery = ({q, ...otherSearchParams}: FilterPayload) => ({
   ...otherSearchParams,
@@ -34,8 +36,6 @@ const parseError = (error: unknown) => {
   return 'Nastala neznáma chyba'
 }
 
-const apiUrl = '/api'
-
 // skopirovane a dost upravene z https://github.com/bmihelac/ra-data-django-rest-framework/blob/master/src/index.ts
 export const dataProvider: DataProvider = {
   getList: async (resource, {filter, sort, pagination}) => {
@@ -48,7 +48,8 @@ export const dataProvider: DataProvider = {
     const stringifiedQuery = stringify(query)
 
     try {
-      const {data} = await axios.get<any[]>(`${apiUrl}/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const {data} = await apiAxios.get<any[]>(`/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`)
 
       // client-side pagination
       let pagedData = data
@@ -67,7 +68,7 @@ export const dataProvider: DataProvider = {
   },
   getOne: async (resource, params) => {
     try {
-      const {data} = await axios.get(`${apiUrl}/${resource}/${params.id}`)
+      const {data} = await apiAxios.get(`/${resource}/${params.id}`)
       return {data}
     } catch (e) {
       throw new Error(parseError(e))
@@ -75,7 +76,7 @@ export const dataProvider: DataProvider = {
   },
   getMany: async (resource, params) => {
     try {
-      const data = await Promise.all(params.ids.map((id) => axios.get(`${apiUrl}/${resource}/${id}`)))
+      const data = await Promise.all(params.ids.map((id) => apiAxios.get(`/${resource}/${id}`)))
       return {data: data.map(({data}) => data)}
     } catch (e) {
       throw new Error(parseError(e))
@@ -88,7 +89,7 @@ export const dataProvider: DataProvider = {
     }
 
     try {
-      const {data} = await axios.get(`${apiUrl}/${resource}/?${stringify(query)}`)
+      const {data} = await apiAxios.get(`/${resource}/?${stringify(query)}`)
       return {
         data: data,
         total: data.length,
@@ -105,7 +106,7 @@ export const dataProvider: DataProvider = {
     const body = formData ?? input
 
     try {
-      const {data} = await axios.patch(`${apiUrl}/${resource}/${id}`, body)
+      const {data} = await apiAxios.patch(`/${resource}/${id}`, body)
       return {data}
     } catch (e) {
       throw new Error(parseError(e))
@@ -113,7 +114,7 @@ export const dataProvider: DataProvider = {
   },
   updateMany: async (resource, params) => {
     try {
-      const data = await Promise.all(params.ids.map((id) => axios.patch(`${apiUrl}/${resource}/${id}`, params.data)))
+      const data = await Promise.all(params.ids.map((id) => apiAxios.patch(`/${resource}/${id}`, params.data)))
       return {data: data.map(({data}) => data)}
     } catch (e) {
       throw new Error(parseError(e))
@@ -125,7 +126,7 @@ export const dataProvider: DataProvider = {
     const body = formData ?? input
 
     try {
-      const {data} = await axios.post(`${apiUrl}/${resource}`, body)
+      const {data} = await apiAxios.post(`/${resource}`, body)
       return {data}
     } catch (e) {
       throw new Error(parseError(e))
@@ -133,7 +134,7 @@ export const dataProvider: DataProvider = {
   },
   delete: async (resource, params) => {
     try {
-      const {data} = await axios.delete(`${apiUrl}/${resource}/${params.id}`)
+      const {data} = await apiAxios.delete(`/${resource}/${params.id}`)
       return {data}
     } catch (e) {
       throw new Error(parseError(e))
@@ -141,7 +142,7 @@ export const dataProvider: DataProvider = {
   },
   deleteMany: async (resource, params) => {
     try {
-      const data = await Promise.all(params.ids.map((id) => axios.delete(`${apiUrl}/${resource}/${id}`)))
+      const data = await Promise.all(params.ids.map((id) => apiAxios.delete(`/${resource}/${id}`)))
       return {data: data.map(({data}) => data.id)}
     } catch (e) {
       throw new Error(parseError(e))

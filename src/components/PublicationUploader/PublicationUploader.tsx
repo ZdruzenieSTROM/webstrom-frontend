@@ -37,7 +37,7 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
         </Link>
       )}
       <FileUploader
-        uploadLink={'/api/competition/publication/'}
+        uploadLink={'/competition/publication/'}
         acceptedFormats={Accept.Pdf}
         adjustFormData={appendFormData}
         refetch={refetch}

@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 
+import {apiAxios} from '@/api/apiAxios'
 import {MyPermissions} from '@/types/api/personal'
 
 import {AuthContainer} from './AuthContainer'
@@ -11,7 +11,7 @@ export const useHasPermissions = () => {
 
   const {data, isLoading: permissionsIsLoading} = useQuery({
     queryKey: ['personal', 'profiles', 'mypermissions'],
-    queryFn: () => axios.get<MyPermissions>('/api/personal/profiles/mypermissions'),
+    queryFn: () => apiAxios.get<MyPermissions>('/personal/profiles/mypermissions'),
     enabled: isAuthed,
   })
 

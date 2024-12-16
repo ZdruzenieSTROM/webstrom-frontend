@@ -4,15 +4,19 @@ services:
       dockerfile: deployment/local-mac/Dockerfile
       context: ../..
       args:
-        - NEXT_PUBLIC_BE_PORT=8000
-        - NEXT_PUBLIC_BE_HOSTNAME=host.docker.internal
+        - BE_PROTOCOL=http
+        - BE_HOSTNAME=host.docker.internal
+        - BE_PORT=8000
+        - BE_PREFIX=
 
     image: webstrom-test-frontend
 
     environment:
       - PORT=3000
-      - NEXT_PUBLIC_BE_PORT=8000
-      - NEXT_PUBLIC_BE_HOSTNAME=host.docker.internal
+      - BE_PROTOCOL=http
+      - BE_HOSTNAME=host.docker.internal
+      - BE_PORT=8000
+      - BE_PREFIX=
 
     ports:
       - '3000:3000'

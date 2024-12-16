@@ -1,9 +1,9 @@
 import {Box, Drawer, Stack, Theme, useMediaQuery} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Link} from '@/components/Clickable/Link'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
@@ -43,7 +43,7 @@ export const MenuMain: FC = () => {
 
   const {data: menuItemsData, isLoading: menuItemsIsLoading} = useQuery({
     queryKey: ['cms', 'menu-item', 'on-site', seminarId, '?menu'],
-    queryFn: () => axios.get<MenuItemShort[]>(`/api/cms/menu-item/on-site/${seminarId}?type=menu`),
+    queryFn: () => apiAxios.get<MenuItemShort[]>(`/cms/menu-item/on-site/${seminarId}?type=menu`),
   })
   const menuItems = menuItemsData?.data ?? []
 

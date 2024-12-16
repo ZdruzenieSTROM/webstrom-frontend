@@ -1,11 +1,12 @@
 import {Visibility, VisibilityOff} from '@mui/icons-material'
 import {IconButton, Stack, Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 import {SubmitHandler, useForm, useFormState} from 'react-hook-form'
 
+import {apiAxios} from '@/api/apiAxios'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {useAlert} from '@/utils/useAlert'
@@ -83,7 +84,7 @@ export const RegisterForm: FC = () => {
 
   const {mutate: submitFormData} = useMutation({
     mutationFn: (data: RegisterFormValues) => {
-      return axios.post<IGeneralPostResponse>(`/api/user/registration?seminar=${seminar}`, transformFormData(data))
+      return apiAxios.post<IGeneralPostResponse>(`/user/registration?seminar=${seminar}`, transformFormData(data))
     },
     // TODO: show alert/toast and redirect to homepage instead of redirect to info page
     onSuccess: () =>
