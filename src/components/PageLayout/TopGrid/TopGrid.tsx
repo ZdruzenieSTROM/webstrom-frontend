@@ -1,7 +1,8 @@
 import {Stack, Typography} from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 import {useRouter} from 'next/router'
-import {FC, useMemo} from 'react'
+import {FC, RefObject, useMemo, useRef} from 'react'
+import {useResizeObserver} from 'usehooks-ts'
 
 import {Link} from '@/components/Clickable/Link'
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
@@ -9,6 +10,7 @@ import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Banner} from '../Banner/Banner'
+import {HeaderHeightContainer} from '../Header/HeaderHeightContainer'
 import {MenuMain} from '../MenuMain/MenuMain'
 
 type SeminarButtonsProps = {
@@ -60,8 +62,18 @@ export const TopGrid: FC = () => {
 
   const {pageTitle} = PageTitleContainer.useContainer()
 
+  const headerRef = useRef<HTMLDivElement>(null)
+  const {setHeight} = HeaderHeightContainer.useContainer()
+
+  useResizeObserver({
+    // React 19 changed the type of ref to optional, lib is not ready: https://github.com/juliencrn/usehooks-ts/issues/602
+    ref: headerRef as RefObject<HTMLDivElement>,
+    box: 'border-box',
+    onResize: ({height}) => setHeight(height ?? 0),
+  })
+
   return (
-    <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: 'white', zIndex: 3}}>
+    <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: 'white', zIndex: 3}} ref={headerRef}>
       <Grid container disableEqualOverflow spacing={1} p={3}>
         {/* first row */}
         <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}}>
