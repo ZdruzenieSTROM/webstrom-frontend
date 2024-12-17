@@ -24,6 +24,9 @@ export const newApiAxios = (base: 'server' | 'client') => {
 
       debugServer('[SERVER API]', method?.toUpperCase(), url && baseURL ? new URL(url, baseURL).href : url)
 
+      config.headers['X-Forwarded-Host'] = 'test.strom.sk'
+      config.headers['X-Forwarded-Proto'] = 'https'
+
       return config
     })
   }
