@@ -1,5 +1,5 @@
 import {Stack} from '@mui/material'
-import {useMutation, useQuery} from '@tanstack/react-query'
+import {useMutation} from '@tanstack/react-query'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
@@ -8,8 +8,7 @@ import {apiAxios} from '@/api/apiAxios'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {SelectOption} from '@/components/FormItems/FormSelect/FormSelect'
 import {IGeneralPostResponse} from '@/types/api/general'
-import {Profile} from '@/types/api/personal'
-import {AuthContainer} from '@/utils/AuthContainer'
+import {useProfile} from '@/utils/useProfile'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Button'
@@ -35,14 +34,8 @@ const defaultValues: ProfileFormValues = {
 }
 
 export const ProfileForm: FC = () => {
-  const {isAuthed} = AuthContainer.useContainer()
+  const {profile} = useProfile()
 
-  const {data} = useQuery({
-    queryKey: ['personal', 'profiles', 'myprofile'],
-    queryFn: () => apiAxios.get<Profile>(`/personal/profiles/myprofile`),
-    enabled: isAuthed,
-  })
-  const profile = data?.data
   const profileValues: ProfileFormValues = {
     first_name: profile?.first_name,
     last_name: profile?.last_name,
