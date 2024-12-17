@@ -13,7 +13,8 @@ export function middleware(req: NextRequest) {
   // odstran trailing slash - default next.js spravanie, ale vypli sme ho v next.config.ts pomocou
   // `skipTrailingSlashRedirect: true`, aby sme dovolili (a v axiose a middlewari vyssie aj forcli)
   // trailing slash pre BE Django
-  if (url.pathname.endsWith('/')) {
+  // pre root route `/` to nemozeme spravit (infinite redirect) ¯\_(ツ)_/¯
+  if (url.pathname.endsWith('/') && url.pathname !== '/') {
     const newPathname = url.pathname.slice(0, -1)
     const newUrl = new URL(`${newPathname}${url.search}`, url)
 
