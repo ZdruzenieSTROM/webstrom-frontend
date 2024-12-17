@@ -62,14 +62,10 @@ const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
                   }
 
                   // TODO: handle field errors (napr. na password) - nealertovat usera, ale zobrazit v UI? alebo alert s prvym field errorom
-
-                  // ak nie, ukazeme kludne original anglicku hlasku z `error`u
-                  alert(error.message)
-                  return
                 }
-              } else {
-                alert(error.message)
               }
+
+              alert(error.message)
             },
           },
         },
