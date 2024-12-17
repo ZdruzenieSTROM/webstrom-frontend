@@ -1,10 +1,10 @@
 import {Stack, Typography} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 import {useInterval} from 'usehooks-ts'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {SeriesWithProblems} from '@/types/api/competition'
@@ -30,7 +30,7 @@ export const Problems: FC = () => {
 
   const {data} = useQuery({
     queryKey: ['personal', 'profiles', 'myprofile'],
-    queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
+    queryFn: () => apiAxios.get<Profile>(`/personal/profiles/myprofile`),
     enabled: isAuthed,
   })
   const profile = data?.data
@@ -47,13 +47,13 @@ export const Problems: FC = () => {
 
   const {data: seriesData, isLoading: seriesIsLoading} = useQuery({
     queryKey: ['competition', 'series', id.seriesId],
-    queryFn: () => axios.get<SeriesWithProblems>(`/api/competition/series/${id.seriesId}`),
+    queryFn: () => apiAxios.get<SeriesWithProblems>(`/competition/series/${id.seriesId}`),
     enabled: id.seriesId !== -1,
   })
 
   const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
     queryKey: ['cms', 'info-banner', 'series-problems', id.seriesId],
-    queryFn: () => axios.get<string[]>(`/api/cms/info-banner/series-problems/${id.seriesId}`),
+    queryFn: () => apiAxios.get<string[]>(`/cms/info-banner/series-problems/${id.seriesId}`),
     enabled: id.seriesId !== -1,
   })
 
@@ -87,7 +87,7 @@ export const Problems: FC = () => {
   }, [setBannerMessages, isBannerLoading, bannerMessages])
 
   const {mutate: registerToSemester} = useMutation({
-    mutationFn: (id: number) => axios.post(`/api/competition/event/${id}/register`),
+    mutationFn: (id: number) => apiAxios.post(`/competition/event/${id}/register`),
     onSuccess: () => {
       // refetch semestra, nech sa aktualizuje is_registered
       invalidateSeriesQuery()

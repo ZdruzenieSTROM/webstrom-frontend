@@ -1,9 +1,9 @@
 import {Stack} from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 import {FC} from 'react'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Link} from '@/components/Clickable/Link'
 import {Loading} from '@/components/Loading/Loading'
 import {ILogo, Logo} from '@/components/PageLayout/Footer/Logo'
@@ -19,7 +19,7 @@ export const Footer: FC = () => {
     error: menuItemsError,
   } = useQuery({
     queryKey: ['cms', 'menu-item', 'on-site', seminarId, '?footer'],
-    queryFn: () => axios.get<MenuItemShort[]>(`/api/cms/menu-item/on-site/${seminarId}?type=footer`),
+    queryFn: () => apiAxios.get<MenuItemShort[]>(`/cms/menu-item/on-site/${seminarId}?type=footer`),
   })
   const menuItems = menuItemsData?.data ?? []
 
@@ -29,7 +29,7 @@ export const Footer: FC = () => {
     error: logosError,
   } = useQuery({
     queryKey: ['cms', 'logo'],
-    queryFn: () => axios.get<ILogo[]>('/api/cms/logo'),
+    queryFn: () => apiAxios.get<ILogo[]>('/cms/logo'),
   })
   const logos = logosData?.data.filter((logo) => !logo.disabled) ?? []
 

@@ -1,9 +1,9 @@
 import {Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
-import axios from 'axios'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
+import {apiAxios} from '@/api/apiAxios'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Accept} from '@/utils/dropzone-accept'
 import {niceBytes} from '@/utils/niceBytes'
@@ -33,13 +33,14 @@ export const UploadProblemForm: FC<{
   const {alert} = useAlert()
 
   const {mutate: uploadSolution} = useMutation({
-    mutationFn: (formData: FormData) => axios.post(`/api/competition/problem/${problemId}/upload-solution`, formData),
+    mutationFn: (formData: FormData) => apiAxios.post(`/competition/problem/${problemId}/upload-solution`, formData),
     onSuccess: (response) => {
       if (response.status === 201) {
         // refetch serie, nech sa aktualizuje problem.submitted
         invalidateSeriesQuery()
         alert('Riešenie úspešne nahrané.')
       } else {
+        // eslint-disable-next-line no-console
         console.warn(response)
         alert(
           'Niečo sa ASI pokazilo, skontroluj, či bolo riešenie nahrané, a ak si technický typ, môžeš pozrieť chybu v konzole.',

@@ -9,12 +9,14 @@ Treba mat samozrejme Docker a docker-compose atd.
 
 ## Urobene zmeny oproti compose-test
 
+TODO: Docker Desktop 4.34 priniesol [host networking](https://docs.docker.com/engine/network/drivers/host/#docker-desktop), treba revisitnut
+
 Ked som chcel pustit Docker na macu, musel som urobil nasledujuce zmeny (poradilo ChatGPT):
 
 ### `compose.yml`
 
 - zmenil som aj meno suboru (lebo nebuildime "test" environment a.k.a test.strom.sk)
-- vymena `network_mode: host` za `ports: - '3000:3000'` - network_mode vraj na macu nefunguje
+- vymena `network_mode: host` za explicitne `ports: - '3000:3000'` - network_mode vraj na macu nefunguje
 - pridanie `- NEXT_PUBLIC_BE_HOSTNAME=host.docker.internal` - aby sa to vedelo pripojit na lokalny BE - Docker pouziva takyto hostname pre host machine localhost
 - zmenil som porty na 3000/8000 ako standardne pouzivame pre development
 - `dockerfile` a `context` cesty podla file struktury novych suborov

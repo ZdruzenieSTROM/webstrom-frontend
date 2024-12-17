@@ -1,8 +1,8 @@
 import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 import {FC} from 'react'
 
+import {apiAxios} from '@/api/apiAxios'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Loading} from '../Loading/Loading'
@@ -15,7 +15,7 @@ export const Posts: FC = () => {
     error: postsError,
   } = useQuery({
     queryKey: ['cms', 'post', 'visible'],
-    queryFn: () => axios.get<IPost[]>(`/api/cms/post/visible?sites=${seminarId}`),
+    queryFn: () => apiAxios.get<IPost[]>(`/cms/post/visible?sites=${seminarId}`),
   })
   const posts = postsData?.data ?? []
 

@@ -19,7 +19,7 @@ export const useAuthProvider = () => {
       await testAuthRequest()
     },
     checkError: async (error) => {
-      // rovnaky handling ako v `responseIntercepto`r v `AuthContainer`
+      // rovnaky handling ako v `responseInterceptor` v `AuthContainer`
       const status = error.response?.status
 
       if (status === 403) {

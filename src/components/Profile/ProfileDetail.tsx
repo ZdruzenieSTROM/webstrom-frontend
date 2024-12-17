@@ -1,8 +1,8 @@
 import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 import {FC, useState} from 'react'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {Profile} from '@/types/api/personal'
@@ -41,7 +41,7 @@ export const ProfileDetail: FC = () => {
 
   const {data} = useQuery({
     queryKey: ['personal', 'profiles', 'myprofile'],
-    queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
+    queryFn: () => apiAxios.get<Profile>(`/personal/profiles/myprofile`),
     enabled: isAuthed,
   })
   const profile = data?.data

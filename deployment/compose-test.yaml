@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   webstrom-frontend:
@@ -6,13 +6,19 @@ services:
       dockerfile: deployment/Dockerfile
       context: ..
       args:
-        - NEXT_PUBLIC_BE_PORT=8920
+        - BE_PROTOCOL=http
+        - BE_HOSTNAME=localhost
+        - BE_PORT=8920
+        - BE_PREFIX=/api
 
     image: webstrom-test-frontend
 
     environment:
       - PORT=8922
-      - NEXT_PUBLIC_BE_PORT=8920
+      - BE_PROTOCOL=http
+      - BE_HOSTNAME=localhost
+      - BE_PORT=8920
+      - BE_PREFIX=/api
 
     network_mode: host
 

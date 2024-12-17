@@ -1,9 +1,9 @@
 import {Stack} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
-import axios from 'axios'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
@@ -27,7 +27,7 @@ export const PasswordResetRequestForm: FC<PasswordResetRequestFormmProps> = ({cl
 
   const {mutate: submitFormData} = useMutation({
     mutationFn: (data: PasswordResetRequestFormValues) => {
-      return axios.post<IGeneralPostResponse>('/api/user/password/reset', data)
+      return apiAxios.post<IGeneralPostResponse>('/user/password/reset', data)
     },
 
     onSuccess: () => {
