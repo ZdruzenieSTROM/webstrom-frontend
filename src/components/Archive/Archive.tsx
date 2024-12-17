@@ -1,8 +1,8 @@
 import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 import {FC} from 'react'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Event, Publication} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -60,7 +60,7 @@ export const Archive: FC = () => {
 
   const {data: eventListData, isLoading: eventListIsLoading} = useQuery({
     queryKey: ['competition', 'event', `competition=${seminarId}`],
-    queryFn: () => axios.get<MyEvent[]>(`/api/competition/event/?competition=${seminarId}`),
+    queryFn: () => apiAxios.get<MyEvent[]>(`/competition/event/?competition=${seminarId}`),
   })
   const eventList = eventListData?.data ?? []
 

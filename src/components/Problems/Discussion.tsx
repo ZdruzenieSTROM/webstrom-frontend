@@ -1,8 +1,8 @@
 import {Stack, Typography} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import axios from 'axios'
 import {FC, useState} from 'react'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Comment, CommentState} from '@/types/api/competition'
 import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
@@ -28,7 +28,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   const queryKey = ['competition', 'problem', problemId, 'comments']
   const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
     queryKey,
-    queryFn: () => axios.get<Comment[]>(`/api/competition/problem/${problemId}/comments`),
+    queryFn: () => apiAxios.get<Comment[]>(`/competition/problem/${problemId}/comments`),
   })
   const comments = commentsData?.data
 
@@ -38,7 +38,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
 
   const {data} = useQuery({
     queryKey: ['personal', 'profiles', 'myprofile'],
-    queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
+    queryFn: () => apiAxios.get<Profile>(`/personal/profiles/myprofile`),
     enabled: isAuthed,
   })
   const userId = data?.data.id
@@ -54,7 +54,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   }
 
   const {mutate: addComment} = useMutation({
-    mutationFn: () => axios.post(`/api/competition/problem/${problemId}/add-comment`, {text: commentText}),
+    mutationFn: () => apiAxios.post(`/competition/problem/${problemId}/add-comment`, {text: commentText}),
     onSuccess: () => {
       setCommentText('')
       invalidateCommentsAndCount()
@@ -62,7 +62,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   })
 
   const {mutate: publishComment} = useMutation({
-    mutationFn: (id: number) => axios.post(`/api/competition/comment/${id}/publish`),
+    mutationFn: (id: number) => apiAxios.post(`/competition/comment/${id}/publish`),
     onSuccess: () => {
       invalidateCommentsAndCount()
     },
@@ -70,7 +70,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
 
   const {mutate: hideComment} = useMutation({
     mutationFn: ({id, hiddenResponseText}: {id: number; hiddenResponseText: string}) =>
-      axios.post(`/api/competition/comment/${id}/hide`, {hidden_response: hiddenResponseText}),
+      apiAxios.post(`/competition/comment/${id}/hide`, {hidden_response: hiddenResponseText}),
     onSuccess: () => {
       invalidateCommentsAndCount()
       sethiddenResponseDialogId(-1)
@@ -79,7 +79,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   })
 
   const {mutate: confirmDeleteComment} = useMutation({
-    mutationFn: (id: number) => axios.delete(`/api/competition/comment/${id}`),
+    mutationFn: (id: number) => apiAxios.delete(`/competition/comment/${id}`),
     onSuccess: () => {
       invalidateCommentsAndCount()
     },

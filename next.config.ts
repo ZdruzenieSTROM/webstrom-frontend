@@ -1,25 +1,12 @@
 import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
-  // docs: https://nextjs.org/docs/api-reference/next.config.js/rewrites
-  async rewrites() {
-    return [
-      // rewrite API requestov na django BE (podstatne aj koncove lomitko)
-      {
-        source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_BE_PROTOCOL}://${process.env.NEXT_PUBLIC_BE_HOSTNAME}:${process.env.NEXT_PUBLIC_BE_PORT}/:path*/`,
-      },
-    ]
-  },
   images: {
     remotePatterns: [
       {
-        // TODO: neviem, preco to krici, treba overit, ci funguju obrazky pri ulohach
-        // @ts-ignore
-        protocol: process.env.NEXT_PUBLIC_BE_PROTOCOL,
-        // @ts-ignore
-        hostname: process.env.NEXT_PUBLIC_BE_HOSTNAME,
-        port: process.env.NEXT_PUBLIC_BE_PORT,
+        protocol: process.env.BE_PROTOCOL as 'http' | 'https' | undefined,
+        hostname: process.env.BE_HOSTNAME ?? 'localhost',
+        port: process.env.BE_PORT,
         pathname: '/media/**',
       },
     ],
@@ -51,6 +38,11 @@ const nextConfig: NextConfig = {
 
     return config
   },
+  // typecheck aj eslint pustame v CI pred buildom osobitne, nemusi ich pustat aj next
+  typescript: {ignoreBuildErrors: true},
+  eslint: {ignoreDuringBuilds: true},
+  // https://nextjs.org/docs/app/building-your-application/routing/middleware#advanced-middleware-flags
+  skipTrailingSlashRedirect: true,
   experimental: {
     turbo: {
       rules: {

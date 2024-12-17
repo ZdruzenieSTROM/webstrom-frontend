@@ -1,9 +1,9 @@
 import {Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 import {useEffect, useRef} from 'react'
 import {Control, UseFormSetValue, UseFormWatch} from 'react-hook-form'
 
+import {apiAxios} from '@/api/apiAxios'
 import {IGrade} from '@/types/api/competition'
 import {ISchool} from '@/types/api/personal'
 
@@ -39,7 +39,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   const {data: gradesData} = useQuery({
     queryKey: ['competition', 'grade'],
-    queryFn: () => axios.get<IGrade[]>(`/api/competition/grade`),
+    queryFn: () => apiAxios.get<IGrade[]>(`/competition/grade`),
   })
   const grades = gradesData?.data ?? []
   const gradeItems: SelectOption[] = grades.map(({id, name}) => ({id, label: name}))
@@ -47,7 +47,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   // načítanie škôl z BE, ktorými vyplníme FormAutocomplete so školami
   const {data: schoolsData} = useQuery({
     queryKey: ['personal', 'schools'],
-    queryFn: () => axios.get<ISchool[]>(`/api/personal/schools`),
+    queryFn: () => apiAxios.get<ISchool[]>(`/personal/schools`),
   })
   const schools = (schoolsData?.data ?? []).sort((a, b) => a.name.localeCompare(b.name))
   const allSchoolItems: SelectOption[] = schools.map(({code, city, name, street}) => ({

@@ -1,8 +1,9 @@
 import {Upload} from '@mui/icons-material'
 import {useMutation} from '@tanstack/react-query'
-import axios from 'axios'
 import {FC, useCallback} from 'react'
 import {Accept, DropzoneOptions, useDropzone} from 'react-dropzone'
+
+import {apiAxios} from '@/api/apiAxios'
 
 interface FileUploaderProps {
   uploadLink: string
@@ -13,7 +14,7 @@ interface FileUploaderProps {
 
 export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats, adjustFormData, refetch}) => {
   const {mutate: fileUpload} = useMutation({
-    mutationFn: (formData: FormData) => axios.post(uploadLink, formData),
+    mutationFn: (formData: FormData) => apiAxios.post(uploadLink, formData),
     onSuccess: () => refetch(),
   })
 

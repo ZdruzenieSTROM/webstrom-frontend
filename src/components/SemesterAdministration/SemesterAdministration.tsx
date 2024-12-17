@@ -1,9 +1,10 @@
 import {Stack, Typography} from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 import {useMutation, useQuery} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 import {FC, Fragment, useState} from 'react'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {SemesterWithProblems, SeriesWithProblems} from '@/types/api/generated/competition'
@@ -40,7 +41,7 @@ export const SemesterAdministration: FC = () => {
     refetch,
   } = useQuery({
     queryKey: ['competition', 'semester', semesterId],
-    queryFn: () => axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
+    queryFn: () => apiAxios.get<SemesterWithProblems>(`/competition/semester/${semesterId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
     enabled: semesterId !== undefined,
   })
@@ -50,8 +51,8 @@ export const SemesterAdministration: FC = () => {
 
   const getResults = async (seriesId: number | null) => {
     const isSemester = seriesId === null
-    const {data} = await axios.get<Result[]>(
-      isSemester ? `/api/competition/semester/${semesterId}/results` : `/api/competition/series/${seriesId}/results`,
+    const {data} = await apiAxios.get<Result[]>(
+      isSemester ? `/competition/semester/${semesterId}/results` : `/competition/series/${seriesId}/results`,
     )
     setTextareaContent(
       data
@@ -79,8 +80,8 @@ export const SemesterAdministration: FC = () => {
   }
 
   const getPostalCards = async (offline_only: boolean) => {
-    const {data} = await axios.get<PostalCard[]>(
-      `/api/competition/semester/${semesterId}/${offline_only ? 'offline-schools' : 'schools'}`,
+    const {data} = await apiAxios.get<PostalCard[]>(
+      `/competition/semester/${semesterId}/${offline_only ? 'offline-schools' : 'schools'}`,
     )
     setTextareaContent(
       data
@@ -92,7 +93,7 @@ export const SemesterAdministration: FC = () => {
   const [seriesFreezeErrors, setSeriesFreezeErrors] = useState<Map<number, string>>()
 
   const {mutate: freezeSeries} = useMutation({
-    mutationFn: (series: SeriesWithProblems) => axios.post(`/api/competition/series/${series.id}/results/freeze`),
+    mutationFn: (series: SeriesWithProblems) => apiAxios.post(`/competition/series/${series.id}/results/freeze`),
     onSuccess: (_, variables: SeriesWithProblems) => {
       setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, ''))
       refetch()

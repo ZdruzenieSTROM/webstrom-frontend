@@ -1,10 +1,10 @@
 import {Stack} from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
+import {apiAxios} from '@/api/apiAxios'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {SelectOption} from '@/components/FormItems/FormSelect/FormSelect'
 import {IGeneralPostResponse} from '@/types/api/general'
@@ -39,7 +39,7 @@ export const ProfileForm: FC = () => {
 
   const {data} = useQuery({
     queryKey: ['personal', 'profiles', 'myprofile'],
-    queryFn: () => axios.get<Profile>(`/api/personal/profiles/myprofile`),
+    queryFn: () => apiAxios.get<Profile>(`/personal/profiles/myprofile`),
     enabled: isAuthed,
   })
   const profile = data?.data
@@ -87,7 +87,7 @@ export const ProfileForm: FC = () => {
 
   const {mutate: submitFormData} = useMutation({
     mutationFn: (data: ProfileFormValues) => {
-      return axios.put<IGeneralPostResponse>(`/api/user/user`, transformFormData(data))
+      return apiAxios.put<IGeneralPostResponse>(`/user/user`, transformFormData(data))
     },
     onSuccess: () => router.push(`/${seminar}/profil`),
   })

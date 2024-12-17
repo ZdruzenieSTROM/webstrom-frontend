@@ -1,8 +1,8 @@
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 import {useRouter} from 'next/router'
 import {useMemo} from 'react'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Semester, SeriesWithProblems} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -12,7 +12,7 @@ export const useDataFromURL = () => {
 
   const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery({
     queryKey: ['competition', 'semester-list', {competition: seminarId}],
-    queryFn: () => axios.get<Semester[]>(`/api/competition/semester-list?competition=${seminarId}`),
+    queryFn: () => apiAxios.get<Semester[]>(`/competition/semester-list?competition=${seminarId}`),
   })
   // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
   const semesterList = useMemo(() => semesterListData?.data || [], [semesterListData])
@@ -21,7 +21,7 @@ export const useDataFromURL = () => {
   // - napr. prideme na `/zadania` cez menu, nie na `/zadania/44/leto/2`
   const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery({
     queryKey: ['competition', 'series', 'current', seminarId],
-    queryFn: () => axios.get<SeriesWithProblems>(`/api/competition/series/current/` + seminarId),
+    queryFn: () => apiAxios.get<SeriesWithProblems>(`/competition/series/current/` + seminarId),
   })
   const currentSeriesId = currentSeriesData?.data.id ?? -1
   const currentSemesterId = currentSeriesData?.data.semester ?? -1

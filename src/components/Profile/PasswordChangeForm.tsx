@@ -1,10 +1,11 @@
 import {Visibility, VisibilityOff} from '@mui/icons-material'
 import {IconButton, Stack} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 import {FC, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
+import {apiAxios} from '@/api/apiAxios'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {useAlert} from '@/utils/useAlert'
 
@@ -53,7 +54,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
 
   const {mutate: submitFormData} = useMutation({
     mutationFn: (data: PasswordChangeDialogValues) => {
-      return axios.post<IGeneralPostResponse>(`/api/user/password/change`, data)
+      return apiAxios.post<IGeneralPostResponse>(`/user/password/change`, data)
     },
     onSuccess: onSuccess,
     onError: onError,

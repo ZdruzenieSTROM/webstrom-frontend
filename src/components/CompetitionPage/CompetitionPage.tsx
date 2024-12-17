@@ -1,10 +1,10 @@
 import {Stack, Typography} from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 import {useQuery} from '@tanstack/react-query'
-import axios from 'axios'
 import {useRouter} from 'next/router'
 import {FC, Fragment, useEffect} from 'react'
 
+import {apiAxios} from '@/api/apiAxios'
 import {Link} from '@/components/Clickable/Link'
 import {Competition, Event, PublicationTypes} from '@/types/api/competition'
 import {BannerContainer} from '@/utils/BannerContainer'
@@ -33,7 +33,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
 
   const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
     queryKey: ['cms', 'info-banner', 'competition', id],
-    queryFn: () => axios.get<string[]>(`/api/cms/info-banner/competition/${id}`),
+    queryFn: () => apiAxios.get<string[]>(`/cms/info-banner/competition/${id}`),
     enabled: id !== -1,
   })
 

@@ -1,11 +1,12 @@
 import {FormatAlignJustify, Grading} from '@mui/icons-material'
 import {Stack, Typography} from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
-import axios, {isAxiosError} from 'axios'
+import {isAxiosError} from 'axios'
 import {useRouter} from 'next/router'
 import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
+import {apiAxios} from '@/api/apiAxios'
 import {ProblemWithSolutions, SemesterWithProblems, SolutionAdministration} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzone-accept'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
@@ -44,7 +45,7 @@ export const ProblemAdministration: FC = () => {
     isLoading: problemIsLoading,
   } = useQuery({
     queryKey: ['competition', 'problem-administration', problemId],
-    queryFn: () => axios.get<ProblemWithSolutions>(`/api/competition/problem-administration/${problemId}`),
+    queryFn: () => apiAxios.get<ProblemWithSolutions>(`/competition/problem-administration/${problemId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym problemId
     enabled: problemId !== undefined,
   })
@@ -53,7 +54,7 @@ export const ProblemAdministration: FC = () => {
   const semesterId = problem?.series.semester
   const {data: semesterData, isLoading: semesterIsLoading} = useQuery({
     queryKey: ['competition', 'semester', semesterId],
-    queryFn: () => axios.get<SemesterWithProblems>(`/api/competition/semester/${semesterId}`),
+    queryFn: () => apiAxios.get<SemesterWithProblems>(`/competition/semester/${semesterId}`),
     // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
     enabled: semesterId !== undefined,
   })
@@ -76,11 +77,10 @@ export const ProblemAdministration: FC = () => {
   }, [problem])
 
   const {mutate: uploadPoints} = useMutation({
-    mutationFn: (id: string) => {
-      return axios.post(`/api/competition/problem-administration/${id}/upload-points`, {
+    mutationFn: (id: string) =>
+      apiAxios.post(`/competition/problem-administration/${id}/upload-points`, {
         solution_set: solutions,
-      })
-    },
+      }),
     onSuccess: () => refetchProblem(),
   })
 
@@ -114,7 +114,7 @@ export const ProblemAdministration: FC = () => {
 
   const {mutate: uploadZipFile, error: uploadZipFileError} = useMutation({
     mutationFn: ({data, problemId}: {data: FormData; problemId?: string}) =>
-      axios.post(`/api/competition/problem/${problemId}/upload-corrected`, data),
+      apiAxios.post(`/competition/problem/${problemId}/upload-corrected`, data),
     onSuccess: () => refetchProblem(),
   })
 

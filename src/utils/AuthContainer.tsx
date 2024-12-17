@@ -1,28 +1,26 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 import {useEffect, useState} from 'react'
-import {Cookies} from 'react-cookie'
 import {createContainer} from 'unstated-next'
 
+import {apiAxios, newApiAxios} from '@/api/apiAxios'
 import {Login, Token} from '@/types/api/generated/user'
 import {MyPermissions} from '@/types/api/personal'
 
-// special axios instance to prevent interceptors
-const specialAxios = axios.create()
+// specialna axios instancia bez error handlingu pridaneho do `apiAxios` nizsie
+const specialApiAxios = newApiAxios('client')
 
-export const testAuthRequest = async () => specialAxios.get<MyPermissions>('/api/personal/profiles/mypermissions')
+export const testAuthRequest = async () => specialApiAxios.get<MyPermissions>('/personal/profiles/mypermissions')
 
 // call na lubovolny "auth" endpoint ako test prihlasenia, vracia true/false podla uspesnosti
 export const testAuth = async () => {
   try {
     await testAuthRequest()
     return true
-  } catch (e: unknown) {
+  } catch {
     return false
   }
 }
-
-const cookies = new Cookies()
 
 const useAuth = () => {
   // stav, ktory napoveda, ci mame sessionid cookie a vieme robit auth requesty
@@ -34,18 +32,6 @@ const useAuth = () => {
       const success = await testAuth()
       if (success) setIsAuthed(true)
     })()
-
-    // interceptor pre auth
-    axios.interceptors.request.use((config) => {
-      config.headers = config.headers ?? {}
-      // auth pozostava z comba:
-      // 1. `sessionid` httpOnly cookie ktoru nastavuje aj maze server pri login/logout
-      // 2. tato CSRF hlavicka, ktora ma obsahovat cookie, ktoru nastavuje server
-      config.headers['X-CSRFToken'] = cookies.get('csrftoken')
-
-      return config
-    })
-
     // one-time vec pri prvom nacitani stranky
   }, [])
 
@@ -56,7 +42,7 @@ const useAuth = () => {
   useEffect(() => {
     if (isAuthed) {
       // ked sme authed a dostaneme 403, chceme overit, ci nam vyprsalo prihlasenie - ak hej, chceme odhlasit usera, nech vie, co sa deje
-      const responseInterceptor = axios.interceptors.response.use(
+      const responseInterceptor = apiAxios.interceptors.response.use(
         (response) => response,
         async (error: AxiosError) => {
           const status = error.response?.status
@@ -81,13 +67,13 @@ const useAuth = () => {
 
       // useEffect unmount callback
       return () => {
-        axios.interceptors.response.eject(responseInterceptor)
+        apiAxios.interceptors.response.eject(responseInterceptor)
       }
     }
   }, [isAuthed])
 
   const {mutate: login, mutateAsync: loginAsync} = useMutation({
-    mutationFn: ({data}: {data: Login; onSuccess?: () => void}) => axios.post<Token>('/api/user/login', data),
+    mutationFn: ({data}: {data: Login; onSuccess?: () => void}) => apiAxios.post<Token>('/user/login', data),
     onSuccess: async (_, {onSuccess}) => {
       onSuccess?.()
 
@@ -99,7 +85,7 @@ const useAuth = () => {
 
   // zavoláme logout API point, ktorý zmaže token na BE a odstráni sessionid cookie.
   const {mutate: logout, mutateAsync: logoutAsync} = useMutation({
-    mutationFn: () => axios.post('/api/user/logout'),
+    mutationFn: () => apiAxios.post('/user/logout'),
     onSettled: () => {
       setIsAuthed(false)
       // sessionid cookie odstrani server sam
