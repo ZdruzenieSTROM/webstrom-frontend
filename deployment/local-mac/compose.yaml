@@ -7,7 +7,7 @@ services:
         - BE_PROTOCOL=http
         - BE_HOSTNAME=host.docker.internal
         - BE_PORT=8000
-        - BE_PREFIX=
+        - BE_PREFIX=/api
 
     image: webstrom-test-frontend
 
@@ -16,7 +16,7 @@ services:
       - BE_PROTOCOL=http
       - BE_HOSTNAME=host.docker.internal
       - BE_PORT=8000
-      - BE_PREFIX=
+      - BE_PREFIX=/api
 
     ports:
       - '3000:3000'
