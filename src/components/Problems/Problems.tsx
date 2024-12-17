@@ -8,11 +8,10 @@ import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {SeriesWithProblems} from '@/types/api/competition'
-import {Profile} from '@/types/api/personal'
-import {AuthContainer} from '@/utils/AuthContainer'
 import {BannerContainer} from '@/utils/BannerContainer'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
+import {useProfile} from '@/utils/useProfile'
 
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
@@ -25,15 +24,9 @@ export const Problems: FC = () => {
 
   const router = useRouter()
 
-  const {isAuthed} = AuthContainer.useContainer()
   const {setBannerMessages} = BannerContainer.useContainer()
 
-  const {data} = useQuery({
-    queryKey: ['personal', 'profiles', 'myprofile'],
-    queryFn: () => apiAxios.get<Profile>(`/personal/profiles/myprofile`),
-    enabled: isAuthed,
-  })
-  const profile = data?.data
+  const {profile} = useProfile()
 
   // used to display discussions
   const [displayDiscussion, setDisplayDiscussion] = useState<{

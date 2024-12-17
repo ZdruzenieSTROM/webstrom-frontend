@@ -1,12 +1,9 @@
 import {Stack, Typography} from '@mui/material'
-import {useQuery} from '@tanstack/react-query'
 import {FC, useState} from 'react'
 
-import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
-import {Profile} from '@/types/api/personal'
-import {AuthContainer} from '@/utils/AuthContainer'
+import {useProfile} from '@/utils/useProfile'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {PasswordChangeDialog} from './PasswordChangeForm'
@@ -30,7 +27,6 @@ const ProfileLine: FC<ProfileLineInput> = ({label, value}) => {
 }
 
 export const ProfileDetail: FC = () => {
-  const {isAuthed} = AuthContainer.useContainer()
   const {seminar} = useSeminarInfo()
 
   const [openPasswordDialog, setOpenPasswordDialog] = useState(false)
@@ -39,12 +35,7 @@ export const ProfileDetail: FC = () => {
     setOpenPasswordDialog((prev) => !prev)
   }
 
-  const {data} = useQuery({
-    queryKey: ['personal', 'profiles', 'myprofile'],
-    queryFn: () => apiAxios.get<Profile>(`/personal/profiles/myprofile`),
-    enabled: isAuthed,
-  })
-  const profile = data?.data
+  const {profile} = useProfile()
 
   return (
     <Stack>
