@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server'
 
 import {backendRewriteMiddleware} from './middleware/backendRewriteMiddleware'
+import {removeTrailingSlash} from './utils/trailingSlash'
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl
@@ -16,9 +17,10 @@ export function middleware(req: NextRequest) {
   // odstran trailing slash - default next.js spravanie, ale vypli sme ho v next.config.ts pomocou
   // `skipTrailingSlashRedirect: true`, aby sme dovolili (a v axiose a middlewari vyssie aj forcli)
   // trailing slash pre BE Django
-  // pre root route `/` to nemozeme spravit (infinite redirect) ¯\_(ツ)_/¯
-  if (url.pathname.endsWith('/') && url.pathname !== '/') {
-    const newPathname = url.pathname.slice(0, -1)
+  const newPathname = removeTrailingSlash(url.pathname)
+
+  // redirect ak sa da odstranit trailing slash
+  if (newPathname !== url.pathname) {
     const newUrl = new URL(`${newPathname}${url.search}`, url)
 
     return NextResponse.redirect(newUrl, 308)

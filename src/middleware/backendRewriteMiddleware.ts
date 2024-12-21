@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server'
 
-import {addApiTrailingSlash} from '@/utils/addApiTrailingSlash'
+import {addTrailingSlash} from '@/utils/trailingSlash'
 import {getBackendServerUrl} from '@/utils/urlBase'
 
 export const backendRewriteMiddleware = ({req, trailingSlash}: {req: NextRequest; trailingSlash: boolean}) => {
@@ -9,7 +9,7 @@ export const backendRewriteMiddleware = ({req, trailingSlash}: {req: NextRequest
 
   let newPathname = pathname
 
-  if (trailingSlash) newPathname = addApiTrailingSlash(newPathname)
+  if (trailingSlash) newPathname = addTrailingSlash(newPathname)
 
   const newUrl = new URL(`${newPathname}${search}`, getBackendServerUrl())
 

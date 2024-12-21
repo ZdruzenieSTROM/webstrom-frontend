@@ -29,6 +29,8 @@ export const newApiAxios = (base: 'server' | 'client') => {
 
       debugServer('[SERVER API]', method?.toUpperCase(), url && baseURL ? new URL(url, baseURL).href : url)
 
+      // server-side requesty z deployed FE na deployed BE potrebuju tieto hlavicky
+      // TODO: ked pojdeme do produkcie, asi bude treba riesit nejakym env varom
       config.headers['X-Forwarded-Host'] = 'test.strom.sk'
       config.headers['X-Forwarded-Proto'] = 'https'
 
