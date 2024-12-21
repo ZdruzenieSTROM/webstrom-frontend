@@ -11,7 +11,7 @@ export const newApiAxios = (base: 'server' | 'client') => {
     // - browser vola lokalnu /api URL
     //   - na deployed verzii (test.strom.sk, strom.sk) to chyti nginx a posle na deployed BE
     //   - na localhoste to chyti next middleware, kde to rewritneme na BE URL (podla env vars)
-    baseURL: base === 'server' ? getBackendServerUrl() : '/api',
+    baseURL: base === 'server' ? `${getBackendServerUrl()}/api` : '/api',
     // auth pozostava z comba:
     // 1. `sessionid` httpOnly cookie - nastavuje a maze su server pri login/logout
     // 2. CSRF hlavicka - server nastavuje cookie, ktorej hodnotu treba vlozit do hlavicky. axios riesi automaticky podla tohto configu
