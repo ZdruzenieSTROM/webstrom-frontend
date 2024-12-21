@@ -6,10 +6,24 @@ import {removeTrailingSlash} from './utils/trailingSlash'
 export function middleware(req: NextRequest) {
   const url = req.nextUrl
 
+  // - na deployed serveri tieto lokalne routy chyti nginx proxy a posle ich na BE,
+  //   do tohto middlewaru sa to nedostane.
+  // - na localhoste tieto routy chyti next.js a posle ich do tohto middlewaru.
+  //   simulujeme nginx podla viacmenej podla tohto:
+  //   https://github.com/ZdruzenieSTROM/webstrom-backend/pull/491#discussion_r1893181775
   if (url.pathname.startsWith('/api')) {
     return backendRewriteMiddleware({req, trailingSlash: true})
   }
+  // casopisy, riesenia, opravene riesenia
   if (url.pathname.startsWith('/media')) {
+    return backendRewriteMiddleware({req, trailingSlash: false})
+  }
+  // napr. http://localhost:3000/django-admin
+  if (url.pathname.startsWith('/django-admin')) {
+    return backendRewriteMiddleware({req, trailingSlash: true})
+  }
+  // napr. `/django-admin` fetchuje CSSka zo `/static`
+  if (url.pathname.startsWith('/static')) {
     return backendRewriteMiddleware({req, trailingSlash: false})
   }
 
