@@ -1,12 +1,15 @@
 import {NextRequest, NextResponse} from 'next/server'
 
-import {apiMiddleware} from './middleware/apiMiddleware'
+import {backendRewriteMiddleware} from './middleware/backendRewriteMiddleware'
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl
 
   if (url.pathname.startsWith('/api')) {
-    return apiMiddleware(req)
+    return backendRewriteMiddleware({req, trailingSlash: true})
+  }
+  if (url.pathname.startsWith('/media')) {
+    return backendRewriteMiddleware({req, trailingSlash: false})
   }
 
   // https://nextjs.org/docs/app/building-your-application/routing/middleware#advanced-middleware-flags
