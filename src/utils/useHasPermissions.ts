@@ -16,10 +16,11 @@ export const useHasPermissions = () => {
   })
 
   const permissions = data?.data.competition_permissions
+  const isSuperuser = data?.data.is_superuser ?? false
 
   const {seminarId} = useSeminarInfo()
 
   const hasPermissions = !permissions ? false : permissions.includes(seminarId)
 
-  return {hasPermissions, permissionsIsLoading}
+  return {hasPermissions, isSuperuser, permissionsIsLoading}
 }
