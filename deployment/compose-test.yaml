@@ -9,7 +9,6 @@ services:
         - BE_PROTOCOL=http
         - BE_HOSTNAME=localhost
         - BE_PORT=8920
-        - BE_PREFIX=/api
 
     image: webstrom-test-frontend
 
@@ -18,7 +17,6 @@ services:
       - BE_PROTOCOL=http
       - BE_HOSTNAME=localhost
       - BE_PORT=8920
-      - BE_PREFIX=/api
 
     network_mode: host
 

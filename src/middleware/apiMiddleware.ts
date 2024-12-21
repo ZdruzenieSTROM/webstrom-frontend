@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server'
 
 import {addApiTrailingSlash} from '@/utils/addApiTrailingSlash'
-import {getInternalBeServerUrl} from '@/utils/urlBase'
+import {getBackendServerUrl} from '@/utils/urlBase'
 
 export const apiMiddleware = (req: NextRequest) => {
   const {method, nextUrl} = req
@@ -9,12 +9,9 @@ export const apiMiddleware = (req: NextRequest) => {
 
   let newPathname = pathname
 
-  // nahrad prefix "/api" za iny prefix (na lokalny BE "", na deployed BE "/api")
-  newPathname = newPathname.replace(/^\/api/, process.env.BE_PREFIX ?? '')
-
   newPathname = addApiTrailingSlash(newPathname)
 
-  const newUrl = new URL(`${newPathname}${search}`, getInternalBeServerUrl())
+  const newUrl = new URL(`${newPathname}${search}`, getBackendServerUrl())
 
   // eslint-disable-next-line no-console
   if (process.env.DEBUG === 'true') console.log('[MIDDLEWARE]', method, href, '->', newUrl.href)
