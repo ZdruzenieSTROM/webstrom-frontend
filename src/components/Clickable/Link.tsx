@@ -13,9 +13,27 @@ type LinkProps = {
   active?: boolean
   sx?: SxProps<Theme>
   textSx?: SxProps<Theme>
-} & Pick<ComponentProps<typeof NextLink>, 'target'>
+} & Pick<ComponentProps<typeof NextLink>, 'target' | 'prefetch'>
 
-export const Link: FC<LinkProps> = ({children, href, disabled, target, variant, invertColors, active, sx, textSx}) => {
+export const Link: FC<LinkProps> = ({
+  children,
+  href,
+  disabled,
+  target,
+  variant,
+  invertColors,
+  active,
+  sx,
+  textSx,
+  prefetch: overridePrefetch,
+}) => {
+  // https://nextjs.org/docs/pages/api-reference/components/link#prefetch
+  // by default, next.js prefetchuje stranky vsetkych linkov vo viewporte. pre media PDFka je to zbytocne heavy.
+  // inak aj pri `false` sa stale prefetchne pri hoveri, co je acceptable.
+  const isMedia = href?.startsWith('/media')
+  const defaultPrefetch = !isMedia
+  const prefetch = overridePrefetch ?? defaultPrefetch
+
   if (disabled) {
     return (
       <Box
@@ -47,6 +65,7 @@ export const Link: FC<LinkProps> = ({children, href, disabled, target, variant, 
       component={NextLink}
       href={href ?? ''}
       target={target}
+      prefetch={prefetch}
       sx={{
         ...getButtonWrapperSx({invertColors, disabled, active}),
         ...sx,
