@@ -78,6 +78,7 @@ export interface Profile {
 
 export interface MyPermissions {
   is_staff: boolean
+  is_superuser: boolean
   competition_permissions: number[]
 }
 

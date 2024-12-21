@@ -17,7 +17,7 @@ import {BottomButtons} from './BottomButtons'
 export const MenuMain: FC = () => {
   const {seminar, seminarId} = useSeminarInfo()
 
-  const {hasPermissions} = useHasPermissions()
+  const {hasPermissions, isSuperuser} = useHasPermissions()
 
   const [isVisible, setIsVisible] = useState(false)
   const toggleMenu = () => setIsVisible((currentIsVisible) => !currentIsVisible)
@@ -125,6 +125,7 @@ export const MenuMain: FC = () => {
               <Stack>
                 <MenuMainItem caption="Opravovanie" url={`/${seminar}/admin/opravovanie/`} />
                 <MenuMainItem caption="Admin" url="/admin" />
+                {isSuperuser && <MenuMainItem caption="Django Admin" url="/django-admin" />}
               </Stack>
             </>
           )}

@@ -23,7 +23,7 @@ const PublicationButton: FC<{
   publication: Publication
 }> = ({publication}) => {
   return (
-    <Link variant="button2" href={`/api${publication.file}`} target="_blank">
+    <Link variant="button2" href={publication.file} target="_blank">
       {publication.name}
     </Link>
   )
