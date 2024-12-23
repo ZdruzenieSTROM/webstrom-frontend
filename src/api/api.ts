@@ -1,5 +1,7 @@
+import {ILogo} from '@/components/PageLayout/Footer/Logo'
 import {IPost} from '@/components/Posts/Post'
 import {FlatPage} from '@/types/api/base'
+import {MenuItemShort} from '@/types/api/cms'
 import {Competition, Event} from '@/types/api/competition'
 import {SeminarId} from '@/utils/useSeminarInfo'
 
@@ -9,16 +11,27 @@ type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Eve
 
 export const apiOptions = {
   cms: {
-    post: {
-      visible: (seminarId: SeminarId) => ({
-        queryKey: ['cms', 'post', 'visible', seminarId],
-        queryFn: () => apiAxios.get<IPost[]>(`/cms/post/visible?sites=${seminarId}`).then((res) => res.data),
-      }),
-    },
     flatPage: {
       byUrl: (pageUrl: string) => ({
         queryKey: ['cms', 'flat-page', 'by-url', pageUrl],
         queryFn: () => apiAxios.get<FlatPage>(`/cms/flat-page/by-url/${pageUrl}`).then((res) => res.data),
+      }),
+    },
+    logo: () => ({
+      queryKey: ['cms', 'logo'],
+      queryFn: () => apiAxios.get<ILogo[]>('/cms/logo').then((res) => res.data),
+    }),
+    menuItem: {
+      onSite: (seminarId: SeminarId, type: 'menu' | 'footer') => ({
+        queryKey: ['cms', 'menu-item', 'on-site', seminarId, type],
+        queryFn: () =>
+          apiAxios.get<MenuItemShort[]>(`/cms/menu-item/on-site/${seminarId}?type=${type}`).then((res) => res.data),
+      }),
+    },
+    post: {
+      visible: (seminarId: SeminarId) => ({
+        queryKey: ['cms', 'post', 'visible', seminarId],
+        queryFn: () => apiAxios.get<IPost[]>(`/cms/post/visible?sites=${seminarId}`).then((res) => res.data),
       }),
     },
   },

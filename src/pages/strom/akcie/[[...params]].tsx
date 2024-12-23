@@ -4,6 +4,7 @@ import {useRouter} from 'next/router'
 import {ParsedUrlQuery} from 'querystring'
 
 import {apiOptions} from '@/api/api'
+import {commonQueries} from '@/api/commonQueries'
 import {CompetitionPage} from '@/components/CompetitionPage/CompetitionPage'
 import {RulesPage} from '@/components/CompetitionPage/RulesPage'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
@@ -41,11 +42,15 @@ const StaticPage: NextPage = () => {
 
 export default StaticPage
 
-export const getServerSideProps: GetServerSideProps = async ({query}) => {
+export const getServerSideProps: GetServerSideProps = async ({query, resolvedUrl}) => {
   const {requestedUrl} = getParams(query)
 
   const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(apiOptions.competition.competition.slug(requestedUrl))
+
+  await Promise.all([
+    ...commonQueries(queryClient, resolvedUrl),
+    queryClient.prefetchQuery(apiOptions.competition.competition.slug(requestedUrl)),
+  ])
 
   return {
     props: {

@@ -4,6 +4,7 @@ import {useRouter} from 'next/router'
 import {ParsedUrlQuery} from 'querystring'
 
 import {apiOptions} from '@/api/api'
+import {commonQueries} from '@/api/commonQueries'
 import {Markdown} from '@/components/Markdown/Markdown'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 
@@ -28,11 +29,15 @@ const StaticPage: NextPage = () => {
 }
 export default StaticPage
 
-export const getServerSideProps: GetServerSideProps = async ({query}) => {
+export const getServerSideProps: GetServerSideProps = async ({query, resolvedUrl}) => {
   const requestedUrl = getParam(query)
 
   const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(apiOptions.cms.flatPage.byUrl(requestedUrl))
+
+  await Promise.all([
+    ...commonQueries(queryClient, resolvedUrl),
+    queryClient.prefetchQuery(apiOptions.cms.flatPage.byUrl(requestedUrl)),
+  ])
 
   return {
     props: {
