@@ -1,41 +1,42 @@
+import {dehydrate, QueryClient, useQuery} from '@tanstack/react-query'
 import {GetServerSideProps, NextPage} from 'next'
+import {useRouter} from 'next/router'
+import {ParsedUrlQuery} from 'querystring'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 import {Markdown} from '@/components/Markdown/Markdown'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {FlatPage} from '@/types/api/generated/base'
-import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
 
-type StaticPageProps = {
-  title: string
-  content: string
+// z nazvu suboru `[page]` - vzdy to musi byt string
+const PARAM = 'page'
+const getParam = (query: ParsedUrlQuery) => query[PARAM] as string
+
+const StaticPage: NextPage = () => {
+  const {query} = useRouter()
+  const requestedUrl = getParam(query)
+
+  const {data} = useQuery(apiOptions.cms.flatPage.byUrl(requestedUrl))
+
+  const content = data?.content ?? ''
+  const title = data?.title
+
+  return (
+    <PageLayout title={title}>
+      <Markdown content={content} />
+    </PageLayout>
+  )
 }
-
-const StaticPage: NextPage<StaticPageProps> = ({title, content}) => (
-  <PageLayout title={title}>
-    <Markdown content={content} />
-  </PageLayout>
-)
-
 export default StaticPage
 
-export const getServerSideProps: GetServerSideProps<StaticPageProps> = async ({query, resolvedUrl}) => {
-  const {seminar} = getSeminarInfoFromPathname(resolvedUrl)
+export const getServerSideProps: GetServerSideProps = async ({query}) => {
+  const requestedUrl = getParam(query)
 
-  // `page` vychadza z nazvu suboru `[page]`
-  // tento check je hlavne pre typescript - parameter `page` by vzdy mal existovat a vzdy ako string
-  if (query?.page && typeof query.page === 'string') {
-    const requestedUrl = query.page
-    const {data} = await apiAxios.get<FlatPage | undefined>(`/cms/flat-page/by-url/${requestedUrl}`)
-    // ked stranka neexistuje, vrati sa `content: ""`. teraz renderujeme stranku len ked je content neprazdny a server rovno vrati redirect.
-    // druha moznost by bola nechat prazdny content handlovat clienta - napriklad zobrazit custom error, ale nechat usera na neplatnej stranke.
-    // tretia moznost je miesto redirectu vratit nextovsku 404
-    if (data?.content) {
-      return {
-        props: {content: data.content, title: data.title},
-      }
-    }
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery(apiOptions.cms.flatPage.byUrl(requestedUrl))
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   }
-
-  return {redirect: {destination: `/${seminar}`, permanent: false}}
 }
