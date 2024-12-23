@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
 
 export type Seminar = 'strom' | 'matik' | 'malynar'
-type SeminarId = 0 | 1 | 2
+export type SeminarId = 0 | 1 | 2
 
 const seminarToId: Record<Seminar, SeminarId> = {
   strom: 0,
@@ -11,14 +11,20 @@ const seminarToId: Record<Seminar, SeminarId> = {
 
 export const seminarIds = Object.values(seminarToId)
 
+export const getSeminarInfoFromPathname = (url: string) => {
+  const seminar = url.split('/')[1] as Seminar
+  const seminarId = seminarToId[seminar]
+
+  return {seminar, seminarId}
+}
+
 export const useSeminarInfo = () => {
   const router = useRouter()
 
   // e.g. gets "matik" from "/matik/zadania/[[...params]]"
-  const seminar = router.pathname.slice(1).split('/', 1)[0] as Seminar
-  const seminarId = seminarToId[seminar]
+  const seminarInfo = getSeminarInfoFromPathname(router.pathname)
 
-  return {seminar, seminarId}
+  return seminarInfo
 }
 
 // for admin purposes we need backwards mapping from seminar ID to seminar name
