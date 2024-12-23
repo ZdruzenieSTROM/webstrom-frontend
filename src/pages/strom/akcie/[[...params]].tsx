@@ -5,7 +5,7 @@ import {CompetitionPage} from '@/components/CompetitionPage/CompetitionPage'
 import {RulesPage} from '@/components/CompetitionPage/RulesPage'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Competition, Event} from '@/types/api/competition'
-import {Seminar} from '@/utils/useSeminarInfo'
+import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
 
 type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Event[]}
 
@@ -32,35 +32,32 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
 
 export default StaticPage
 
-// wrapper aby sme to lahko vyuzili pre ostatne seminare a neduplikovali kod
-export const competitionBasedGetServerSideProps =
-  (seminar: Seminar): GetServerSideProps<CompetitionPageProps> =>
-  async ({query}) => {
-    const redirectToSeminar = {redirect: {destination: `/${seminar}`, permanent: false}}
+export const getServerSideProps: GetServerSideProps<CompetitionPageProps> = async ({query, resolvedUrl}) => {
+  const {seminar} = getSeminarInfoFromPathname(resolvedUrl)
 
-    // `params` vychadza z nazvu suboru `[[...params]]`
-    // tento check je hlavne pre typescript - parameter `params` by vzdy mal existovat a mal by byt typu string[]
-    if (query?.params && Array.isArray(query.params) && query.params.length > 0) {
-      const requestedUrl = query.params[0]
+  const redirectToSeminar = {redirect: {destination: `/${seminar}`, permanent: false}}
 
-      try {
-        const {data} = await apiAxios.get<OurCompetition | undefined>(`/competition/competition/slug/${requestedUrl}`)
-        if (!data) return redirectToSeminar
+  // `params` vychadza z nazvu suboru `[[...params]]`
+  // tento check je hlavne pre typescript - parameter `params` by vzdy mal existovat a mal by byt typu string[]
+  if (query?.params && Array.isArray(query.params) && query.params.length > 0) {
+    const requestedUrl = query.params[0]
 
-        if (query.params.length === 2 && query.params[1] === 'pravidla') {
-          if (!data.rules) {
-            return {redirect: {destination: `/${seminar}/akcie/${requestedUrl}`, permanent: false}}
-          }
-          return {props: {competition: data, is_rules: true}}
+    try {
+      const {data} = await apiAxios.get<OurCompetition | undefined>(`/competition/competition/slug/${requestedUrl}`)
+      if (!data) return redirectToSeminar
+
+      if (query.params.length === 2 && query.params[1] === 'pravidla') {
+        if (!data.rules) {
+          return {redirect: {destination: `/${seminar}/akcie/${requestedUrl}`, permanent: false}}
         }
-
-        return {props: {competition: data, is_rules: false}}
-      } catch {
-        return redirectToSeminar
+        return {props: {competition: data, is_rules: true}}
       }
-    }
 
-    return redirectToSeminar
+      return {props: {competition: data, is_rules: false}}
+    } catch {
+      return redirectToSeminar
+    }
   }
 
-export const getServerSideProps = competitionBasedGetServerSideProps('strom')
+  return redirectToSeminar
+}
