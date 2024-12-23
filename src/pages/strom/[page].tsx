@@ -1,6 +1,6 @@
 import {GetServerSideProps, NextPage} from 'next'
 
-import {serverApiAxios} from '@/api/apiAxios'
+import {apiAxios} from '@/api/apiAxios'
 import {Markdown} from '@/components/Markdown/Markdown'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {FlatPage} from '@/types/api/generated/base'
@@ -27,7 +27,7 @@ export const seminarBasedGetServerSideProps =
     // tento check je hlavne pre typescript - parameter `page` by vzdy mal existovat a vzdy ako string
     if (query?.page && typeof query.page === 'string') {
       const requestedUrl = query.page
-      const {data} = await serverApiAxios.get<FlatPage | undefined>(`/cms/flat-page/by-url/${requestedUrl}`)
+      const {data} = await apiAxios.get<FlatPage | undefined>(`/cms/flat-page/by-url/${requestedUrl}`)
       // ked stranka neexistuje, vrati sa `content: ""`. teraz renderujeme stranku len ked je content neprazdny a server rovno vrati redirect.
       // druha moznost by bola nechat prazdny content handlovat clienta - napriklad zobrazit custom error, ale nechat usera na neplatnej stranke.
       // tretia moznost je miesto redirectu vratit nextovsku 404

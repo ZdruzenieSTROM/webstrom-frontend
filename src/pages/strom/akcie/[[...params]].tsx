@@ -1,6 +1,6 @@
 import {GetServerSideProps, NextPage} from 'next'
 
-import {serverApiAxios} from '@/api/apiAxios'
+import {apiAxios} from '@/api/apiAxios'
 import {CompetitionPage} from '@/components/CompetitionPage/CompetitionPage'
 import {RulesPage} from '@/components/CompetitionPage/RulesPage'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
@@ -44,9 +44,7 @@ export const competitionBasedGetServerSideProps =
       const requestedUrl = query.params[0]
 
       try {
-        const {data} = await serverApiAxios.get<OurCompetition | undefined>(
-          `/competition/competition/slug/${requestedUrl}`,
-        )
+        const {data} = await apiAxios.get<OurCompetition | undefined>(`/competition/competition/slug/${requestedUrl}`)
         if (!data) return redirectToSeminar
 
         if (query.params.length === 2 && query.params[1] === 'pravidla') {

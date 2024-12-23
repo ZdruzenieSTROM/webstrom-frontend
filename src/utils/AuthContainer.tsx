@@ -8,7 +8,7 @@ import {Login, Token} from '@/types/api/generated/user'
 import {MyPermissions} from '@/types/api/personal'
 
 // specialna axios instancia bez error handlingu pridaneho do `apiAxios` nizsie
-const specialApiAxios = newApiAxios('client')
+const specialApiAxios = newApiAxios()
 
 export const testAuthRequest = async () => specialApiAxios.get<MyPermissions>('/personal/profiles/mypermissions')
 
