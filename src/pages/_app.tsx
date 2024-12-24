@@ -33,6 +33,10 @@ const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
               if (failureCount >= 3) return false
               return true
             },
+            // https://tanstack.com/query/latest/docs/framework/react/guides/ssr#initial-setup
+            // With SSR, we usually want to set some default staleTime
+            // above 0 to avoid refetching immediately on the client
+            staleTime: 60 * 1000,
           },
           mutations: {
             // globalny error handler requestov cez useMutation
