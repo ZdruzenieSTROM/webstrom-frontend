@@ -3,6 +3,7 @@ import {IPost} from '@/components/Posts/Post'
 import {FlatPage} from '@/types/api/base'
 import {MenuItemShort} from '@/types/api/cms'
 import {Competition, Event} from '@/types/api/competition'
+import {Profile} from '@/types/api/personal'
 import {SeminarId} from '@/utils/useSeminarInfo'
 
 import {apiAxios} from './apiAxios'
@@ -40,6 +41,14 @@ export const apiOptions = {
       slug: (slug: string) => ({
         queryKey: ['competition', 'competition', 'slug', slug],
         queryFn: () => apiAxios.get<OurCompetition>(`/competition/competition/slug/${slug}`).then((res) => res.data),
+      }),
+    },
+  },
+  personal: {
+    profiles: {
+      myprofile: () => ({
+        queryKey: ['personal', 'profiles', 'myprofile'],
+        queryFn: () => apiAxios.get<Profile>('/personal/profiles/myprofile').then((res) => res.data),
       }),
     },
   },
