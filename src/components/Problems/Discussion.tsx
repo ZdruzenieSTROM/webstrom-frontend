@@ -4,9 +4,9 @@ import {FC, useState} from 'react'
 
 import {apiAxios} from '@/api/apiAxios'
 import {Comment, CommentState} from '@/types/api/competition'
-import {Profile} from '@/types/api/personal'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
+import {useProfile} from '@/utils/useProfile'
 
 import {Button} from '../Clickable/Button'
 import {Dialog} from '../Dialog/Dialog'
@@ -36,12 +36,8 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
 
   const {isAuthed} = AuthContainer.useContainer()
 
-  const {data} = useQuery({
-    queryKey: ['personal', 'profiles', 'myprofile'],
-    queryFn: () => apiAxios.get<Profile>(`/personal/profiles/myprofile`),
-    enabled: isAuthed,
-  })
-  const userId = data?.data.id
+  const {profile} = useProfile()
+  const userId = profile?.id
 
   const queryClient = useQueryClient()
 
