@@ -1,5 +1,5 @@
-import StaticPage, {competitionBasedGetServerSideProps} from '../../strom/akcie/[[...params]]'
+import StaticPage, {getServerSideProps} from '../../strom/akcie/[[...params]]'
 
 export default StaticPage
 
-export const getServerSideProps = competitionBasedGetServerSideProps('malynar')
+export {getServerSideProps}

@@ -1,30 +1,40 @@
+import {dehydrate, QueryClient, useQuery} from '@tanstack/react-query'
 import {GetServerSideProps, NextPage} from 'next'
+import {useRouter} from 'next/router'
+import {ParsedUrlQuery} from 'querystring'
 
-import {serverApiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
+import {commonQueries} from '@/api/commonQueries'
 import {CompetitionPage} from '@/components/CompetitionPage/CompetitionPage'
 import {RulesPage} from '@/components/CompetitionPage/RulesPage'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {Competition, Event} from '@/types/api/competition'
-import {Seminar} from '@/utils/useSeminarInfo'
 
-type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Event[]}
+// z nazvu suboru `[[...params]]` - vzdy to musi byt string[]
+const PARAM = 'params'
+const getParams = (query: ParsedUrlQuery) => {
+  const params = query[PARAM] as string[]
+  const requestedUrl = params[0]
+  const isRules = params.length === 2 && params[1] === 'pravidla'
 
-type CompetitionPageProps = {
-  competition: OurCompetition
-  is_rules: boolean
+  return {requestedUrl, isRules}
 }
 
-const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => {
+const StaticPage: NextPage = () => {
+  const {query} = useRouter()
+  const {requestedUrl, isRules} = getParams(query)
+
+  const {data, isPending, isError} = useQuery(apiOptions.competition.competition.slug(requestedUrl))
+
+  // TODO: handle
+  if (isPending) return null
+  if (isError) return null
+
   return (
-    <PageLayout title={competition.name}>
-      {is_rules ? (
-        <RulesPage
-          name={competition.name}
-          rules={competition.rules}
-          upcoming_or_current_event={competition.upcoming_or_current_event}
-        />
+    <PageLayout title={data.name}>
+      {isRules ? (
+        <RulesPage name={data.name} rules={data.rules} upcoming_or_current_event={data.upcoming_or_current_event} />
       ) : (
-        <CompetitionPage competition={competition} />
+        <CompetitionPage competition={data} />
       )}
     </PageLayout>
   )
@@ -32,37 +42,19 @@ const StaticPage: NextPage<CompetitionPageProps> = ({competition, is_rules}) => 
 
 export default StaticPage
 
-// wrapper aby sme to lahko vyuzili pre ostatne seminare a neduplikovali kod
-export const competitionBasedGetServerSideProps =
-  (seminar: Seminar): GetServerSideProps<CompetitionPageProps> =>
-  async ({query}) => {
-    const redirectToSeminar = {redirect: {destination: `/${seminar}`, permanent: false}}
+export const getServerSideProps: GetServerSideProps = async ({query, resolvedUrl}) => {
+  const {requestedUrl} = getParams(query)
 
-    // `params` vychadza z nazvu suboru `[[...params]]`
-    // tento check je hlavne pre typescript - parameter `params` by vzdy mal existovat a mal by byt typu string[]
-    if (query?.params && Array.isArray(query.params) && query.params.length > 0) {
-      const requestedUrl = query.params[0]
+  const queryClient = new QueryClient()
 
-      try {
-        const {data} = await serverApiAxios.get<OurCompetition | undefined>(
-          `/competition/competition/slug/${requestedUrl}`,
-        )
-        if (!data) return redirectToSeminar
+  await Promise.all([
+    ...commonQueries(queryClient, resolvedUrl),
+    queryClient.prefetchQuery(apiOptions.competition.competition.slug(requestedUrl)),
+  ])
 
-        if (query.params.length === 2 && query.params[1] === 'pravidla') {
-          if (!data.rules) {
-            return {redirect: {destination: `/${seminar}/akcie/${requestedUrl}`, permanent: false}}
-          }
-          return {props: {competition: data, is_rules: true}}
-        }
-
-        return {props: {competition: data, is_rules: false}}
-      } catch {
-        return redirectToSeminar
-      }
-    }
-
-    return redirectToSeminar
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   }
-
-export const getServerSideProps = competitionBasedGetServerSideProps('strom')
+}

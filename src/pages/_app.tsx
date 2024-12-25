@@ -1,6 +1,6 @@
 import {CssBaseline} from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {HydrationBoundary, QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import {isAxiosError} from 'axios'
 import {AppProps} from 'next/app'
@@ -33,6 +33,10 @@ const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
               if (failureCount >= 3) return false
               return true
             },
+            // https://tanstack.com/query/latest/docs/framework/react/guides/ssr#initial-setup
+            // With SSR, we usually want to set some default staleTime
+            // above 0 to avoid refetching immediately on the client
+            staleTime: 60 * 1000,
           },
           mutations: {
             // globalny error handler requestov cez useMutation
@@ -89,18 +93,20 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
       </Head>
       <AlertContainer.Provider>
         <ReactQueryProvider>
-          <ReactQueryDevtools />
-          <CookiesProvider>
-            <AuthContainer.Provider>
-              <BannerAnimationContainer.Provider>
-                <ThemeProvider theme={theme}>
-                  <CssBaseline />
-                  <AlertBox />
-                  <Component {...pageProps} />
-                </ThemeProvider>
-              </BannerAnimationContainer.Provider>
-            </AuthContainer.Provider>
-          </CookiesProvider>
+          <HydrationBoundary state={pageProps.dehydratedState}>
+            <ReactQueryDevtools />
+            <CookiesProvider>
+              <AuthContainer.Provider>
+                <BannerAnimationContainer.Provider>
+                  <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <AlertBox />
+                    <Component {...pageProps} />
+                  </ThemeProvider>
+                </BannerAnimationContainer.Provider>
+              </AuthContainer.Provider>
+            </CookiesProvider>
+          </HydrationBoundary>
         </ReactQueryProvider>
       </AlertContainer.Provider>
     </>
