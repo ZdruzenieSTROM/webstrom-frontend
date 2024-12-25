@@ -286,14 +286,6 @@ module.exports = {
       },
     },
 
-    // SCSS types use default exports
-    {
-      files: ['src/index.scss.d.ts', 'src/**/*.module.scss.d.ts'],
-      rules: {
-        'import/no-default-export': 'off',
-      },
-    },
-
     // generated types contain many `any`s
     {
       files: ['src/types/api/generated/**/*.ts'],

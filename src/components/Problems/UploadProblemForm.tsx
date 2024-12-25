@@ -1,4 +1,4 @@
-import {Typography} from '@mui/material'
+import {Box, Stack, Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
@@ -13,7 +13,6 @@ import {Button} from '../Clickable/Button'
 import {Link} from '../Clickable/Link'
 import {Dialog} from '../Dialog/Dialog'
 import {FileDropZone} from '../FileDropZone/FileDropZone'
-import styles from './UploadProblemForm.module.scss'
 
 export const UploadProblemForm: FC<{
   problemId: number
@@ -87,12 +86,23 @@ export const UploadProblemForm: FC<{
     : 'Nahraním nového riešenia prepíšeš svoje predošlé odovzdanie a pri hodnotení budeme zohľadnovať len toto nové riešenie.'
 
   return (
-    <div className={styles.container}>
-      {isAfterDeadline && <div className={styles.problemSubmitted}>Toto riešenie už nahrávaš po termíne.</div>}
+    <Stack
+      sx={{
+        margin: '0px',
+        padding: '10px 0 10px 0',
+        flexGrow: 1,
+        borderTop: '0px solid black',
+        borderBottom: '0px solid black',
+        position: 'relative',
+      }}
+    >
+      {isAfterDeadline && (
+        <Box sx={{fontWeight: 'bold', fontStyle: 'italic'}}>Toto riešenie už nahrávaš po termíne.</Box>
+      )}
       {problemSubmitted && (
-        <div className={styles.problemSubmitted}>
+        <Box sx={{fontWeight: 'bold', fontStyle: 'italic'}}>
           Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.
-        </div>
+        </Box>
       )}
       <Dialog
         open={displayAlertDialog}
@@ -110,7 +120,7 @@ export const UploadProblemForm: FC<{
           </>
         }
       />
-      <div className={styles.inputWrapper}>
+      <Box sx={{position: 'relative'}}>
         {!files && (
           <>
             <CloseButton
@@ -137,7 +147,13 @@ export const UploadProblemForm: FC<{
         )}
         {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
         {files?.name && (
-          <div className={styles.files}>
+          <Box
+            sx={{
+              marginTop: '8px',
+              display: 'grid',
+              gridTemplateColumns: '1fr auto',
+            }}
+          >
             <div>
               <b>Súbor: </b>
 
@@ -145,17 +161,17 @@ export const UploadProblemForm: FC<{
                 {files.name} ({niceBytes(files.size)})
               </span>
             </div>
-            <div className={styles.actions}>
+            <Stack direction="row" sx={{marginTop: '0.5rem', justifyContent: 'flex-end', columnGap: '20px'}}>
               <Button variant="button2" onClick={handleSubmit}>
                 Uložiť
               </Button>
               <Button variant="button2" onClick={handleRemoveSelection}>
                 Zrušiť
               </Button>
-            </div>
-          </div>
+            </Stack>
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Stack>
   )
 }

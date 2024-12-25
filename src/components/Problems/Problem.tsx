@@ -1,4 +1,4 @@
-import {Stack, Typography} from '@mui/material'
+import {Box, Stack, Typography} from '@mui/material'
 import Image from 'next/image'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
 
@@ -8,7 +8,6 @@ import {Problem as ProblemType} from '@/types/api/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
 
 import {Markdown} from '../Markdown/Markdown'
-import styles from './Problem.module.scss'
 import {UploadProblemForm} from './UploadProblemForm'
 
 export const Problem: FC<{
@@ -72,11 +71,20 @@ export const Problem: FC<{
       <Markdown content={problem.text} />
       {problem.image && (
         <Stack alignItems="center">
-          <Image
+          <Box
+            component={Image}
             src={problem.image}
             alt={`Obrázok - ${problem.order} úloha`}
-            className={styles.image}
-            width={800} // These values are overwritten by css
+            sx={{
+              width: 'auto',
+              height: 'auto',
+              minHeight: '3rem',
+              minWidth: '3rem',
+              maxHeight: '50vh',
+              marginTop: '1rem',
+            }}
+            // width/height dava len nieco vediet nextu, ale realne sa to styluje stylmi vyssie
+            width={800}
             height={800}
           />
         </Stack>

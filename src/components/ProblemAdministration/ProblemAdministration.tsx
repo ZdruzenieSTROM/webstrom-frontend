@@ -1,5 +1,5 @@
 import {FormatAlignJustify, Grading} from '@mui/icons-material'
-import {Stack, Typography} from '@mui/material'
+import {Box, Stack, Typography} from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
 import {useRouter} from 'next/router'
@@ -20,7 +20,46 @@ import {FileDropZone} from '../FileDropZone/FileDropZone'
 import {FileUploader} from '../FileUploader/FileUploader'
 import {Loading} from '../Loading/Loading'
 import {Markdown} from '../Markdown/Markdown'
-import styles from './ProblemAdministration.module.scss'
+
+const styles = {
+  icon: {
+    color: 'black',
+  },
+  iconDisabled: {
+    color: '#CCC',
+  },
+  input: {
+    width: '30px',
+    textAlign: 'center',
+  },
+  table: {
+    display: 'grid',
+    gridGap: '10px',
+  },
+  tableHeader: {
+    display: 'grid',
+    gridTemplateColumns: '2fr 1fr 1fr 1fr',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    padding: '10px',
+  },
+  tableBody: {
+    display: 'grid',
+    gridGap: '10px',
+  },
+  tableRow: {
+    display: 'grid',
+    gridTemplateColumns: '2fr 1fr 1fr 1fr',
+    padding: '10px',
+  },
+  centerCell: {
+    placeSelf: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    gap: '8px',
+  },
+}
 
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
@@ -190,24 +229,24 @@ export const ProblemAdministration: FC = () => {
 
         <Markdown content={problem.text ?? 'Načítavam...'} />
 
-        <div className={styles.row}>
+        <Stack direction="row" gap={1}>
           <Typography variant="body1" component="div">
             Vzorové riešenie:
           </Typography>
           {problem.solution_pdf ? (
-            <a href={problem.solution_pdf} target="_blank" rel="noreferrer" className={styles.icon}>
+            <Box component="a" href={problem.solution_pdf} target="_blank" rel="noreferrer" sx={styles.icon}>
               <FormatAlignJustify />
-            </a>
+            </Box>
           ) : (
-            <div className={styles.iconDisabled}>
+            <Box sx={styles.iconDisabled}>
               <FormatAlignJustify />
-            </div>
+            </Box>
           )}
           <FileUploader
             uploadLink={`/api/competition/problem/${problemId}/upload-model-solution`}
             refetch={refetchProblem}
           />
-        </div>
+        </Stack>
 
         <Stack alignItems="end">
           <Link variant="button2" href={`/api/competition/problem/${problemId}/download-solutions`}>
@@ -228,71 +267,74 @@ export const ProblemAdministration: FC = () => {
         )}
 
         <form>
-          <div className={styles.table}>
-            <div className={styles.tableHeader}>
+          <Box sx={styles.table}>
+            <Box sx={styles.tableHeader}>
               <div>Riešiteľ</div>
-              <div className={styles.centerCell}>Body</div>
-              <div className={styles.centerCell}>Riešenie</div>
-              <div className={styles.centerCell}>Opravené</div>
-            </div>
+              <Box sx={styles.centerCell}>Body</Box>
+              <Box sx={styles.centerCell}>Riešenie</Box>
+              <Box sx={styles.centerCell}>Opravené</Box>
+            </Box>
             {solutions?.map((solution, index) => (
-              <div key={solution.id} className={styles.tableRow}>
+              <Box key={solution.id} sx={styles.tableRow}>
                 <div>
                   {solution.semester_registration?.profile.first_name}{' '}
                   {solution.semester_registration?.profile.last_name}
                 </div>
-                <div className={styles.centerCell}>
-                  <input
+                <Box sx={styles.centerCell}>
+                  <Box
+                    component="input"
                     type="text"
                     pattern="[0-9]"
                     value={solution.score ?? ''}
                     onChange={(event) => updatePoints(index, event.target.value)}
-                    className={styles.input}
+                    sx={styles.input}
                   />
-                </div>
-                <div className={styles.centerCell}>
+                </Box>
+                <Box sx={styles.centerCell}>
                   {solution.solution ? (
-                    <a
+                    <Box
+                      component="a"
                       href={`/api/competition/solution/${solution.id}/file-solution`}
                       target="_blank"
                       rel="noreferrer"
-                      className={styles.icon}
+                      sx={styles.icon}
                     >
                       <FormatAlignJustify />
-                    </a>
+                    </Box>
                   ) : (
-                    <div className={styles.iconDisabled}>
+                    <Box sx={styles.iconDisabled}>
                       <FormatAlignJustify />
-                    </div>
+                    </Box>
                   )}
                   <FileUploader
                     uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
                     refetch={() => updateSolution(index)}
                   />
-                </div>
-                <div className={styles.centerCell}>
+                </Box>
+                <Box sx={styles.centerCell}>
                   {solution.corrected_solution ? (
-                    <a
+                    <Box
+                      component="a"
                       href={`/api/competition/solution/${solution.id}/file-corrected`}
                       target="_blank"
                       rel="noreferrer"
-                      className={styles.icon}
+                      sx={styles.icon}
                     >
                       <Grading />
-                    </a>
+                    </Box>
                   ) : (
-                    <div className={styles.iconDisabled}>
+                    <Box sx={styles.iconDisabled}>
                       <Grading />
-                    </div>
+                    </Box>
                   )}
                   <FileUploader
                     uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
                     refetch={() => updateCorrectedSolution(index)}
                   />
-                </div>
-              </div>
+                </Box>
+              </Box>
             ))}
-          </div>
+          </Box>
 
           <Stack alignItems="end" mt={1.5}>
             <Button variant="button2" onClick={handleSavePoints}>
