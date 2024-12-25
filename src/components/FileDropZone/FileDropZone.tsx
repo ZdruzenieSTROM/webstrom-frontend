@@ -1,7 +1,6 @@
+import {Box} from '@mui/material'
 import {FC} from 'react'
 import {DropzoneInputProps, DropzoneRootProps} from 'react-dropzone'
-
-import styles from './FileDropZone.module.scss'
 
 interface FileDropZoneProps {
   text: string
@@ -11,9 +10,26 @@ interface FileDropZoneProps {
 
 export const FileDropZone: FC<FileDropZoneProps> = ({text, getRootProps, getInputProps}) => {
   return (
-    <div {...getRootProps({className: styles.dropzone})}>
+    <Box
+      sx={{
+        cursor: 'pointer',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '5rem',
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        color: '#BBB',
+        bgcolor: '#EEE',
+        border: '2px dashed black',
+        ':hover': {
+          bgcolor: '#DDD',
+        },
+      }}
+      {...getRootProps()}
+    >
       <input {...getInputProps()} />
       <p>{text}</p>
-    </div>
+    </Box>
   )
 }

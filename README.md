@@ -3,7 +3,6 @@
 - [Spustenie backendu](#spustenie-backendu)
   - [Lokálny BE](#lokálny-be)
 - [Spustenie frontendu](#spustenie-frontendu)
-- [CSS types (deprecated)](#css-types-deprecated)
 - [IDE setup](#ide-setup)
 
 ## Spustenie backendu
@@ -62,22 +61,6 @@ yarn dev
 ```
 
 Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo frontendovom kóde a automaticky sa reloaduje.
-
-## CSS types (deprecated)
-
-DEPRECATED: `.module.scss` súborov sa snažíme zbaviť.
-
-Na pregenerovanie CSS typov pre `styles` z `*.module.scss` (do súborov `*.module.scss.d.ts`) je potrebné spustiť:
-
-```sh
-yarn css-types
-```
-
-Ak chceme aby sa tieto typy generovali automaticky počas vyvíjania, je tu príkaz:
-
-```sh
-yarn css-types-watch
-```
 
 ## IDE setup
 
