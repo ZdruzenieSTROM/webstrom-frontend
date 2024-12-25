@@ -3,12 +3,11 @@ import {useQuery} from '@tanstack/react-query'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 import {Link} from '@/components/Clickable/Link'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
 import Menu from '@/svg/menu.svg'
-import {MenuItemShort} from '@/types/api/cms'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -41,11 +40,10 @@ export const MenuMain: FC = () => {
     }
   }, [router, fullWidthMenu])
 
-  const {data: menuItemsData, isLoading: menuItemsIsLoading} = useQuery({
-    queryKey: ['cms', 'menu-item', 'on-site', seminarId, '?menu'],
-    queryFn: () => apiAxios.get<MenuItemShort[]>(`/cms/menu-item/on-site/${seminarId}?type=menu`),
-  })
-  const menuItems = menuItemsData?.data ?? []
+  const {data: menuItemsData, isLoading: menuItemsIsLoading} = useQuery(
+    apiOptions.cms.menuItem.onSite(seminarId, 'menu'),
+  )
+  const menuItems = menuItemsData ?? []
 
   const lg = useMediaQuery<Theme>((theme) => theme.breakpoints.up('lg'))
   const iconSize = lg ? 34 : 24

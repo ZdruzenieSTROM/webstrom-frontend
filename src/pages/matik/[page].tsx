@@ -1,5 +1,5 @@
-import StromStaticPage, {seminarBasedGetServerSideProps} from '../strom/[page]'
+import StromStaticPage, {getServerSideProps} from '../strom/[page]'
 
 export default StromStaticPage
 
-export const getServerSideProps = seminarBasedGetServerSideProps('matik')
+export {getServerSideProps}

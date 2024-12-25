@@ -1,31 +1,49 @@
-import {NextPage} from 'next'
+import {Typography} from '@mui/material'
+import {dehydrate, QueryClient} from '@tanstack/react-query'
+import {GetServerSideProps, NextPage} from 'next'
+import {useRouter} from 'next/router'
+import {ParsedUrlQuery} from 'querystring'
 
+import {commonQueries} from '@/api/commonQueries'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
-import {PasswordResetForm, PasswordResetFormProps} from '@/components/PasswordReset/PasswordReset'
+import {PasswordResetForm} from '@/components/PasswordReset/PasswordReset'
 
-type QueryType = {
-  query?: {
-    resetToken: string | string[]
-  }
+// z nazvu suboru `[...resetToken]` - vzdy to musi byt pole stringov, ale nevieme garantovat viac ako jeden segment
+const PARAM = 'resetToken'
+type Params = [string, ...(string | undefined)[]]
+const getParams = (query: ParsedUrlQuery) => {
+  const params = query[PARAM] as Params
+
+  const [token, uid] = params
+
+  return {token, uid}
 }
 
-const PasswordReset: NextPage<PasswordResetFormProps> = ({uid, token}) => (
-  <PageLayout title="Zabudnuté heslo" contentWidth={1}>
-    <PasswordResetForm uid={uid} token={token} />
-  </PageLayout>
-)
+const PasswordReset: NextPage = () => {
+  const {query} = useRouter()
+  const {uid, token} = getParams(query)
+
+  return (
+    <PageLayout title="Zabudnuté heslo" contentWidth={1}>
+      {uid ? (
+        <PasswordResetForm uid={uid} token={token} />
+      ) : (
+        <Typography variant="body1">Neplatný odkaz, chýbajúci parameter uid.</Typography>
+      )}
+    </PageLayout>
+  )
+}
 
 export default PasswordReset
 
-export const getServerSideProps = async ({query}: QueryType) => {
-  const errorRedirect = {redirect: {destination: '/', permanent: false}}
+export const getServerSideProps: GetServerSideProps = async ({resolvedUrl}) => {
+  const queryClient = new QueryClient()
 
-  if (query?.resetToken && Array.isArray(query.resetToken) && query.resetToken.length === 2) {
-    const token = query.resetToken[0]
-    const uid = query.resetToken[1]
+  await Promise.all([...commonQueries(queryClient, resolvedUrl)])
 
-    if (typeof token === 'string' && typeof uid === 'string') return {props: {uid: uid, token: token}}
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   }
-
-  return errorRedirect
 }

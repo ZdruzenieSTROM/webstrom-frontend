@@ -1,9 +1,11 @@
 import {NextPage} from 'next'
 
-import Page from '../strom/index'
+import Page, {getServerSideProps} from '../strom/index'
 
-const Malynar: NextPage = () => {
+const Home: NextPage = () => {
   return <Page />
 }
 
-export default Malynar
+export default Home
+
+export {getServerSideProps}
