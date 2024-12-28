@@ -29,7 +29,7 @@ export const newApiAxios = () => {
     instance.interceptors.request.use((config) => {
       const {method, url, baseURL} = config
 
-      debugServer('[SERVER API]', method?.toUpperCase(), url && baseURL ? new URL(url, baseURL).href : url)
+      debugServer('[SERVER API]', method?.toUpperCase(), baseURL, url)
 
       // server-side requesty z deployed FE na deployed BE potrebuju tieto hlavicky
       // TODO: ked pojdeme do produkcie, asi bude treba riesit nejakym env varom
