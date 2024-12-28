@@ -9,6 +9,7 @@ services:
         - BE_PROTOCOL=http
         - BE_HOSTNAME=localhost
         - BE_PORT=8920
+        - DEBUG=true
 
     image: webstrom-test-frontend
 
@@ -17,6 +18,7 @@ services:
       - BE_PROTOCOL=http
       - BE_HOSTNAME=localhost
       - BE_PORT=8920
+      - DEBUG=true
 
     network_mode: host
 
