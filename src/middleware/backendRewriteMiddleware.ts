@@ -16,5 +16,13 @@ export const backendRewriteMiddleware = ({req, trailingSlash}: {req: NextRequest
   // eslint-disable-next-line no-console
   if (process.env.DEBUG === 'true') console.log('[MIDDLEWARE]', method, href, '->', newUrl.href)
 
-  return NextResponse.rewrite(newUrl)
+  // server-side requesty z deployed FE na deployed BE potrebuju tieto hlavicky (podla settings_test.py)
+  if (process.env.BE_FORWARDED_HOST) req.headers.set('X-Forwarded-Host', process.env.BE_FORWARDED_HOST)
+  if (process.env.BE_FORWARDED_PROTO) req.headers.set('X-Forwarded-Proto', process.env.BE_FORWARDED_PROTO)
+
+  return NextResponse.rewrite(newUrl, {
+    request: {
+      headers: req.headers,
+    },
+  })
 }
