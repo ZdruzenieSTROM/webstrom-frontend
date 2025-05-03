@@ -24,6 +24,16 @@ export const Posts: FC = () => {
 
   return (
     <Stack gap={5}>
+      {/* znasobene aby som mal na homepage dostatocne dlhy obsah pri skorlovani */}
+      {posts.map((post) => (
+        <Post key={post.id} {...post} />
+      ))}
+      {posts.map((post) => (
+        <Post key={post.id} {...post} />
+      ))}
+      {posts.map((post) => (
+        <Post key={post.id} {...post} />
+      ))}
       {posts.map((post) => (
         <Post key={post.id} {...post} />
       ))}
