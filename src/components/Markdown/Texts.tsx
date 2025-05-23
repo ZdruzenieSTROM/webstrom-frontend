@@ -3,18 +3,14 @@ import {FC, JSX, ReactNode} from 'react'
 
 import {colors} from '@/colors'
 
-import {Link} from '../Clickable/Link'
+import {InlineLink} from '../Clickable/InlineLink'
 
 type MarkdownLinkProps = {
   children: ReactNode[]
   href?: string
 }
 
-export const MarkdownLink: FC<MarkdownLinkProps> = ({children, href}) => (
-  <Link variant="button2" href={href}>
-    {children}
-  </Link>
-)
+export const MarkdownLink: FC<MarkdownLinkProps> = ({children, href}) => <InlineLink href={href}>{children}</InlineLink>
 
 export const Table: FC<JSX.IntrinsicElements['table']> = ({children}) => (
   <Box component="table" sx={{textAlign: 'center'}}>

@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 import {ComponentProps, FC, ReactNode} from 'react'
 
 import {buttonInnerSx, getButtonWrapperSx} from './buttonStyles'
+import {getDefaultLinkPrefetch} from './getDefaultLinkPrefetch'
 
 type LinkProps = {
   href?: string
@@ -27,11 +28,7 @@ export const Link: FC<LinkProps> = ({
   textSx,
   prefetch: overridePrefetch,
 }) => {
-  // https://nextjs.org/docs/pages/api-reference/components/link#prefetch
-  // by default, next.js prefetchuje stranky vsetkych linkov vo viewporte. pre media PDFka je to zbytocne heavy.
-  // inak aj pri `false` sa stale prefetchne pri hoveri, co je acceptable.
-  const isMedia = href?.startsWith('/media')
-  const defaultPrefetch = !isMedia
+  const defaultPrefetch = getDefaultLinkPrefetch(href)
   const prefetch = overridePrefetch ?? defaultPrefetch
 
   if (disabled) {
