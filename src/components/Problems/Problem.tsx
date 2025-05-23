@@ -1,6 +1,6 @@
 import {Box, Stack, Typography} from '@mui/material'
 import Image from 'next/image'
-import {Dispatch, FC, SetStateAction, useState} from 'react'
+import {FC, useState} from 'react'
 
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
@@ -10,16 +10,14 @@ import {AuthContainer} from '@/utils/AuthContainer'
 import {Markdown} from '../Markdown/Markdown'
 import {UploadProblemForm} from './UploadProblemForm'
 
+export type DiscussionProblem = {
+  id: number
+  order: number
+}
+
 export const Problem: FC<{
   problem: ProblemType
-  setDisplaySideContent: Dispatch<
-    SetStateAction<{
-      type: string
-      problemId: number
-      problemNumber: number
-      problemSubmitted?: boolean
-    }>
-  >
+  openDiscussion: (problem: DiscussionProblem) => void
   registered: boolean
   canRegister: boolean
   canSubmit: boolean
@@ -30,7 +28,7 @@ export const Problem: FC<{
 }> = ({
   problem,
   registered,
-  setDisplaySideContent,
+  openDiscussion,
   canRegister,
   canSubmit,
   isAfterDeadline,
@@ -38,15 +36,6 @@ export const Problem: FC<{
   displayRegisterDialog,
   displayLoginDialog,
 }) => {
-  const handleDiscussionButtonClick = () => {
-    setDisplaySideContent((prevState) => {
-      if (prevState.type === 'discussion' && prevState.problemId === problem.id) {
-        return {type: '', problemId: -1, problemNumber: -1}
-      } else {
-        return {type: 'discussion', problemId: problem.id, problemNumber: problem.order}
-      }
-    })
-  }
   const {isAuthed} = AuthContainer.useContainer()
 
   const handleUploadClick = () => {
@@ -135,7 +124,7 @@ export const Problem: FC<{
               </Link>
             </>
           )}
-          <Button onClick={handleDiscussionButtonClick} variant="button2">
+          <Button onClick={() => openDiscussion(problem)} variant="button2">
             diskusia ({problem.num_comments})
           </Button>
           {canSubmit && (
