@@ -29,12 +29,11 @@ export const newApiAxios = () => {
     instance.interceptors.request.use((config) => {
       const {method, url, baseURL} = config
 
-      debugServer('[SERVER API]', method?.toUpperCase(), url && baseURL ? new URL(url, baseURL).href : url)
+      debugServer('[SERVER API]', method?.toUpperCase(), baseURL, url)
 
-      // server-side requesty z deployed FE na deployed BE potrebuju tieto hlavicky
-      // TODO: ked pojdeme do produkcie, asi bude treba riesit nejakym env varom
-      config.headers['X-Forwarded-Host'] = 'test.strom.sk'
-      config.headers['X-Forwarded-Proto'] = 'https'
+      // server-side requesty z deployed FE na deployed BE potrebuju tieto hlavicky (podla settings_test.py)
+      config.headers['X-Forwarded-Host'] = process.env.BE_FORWARDED_HOST
+      config.headers['X-Forwarded-Proto'] = process.env.BE_FORWARDED_PROTO
 
       return config
     })
