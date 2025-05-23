@@ -2,6 +2,8 @@ import {Box, Stack, Theme, Typography, useMediaQuery} from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
 import {FC} from 'react'
 
+import {colors} from '@/colors'
+
 interface Registration {
   school: {
     code: number
@@ -48,7 +50,7 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
     // `display: 'contents'` je taka HTML verzia fragmentu - tento div sa v strukture nepocita pre ucely parent gridu,
     // miesto toho sa pouzivaju jednotlive children. preto aj hover tu targetuje children divy, lebo parent v podstate nema velkost.
     // takisto `justifyContent: 'center'` je na vsetkych elementoch osobitne
-    <Box sx={{display: 'contents', ':hover > div': {bgcolor: 'black', color: 'white'}}}>
+    <Box sx={{display: 'contents', ':hover > div': {bgcolor: colors.black, color: colors.white}}}>
       <Stack
         sx={{
           justifyContent: 'center',

@@ -2,6 +2,7 @@ import {Box, ClickAwayListener, Popper, Stack, Typography} from '@mui/material'
 import Link from 'next/link'
 import {FC, MouseEvent, useState} from 'react'
 
+import {colors} from '@/colors'
 import ArrowDown from '@/svg/ArrowDown.svg'
 
 import {Button} from '../Clickable/Button'
@@ -47,7 +48,7 @@ export const Dropdown: FC<{title: string; options: DropdownOption[]}> = ({title,
         <ClickAwayListener onClickAway={handleClose}>
           <Stack
             sx={{
-              bgcolor: 'white',
+              bgcolor: colors.white,
               border: '5px solid black',
               borderWidth: '5px',
               // random constant to make sure the dropdown is not too long (around 9 options)
@@ -61,15 +62,15 @@ export const Dropdown: FC<{title: string; options: DropdownOption[]}> = ({title,
                 component={Link}
                 href={option.link}
                 sx={{
-                  bgcolor: 'white',
-                  color: 'black',
+                  bgcolor: colors.white,
+                  color: colors.black,
                   padding: '5px',
                   ':hover': {
-                    bgcolor: '#ccc',
+                    bgcolor: colors.gray,
                   },
                   ...(option.selected && {
-                    bgcolor: 'black',
-                    color: 'white',
+                    bgcolor: colors.black,
+                    color: colors.white,
                     // ziadny hover feedback na ciernej aktualne vybratej option
                     ':hover': {},
                   }),

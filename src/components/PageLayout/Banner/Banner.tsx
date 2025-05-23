@@ -1,6 +1,7 @@
 import {Typography} from '@mui/material'
 import {FC} from 'react'
 
+import {colors} from '@/colors'
 import {Marquee} from '@/components/Marquee/Marquee'
 import {BannerAnimationContainer} from '@/utils/BannerAnimationProvider'
 import {BannerContainer} from '@/utils/BannerContainer'
@@ -25,8 +26,8 @@ export const Banner: FC = () => {
       play={play}
       onClick={togglePlay}
       sx={{
-        bgcolor: 'black',
-        color: 'white',
+        bgcolor: colors.black,
+        color: colors.white,
         zIndex: 3,
         py: '0.2rem',
       }}
