@@ -45,7 +45,7 @@ export const VerifyEmail: FC = () => {
             email znovu alebo nás kontaktuj.
           </Typography>
         )}
-        {isVerified && <Typography variant="body1">Overenie emailu prebehlo úspešne. Môžeš sa prihlásiť</Typography>}
+        {isVerified && <Typography variant="body1">Overenie emailu prebehlo úspešne. Môžeš sa prihlásiť.</Typography>}
         <Stack direction={'row'} mt={3} justifyContent="flex-end">
           <Button variant="button2" onClick={toggleDisplayAuthenticationDialog}>
             Prihlásiť
