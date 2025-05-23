@@ -1,6 +1,7 @@
 import {Box, SxProps} from '@mui/material'
 import {FC} from 'react'
 
+import {colors} from '@/colors'
 import Close from '@/svg/close.svg'
 
 interface CloseButtonProps {
@@ -19,19 +20,19 @@ export const CloseButton: FC<CloseButtonProps> = ({onClick, size, invertColors, 
         padding: 0.5,
         ...(invertColors
           ? {
-              color: 'black',
-              background: 'white',
+              color: colors.black,
+              background: colors.white,
               '&.active, &:hover': {
-                color: 'white',
-                background: 'black',
+                color: colors.white,
+                background: colors.black,
               },
             }
           : {
-              color: 'white',
-              background: 'black',
+              color: colors.white,
+              background: colors.black,
               '&.active, &:hover': {
-                color: 'black',
-                background: 'white',
+                color: colors.black,
+                background: colors.white,
               },
             }),
         ...sx,

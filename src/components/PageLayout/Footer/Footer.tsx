@@ -4,6 +4,7 @@ import {useQuery} from '@tanstack/react-query'
 import {FC} from 'react'
 
 import {apiOptions} from '@/api/api'
+import {colors} from '@/colors'
 import {Link} from '@/components/Clickable/Link'
 import {Loading} from '@/components/Loading/Loading'
 import {Logo} from '@/components/PageLayout/Footer/Logo'
@@ -27,8 +28,8 @@ export const Footer: FC = () => {
       container
       sx={{
         width: '100%',
-        bgcolor: 'black',
-        color: 'white',
+        bgcolor: colors.black,
+        color: colors.white,
       }}
     >
       <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}} />

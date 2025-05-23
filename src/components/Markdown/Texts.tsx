@@ -1,6 +1,8 @@
 import {Box, Typography} from '@mui/material'
 import {FC, JSX, ReactNode} from 'react'
 
+import {colors} from '@/colors'
+
 import {Link} from '../Clickable/Link'
 
 type MarkdownLinkProps = {
@@ -25,8 +27,8 @@ export const Th: FC<JSX.IntrinsicElements['th']> = ({children}) => (
     component="th"
     sx={{
       padding: '3px 1.5vw',
-      bgcolor: 'black',
-      color: 'white',
+      bgcolor: colors.black,
+      color: colors.white,
     }}
   >
     <Typography variant="h3" component="span">

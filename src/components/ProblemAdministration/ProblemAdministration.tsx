@@ -7,6 +7,7 @@ import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiAxios} from '@/api/apiAxios'
+import {colors} from '@/colors'
 import {ProblemWithSolutions, SemesterWithProblems, SolutionAdministration} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzone-accept'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
@@ -23,10 +24,10 @@ import {Markdown} from '../Markdown/Markdown'
 
 const styles = {
   icon: {
-    color: 'black',
+    color: colors.black,
   },
   iconDisabled: {
-    color: '#CCC',
+    color: colors.gray,
   },
   input: {
     width: '30px',

@@ -2,6 +2,7 @@ import {Box, Stack, Typography} from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 import React, {useState} from 'react'
 
+import {colors} from '@/colors'
 import Strom from '@/svg/strom.svg'
 
 import {Button} from '../Clickable/Button'
@@ -18,8 +19,8 @@ export const Crossroad: React.FC = () => {
     {label: 'Máš problém', url: 'https://masproblem.strom.sk'},
   ]
   return !isProblem ? (
-    <Stack justifyContent="center" alignItems="center" height="100dvh" sx={{bgcolor: 'black'}}>
-      <Typography variant="crossroadButton" sx={{color: 'white'}}>
+    <Stack justifyContent="center" alignItems="center" height="100dvh" sx={{bgcolor: colors.black}}>
+      <Typography variant="crossroadButton" sx={{color: colors.white}}>
         Máš problém?
       </Typography>
       <Stack spacing={2} direction="row">
@@ -32,7 +33,7 @@ export const Crossroad: React.FC = () => {
       </Stack>
     </Stack>
   ) : (
-    <Stack alignItems="stretch" height="100vh" sx={{bgcolor: 'black'}}>
+    <Stack alignItems="stretch" height="100vh" sx={{bgcolor: colors.black}}>
       <Grid container disableEqualOverflow columnSpacing={{xs: 2, md: 3, lg: 4}} mt={'30vh'} flexGrow={1}>
         <Grid xs={0} md={3} display={{xs: 'none', md: 'flex'}} height="70dvh" justifyContent="end">
           <Box>

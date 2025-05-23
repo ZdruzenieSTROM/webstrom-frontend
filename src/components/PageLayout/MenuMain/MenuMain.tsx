@@ -4,6 +4,7 @@ import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 
 import {apiOptions} from '@/api/api'
+import {colors} from '@/colors'
 import {Link} from '@/components/Clickable/Link'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
@@ -69,7 +70,7 @@ export const MenuMain: FC = () => {
     <>
       {!isVisible && (
         <Box
-          sx={{cursor: 'pointer', padding: 0.5, '&:hover': {color: 'white', background: 'black'}}}
+          sx={{cursor: 'pointer', padding: 0.5, '&:hover': {color: colors.white, background: colors.black}}}
           onClick={toggleMenu}
         >
           <Menu width={iconSize} height={iconSize} />
@@ -89,7 +90,7 @@ export const MenuMain: FC = () => {
           bottom: 'unset',
           right: 'unset',
           '& .MuiDrawer-paper': {
-            backgroundColor: 'black',
+            backgroundColor: colors.black,
             right: 'unset',
             bottom: 0,
             width: {xs: '100%', md: '25%'},
@@ -108,7 +109,7 @@ export const MenuMain: FC = () => {
             }}
           />
           {menuItemsIsLoading && (
-            <Box sx={{position: 'absolute', top: '50%', left: 0, right: 0, color: 'white'}}>
+            <Box sx={{position: 'absolute', top: '50%', left: 0, right: 0, color: colors.white}}>
               <Loading />
             </Box>
           )}

@@ -4,6 +4,7 @@ import Grid from '@mui/material/Unstable_Grid2'
 import {FC} from 'react'
 import {FormDataConsumer} from 'react-admin'
 
+import {colors} from '@/colors'
 import {Post} from '@/components/Posts/Post'
 import {theme} from '@/theme'
 
@@ -14,7 +15,7 @@ export const PostPreview: FC = () => {
         {({formData}) => (
           <Grid container columnSpacing={5} sx={{width: '100%'}}>
             <Grid xs={12} md={4}>
-              <Stack gap={5} sx={{color: 'black', background: 'white', p: '10px'}}>
+              <Stack gap={5} sx={{color: colors.black, background: colors.white, p: '10px'}}>
                 <Post
                   id={0}
                   links={formData?.links ?? []}
