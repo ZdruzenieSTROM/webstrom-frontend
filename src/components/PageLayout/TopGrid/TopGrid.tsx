@@ -3,6 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2'
 import {useRouter} from 'next/router'
 import {FC, useMemo} from 'react'
 
+import {colors} from '@/colors'
 import {Link} from '@/components/Clickable/Link'
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
@@ -20,21 +21,21 @@ const SeminarButtons: FC<SeminarButtonsProps> = ({seminar}) => {
       <Link
         href="/malynar"
         variant="seminarButton"
-        sx={seminar === 'malynar' ? {color: 'white', backgroundColor: 'black'} : {}}
+        sx={seminar === 'malynar' ? {color: colors.white, backgroundColor: colors.black} : {}}
       >
         Malynár
       </Link>
       <Link
         variant="seminarButton"
         href="/matik"
-        sx={seminar === 'matik' ? {color: 'white', backgroundColor: 'black'} : {}}
+        sx={seminar === 'matik' ? {color: colors.white, backgroundColor: colors.black} : {}}
       >
         Matik
       </Link>
       <Link
         variant="seminarButton"
         href="/strom"
-        sx={seminar === 'strom' ? {color: 'white', backgroundColor: 'black'} : {}}
+        sx={seminar === 'strom' ? {color: colors.white, backgroundColor: colors.black} : {}}
       >
         Strom
       </Link>
@@ -61,7 +62,7 @@ export const TopGrid: FC = () => {
   const {pageTitle} = PageTitleContainer.useContainer()
 
   return (
-    <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: 'white', zIndex: 3}}>
+    <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: colors.white, zIndex: 3}}>
       <Grid container disableEqualOverflow spacing={1} p={3}>
         {/* first row */}
         <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}}>

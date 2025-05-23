@@ -1,6 +1,8 @@
 import {createTheme, Theme} from '@mui/material/styles'
 import {Poppins} from 'next/font/google'
 
+import {colors} from './colors'
+
 // https://mui.com/material-ui/customization/typography/#adding-amp-disabling-variants
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -10,6 +12,7 @@ declare module '@mui/material/styles' {
     button3: React.CSSProperties
     crossroadButton: React.CSSProperties
     seminarButton: React.CSSProperties
+    inlineLink: React.CSSProperties
     postTitle: React.CSSProperties
     postBody: React.CSSProperties
     postDate: React.CSSProperties
@@ -28,6 +31,9 @@ declare module '@mui/material/styles' {
     button3?: React.CSSProperties
     crossroadButton?: React.CSSProperties
     seminarButton?: React.CSSProperties
+    inlineLink?: React.CSSProperties & {
+      '&:hover'?: React.CSSProperties
+    }
     postTitle?: React.CSSProperties
     postBody?: React.CSSProperties
     postDate?: React.CSSProperties
@@ -48,6 +54,7 @@ declare module '@mui/material/Typography' {
     button3: true
     crossroadButton: true
     seminarButton: true
+    inlineLink: true
     postTitle: true
     postBody: true
     postDate: true
@@ -158,6 +165,16 @@ const _theme = createTheme({
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
+    },
+    inlineLink: {
+      ...font.style,
+      fontWeight: 800,
+      fontStyle: 'italic',
+      textDecoration: 'underline',
+      '&:hover': {
+        textDecoration: 'none',
+      },
+      color: colors.black,
     },
     postTitle: {
       ...font.style,

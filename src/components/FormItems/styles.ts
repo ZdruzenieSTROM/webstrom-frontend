@@ -1,15 +1,17 @@
+import {colors} from '@/colors'
+
 export const formItemStyle = {
   '.MuiFormHelperText-contained': {
     color: 'black !important',
     textTransform: 'uppercase',
   },
   '.MuiInputLabel-root.Mui-error': {
-    color: 'white',
+    color: colors.white,
   },
   '.MuiInputLabel-root.MuiInputLabel-shrink': {
-    color: 'black',
+    color: colors.black,
     fontWeight: 'bold',
-    background: 'white',
+    background: colors.white,
     padding: '0 10px 0 5px',
     marginLeft: '-1px',
   },
@@ -20,15 +22,15 @@ export const formItemStyle = {
     borderRadius: 0,
   },
   '.MuiOutlinedInput-root.Mui-error': {
-    color: 'white',
-    background: 'black',
+    color: colors.white,
+    background: colors.black,
   },
   '.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline': {
-    borderColor: 'black',
+    borderColor: colors.black,
   },
   '.MuiOutlinedInput-notchedOutline': {
     borderWidth: '5px',
-    borderColor: 'black',
+    borderColor: colors.black,
     fontWeight: 'bold',
   },
 }

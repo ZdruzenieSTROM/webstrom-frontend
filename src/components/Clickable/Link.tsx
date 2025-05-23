@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 import {ComponentProps, FC, ReactNode} from 'react'
 
 import {buttonInnerSx, getButtonWrapperSx} from './buttonStyles'
+import {isExternalLink} from './isExternalLink'
 
 type LinkProps = {
   href?: string
@@ -25,14 +26,9 @@ export const Link: FC<LinkProps> = ({
   active,
   sx,
   textSx,
-  prefetch: overridePrefetch,
+  prefetch,
 }) => {
-  // https://nextjs.org/docs/pages/api-reference/components/link#prefetch
-  // by default, next.js prefetchuje stranky vsetkych linkov vo viewporte. pre media PDFka je to zbytocne heavy.
-  // inak aj pri `false` sa stale prefetchne pri hoveri, co je acceptable.
-  const isMedia = href?.startsWith('/media')
-  const defaultPrefetch = !isMedia
-  const prefetch = overridePrefetch ?? defaultPrefetch
+  const isExternal = isExternalLink(href)
 
   if (disabled) {
     return (
@@ -62,7 +58,7 @@ export const Link: FC<LinkProps> = ({
   return (
     // tento wrapper je tu kvoli lepsej kontrole paddingov atd.
     <Box
-      component={NextLink}
+      component={isExternal ? 'a' : NextLink}
       href={href ?? ''}
       target={target}
       prefetch={prefetch}

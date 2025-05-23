@@ -89,7 +89,7 @@ export const RegisterForm: FC = () => {
     // TODO: show alert/toast and redirect to homepage instead of redirect to info page
     onSuccess: () =>
       alert(
-        'Verifikačný e-mail bol odoslaný na zadanú e-mailovú adresu. Ak ho do pár minút neuvidíš, skontroluj, či ti náhodou neprišiel do priečinku spam',
+        'Verifikačný e-mail bol odoslaný na zadanú e-mailovú adresu. Ak ho do pár minút neuvidíš, skontroluj, či ti náhodou neprišiel do priečinku spam.',
         {
           title: 'Registrácia',
           onCloseCallback: () => {

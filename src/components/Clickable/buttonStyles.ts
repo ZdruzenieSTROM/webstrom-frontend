@@ -1,5 +1,7 @@
 import {SxProps, Theme} from '@mui/material'
 
+import {colors} from '@/colors'
+
 export const getButtonWrapperSx = ({
   invertColors,
   disabled,
@@ -21,13 +23,13 @@ export const getButtonWrapperSx = ({
     bgcolor: 'var(--bgcolor)',
     color: 'var(--color)',
     borderColor: 'var(--color)',
-    '--bgcolor': invert ? 'black' : 'white',
-    '--color': disabled ? '#ccc' : invert ? 'white' : 'black',
+    '--bgcolor': invert ? colors.black : colors.white,
+    '--color': disabled ? colors.gray : invert ? colors.white : colors.black,
     '&:hover': active
       ? {}
       : {
-          '--bgcolor': disabled ? '#ccc' : invert ? 'white' : 'black',
-          '--color': disabled ? 'white' : invert ? 'black' : 'white',
+          '--bgcolor': disabled ? colors.gray : invert ? colors.white : colors.black,
+          '--color': disabled ? colors.white : invert ? colors.black : colors.white,
         },
     px: '10px',
     pb: '4px',

@@ -1,18 +1,16 @@
 import {Box, Typography} from '@mui/material'
 import {FC, JSX, ReactNode} from 'react'
 
-import {Link} from '../Clickable/Link'
+import {colors} from '@/colors'
+
+import {InlineLink} from '../Clickable/InlineLink'
 
 type MarkdownLinkProps = {
   children: ReactNode[]
   href?: string
 }
 
-export const MarkdownLink: FC<MarkdownLinkProps> = ({children, href}) => (
-  <Link variant="button2" href={href}>
-    {children}
-  </Link>
-)
+export const MarkdownLink: FC<MarkdownLinkProps> = ({children, href}) => <InlineLink href={href}>{children}</InlineLink>
 
 export const Table: FC<JSX.IntrinsicElements['table']> = ({children}) => (
   <Box component="table" sx={{textAlign: 'center'}}>
@@ -25,8 +23,8 @@ export const Th: FC<JSX.IntrinsicElements['th']> = ({children}) => (
     component="th"
     sx={{
       padding: '3px 1.5vw',
-      bgcolor: 'black',
-      color: 'white',
+      bgcolor: colors.black,
+      color: colors.white,
     }}
   >
     <Typography variant="h3" component="span">
