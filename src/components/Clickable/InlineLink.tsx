@@ -2,7 +2,7 @@ import {Box, SxProps, Theme, Typography} from '@mui/material'
 import NextLink from 'next/link'
 import {ComponentProps, FC, ReactNode} from 'react'
 
-import {getDefaultLinkPrefetch} from './getDefaultLinkPrefetch'
+import {isExternalLink} from './isExternalLink'
 
 type InlineLinkProps = {
   href?: string
@@ -11,12 +11,11 @@ type InlineLinkProps = {
   textSx?: SxProps<Theme>
 } & Pick<ComponentProps<typeof NextLink>, 'target' | 'prefetch'>
 
-export const InlineLink: FC<InlineLinkProps> = ({children, href, target, sx, textSx, prefetch: overridePrefetch}) => {
-  const defaultPrefetch = getDefaultLinkPrefetch(href)
-  const prefetch = overridePrefetch ?? defaultPrefetch
+export const InlineLink: FC<InlineLinkProps> = ({children, href, target, sx, textSx, prefetch}) => {
+  const isExternal = isExternalLink(href)
 
   return (
-    <Box component={NextLink} href={href ?? ''} target={target} prefetch={prefetch} sx={sx}>
+    <Box component={isExternal ? 'a' : NextLink} href={href ?? ''} target={target} prefetch={prefetch} sx={sx}>
       <Typography variant="inlineLink" sx={textSx}>
         {children}
       </Typography>

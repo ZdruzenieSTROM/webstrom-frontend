@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import {ComponentProps, FC, ReactNode} from 'react'
 
 import {buttonInnerSx, getButtonWrapperSx} from './buttonStyles'
-import {getDefaultLinkPrefetch} from './getDefaultLinkPrefetch'
+import {isExternalLink} from './isExternalLink'
 
 type LinkProps = {
   href?: string
@@ -26,10 +26,9 @@ export const Link: FC<LinkProps> = ({
   active,
   sx,
   textSx,
-  prefetch: overridePrefetch,
+  prefetch,
 }) => {
-  const defaultPrefetch = getDefaultLinkPrefetch(href)
-  const prefetch = overridePrefetch ?? defaultPrefetch
+  const isExternal = isExternalLink(href)
 
   if (disabled) {
     return (
@@ -59,7 +58,7 @@ export const Link: FC<LinkProps> = ({
   return (
     // tento wrapper je tu kvoli lepsej kontrole paddingov atd.
     <Box
-      component={NextLink}
+      component={isExternal ? 'a' : NextLink}
       href={href ?? ''}
       target={target}
       prefetch={prefetch}
