@@ -13,6 +13,7 @@ import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useProfile} from '@/utils/useProfile'
 
+import {InlineLink} from '../Clickable/InlineLink'
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 import {LoginForm} from '../PageLayout/LoginForm/LoginForm'
@@ -157,9 +158,7 @@ export const Problems: FC = () => {
             <Typography variant="body1" display="inline-flex" mr={0.5}>
               Ak si nevieš poradiť s niektorou z úloh, pozri si
             </Typography>
-            <Link variant="button2" href={`/${seminar}/ako-riesit`}>
-              pár tipov
-            </Link>
+            <InlineLink href={`/${seminar}/ako-riesit`}>pár tipov</InlineLink>.
           </Stack>
           <Link variant="button2" href={rulesLink}>
             Pravidlá
