@@ -125,6 +125,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                   <Stack gap={1} direction="row" justifyContent={'space-between'}>
                     <Typography variant="h3" component="span">
                       {comment.posted_by_name}
+                      {comment.from_staff ? ' (Vedúci)' : ''}
                     </Typography>
                     <Typography variant="body2" fontWeight={275} textTransform="uppercase">
                       {formatDateTime(comment.posted_at)}
