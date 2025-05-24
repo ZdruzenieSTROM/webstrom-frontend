@@ -188,7 +188,11 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                 onChange={handleCommentChange}
               />
               <Stack alignSelf="end">
-                <Button variant="button2" onClick={() => addComment()} disabled={isPending}>
+                <Button
+                  variant="button2"
+                  onClick={() => addComment()}
+                  disabled={isPending || commentText === '' || commentText == null}
+                >
                   Odoslať
                 </Button>
               </Stack>
