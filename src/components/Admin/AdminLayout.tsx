@@ -1,12 +1,11 @@
 import {Home, Logout} from '@mui/icons-material/'
 import {Button, Stack, Typography} from '@mui/material'
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
-import {useRouter} from 'next/router'
+import Link from 'next/link'
 import {FC, PropsWithChildren} from 'react'
 import {AppBar, Layout, ToggleThemeButton, useLogout, useTranslate} from 'react-admin'
 
 const AppMenuBar = () => {
-  const router = useRouter()
   const logout = useLogout()
   const translate = useTranslate()
   return (
@@ -15,7 +14,7 @@ const AppMenuBar = () => {
       position="relative"
       toolbar={
         <Stack gap={2} direction="row">
-          <Button color="inherit" onClick={() => router.push('/strom')}>
+          <Button component={Link} color="inherit" href="/strom">
             <Stack gap={1} direction="row">
               <Home />
               <Typography variant="body1">{translate('controls.back_home')}</Typography>
