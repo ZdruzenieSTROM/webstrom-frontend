@@ -74,7 +74,7 @@
     "eslint-plugin-unicorn": "^56.0.1",
     "prettier": "^3.5.3"
   },
-  "packageManager": "yarn@4.5.3",
+  "packageManager": "yarn@4.9.1",
   "resolutions": {
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
