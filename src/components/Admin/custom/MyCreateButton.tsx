@@ -23,7 +23,7 @@ export const MyCreateButton: FC<MyCreateButtonProps> = ({
     <Button
       component={Link}
       label={translate(label)}
-      to={path({resource, type: 'create'}) + `?parent_id=${context.record.id}`}
+      to={`${path({resource, type: 'create'})}?parent_id=${context.record.id}`}
       {...rest}
     >
       {icon}
