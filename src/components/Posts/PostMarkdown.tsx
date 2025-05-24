@@ -12,24 +12,28 @@ type PostMarkdownProps = {
   content: string
 }
 
-export const PostMarkdown: FC<PostMarkdownProps> = ({content}) => (
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm, remarkMath]}
-    rehypePlugins={[rehypeKatex]}
-    components={{
-      a: MarkdownLink,
-      p: Paragraph,
-      h1: Header,
-      h2: Header,
-      h3: Header,
-      h4: Header,
-      h5: Header,
-      h6: Header,
-      ol: Ol,
-      ul: Ul,
-    }}
-    disallowedElements={['table']}
-  >
-    {content}
-  </ReactMarkdown>
-)
+export const PostMarkdown: FC<PostMarkdownProps> = ({content}) => {
+  const clean = (value: string) => value.replaceAll(/\\\(|\\\)/g, '$').replaceAll(/\\\[|\\]/g, '$$')
+
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[rehypeKatex]}
+      components={{
+        a: MarkdownLink,
+        p: Paragraph,
+        h1: Header,
+        h2: Header,
+        h3: Header,
+        h4: Header,
+        h5: Header,
+        h6: Header,
+        ol: Ol,
+        ul: Ul,
+      }}
+      disallowedElements={['table']}
+    >
+      {clean(content)}
+    </ReactMarkdown>
+  )
+}
