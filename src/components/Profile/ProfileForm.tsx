@@ -79,7 +79,7 @@ export const ProfileForm: FC = () => {
 
   const {mutate: submitFormData} = useMutation({
     mutationFn: (data: ProfileFormValues) => {
-      return apiAxios.put<IGeneralPostResponse>(`/user/user`, transformFormData(data))
+      return apiAxios.patch<IGeneralPostResponse>(`/user/user`, transformFormData(data))
     },
     onSuccess: () => router.push(`/${seminar}/profil`),
   })
