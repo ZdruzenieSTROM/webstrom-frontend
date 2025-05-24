@@ -280,9 +280,12 @@ export const ProblemAdministration: FC = () => {
               <div>
                 {solution.semester_registration?.profile.first_name} {solution.semester_registration?.profile.last_name}
                 {solution.late_tag ? (
-                  <Tooltip title={solution.late_tag?.comment}>
-                    <span>&nbsp;({solution.late_tag.name})</span>
-                  </Tooltip>
+                  <>
+                    {' '}
+                    <Tooltip title={solution.late_tag?.comment}>
+                      <span>({solution.late_tag.name})</span>
+                    </Tooltip>
+                  </>
                 ) : (
                   ''
                 )}
