@@ -1,8 +1,10 @@
+import { FilterSidebar } from '@/components/Admin/custom/list-filtering/FilterSidebar'
+import { GradeFilterSection } from '@/components/Admin/custom/list-filtering/GradeFilterSection'
 import {FC} from 'react'
 import {Datagrid, List, ReferenceField, TextField} from 'react-admin'
 
 export const ProfileList: FC = () => (
-  <List>
+  <List aside={<ProfileListFilters />}>
     <Datagrid>
       <TextField source="first_name" />
       <TextField source="last_name" />
@@ -13,3 +15,5 @@ export const ProfileList: FC = () => (
     </Datagrid>
   </List>
 )
+
+const ProfileListFilters: FC = () => <FilterSidebar />
