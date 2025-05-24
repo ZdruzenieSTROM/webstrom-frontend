@@ -261,6 +261,7 @@ const _theme = createTheme({
           button3: 'span',
           crossroadButton: 'span',
           seminarButton: 'span',
+          inlineLink: 'span',
           postTitle: 'h1',
           postBody: 'span',
           postDate: 'span',
@@ -428,6 +429,16 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(18)},
       [lg]: {fontSize: pxToRem(22)},
       [xl]: {fontSize: pxToRem(30)},
+      lineHeight: 1.5,
+    },
+    inlineLink: {
+      ..._theme.typography.inlineLink,
+      // original Figma fontSize: 20px (matching body1)
+      fontSize: pxToRem(13),
+      [sm]: {fontSize: pxToRem(13)},
+      [md]: {fontSize: pxToRem(13)},
+      [lg]: {fontSize: pxToRem(16)},
+      [xl]: {fontSize: pxToRem(20)},
       lineHeight: 1.5,
     },
     postTitle: {
