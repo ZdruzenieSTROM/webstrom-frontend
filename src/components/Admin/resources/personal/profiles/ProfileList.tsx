@@ -1,7 +1,7 @@
-import { FilterSidebar } from '@/components/Admin/custom/list-filtering/FilterSidebar'
-import { GradeFilterSection } from '@/components/Admin/custom/list-filtering/GradeFilterSection'
 import {FC} from 'react'
 import {Datagrid, List, ReferenceField, TextField} from 'react-admin'
+
+import {FilterSidebar} from '@/components/Admin/custom/list-filtering/FilterSidebar'
 
 export const ProfileList: FC = () => (
   <List aside={<ProfileListFilters />}>

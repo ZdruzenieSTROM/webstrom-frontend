@@ -1,6 +1,7 @@
-import { FilterSidebar } from '@/components/Admin/custom/list-filtering/FilterSidebar'
 import {FC} from 'react'
 import {BooleanField, Datagrid, FunctionField, List, RaRecord, ReferenceField} from 'react-admin'
+
+import {FilterSidebar} from '@/components/Admin/custom/list-filtering/FilterSidebar'
 
 export const SolutionList: FC = () => (
   <List aside={<SolutionListFilters />}>
