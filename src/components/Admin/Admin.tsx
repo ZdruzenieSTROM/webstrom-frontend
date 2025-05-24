@@ -42,6 +42,7 @@ import {SolutionEdit} from './resources/competition/solution/SolutionEdit'
 import {SolutionList} from './resources/competition/solution/SolutionList'
 import {SolutionShow} from './resources/competition/solution/SolutionShow'
 import {ProfileCreate} from './resources/personal/profiles/ProfileCreate'
+import {ProfileEdit} from './resources/personal/profiles/ProfileEdit'
 import {ProfileList} from './resources/personal/profiles/ProfileList'
 import {ProfileShow} from './resources/personal/profiles/ProfileShow'
 import {SchoolCreate} from './resources/personal/schools/SchoolCreate'
@@ -163,6 +164,7 @@ export const Admin: FC = () => {
         recordRepresentation="verbose_name"
         list={ProfileList}
         show={ProfileShow}
+        edit={ProfileEdit}
         create={ProfileCreate}
       />
       <Resource name="competition/late-tag" recordRepresentation="name" />
