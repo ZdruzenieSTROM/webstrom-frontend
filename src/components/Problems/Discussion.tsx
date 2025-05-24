@@ -48,7 +48,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
     ])
   }
 
-  const {mutate: addComment, isPending: isPending} = useMutation({
+  const {mutate: addComment, isPending} = useMutation({
     mutationFn: () => apiAxios.post(`/competition/problem/${problemId}/add-comment`, {text: commentText}),
     onSuccess: () => {
       setCommentText('')
@@ -188,11 +188,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                 onChange={handleCommentChange}
               />
               <Stack alignSelf="end">
-                <Button
-                  variant="button2"
-                  onClick={() => addComment()}
-                  disabled={isPending || !commentText}
-                >
+                <Button variant="button2" onClick={() => addComment()} disabled={isPending || !commentText}>
                   Odoslať
                 </Button>
               </Stack>
