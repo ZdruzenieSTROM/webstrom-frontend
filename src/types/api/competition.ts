@@ -142,7 +142,7 @@ export interface Solution {
   is_online: boolean
   problem: number
   semester_registration: number
-  late_tag: number | null
+  late_tag: LateTag | null
 }
 
 export interface SolutionAdministration {
