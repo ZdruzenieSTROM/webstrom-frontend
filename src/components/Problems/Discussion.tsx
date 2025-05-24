@@ -27,7 +27,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
     queryKey,
     queryFn: () => apiAxios.get<Comment[]>(`/competition/problem/${problemId}/comments`),
-    enabled: !!problemId,
+    enabled: problemId !== undefined,
   })
   const comments = commentsData?.data
 
