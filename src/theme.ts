@@ -179,6 +179,7 @@ const _theme = createTheme({
     postTitle: {
       ...font.style,
       fontWeight: 800,
+      textAlign: 'left',
     },
     postBody: {
       ...font.style,
