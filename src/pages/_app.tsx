@@ -5,6 +5,7 @@ import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import {isAxiosError} from 'axios'
 import {AppProps} from 'next/app'
 import Head from 'next/head'
+import {useRouter} from 'next/router'
 import {FC, PropsWithChildren, useMemo} from 'react'
 import {CookiesProvider} from 'react-cookie'
 
@@ -85,6 +86,9 @@ const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
 }
 
 const MyApp: FC<AppProps> = ({Component, pageProps}) => {
+  const router = useRouter()
+  const isAdminRoute = router.pathname.startsWith('/admin')
+
   return (
     <>
       <Head>
@@ -94,7 +98,8 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
       <AlertContainer.Provider>
         <ReactQueryProvider>
           <HydrationBoundary state={pageProps.dehydratedState}>
-            <ReactQueryDevtools />
+            {/* Admin defines its own DevTools because it also has its own queryClient */}
+            {!isAdminRoute && <ReactQueryDevtools />}
             <CookiesProvider>
               <AuthContainer.Provider>
                 <BannerAnimationContainer.Provider>

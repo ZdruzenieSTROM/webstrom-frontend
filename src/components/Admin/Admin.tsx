@@ -1,4 +1,5 @@
 import {deepmerge} from '@mui/utils'
+import {QueryClient} from '@tanstack/react-query'
 import {FC} from 'react'
 import {Admin as ReactAdmin, defaultDarkTheme, defaultLightTheme, RaThemeOptions, Resource} from 'react-admin'
 
@@ -65,11 +66,22 @@ const darkTheme = deepmerge(defaultDarkTheme, themeOverrides)
 export const Admin: FC = () => {
   const authProvider = useAuthProvider()
 
+  // https://marmelab.com/react-admin/Caching.html#application-cache
+  // data cachujeme 5 minut, aby sa nevolalo tolko zbytocnych BE requestov
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1 * 60 * 1000, // 1 minute
+      },
+    },
+  })
+
   return (
     <ReactAdmin
       authProvider={authProvider}
       dataProvider={dataProvider}
       i18nProvider={myI18nProvider}
+      queryClient={queryClient}
       layout={AdminLayout}
       theme={lightTheme}
       darkTheme={darkTheme}
