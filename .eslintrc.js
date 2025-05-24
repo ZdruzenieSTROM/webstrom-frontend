@@ -238,7 +238,7 @@ module.exports = {
 
     // Rules specific to test files
     {
-      files: ['*.spec.*', '*.e2e-spec.*'],
+      files: ['**/*.test.ts', '**/*.test.tsx'],
       env: {
         'jest/globals': true,
       },
@@ -260,13 +260,13 @@ module.exports = {
 
     // Rules specific to config files
     {
-      files: ['*.config.js'],
+      files: ['*.config.ts'],
       rules: {
         // Configuration files are kebab-cased and have the ".config" suffix
         'filenames/match-regex': ['warn', `^[a-z]+(-[a-z0-9]+)*\\.config$`],
 
         // In configuration files we can use dev dependencies
-        'node/no-unpublished-require': 'off',
+        'node/no-unpublished-import': 'off',
       },
     },
 
