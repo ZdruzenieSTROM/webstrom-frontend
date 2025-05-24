@@ -66,7 +66,7 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
           }}
         />
       </Dialog>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{width: '100%'}}>
         <Stack justifyContent="space-between" height="260px">
           <Stack gap={2}>
             <FormInput
