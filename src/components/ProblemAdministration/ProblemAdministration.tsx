@@ -244,7 +244,7 @@ export const ProblemAdministration: FC = () => {
             </Box>
           )}
           <FileUploader
-            uploadLink={`/api/competition/problem/${problemId}/upload-model-solution`}
+            uploadLink={`/competition/problem/${problemId}/upload-model-solution`}
             refetch={refetchProblem}
           />
         </Stack>
@@ -308,7 +308,7 @@ export const ProblemAdministration: FC = () => {
                     </Box>
                   )}
                   <FileUploader
-                    uploadLink={`/api/competition/solution/${solution.id}/upload-solution-file`}
+                    uploadLink={`/competition/solution/${solution.id}/upload-solution-file`}
                     refetch={() => updateSolution(index)}
                   />
                 </Box>
@@ -329,7 +329,7 @@ export const ProblemAdministration: FC = () => {
                     </Box>
                   )}
                   <FileUploader
-                    uploadLink={`/api/competition/solution/${solution.id}/upload-corrected-solution-file`}
+                    uploadLink={`/competition/solution/${solution.id}/upload-corrected-solution-file`}
                     refetch={() => updateCorrectedSolution(index)}
                   />
                 </Box>
