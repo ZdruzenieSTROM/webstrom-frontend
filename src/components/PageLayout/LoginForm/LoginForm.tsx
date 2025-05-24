@@ -36,10 +36,10 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
   const router = useRouter()
 
   const redirectClose = () => {
-    closeDialog()
-    if (router.asPath.endsWith('registracia')) {
+    if (router.asPath.endsWith('registracia') || router.asPath.includes('verify-email')) {
       router.push(`/${seminar}`)
     }
+    closeDialog()
   }
 
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
