@@ -3,32 +3,27 @@ import {FC} from 'react'
 
 import Strom from '@/svg/strom.svg'
 
+import {HeaderHeightContainer} from '../Header/HeaderHeightContainer'
+
 export const StromLogo: FC = () => {
+  const {height} = HeaderHeightContainer.useContainer()
+
   return (
     <Box
       sx={{
-        position: 'fixed',
-        // tieto cisla su take dost ad-hoc
-        // je potrebne doratat este podla toho ze ci sa zobrazuje alebo nezobrazuje baner
-        // taktiez pri sirke 900 - 1100px sa niektore nadpisy zalomuju a rozbijaju zarovnanie stromu
-        // - problem toho je ze to je rozlisenie vacsinu tabletov na vysku, takze to bude treba fixnut
-        top: {md: '213px', lg: '265px', xl: '301px'},
-        left: 0,
-        bottom: 0,
-        width: '25%',
-        paddingTop: 2,
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'end',
+        width: '100%',
         zIndex: -1,
       }}
     >
+      {/* TODO: vyriesit lepsie pre vysoke obrazovky :D nastavit nejak SVG ako background a nejake repeat-nieco? */}
       <Box>
-        <Strom width="100%" height="auto" preserveAspectRatio="xMaxYMin" />
+        <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" />
       </Box>
       <Box>
-        <Strom width="100%" height="auto" preserveAspectRatio="xMaxYMin" />
+        <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" />
+      </Box>
+      <Box>
+        <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" />
       </Box>
     </Box>
   )
