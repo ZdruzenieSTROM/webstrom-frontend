@@ -243,12 +243,17 @@ module.exports = {
       rules: {
         // In test files we can load modules that are not part of the production dependencies
         'node/no-unpublished-import': 'off',
+
+        'vitest/prefer-expect-assertions': [
+          'warn',
+          {onlyFunctionsWithExpectInCallback: true, onlyFunctionsWithAsyncKeyword: true},
+        ],
       },
     },
 
     // Rules specific to config files
     {
-      files: ['*.config.ts'],
+      files: ['*.config.ts', '*.config.mts'],
       rules: {
         // Configuration files are kebab-cased and have the ".config" suffix
         'filenames/match-regex': ['warn', `^[a-z]+(-[a-z0-9]+)*\\.config$`],
