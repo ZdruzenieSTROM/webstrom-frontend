@@ -36,7 +36,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   const {isAuthed} = AuthContainer.useContainer()
 
   const {profile} = useProfile()
-  const userId = profile?.id
+  const userId = profile?.user_id
 
   const queryClient = useQueryClient()
 
