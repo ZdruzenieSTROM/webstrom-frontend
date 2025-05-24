@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "start": "next start",
-    "build": "next build --turbopack",
+    "build": "next build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest"
