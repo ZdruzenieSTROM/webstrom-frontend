@@ -1,6 +1,6 @@
 import {Box, Stack, Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
-import {Dispatch, FC, SetStateAction, useEffect, useState} from 'react'
+import {Dispatch, FC, SetStateAction, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
 import {apiAxios} from '@/api/apiAxios'
@@ -50,23 +50,19 @@ export const UploadProblemForm: FC<{
     },
   })
 
-  const [files, setFiles] = useState<File | undefined>(undefined)
   const {fileRejections, getRootProps, getInputProps} = useDropzone({
     multiple: false,
     accept: Accept.Pdf,
     maxSize: 20 * 1024 * 1024, // 20MB in bytes
-    onDrop: (acceptedFiles) => !!acceptedFiles[0] && setFiles(acceptedFiles[0]),
+    onDrop: (acceptedFiles) => {
+      if (acceptedFiles[0]) {
+        const formData = new FormData()
+        formData.append('file', acceptedFiles[0])
+
+        uploadSolution(formData)
+      }
+    },
   })
-
-  useEffect(() => {
-    if (files) {
-      const formData = new FormData()
-      if (files) formData.append('file', files)
-
-      uploadSolution(formData)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files])
 
   const handleCloseButton = () => {
     setDisplayProblemUploadForm(false)
@@ -85,9 +81,7 @@ export const UploadProblemForm: FC<{
     ? 'Toto riešenie nahrávaš PO TERMÍNE. Nahraním nového riešenia prepíšeš svoje predošlé odovzdanie a pri hodnotení budeme zohľadnovať len toto nové riešenie.'
     : 'Nahraním nového riešenia prepíšeš svoje predošlé odovzdanie a pri hodnotení budeme zohľadnovať len toto nové riešenie.'
 
-  return isUploading ? (
-    <Loading />
-  ) : (
+  return (
     <Stack
       sx={{
         margin: '0px',
@@ -123,7 +117,9 @@ export const UploadProblemForm: FC<{
         }
       />
       <Box sx={{position: 'relative'}}>
-        {!files && (
+        {isUploading ? (
+          <Loading />
+        ) : (
           <>
             <CloseButton
               onClick={handleCloseButton}
