@@ -239,22 +239,10 @@ module.exports = {
     // Rules specific to test files
     {
       files: ['**/*.test.ts', '**/*.test.tsx'],
-      env: {
-        'jest/globals': true,
-      },
-      extends: ['plugin:jest/recommended', 'plugin:jest/style'],
+      extends: ['plugin:vitest/recommended'],
       rules: {
         // In test files we can load modules that are not part of the production dependencies
         'node/no-unpublished-import': 'off',
-
-        // Make sure that tests contain at least one assertion.
-        // Recognizes as assertion Jest's built-in "expect" and SuperTest's request().expect()
-        'jest/expect-expect': [
-          'warn',
-          {
-            assertFunctionNames: ['expect', 'request.*.expect'],
-          },
-        ],
       },
     },
 
