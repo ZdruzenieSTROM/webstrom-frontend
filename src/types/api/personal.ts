@@ -61,6 +61,7 @@ export interface SchoolProfile {
 
 export interface Profile {
   id: number
+  user_id: number
   first_name: string
   last_name: string
   email: string
