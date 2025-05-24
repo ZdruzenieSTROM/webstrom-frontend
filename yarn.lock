@@ -2614,13 +2614,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.60.6":
-  version: 5.60.6
-  resolution: "@tanstack/query-core@npm:5.60.6"
-  checksum: 10/a87613d85b3a280f2fef69037dd0ad512052d49b8dc979ed289ee538452d331926a720678bbd3b4485a8b38d5baf65c42869179f2fdeefa3f7b6dda04e878e56
-  languageName: node
-  linkType: hard
-
 "@tanstack/query-core@npm:5.77.0":
   version: 5.77.0
   resolution: "@tanstack/query-core@npm:5.77.0"
@@ -2647,7 +2640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.77.0":
+"@tanstack/react-query@npm:5.77.0, @tanstack/react-query@npm:^5.21.7":
   version: 5.77.0
   resolution: "@tanstack/react-query@npm:5.77.0"
   dependencies:
@@ -2655,17 +2648,6 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19
   checksum: 10/237cecedf8953804a92b45ec9e0304840535d10ab2dd39ae5d2047fe079d0d45183ee6ad2255368bf636899be19fe0c1c061a736fe27358c3e701b2d73083cdf
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:^5.21.7":
-  version: 5.61.0
-  resolution: "@tanstack/react-query@npm:5.61.0"
-  dependencies:
-    "@tanstack/query-core": "npm:5.60.6"
-  peerDependencies:
-    react: ^18 || ^19
-  checksum: 10/e98d1396cd157626f29fb0d0d10c75dbdde6e2efa55463540c9d8e33b58ec4b72eeb58b7d2eea6e625a8316235777f128222adeb10533ddfade77b23ec209872
   languageName: node
   linkType: hard
 
@@ -2919,12 +2901,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:types-react-dom@19.0.0-rc.1":
-  version: 19.0.0-rc.1
-  resolution: "types-react-dom@npm:19.0.0-rc.1"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10/fca4e7565308a109d4b126e5c7f5c387789a0187c9a46cb2a5af6120a7014beaa05736841be0ae658c7115871088500ddb0ef0bce60a21af4ec899cee8bb3c75
+"@types/react-dom@npm:^19.1.5":
+  version: 19.1.5
+  resolution: "@types/react-dom@npm:19.1.5"
+  peerDependencies:
+    "@types/react": ^19.0.0
+  checksum: 10/1bbfb77aa8b40ae1b3e2d90a3cd29987aa244a34a0e398828266276eb3f83810d10ed6cb1fddaf1469653bbe7243d9b75f6e245c21c8bb6224169c48bedfa536
   languageName: node
   linkType: hard
 
@@ -2967,12 +2949,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:types-react@19.0.0-rc.1":
-  version: 19.0.0-rc.1
-  resolution: "types-react@npm:19.0.0-rc.1"
+"@types/react@npm:*, @types/react@npm:^19.1.5":
+  version: 19.1.5
+  resolution: "@types/react@npm:19.1.5"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10/342da9ffeab93600a0cff4c8829e5350d935577e3f81bce7ead41d7cd074035e2c4a4bdd976fa8e3f5390fe6a32169370a805291a88a77c2f2ce2613bde54587
+  checksum: 10/ea007c6c3a7afc42421d2cc260446de9e949513cb1261e0e5cf856108afe6e8d53ed51dc26c522a364e4927450092deea68b0423c68f3a22c26dae3fac1363a5
   languageName: node
   linkType: hard
 
