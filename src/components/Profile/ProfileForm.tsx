@@ -12,6 +12,7 @@ import {useProfile} from '@/utils/useProfile'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Button'
+import {InlineLink} from '../Clickable/InlineLink'
 import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
 interface ProfileFormValues extends SchoolSubFormValues {
@@ -68,8 +69,6 @@ export const ProfileForm: FC = () => {
 
   const transformFormData = (data: ProfileFormValues) => ({
     profile: {
-      first_name: data.first_name,
-      last_name: data.last_name,
       school: data.school?.id,
       phone: data.phone?.replaceAll(/\s+/gu, ''),
       parent_phone: data.parent_phone?.replaceAll(/\s+/gu, ''),
@@ -102,10 +101,14 @@ export const ProfileForm: FC = () => {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack gap={5}>
-        <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
-        <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
-        <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={5} />
+      <Stack gap={2}>
+        <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} disabled={true} />
+        <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} disabled={true} />
+        <p style={{fontWeight: 'bold', textAlign: 'left'}}>
+          Pre zmenu mena a priezviska nám napíšte na:{' '}
+          <InlineLink href="mailto:webmaster@strom.sk">webmaster@strom.sk</InlineLink>
+        </p>
+        <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={2} />
         <FormInput control={control} name="phone" label="telefónne číslo" rules={phoneRule} />
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <p style={{fontWeight: 'bold'}}>* takto označené polia sú povinné</p>

@@ -12,6 +12,7 @@ export const FormInput = <
   label,
   type,
   rules,
+  sx,
   ...props
 }: TextFieldProps &
   Pick<ControllerProps<TFieldValues, TName>, 'name' | 'control' | 'rules'> & {
@@ -38,7 +39,7 @@ export const FormInput = <
           )
         }
         focused={false}
-        sx={formItemStyle}
+        sx={{...formItemStyle, ...sx}}
         {...props}
       />
     )}
