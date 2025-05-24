@@ -267,82 +267,79 @@ export const ProblemAdministration: FC = () => {
           </>
         )}
 
-        <form>
-          <Box sx={styles.table}>
-            <Box sx={styles.tableHeader}>
-              <div>Riešiteľ</div>
-              <Box sx={styles.centerCell}>Body</Box>
-              <Box sx={styles.centerCell}>Riešenie</Box>
-              <Box sx={styles.centerCell}>Opravené</Box>
-            </Box>
-            {solutions?.map((solution, index) => (
-              <Box key={solution.id} sx={styles.tableRow}>
-                <div>
-                  {solution.semester_registration?.profile.first_name}{' '}
-                  {solution.semester_registration?.profile.last_name}
-                </div>
-                <Box sx={styles.centerCell}>
-                  <Box
-                    component="input"
-                    type="text"
-                    pattern="[0-9]"
-                    value={solution.score ?? ''}
-                    onChange={(event) => updatePoints(index, event.target.value)}
-                    sx={styles.input}
-                  />
-                </Box>
-                <Box sx={styles.centerCell}>
-                  {solution.solution ? (
-                    <Box
-                      component="a"
-                      href={`/api/competition/solution/${solution.id}/file-solution`}
-                      target="_blank"
-                      rel="noreferrer"
-                      sx={styles.icon}
-                    >
-                      <FormatAlignJustify />
-                    </Box>
-                  ) : (
-                    <Box sx={styles.iconDisabled}>
-                      <FormatAlignJustify />
-                    </Box>
-                  )}
-                  <FileUploader
-                    uploadLink={`/competition/solution/${solution.id}/upload-solution-file`}
-                    refetch={() => updateSolution(index)}
-                  />
-                </Box>
-                <Box sx={styles.centerCell}>
-                  {solution.corrected_solution ? (
-                    <Box
-                      component="a"
-                      href={`/api/competition/solution/${solution.id}/file-corrected`}
-                      target="_blank"
-                      rel="noreferrer"
-                      sx={styles.icon}
-                    >
-                      <Grading />
-                    </Box>
-                  ) : (
-                    <Box sx={styles.iconDisabled}>
-                      <Grading />
-                    </Box>
-                  )}
-                  <FileUploader
-                    uploadLink={`/competition/solution/${solution.id}/upload-corrected-solution-file`}
-                    refetch={() => updateCorrectedSolution(index)}
-                  />
-                </Box>
-              </Box>
-            ))}
+        <Box sx={styles.table}>
+          <Box sx={styles.tableHeader}>
+            <div>Riešiteľ</div>
+            <Box sx={styles.centerCell}>Body</Box>
+            <Box sx={styles.centerCell}>Riešenie</Box>
+            <Box sx={styles.centerCell}>Opravené</Box>
           </Box>
+          {solutions?.map((solution, index) => (
+            <Box key={solution.id} sx={styles.tableRow}>
+              <div>
+                {solution.semester_registration?.profile.first_name} {solution.semester_registration?.profile.last_name}
+              </div>
+              <Box sx={styles.centerCell}>
+                <Box
+                  component="input"
+                  type="text"
+                  pattern="[0-9]"
+                  value={solution.score ?? ''}
+                  onChange={(event) => updatePoints(index, event.target.value)}
+                  sx={styles.input}
+                />
+              </Box>
+              <Box sx={styles.centerCell}>
+                {solution.solution ? (
+                  <Box
+                    component="a"
+                    href={`/api/competition/solution/${solution.id}/file-solution`}
+                    target="_blank"
+                    rel="noreferrer"
+                    sx={styles.icon}
+                  >
+                    <FormatAlignJustify />
+                  </Box>
+                ) : (
+                  <Box sx={styles.iconDisabled}>
+                    <FormatAlignJustify />
+                  </Box>
+                )}
+                <FileUploader
+                  uploadLink={`/competition/solution/${solution.id}/upload-solution-file`}
+                  refetch={() => updateSolution(index)}
+                />
+              </Box>
+              <Box sx={styles.centerCell}>
+                {solution.corrected_solution ? (
+                  <Box
+                    component="a"
+                    href={`/api/competition/solution/${solution.id}/file-corrected`}
+                    target="_blank"
+                    rel="noreferrer"
+                    sx={styles.icon}
+                  >
+                    <Grading />
+                  </Box>
+                ) : (
+                  <Box sx={styles.iconDisabled}>
+                    <Grading />
+                  </Box>
+                )}
+                <FileUploader
+                  uploadLink={`/competition/solution/${solution.id}/upload-corrected-solution-file`}
+                  refetch={() => updateCorrectedSolution(index)}
+                />
+              </Box>
+            </Box>
+          ))}
+        </Box>
 
-          <Stack alignItems="end" mt={1.5}>
-            <Button variant="button2" onClick={handleSavePoints}>
-              Uložiť body
-            </Button>
-          </Stack>
-        </form>
+        <Stack alignItems="end" mt={1.5}>
+          <Button variant="button2" onClick={handleSavePoints}>
+            Uložiť body
+          </Button>
+        </Stack>
       </Stack>
     </>
   )
