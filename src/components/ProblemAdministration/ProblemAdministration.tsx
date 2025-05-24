@@ -1,5 +1,6 @@
 import {FormatAlignJustify, Grading} from '@mui/icons-material'
 import {Box, Stack, Typography} from '@mui/material'
+import Tooltip from '@mui/material/Tooltip'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
 import {useRouter} from 'next/router'
@@ -278,6 +279,13 @@ export const ProblemAdministration: FC = () => {
             <Box key={solution.id} sx={styles.tableRow}>
               <div>
                 {solution.semester_registration?.profile.first_name} {solution.semester_registration?.profile.last_name}
+                {solution.late_tag ? (
+                  <Tooltip title={solution.late_tag?.comment}>
+                    <span>&nbsp;({solution.late_tag.name})</span>
+                  </Tooltip>
+                ) : (
+                  ''
+                )}
               </div>
               <Box sx={styles.centerCell}>
                 <Box

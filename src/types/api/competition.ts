@@ -149,7 +149,7 @@ export interface SolutionAdministration {
   corrected_solution?: string | null
   solution?: string | null
   vote: number | null
-  late_tag: number | null
+  late_tag: LateTag | null
   score: number | null
   semester_registration?: EventRegistration
   is_online: boolean
@@ -223,6 +223,7 @@ export interface LateTag {
   name: string
   slug: string
   upper_bound: string
+  comment: string
 }
 
 export interface Grade {
