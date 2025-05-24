@@ -13,22 +13,21 @@ import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 
 interface DiscussionProps {
-  problemId: number
-  problemNumber: number
-  closeDiscussion: () => void
+  problemId?: number
   invalidateSeriesQuery: () => Promise<void>
 }
 
 export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuery}) => {
   const [commentText, setCommentText] = useState('')
   const [hiddenResponseText, setHiddenResponseText] = useState('')
-  const [hiddenResponseDialogId, sethiddenResponseDialogId] = useState(-1)
+  const [hiddenResponseDialogId, sethiddenResponseDialogId] = useState<number>()
   const [deleteDialogId, setDeleteDialogId] = useState<number | undefined>()
 
   const queryKey = ['competition', 'problem', problemId, 'comments']
   const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
     queryKey,
     queryFn: () => apiAxios.get<Comment[]>(`/competition/problem/${problemId}/comments`),
+    enabled: problemId !== undefined,
   })
   const comments = commentsData?.data
 
@@ -69,7 +68,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
       apiAxios.post(`/competition/comment/${id}/hide`, {hidden_response: hiddenResponseText}),
     onSuccess: () => {
       invalidateCommentsAndCount()
-      sethiddenResponseDialogId(-1)
+      sethiddenResponseDialogId(undefined)
       setHiddenResponseText('')
     },
   })
