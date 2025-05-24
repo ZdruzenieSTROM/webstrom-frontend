@@ -110,6 +110,7 @@ const _theme = createTheme({
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
+      textAlign: 'left',
     },
     h2: {
       ...font.style,
