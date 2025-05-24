@@ -1,5 +1,14 @@
 import {FC} from 'react'
-import {AutocompleteInput, FileInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput} from 'react-admin'
+import {
+  AutocompleteInput,
+  FileInput,
+  NumberInput,
+  ReferenceInput,
+  required,
+  SelectInput,
+  SimpleForm,
+  TextInput,
+} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
@@ -22,6 +31,7 @@ export const PublicationEdit: FC = () => (
       <ReferenceInput source="publication_type" reference="competition/publication-type">
         <SelectInput />
       </ReferenceInput>
+      <NumberInput source="order" />
       <FileInput source="file" maxSize={10_485_760} accept={Accept.Pdf} isRequired={true}>
         <MyFileField />
       </FileInput>

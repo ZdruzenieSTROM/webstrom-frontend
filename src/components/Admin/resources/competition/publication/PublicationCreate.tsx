@@ -36,10 +36,10 @@ export const PublicationCreate: FC = () => {
             defaultValue={searchParams.get('parent_id')}
           />
         </ReferenceInput>
-        <NumberInput source="order" />
         <ReferenceInput source="publication_type" reference="competition/publication-type">
           <SelectInput />
         </ReferenceInput>
+        <NumberInput source="order" />
         <FileInput source="file" maxSize={10_485_760} accept={Accept.Pdf} isRequired={true}>
           <MyFileField />
         </FileInput>

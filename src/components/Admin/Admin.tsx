@@ -31,6 +31,8 @@ import {ProblemList} from './resources/competition/problems/ProblemList'
 import {ProblemShow} from './resources/competition/problems/ProblemShow'
 import {PublicationCreate} from './resources/competition/publication/PublicationCreate'
 import {PublicationEdit} from './resources/competition/publication/PublicationEdit'
+import {PublicationList} from './resources/competition/publication/PublicationList'
+import {PublicationShow} from './resources/competition/publication/PublicationShow'
 import {SemesterCreate} from './resources/competition/semester/SemesterCreate'
 import {SemesterEdit} from './resources/competition/semester/SemesterEdit'
 import {SemesterList} from './resources/competition/semester/SemesterList'
@@ -179,6 +181,8 @@ export const Admin: FC = () => {
       <Resource
         name="competition/publication"
         recordRepresentation="verbose_name"
+        list={PublicationList}
+        show={PublicationShow}
         edit={PublicationEdit}
         create={PublicationCreate}
       />
