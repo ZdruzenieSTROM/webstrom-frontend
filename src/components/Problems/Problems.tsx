@@ -179,11 +179,13 @@ export const Problems: FC = () => {
         {problems.map((problem) => (
           <Problem
             key={problem.id}
+            seminar={seminar}
             problem={problem}
             openDiscussion={openDiscussion}
             registered={isRegistered}
             canRegister={canRegister}
             canSubmit={problem.submitted ? canResubmit : canSubmit}
+            canCorrect={hasPermissions}
             isAfterDeadline={isAfterDeadline}
             invalidateSeriesQuery={invalidateSeriesQuery}
             displayRegisterDialog={() => setDisplayRegisterDialog(true)}

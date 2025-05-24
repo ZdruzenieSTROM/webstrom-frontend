@@ -6,6 +6,7 @@ import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {Problem as ProblemType} from '@/types/api/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
+import {Seminar} from '@/utils/useSeminarInfo'
 
 import {Markdown} from '../Markdown/Markdown'
 import {UploadProblemForm} from './UploadProblemForm'
@@ -16,21 +17,25 @@ export type DiscussionProblem = {
 }
 
 export const Problem: FC<{
+  seminar: Seminar
   problem: ProblemType
   openDiscussion: (problem: DiscussionProblem) => void
   registered: boolean
   canRegister: boolean
   canSubmit: boolean
+  canCorrect: boolean
   isAfterDeadline: boolean
   invalidateSeriesQuery: () => Promise<void>
   displayRegisterDialog: () => void
   displayLoginDialog: () => void
 }> = ({
+  seminar,
   problem,
   registered,
   openDiscussion,
   canRegister,
   canSubmit,
+  canCorrect,
   isAfterDeadline,
   invalidateSeriesQuery,
   displayRegisterDialog,
@@ -124,6 +129,11 @@ export const Problem: FC<{
                 {problem.submitted?.score != null ? ` (${problem.submitted.score} b)` : ''}
               </Link>
             </>
+          )}
+          {canCorrect && (
+            <Link href={`/${seminar}/admin/opravit-ulohu/${problem.id}`} disabled={false} variant="button2">
+              Opravovanie
+            </Link>
           )}
           <Button onClick={() => openDiscussion(problem)} variant="button2">
             diskusia ({problem.num_comments})
