@@ -1,6 +1,6 @@
 import {isAxiosError} from 'axios'
 import {stringify} from 'querystring'
-import {DataProvider, FilterPayload, /* PaginationPayload, */ SortPayload} from 'react-admin'
+import {DataProvider, FilterPayload, PaginationPayload, /* PaginationPayload, */ SortPayload} from 'react-admin'
 
 import {apiAxios} from '@/api/apiAxios'
 
@@ -9,11 +9,11 @@ const getFilterQuery = ({q, ...otherSearchParams}: FilterPayload) => ({
   search: q,
 })
 const getOrderingQuery = ({order, field}: SortPayload) => ({ordering: `${order === 'ASC' ? '' : '-'}${field}`})
-// TODO: pagination podla BE
-// const getPaginationQuery = ({page, perPage}: PaginationPayload) => ({
-//   offset: page,
-//   limit: perPage,
-// })
+
+const getPaginationQuery = ({page, perPage}: PaginationPayload) => ({
+  offset: (page - 1) * perPage,
+  limit: perPage,
+})
 
 /* field errors by mali byt zachytene uz FE validaciou, dumpujem do 'Nastala neznáma chyba' */
 const parseError = (error: unknown) => {
@@ -42,25 +42,26 @@ export const dataProvider: DataProvider = {
     const query = {
       ...(filter ? getFilterQuery(filter) : {}),
       ...(sort ? getOrderingQuery(sort) : {}),
-      // TODO: pagination podla BE
-      // ...getPaginationQuery(pagination),
+      ...(pagination ? getPaginationQuery(pagination) : {}),
     }
     const stringifiedQuery = stringify(query)
 
     try {
+      // return type dat sa lisi podla toho, ci je pouzita pagination. aktualne predpokladame, ze pagination pouzita je.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const {data} = await apiAxios.get<any[]>(`/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`)
+      const {data} = await apiAxios.get<{count: number; next: string | null; previous: string | null; results: any[]}>(
+        `/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`,
+      )
 
-      // client-side pagination
-      let pagedData = data
-      if (pagination) {
-        const {page, perPage} = pagination
-        pagedData = data.slice((page - 1) * perPage, page * perPage)
-      }
+      const {count, next, previous, results} = data
 
       return {
-        data: pagedData,
-        total: data.length,
+        data: results,
+        total: count,
+        pageInfo: {
+          hasNextPage: !!next,
+          hasPreviousPage: !!previous,
+        },
       }
     } catch (e) {
       throw new Error(parseError(e))
