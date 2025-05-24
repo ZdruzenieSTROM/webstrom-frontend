@@ -1,6 +1,5 @@
 import {FC} from 'react'
 import {ListButton, ShowButton, TopToolbar, useCreatePath, useRecordContext, useResourceContext} from 'react-admin'
-// eslint-disable-next-line node/no-extraneous-import
 import {useLocation} from 'react-router-dom'
 
 export const MyEditActions: FC = () => {
@@ -20,9 +19,9 @@ export const MyEditActions: FC = () => {
 
   return (
     <TopToolbar>
-      {/* the `to` prop is omitted from ShowButtonProps, but it's still being spread to underlying button.
-          we want to link to the specific show tab, not just resource show */}
-      {/* @ts-ignore */}
+      {/* TODO - UPDATE!: find better way - new RA version also memoizes ShowButton, and it doesn't take the `to` prop
+          as the args for that, meaning it doesn't rerender it when `to` changes */}
+      {/* @ts-expect-error - the `to` prop is omitted from ShowButtonProps, but it's still being spread to underlying button. we want to link to the specific show tab, not just resource show */}
       <ShowButton to={to} />
       <ListButton label="content.labels.back_to_list" />
     </TopToolbar>

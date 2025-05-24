@@ -1,6 +1,5 @@
 import {FC} from 'react'
 import {EditButton, ListButton, TopToolbar, useCreatePath, useRecordContext, useResourceContext} from 'react-admin'
-// eslint-disable-next-line node/no-extraneous-import
 import {useLocation} from 'react-router-dom'
 
 export const MyShowActions: FC = () => {
