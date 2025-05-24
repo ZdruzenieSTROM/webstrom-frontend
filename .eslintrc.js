@@ -239,7 +239,7 @@ module.exports = {
     // Rules specific to test files
     {
       files: ['**/*.test.ts', '**/*.test.tsx'],
-      extends: ['plugin:vitest/recommended'],
+      extends: ['plugin:vitest/all'],
       rules: {
         // In test files we can load modules that are not part of the production dependencies
         'node/no-unpublished-import': 'off',
