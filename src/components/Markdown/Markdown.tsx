@@ -3,7 +3,6 @@ import 'katex/dist/katex.min.css'
 import {FC} from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeKatex from 'rehype-katex'
-import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 
@@ -15,27 +14,31 @@ type MarkdownProps = {
 
 const Empty: FC = () => <></>
 
-export const Markdown: FC<MarkdownProps> = ({content}) => (
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm, remarkMath]}
-    rehypePlugins={[rehypeKatex, rehypeRaw]}
-    components={{
-      a: MarkdownLink,
-      table: Table,
-      th: Th,
-      td: Td,
-      p: P,
-      h1: H1,
-      h2: H2,
-      h3: H3,
-      h4: H3,
-      h5: H3,
-      h6: H3,
-      ol: Ol,
-      ul: Ul,
-      script: Empty,
-    }}
-  >
-    {content}
-  </ReactMarkdown>
-)
+export const Markdown: FC<MarkdownProps> = ({content}) => {
+  const clean = (value: string) => value.replaceAll(/\\\(|\\\)/g, '$').replaceAll(/\\\[|\\]/g, '$$')
+
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[rehypeKatex]}
+      components={{
+        a: MarkdownLink,
+        table: Table,
+        th: Th,
+        td: Td,
+        p: P,
+        h1: H1,
+        h2: H2,
+        h3: H3,
+        h4: H3,
+        h5: H3,
+        h6: H3,
+        ol: Ol,
+        ul: Ul,
+        script: Empty,
+      }}
+    >
+      {clean(content)}
+    </ReactMarkdown>
+  )
+}
