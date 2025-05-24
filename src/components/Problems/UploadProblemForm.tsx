@@ -6,13 +6,13 @@ import {useDropzone} from 'react-dropzone'
 import {apiAxios} from '@/api/apiAxios'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Accept} from '@/utils/dropzone-accept'
-import {niceBytes} from '@/utils/niceBytes'
 import {useAlert} from '@/utils/useAlert'
 
 import {Button} from '../Clickable/Button'
 import {Link} from '../Clickable/Link'
 import {Dialog} from '../Dialog/Dialog'
 import {FileDropZone} from '../FileDropZone/FileDropZone'
+import {Loading} from '../Loading/Loading'
 
 export const UploadProblemForm: FC<{
   problemId: number
@@ -31,7 +31,7 @@ export const UploadProblemForm: FC<{
 }) => {
   const {alert} = useAlert()
 
-  const {mutate: uploadSolution} = useMutation({
+  const {mutate: uploadSolution, isPending: isUploading} = useMutation({
     mutationFn: (formData: FormData) => apiAxios.post(`/competition/problem/${problemId}/upload-solution`, formData),
     onSuccess: (response) => {
       if (response.status === 201) {
@@ -45,28 +45,24 @@ export const UploadProblemForm: FC<{
           'Niečo sa ASI pokazilo, skontroluj, či bolo riešenie nahrané, a ak si technický typ, môžeš pozrieť chybu v konzole.',
         )
       }
+      setDisplayActions(true)
+      setDisplayProblemUploadForm(false)
     },
   })
 
-  const [files, setFiles] = useState<File | undefined>(undefined)
   const {fileRejections, getRootProps, getInputProps} = useDropzone({
     multiple: false,
     accept: Accept.Pdf,
-    onDrop: (acceptedFiles) => !!acceptedFiles[0] && setFiles(acceptedFiles[0]),
+    maxSize: 20 * 1024 * 1024, // 20MB in bytes
+    onDrop: (acceptedFiles) => {
+      if (acceptedFiles[0]) {
+        const formData = new FormData()
+        formData.append('file', acceptedFiles[0])
+
+        uploadSolution(formData)
+      }
+    },
   })
-
-  const handleSubmit = async () => {
-    const formData = new FormData()
-    if (files) formData.append('file', files)
-
-    uploadSolution(formData)
-    setDisplayActions(true)
-    setDisplayProblemUploadForm(false)
-  }
-
-  const handleRemoveSelection = () => {
-    setFiles(undefined)
-  }
 
   const handleCloseButton = () => {
     setDisplayProblemUploadForm(false)
@@ -121,7 +117,9 @@ export const UploadProblemForm: FC<{
         }
       />
       <Box sx={{position: 'relative'}}>
-        {!files && (
+        {isUploading ? (
+          <Loading />
+        ) : (
           <>
             <CloseButton
               onClick={handleCloseButton}
@@ -145,31 +143,12 @@ export const UploadProblemForm: FC<{
             </Typography>
           </>
         )}
-        {fileRejections.length > 0 && <span>Nahraný súbor musí byť vo formáte pdf.</span>}
-        {files?.name && (
-          <Box
-            sx={{
-              marginTop: '8px',
-              display: 'grid',
-              gridTemplateColumns: '1fr auto',
-            }}
-          >
-            <div>
-              <b>Súbor: </b>
-
-              <span>
-                {files.name} ({niceBytes(files.size)})
-              </span>
-            </div>
-            <Stack direction="row" sx={{marginTop: '0.5rem', justifyContent: 'flex-end', columnGap: '20px'}}>
-              <Button variant="button2" onClick={handleSubmit}>
-                Uložiť
-              </Button>
-              <Button variant="button2" onClick={handleRemoveSelection}>
-                Zrušiť
-              </Button>
-            </Stack>
-          </Box>
+        {fileRejections.length > 0 && (
+          <span>
+            {fileRejections[0]?.errors[0]?.code === 'file-too-large'
+              ? 'Súbor je príliš veľký. Maximálna povolená veľkosť je 20MB.'
+              : 'Nahraný súbor musí byť vo formáte pdf.'}
+          </span>
         )}
       </Box>
     </Stack>
