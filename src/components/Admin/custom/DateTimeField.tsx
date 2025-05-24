@@ -7,7 +7,7 @@ export const DateTimeField: FC<FieldProps> = ({source}) => (
     showTime={true}
     options={{
       timeZone: 'Europe/Bratislava',
-      hourCycle: 'h24',
+      hourCycle: 'h23',
       hour: '2-digit',
       minute: '2-digit',
       year: 'numeric',

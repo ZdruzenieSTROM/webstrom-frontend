@@ -238,35 +238,28 @@ module.exports = {
 
     // Rules specific to test files
     {
-      files: ['*.spec.*', '*.e2e-spec.*'],
-      env: {
-        'jest/globals': true,
-      },
-      extends: ['plugin:jest/recommended', 'plugin:jest/style'],
+      files: ['**/*.test.ts', '**/*.test.tsx'],
+      extends: ['plugin:vitest/all'],
       rules: {
         // In test files we can load modules that are not part of the production dependencies
         'node/no-unpublished-import': 'off',
 
-        // Make sure that tests contain at least one assertion.
-        // Recognizes as assertion Jest's built-in "expect" and SuperTest's request().expect()
-        'jest/expect-expect': [
+        'vitest/prefer-expect-assertions': [
           'warn',
-          {
-            assertFunctionNames: ['expect', 'request.*.expect'],
-          },
+          {onlyFunctionsWithExpectInCallback: true, onlyFunctionsWithAsyncKeyword: true},
         ],
       },
     },
 
     // Rules specific to config files
     {
-      files: ['*.config.js'],
+      files: ['*.config.ts', '*.config.mts'],
       rules: {
         // Configuration files are kebab-cased and have the ".config" suffix
         'filenames/match-regex': ['warn', `^[a-z]+(-[a-z0-9]+)*\\.config$`],
 
         // In configuration files we can use dev dependencies
-        'node/no-unpublished-require': 'off',
+        'node/no-unpublished-import': 'off',
       },
     },
 
