@@ -2640,7 +2640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.77.0, @tanstack/react-query@npm:^5.21.7":
+"@tanstack/react-query@npm:@tanstack/react-query@5.77.0":
   version: 5.77.0
   resolution: "@tanstack/react-query@npm:5.77.0"
   dependencies:
@@ -8110,16 +8110,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.53.0":
-  version: 7.53.2
-  resolution: "react-hook-form@npm:7.53.2"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10/172589ac5871bd41717e8c6bc4c825d149db88eb02e356a8fef4115615a56b21bf66ad16954575b1d6302ed265b8780f1975a2730d5aa10a53e412b56d9f72ca
-  languageName: node
-  linkType: hard
-
-"react-hook-form@npm:^7.56.4":
+"react-hook-form@npm:react-hook-form@7.56.4":
   version: 7.56.4
   resolution: "react-hook-form@npm:7.56.4"
   peerDependencies:
