@@ -110,7 +110,6 @@ const _theme = createTheme({
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
-      textAlign: 'left',
     },
     h2: {
       ...font.style,
@@ -180,7 +179,6 @@ const _theme = createTheme({
     postTitle: {
       ...font.style,
       fontWeight: 800,
-      textAlign: 'left',
     },
     postBody: {
       ...font.style,
@@ -222,6 +220,10 @@ const _theme = createTheme({
     // default: https://github.com/mui/material-ui/blob/68e3b40bc5d21a446e48a5ab651f713ea6337a52/packages/mui-material/src/CssBaseline/CssBaseline.js#L56
     MuiCssBaseline: {
       styleOverrides: {
+        // rewrite default textAlign: justify to left
+        body: {
+          textAlign: 'left',
+        },
         /* stuff from Josh Comeau's global CSS reset: https://www.joshwcomeau.com/css/custom-css-reset/ */
         // 3. Allow percentage-based heights in the application
         'html,body': {
@@ -261,6 +263,7 @@ const _theme = createTheme({
           button3: 'span',
           crossroadButton: 'span',
           seminarButton: 'span',
+          inlineLink: 'span',
           postTitle: 'h1',
           postBody: 'span',
           postDate: 'span',
@@ -428,6 +431,16 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(18)},
       [lg]: {fontSize: pxToRem(22)},
       [xl]: {fontSize: pxToRem(30)},
+      lineHeight: 1.5,
+    },
+    inlineLink: {
+      ..._theme.typography.inlineLink,
+      // original Figma fontSize: 20px (matching body1)
+      fontSize: pxToRem(13),
+      [sm]: {fontSize: pxToRem(13)},
+      [md]: {fontSize: pxToRem(13)},
+      [lg]: {fontSize: pxToRem(16)},
+      [xl]: {fontSize: pxToRem(20)},
       lineHeight: 1.5,
     },
     postTitle: {
