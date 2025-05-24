@@ -129,6 +129,7 @@ export interface Comment {
   hidden_response: string | null
   problem: number
   posted_by: number
+  from_staff: boolean
 }
 
 export interface Solution {
