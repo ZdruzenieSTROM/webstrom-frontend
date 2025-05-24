@@ -5,6 +5,7 @@ import {FC, useState} from 'react'
 import {apiAxios} from '@/api/apiAxios'
 import {Comment, CommentState} from '@/types/api/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
+import {formatDateTime} from '@/utils/formatDate'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useProfile} from '@/utils/useProfile'
 
@@ -121,9 +122,14 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
 
               return (
                 <Stack sx={comment.state !== CommentState.Published ? {color: 'gray'} : {}} key={comment.id}>
-                  <Typography variant="h3" component="span">
-                    {comment.posted_by_name}
-                  </Typography>
+                  <Stack gap={1} direction="row" justifyContent={'space-between'}>
+                    <Typography variant="h3" component="span">
+                      {comment.posted_by_name}
+                    </Typography>
+                    <Typography variant="body2" fontWeight={275} textTransform="uppercase">
+                      {formatDateTime(comment.posted_at)}
+                    </Typography>
+                  </Stack>
                   <Typography variant="body1" style={{wordBreak: 'break-word'}}>
                     {comment.text}
                   </Typography>

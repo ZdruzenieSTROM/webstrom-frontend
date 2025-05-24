@@ -1,4 +1,6 @@
-import {DateTime} from 'luxon'
+import {DateTime, Settings} from 'luxon'
+
+Settings.defaultLocale = 'sk'
 
 export enum DateFormat {
   TIME = 'HH:mm',
