@@ -11,15 +11,11 @@ export const StromLogo: FC = () => {
   return (
     <Box
       sx={{
-        // NOTE (odstranit): 'sticky' (a bez width) ma inak tiez celkom zaujimavy vysledok
-        position: 'fixed',
-        width: '25%',
-        // cisla odpovedaju top paddingom v `PageLayout` (dali by sa sem asi passnut zhora ci ukonstantovat)
-        top: {xs: height + 32, md: height + 64, lg: height + 96},
+        width: '100%',
         zIndex: -1,
       }}
     >
-      {/* TODO: vyriesit lepsie :D nastavit nejak SVG ako background a nejake repeat-nieco? */}
+      {/* TODO: vyriesit lepsie pre vysoke obrazovky :D nastavit nejak SVG ako background a nejake repeat-nieco? */}
       <Box>
         <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" />
       </Box>
