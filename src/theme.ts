@@ -110,7 +110,6 @@ const _theme = createTheme({
       textTransform: 'uppercase',
       fontWeight: 800,
       fontStyle: 'italic',
-      textAlign: 'left',
     },
     h2: {
       ...font.style,
@@ -180,7 +179,6 @@ const _theme = createTheme({
     postTitle: {
       ...font.style,
       fontWeight: 800,
-      textAlign: 'left',
     },
     postBody: {
       ...font.style,
@@ -222,6 +220,10 @@ const _theme = createTheme({
     // default: https://github.com/mui/material-ui/blob/68e3b40bc5d21a446e48a5ab651f713ea6337a52/packages/mui-material/src/CssBaseline/CssBaseline.js#L56
     MuiCssBaseline: {
       styleOverrides: {
+        // rewrite default textAlign: justify to left
+        body: {
+          textAlign: 'left',
+        },
         /* stuff from Josh Comeau's global CSS reset: https://www.joshwcomeau.com/css/custom-css-reset/ */
         // 3. Allow percentage-based heights in the application
         'html,body': {
