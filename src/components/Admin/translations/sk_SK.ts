@@ -11,6 +11,9 @@ export const sk_SK = {
       ASC: 'Vzostupne',
       DESC: 'Zostupne',
     },
+    configurable: {
+      customize: 'Upraviť',
+    },
   },
   resources: {
     'cms/post': {
@@ -66,8 +69,8 @@ export const sk_SK = {
         registration_link: {
           id: 'ID',
           url: 'Odkaz na registráciu',
-          start: 'registration_link.start',
-          end: 'registration_link.end',
+          start: 'Začiatok registrácie',
+          end: 'Koniec registrácie',
           additional_info: 'Ďalšie informácie',
         },
         publication_set: 'Publikácie',

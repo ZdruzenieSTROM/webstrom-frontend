@@ -1,11 +1,21 @@
 import {Checkbox, FormControlLabel} from '@mui/material'
 import {FC, useState} from 'react'
-import {Labeled, NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput} from 'react-admin'
+import {
+  Labeled,
+  NumberInput,
+  ReferenceInput,
+  required,
+  SelectInput,
+  SimpleForm,
+  TextInput,
+  useTranslate,
+} from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 
 export const EventCreate: FC = () => {
+  const translate = useTranslate()
   // initial false, necakame, ze mame registration link uz ready
   const [includeRegLink, setIncludeRegLink] = useState(false)
 
@@ -29,12 +39,12 @@ export const EventCreate: FC = () => {
         <TextInput source="location" fullWidth />
         <FormControlLabel
           control={<Checkbox checked={includeRegLink} onChange={(e) => setIncludeRegLink(e.target.checked)} />}
-          label="content.labels.reg_link_add"
+          // FormControlLabel nie je RA component, takze translate treba explicitne
+          label={translate('content.labels.reg_link_add')}
         />
         {includeRegLink && (
           <Labeled label="content.labels.reg_link">
             <>
-              <NumberInput source="registration_link.id" fullWidth disabled />
               <TextInput source="registration_link.url" fullWidth validate={required()} />
               <MyDateTimeInput source="registration_link.start" fullWidth validate={required()} />
               <MyDateTimeInput source="registration_link.end" fullWidth validate={required()} />
