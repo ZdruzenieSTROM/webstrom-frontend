@@ -131,7 +131,8 @@ export const Problem: FC<{
                 disabled={!problem.submitted?.corrected_solution}
                 variant="button2"
               >
-                opravené riešenie{!!problem.submitted?.corrected_solution && ` (${problem.submitted.score || '?'})`}
+                opravené riešenie
+                {problem.submitted?.score != null && ` (${problem.submitted.score} b)`}
               </Link>
             </>
           )}
