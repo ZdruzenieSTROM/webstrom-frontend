@@ -1,4 +1,5 @@
-import {Box, Stack, Typography} from '@mui/material'
+import {WarningAmber} from '@mui/icons-material'
+import {Box, Stack, Tooltip, Typography} from '@mui/material'
 import Image from 'next/image'
 import {FC, useState} from 'react'
 
@@ -117,7 +118,18 @@ export const Problem: FC<{
                 disabled={!problem.submitted}
                 variant="button2"
               >
-                moje riešenie
+                <Tooltip
+                  title={
+                    problem.submitted?.late_tag
+                      ? `${problem.submitted?.late_tag?.name} - ${problem.submitted?.late_tag?.comment}`
+                      : ''
+                  }
+                >
+                  <Stack direction="row" alignItems="center" gap={0.5} component="span">
+                    moje riešenie
+                    {problem.submitted?.late_tag && <WarningAmber sx={{width: '16px', height: '16px'}} />}
+                  </Stack>
+                </Tooltip>
               </Link>
               <Link
                 href={`/api/competition/problem/${problem.id}/corrected-solution`}
