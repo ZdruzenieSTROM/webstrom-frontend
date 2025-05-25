@@ -52,7 +52,7 @@ export const TopGrid: FC = () => {
   const pathname = useRouter().pathname.split('/')
 
   const semesterPickerPage = useMemo(() => {
-    if (pathname[2] === 'zadania' || pathname[2] === 'vysledky') {
+    if (pathname[2] === 'zadania' || pathname[2] === 'poradie') {
       return pathname[2]
     }
     if (pathname[2] === 'admin' && pathname[3] === 'opravovanie') {

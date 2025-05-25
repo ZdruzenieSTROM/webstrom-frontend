@@ -51,7 +51,7 @@ export const MenuMain: FC = () => {
 
   const constructUrl = (url: string) => {
     // `url` z databazy z menu item
-    // je vo formate `/vysledky/` alebo `/akcie/matboj/`
+    // je vo formate `/poradie/` alebo `/akcie/matboj/`
     // kedy sa odkazuje na podstranku v ramci daneho seminara
     // alebo https://domain.com alebo www.domain.com
     // v pripade externeho linku kedy presmerujeme priamo na dany link.
@@ -137,8 +137,8 @@ export const MenuMain: FC = () => {
 
 const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
   const router = useRouter()
-  // pre routy, kde by `pathname` vratilo napr. `/matik/vysledky/[[...params]]`,
-  // `asPath` vrati URL ako v browseri, teda `/matik/vysledky` alebo `/matik/vysledky/44/leto/2`
+  // pre routy, kde by `pathname` vratilo napr. `/matik/poradie/[[...params]]`,
+  // `asPath` vrati URL ako v browseri, teda `/matik/poradie` alebo `/matik/poradie/44/leto/2`
   // potrebne koncove lomitko pre porovnanie s URLkami z BE
   const pathWithSlash = `${router.asPath}/`
 

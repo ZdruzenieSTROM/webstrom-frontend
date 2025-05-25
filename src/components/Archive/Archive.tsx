@@ -34,10 +34,10 @@ const ResultsButton: FC<{
   eventSeason: number
 }> = ({eventYear, eventSeason}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
-  const url = `../vysledky/${eventYear}/${season}`
+  const url = `../poradie/${eventYear}/${season}`
   return (
     <Link variant="button2" href={url}>
-      Výsledky
+      Poradie
     </Link>
   )
 }
