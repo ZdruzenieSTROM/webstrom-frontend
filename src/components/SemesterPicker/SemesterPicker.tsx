@@ -10,7 +10,7 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Dropdown, DropdownOption} from './Dropdown'
 
-export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovanie'}> = ({page}) => {
+export const SemesterPicker: FC<{page: 'zadania' | 'poradie' | 'admin/opravovanie'}> = ({page}) => {
   const {seminar} = useSeminarInfo()
   const {setPageTitle} = PageTitleContainer.useContainer()
 
@@ -28,9 +28,9 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
         pageTitleToSet = `Opravovanie - ${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'} (${
           semester.school_year
         })`
-        // ak je page vysledky a zobrazujeme cely semester, tak sa nezobrazuje seria v nazve
+        // ak je page poradie a zobrazujeme cely semester, tak sa nezobrazuje seria v nazve
         // pre seriu sa chceme stale pokusit zobrazit nazov serie
-      } else if (!(page === 'vysledky' && displayWholeSemesterOnResults) && series) {
+      } else if (!(page === 'poradie' && displayWholeSemesterOnResults) && series) {
         pageTitleToSet = `${semesterTitle}${series.order ? ` - ${getSeriesName(series)}` : ''}`
       }
       setPageTitle(pageTitleToSet)
@@ -59,7 +59,7 @@ export const SemesterPicker: FC<{page: 'zadania' | 'vysledky' | 'admin/opravovan
       }
     })
 
-    if (page === 'vysledky') {
+    if (page === 'poradie') {
       dropdownSeriesList.push({
         id: -1,
         text: 'obe série',

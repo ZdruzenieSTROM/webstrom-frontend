@@ -69,7 +69,7 @@ export const useDataFromURL = () => {
         const series = semester.series_set[0]
         if (!series) return currentIds
 
-        // specialny pripad pre vysledky - URL bez serie sa pouziva na zobrazenie celeho semestra
+        // specialny pripad pre poradie - URL bez serie sa pouziva na zobrazenie celeho semestra
         return {semesterId: semester.id, seriesId: series.id, displayWholeSemesterOnResults: true}
       }
 

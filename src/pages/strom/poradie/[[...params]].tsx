@@ -7,7 +7,7 @@ import {Results} from '@/components/Results/Results'
 
 const Poradie: NextPage = () => {
   return (
-    <PageLayout contentWidth={2} title="Výsledky" sx={{px: 0}}>
+    <PageLayout contentWidth={2} title="Poradie" sx={{px: 0}}>
       <Results />
     </PageLayout>
   )
