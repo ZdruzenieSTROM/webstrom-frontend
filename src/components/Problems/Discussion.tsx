@@ -64,7 +64,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
     },
   })
 
-  const {mutate: hideComment} = useMutation({
+  const {mutate: hideComment, isPending: isHideCommentPending} = useMutation({
     mutationFn: ({id, hiddenResponseText}: {id: number; hiddenResponseText: string}) =>
       apiAxios.post(`/competition/comment/${id}/hide`, {hidden_response: hiddenResponseText}),
     onSuccess: () => {
@@ -149,15 +149,19 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                     <Typography variant="body3">* tento komentár nie je verejný</Typography>
                   )}
                   {hiddenResponseDialogId === comment.id ? (
-                    <Stack my={1} gap={1}>
+                    <Stack mt={1} mb={4} gap={1}>
                       <textarea
                         style={{width: '100%', height: '60px', border: '3px solid black'}}
                         value={hiddenResponseText}
                         onChange={handleHiddenResponseChange}
                       />
                       <Stack alignSelf="end">
-                        <Button onClick={() => hideComment({id: comment.id, hiddenResponseText})} variant="button3">
-                          Odoslať
+                        <Button
+                          onClick={() => hideComment({id: comment.id, hiddenResponseText})}
+                          variant="button3"
+                          disabled={!hiddenResponseText || isHideCommentPending}
+                        >
+                          Odpovedať na príspevok
                         </Button>
                       </Stack>
                     </Stack>
