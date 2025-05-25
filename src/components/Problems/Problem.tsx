@@ -1,5 +1,5 @@
 import {WarningAmber} from '@mui/icons-material'
-import {Box, Stack, Tooltip, Typography} from '@mui/material'
+import {Stack, Tooltip, Typography} from '@mui/material'
 import Image from 'next/image'
 import {FC, useState} from 'react'
 
@@ -66,11 +66,10 @@ export const Problem: FC<{
       <Markdown content={problem.text} />
       {problem.image && (
         <Stack alignItems="center">
-          <Box
-            component={Image}
+          <Image
             src={problem.image}
             alt={`Obrázok - ${problem.order} úloha`}
-            sx={{
+            style={{
               width: 'auto',
               height: 'auto',
               minHeight: '3rem',
