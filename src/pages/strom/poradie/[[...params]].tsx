@@ -5,7 +5,7 @@ import {commonQueries} from '@/api/commonQueries'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Results} from '@/components/Results/Results'
 
-const Vysledky: NextPage = () => {
+const Poradie: NextPage = () => {
   return (
     <PageLayout contentWidth={2} title="Výsledky" sx={{px: 0}}>
       <Results />
@@ -13,7 +13,7 @@ const Vysledky: NextPage = () => {
   )
 }
 
-export default Vysledky
+export default Poradie
 
 export const getServerSideProps: GetServerSideProps = async ({resolvedUrl}) => {
   const queryClient = new QueryClient()
