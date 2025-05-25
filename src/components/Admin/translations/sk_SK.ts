@@ -7,6 +7,12 @@ export const sk_SK = {
       ...slovakMessages.ra.page,
       list: '%{name}',
     },
+    action: {
+      ...slovakMessages.ra.action,
+      publication: {
+        create: 'Pridať novú publikáciu',
+      },
+    },
     sort: {
       ASC: 'Vzostupne',
       DESC: 'Zostupne',

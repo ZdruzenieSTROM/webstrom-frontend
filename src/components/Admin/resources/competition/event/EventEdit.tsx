@@ -11,6 +11,7 @@ import {
   useTranslate,
 } from 'react-admin'
 
+import {MyCreateButton} from '@/components/Admin/custom/MyCreateButton'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
@@ -54,6 +55,7 @@ export const EventEdit: FC = () => {
             </>
           </Labeled>
         )}
+        <MyCreateButton label="ra.action.publication.create" resource="competition/publication" />
       </SimpleForm>
     </MyEdit>
   )
