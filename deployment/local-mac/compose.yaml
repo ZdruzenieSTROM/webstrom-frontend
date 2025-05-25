@@ -9,7 +9,6 @@ services:
         - BE_PORT=8000
         - BE_FORWARDED_HOST=test.strom.sk
         - BE_FORWARDED_PROTO=https
-        - DEBUG=true
 
     image: webstrom-test-frontend
 
@@ -20,7 +19,6 @@ services:
       - BE_PORT=8000
       - BE_FORWARDED_HOST=test.strom.sk
       - BE_FORWARDED_PROTO=https
-      - DEBUG=true
 
     ports:
       - '3000:3000'
