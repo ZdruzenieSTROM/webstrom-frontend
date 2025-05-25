@@ -1,5 +1,4 @@
-import {Visibility, VisibilityOff} from '@mui/icons-material'
-import {IconButton, Stack, Typography} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import {AxiosError} from 'axios'
 import {useRouter} from 'next/router'
@@ -16,12 +15,11 @@ import {useNavigationTrap} from '../../utils/useNavigationTrap'
 import {Button} from '../Clickable/Button'
 import {Link} from '../Clickable/Link'
 import {Dialog} from '../Dialog/Dialog'
+import {NewPasswordSubForm, NewPasswordSubFormValues} from '../NewPasswordSubForm/NewPasswordSubForm'
 import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
-interface RegisterFormValues extends SchoolSubFormValues {
+interface RegisterFormValues extends SchoolSubFormValues, NewPasswordSubFormValues {
   email?: string
-  password1?: string
-  password2?: string
   first_name?: string
   last_name?: string
   phone?: string
@@ -130,9 +128,6 @@ export const RegisterForm: FC = () => {
     },
   })
 
-  const [showPassword1, setShowPassword1] = useState(false)
-  const [showPassword2, setShowPassword2] = useState(false)
-
   return (
     <>
       <Dialog
@@ -162,6 +157,7 @@ export const RegisterForm: FC = () => {
             control={control}
             name="email"
             label="e-mail*"
+            autoComplete="email"
             rules={{
               ...requiredRule,
               pattern: {
@@ -170,45 +166,7 @@ export const RegisterForm: FC = () => {
               },
             }}
           />
-          <FormInput
-            control={control}
-            name="password1"
-            label="heslo*"
-            type={showPassword1 ? 'text' : 'password'}
-            rules={{
-              ...requiredRule,
-              minLength: {
-                value: 8,
-                message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
-              },
-            }}
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={() => setShowPassword1(!showPassword1)}>
-                  {showPassword1 ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              ),
-            }}
-          />
-          <FormInput
-            control={control}
-            name="password2"
-            label="potvrdenie hesla*"
-            type={showPassword2 ? 'text' : 'password'}
-            rules={{
-              ...requiredRule,
-              validate: (val) => {
-                if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
-              },
-            }}
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={() => setShowPassword2(!showPassword2)}>
-                  {showPassword2 ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              ),
-            }}
-          />
+          <NewPasswordSubForm control={control} getValues={getValues} gap={2} />
           <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
           <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
           <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={2} />

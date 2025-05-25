@@ -46,6 +46,7 @@ export const PasswordResetRequestForm: FC<PasswordResetRequestFormmProps> = ({cl
           control={control}
           name="email"
           label="Email"
+          autoComplete="username"
           rules={{
             ...requiredRule,
             pattern: {

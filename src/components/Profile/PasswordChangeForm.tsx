@@ -98,6 +98,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
             name="old_password"
             label="aktuálne heslo"
             type={showPassword1 ? 'text' : 'password'}
+            autoComplete="current-password"
             rules={requiredRule}
             InputProps={{
               endAdornment: (
@@ -112,6 +113,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
             name="new_password1"
             label="nové heslo"
             type={showPassword2 ? 'text' : 'password'}
+            autoComplete="new-password"
             rules={{
               ...requiredRule,
               minLength: {
@@ -132,6 +134,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
             name="new_password2"
             label="nové heslo znovu"
             type={showPassword3 ? 'text' : 'password'}
+            autoComplete="new-password"
             rules={{
               ...requiredRule,
               validate: (val) => {
