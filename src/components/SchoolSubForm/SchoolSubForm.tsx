@@ -14,10 +14,10 @@ import {SelectOption} from '../FormItems/FormSelect/FormSelect'
 
 export type SchoolSubFormValues = {
   new_school_description?: string
-  without_school: boolean
+  without_school?: boolean
   school?: SelectOption | null
-  school_not_found: boolean
-  grade: SelectOption | null
+  school_not_found?: boolean
+  grade?: SelectOption | null
 }
 
 type SchoolSubFormProps<T extends SchoolSubFormValues> = {
@@ -72,6 +72,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
       setValue('school', null)
       setValue('grade', null)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [without_school])
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre neznámu školu
@@ -83,6 +84,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
     } else if (!without_school) {
       setValue('school', null)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [school_not_found])
 
   useEffect(() => {

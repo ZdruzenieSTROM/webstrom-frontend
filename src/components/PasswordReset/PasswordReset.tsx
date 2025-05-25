@@ -6,10 +6,10 @@ import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
-import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
+import {NewPasswordSubForm, NewPasswordSubFormValues as FormValues} from '../NewPasswordSubForm/NewPasswordSubForm'
 import {LoginForm} from '../PageLayout/LoginForm/LoginForm'
 
 export type PasswordResetFormProps = {
@@ -17,12 +17,7 @@ export type PasswordResetFormProps = {
   token: string
 }
 
-type PasswordResetForm = {
-  password1: string
-  password2: string
-}
-
-const defaultValues: PasswordResetForm = {
+const defaultValues: FormValues = {
   password1: '',
   password2: '',
 }
@@ -31,11 +26,9 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
   const router = useRouter()
   const {seminar} = useSeminarInfo()
 
-  const {handleSubmit, control, getValues} = useForm<PasswordResetForm>({defaultValues})
+  const {handleSubmit, control, getValues} = useForm<FormValues>({defaultValues})
 
-  const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
-
-  const transformFormData = (data: PasswordResetForm) => {
+  const transformFormData = (data: FormValues) => {
     return {
       new_password1: data.password1,
       new_password2: data.password2,
@@ -45,12 +38,12 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
   }
 
   const {mutate: submitFormData, isSuccess: isReset} = useMutation({
-    mutationFn: (data: PasswordResetForm) => {
+    mutationFn: (data: FormValues) => {
       return apiAxios.post<IGeneralPostResponse>('/user/password/reset/confirm', transformFormData(data))
     },
   })
 
-  const onSubmit: SubmitHandler<PasswordResetForm> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
     submitFormData(data)
   }
 
@@ -68,38 +61,14 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="body1">Zadaj svoje nové heslo</Typography>
-      <Stack gap={2} mt={3}>
-        <FormInput
-          control={control}
-          name="password1"
-          label="heslo*"
-          type="password"
-          rules={{
-            ...requiredRule,
-            minLength: {
-              value: 8,
-              message: '* Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov.',
-            },
-          }}
-        />
-        <FormInput
-          control={control}
-          name="password2"
-          label="potvrdenie hesla*"
-          type="password"
-          rules={{
-            ...requiredRule,
-            validate: (val) => {
-              if (val !== getValues().password1) return '* Zadané heslá sa nezhodujú.'
-            },
-          }}
-        />
-      </Stack>
-      <Stack direction={'row'} mt={3} justifyContent="flex-end">
-        <Button variant="button2" type="submit">
-          Resetovať heslo
-        </Button>
+      <Stack gap={3}>
+        <Typography variant="body1">Zadaj svoje nové heslo</Typography>
+        <NewPasswordSubForm control={control} getValues={getValues} gap={2} />
+        <Stack direction={'row'} justifyContent="flex-end">
+          <Button variant="button2" type="submit">
+            Resetovať heslo
+          </Button>
+        </Stack>
       </Stack>
     </form>
   )

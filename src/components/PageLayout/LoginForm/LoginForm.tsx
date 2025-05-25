@@ -73,6 +73,7 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
               control={control}
               name="email"
               label="Email"
+              autoComplete="username"
               rules={{
                 ...requiredRule,
                 pattern: {
@@ -86,6 +87,7 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
               name="password"
               label="Heslo"
               type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
               rules={requiredRule}
               InputProps={{
                 endAdornment: (
