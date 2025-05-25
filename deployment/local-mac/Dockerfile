@@ -3,7 +3,7 @@
 # based on https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 # docs: https://nextjs.org/docs/app/getting-started/deploying#docker
 
-FROM node:22-alpine AS base
+FROM node:24-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
