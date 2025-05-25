@@ -10,7 +10,6 @@ declare module '@mui/material/styles' {
     button1: React.CSSProperties
     button2: React.CSSProperties
     button3: React.CSSProperties
-    crossroadButton: React.CSSProperties
     seminarButton: React.CSSProperties
     inlineLink: React.CSSProperties
     postTitle: React.CSSProperties
@@ -29,7 +28,6 @@ declare module '@mui/material/styles' {
     button1?: React.CSSProperties
     button2?: React.CSSProperties
     button3?: React.CSSProperties
-    crossroadButton?: React.CSSProperties
     seminarButton?: React.CSSProperties
     inlineLink?: React.CSSProperties & {
       '&:hover'?: React.CSSProperties
@@ -52,7 +50,6 @@ declare module '@mui/material/Typography' {
     button1: true
     button2: true
     button3: true
-    crossroadButton: true
     seminarButton: true
     inlineLink: true
     postTitle: true
@@ -149,12 +146,6 @@ const _theme = createTheme({
       fontStyle: 'italic',
     },
     button3: {
-      ...font.style,
-      textTransform: 'uppercase',
-      fontWeight: 800,
-      fontStyle: 'italic',
-    },
-    crossroadButton: {
       ...font.style,
       textTransform: 'uppercase',
       fontWeight: 800,
@@ -261,7 +252,6 @@ const _theme = createTheme({
           button1: 'span',
           button2: 'span',
           button3: 'span',
-          crossroadButton: 'span',
           seminarButton: 'span',
           inlineLink: 'span',
           postTitle: 'h1',
@@ -411,16 +401,6 @@ export const theme: Theme = {
       [md]: {fontSize: pxToRem(9)},
       [lg]: {fontSize: pxToRem(11)},
       [xl]: {fontSize: pxToRem(14)},
-      lineHeight: 1.5,
-    },
-    crossroadButton: {
-      ..._theme.typography.button1,
-      // original Figma fontSize: 50px
-      fontSize: pxToRem(20),
-      [sm]: {fontSize: pxToRem(32)},
-      [md]: {fontSize: pxToRem(38)},
-      [lg]: {fontSize: pxToRem(44)},
-      [xl]: {fontSize: pxToRem(50)}, // design
       lineHeight: 1.5,
     },
     seminarButton: {
