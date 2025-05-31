@@ -4,6 +4,7 @@ import {useRouter} from 'next/router'
 import {FC, useEffect, useMemo} from 'react'
 import {Admin as ReactAdmin, defaultDarkTheme, defaultLightTheme, RaThemeOptions, Resource} from 'react-admin'
 
+import {useAlert} from '@/utils/useAlert'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
 import {Loading} from '../Loading/Loading'
@@ -74,10 +75,12 @@ const darkTheme = deepmerge(defaultDarkTheme, themeOverrides)
 
 const Unauthorized: FC = () => {
   const router = useRouter()
+  const {alert} = useAlert()
 
   useEffect(() => {
+    alert('Nemáš oprávnenie pristupovať do tejto sekcie. Možno ti vypršalo prihlásenie.')
     router.push('/strom')
-  }, [router])
+  }, [alert, router])
 
   return <Loading fullScreen />
 }
