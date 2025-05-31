@@ -17,10 +17,13 @@ export const useHasPermissions = () => {
 
   const permissions = data?.data.competition_permissions
   const isSuperuser = data?.data.is_superuser ?? false
+  // useful for Admin, as competition_permissions check below won't pass with "admin" seminarId
+  const isStaff = data?.data.is_staff ?? false
 
+  // warning: when called on /admin, seminarId is "admin" (not a valid seminarId)
   const {seminarId} = useSeminarInfo()
 
   const hasPermissions = !permissions ? false : permissions.includes(seminarId)
 
-  return {hasPermissions, isSuperuser, permissionsIsLoading}
+  return {hasPermissions, isSuperuser, isStaff, permissionsIsLoading}
 }

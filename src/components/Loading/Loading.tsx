@@ -1,9 +1,19 @@
 import {CircularProgress, Stack} from '@mui/material'
 import {FC} from 'react'
 
-export const Loading: FC = () => {
+type LoadingProps = {
+  fullScreen?: boolean
+}
+
+export const Loading: FC<LoadingProps> = ({fullScreen = false}) => {
   return (
-    <Stack alignItems="center">
+    <Stack
+      sx={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: fullScreen ? '100dvh' : undefined,
+      }}
+    >
       <CircularProgress color="inherit" />
     </Stack>
   )
