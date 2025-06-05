@@ -3,15 +3,19 @@ import Grid from '@mui/material/Unstable_Grid2'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import {AxiosError} from 'axios'
 import {FC, Fragment, useState} from 'react'
+import {useForm} from 'react-hook-form'
 
 import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
+import {FormInput} from '@/components/FormItems/FormInput/FormInput'
 import {SemesterWithProblems, SeriesWithProblems} from '@/types/api/generated/competition'
 import {formatDateTime} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
+import {School} from '../../types/api/personal'
+import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 import {PublicationUploader} from '../PublicationUploader/PublicationUploader'
 import {Result} from '../Results/ResultsRow'
@@ -24,6 +28,27 @@ interface PostalCard {
   city: string
   zip_code: string
   email: string
+}
+
+interface Invitation {
+  first_name: string
+  last_name: string
+  is_participant: boolean
+}
+
+interface SchoolInvitation {
+  participants: Invitation[]
+  school_name: School
+}
+
+type InvitationFormValues = {
+  num_participants: number
+  num_substitutes: number
+}
+
+const defaultInvitationValues: InvitationFormValues = {
+  num_participants: 32,
+  num_substitutes: 20,
 }
 
 export const SemesterAdministration: FC = () => {
@@ -48,6 +73,11 @@ export const SemesterAdministration: FC = () => {
   const semester = semesterData?.data
 
   const [textareaContent, setTextareaContent] = useState('')
+  const [displayInvitationDialog, setDisplayInvitationDialog] = useState(false)
+  const toggleInvitationDialog = () => {
+    setDisplayInvitationDialog((prev) => !prev)
+  }
+  const {handleSubmit, control, getValues} = useForm<InvitationFormValues>({defaultInvitationValues})
 
   const getResults = async (seriesId: number | null) => {
     const isSemester = seriesId === null
@@ -90,6 +120,47 @@ export const SemesterAdministration: FC = () => {
     )
   }
 
+  const invitationToName = (dataRow: Invitation) => `${dataRow?.first_name} ${dataRow?.last_name}`
+
+  const getInvites = async () => {
+    const {num_participants, num_substitutes} = getValues()
+    const {data} = await apiAxios.get<Invitation[]>(
+      `/competition/semester/${semesterId}/invitations/${num_participants}/${num_substitutes}`,
+    )
+    toggleInvitationDialog()
+    const result = []
+    const dataInvited = data.filter((item) => item.is_participant)
+    const dataSubstitutes = data.filter((item) => !item.is_participant)
+
+    for (let i = 0; i < dataInvited.length; i += 2) {
+      result.push(`\\P{${invitationToName(dataInvited[i])}}{${invitationToName(dataInvited[i + 1]) ?? ''}}`)
+    }
+    for (let i = 0; i < dataSubstitutes.length; i += 2) {
+      result.push(`\\N{${invitationToName(dataSubstitutes[i])}}{${invitationToName(dataSubstitutes[i + 1]) ?? ''}}`)
+    }
+    setTextareaContent(result.join('\n'))
+  }
+
+  const getSchoolInvites = async () => {
+    const {num_participants, num_substitutes} = getValues()
+    const {data} = await apiAxios.get<SchoolInvitation[]>(
+      `/competition/semester/${semesterId}/school-invitations/${num_participants}/${num_substitutes}`,
+    )
+    toggleInvitationDialog()
+    const formatInvitationRow = (invitation: Invitation) =>
+      invitation.is_participant
+        ? `\\ucastnik{${invitationToName(invitation)}}`
+        : `\\nahradnik{${invitationToName(invitation)}}`
+    setTextareaContent(
+      data
+        .map(
+          (school) =>
+            `\\begin{skola}{${school.school_name.name}}{${school.school_name.street}}{${school.school_name.zip_code}}{${school.school_name.city}}\n${school.participants.map((item) => formatInvitationRow(item)).join('\n')}\n\\end{skola}`,
+        )
+        .join('\n\n'),
+    )
+  }
+
   const [seriesFreezeErrors, setSeriesFreezeErrors] = useState<Map<number, string>>()
 
   const {mutate: freezeSeries} = useMutation({
@@ -124,6 +195,24 @@ export const SemesterAdministration: FC = () => {
 
   return (
     <>
+      <Dialog
+        open={displayInvitationDialog}
+        close={toggleInvitationDialog}
+        title="Pozvánky"
+        actions={
+          <>
+            <Button variant="button2" onClick={getInvites}>
+              Pozvánky pre účastníkov
+            </Button>
+            <Button variant="button2" onClick={getSchoolInvites}>
+              Pozvánky pre školy
+            </Button>
+          </>
+        }
+      >
+        <FormInput control={control} name="num_participants" label="počet účastníkov" />
+        <FormInput control={control} name="num_substitutes" label="počet náhradníkov" />
+      </Dialog>
       <Stack alignItems="start" direction="row" spacing={2}>
         <Typography variant="h2">Semester</Typography>
         {semester.complete && <Typography variant="body1">Semester je uzavretý</Typography>}
@@ -211,8 +300,9 @@ export const SemesterAdministration: FC = () => {
         Generovanie pozvánok
       </Typography>
       <Stack pl={2} alignItems="start">
-        <Button variant="button2"> Pozvánky pre školy</Button>
-        <Button variant="button2">Pozvánky pre účastníkov</Button>
+        <Button variant="button2" onClick={() => toggleInvitationDialog()}>
+          Generovanie pre pozvánky
+        </Button>
       </Stack>
 
       <Typography variant="h2" mt={5}>
