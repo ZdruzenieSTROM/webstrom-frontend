@@ -155,9 +155,7 @@ export const Problem: FC<{
               onClick={handleUploadClick}
               disabled={isAuthed && !canRegister}
               disabledTooltip={
-                isAuthed
-                  ? 'Tejto súťaže sa nemôžeš zúčastniť, pretože si vo vysokom ročníku. Ak ho máš nastavený zle, zmeň si ho v profile.'
-                  : 'Nie si prihlásený'
+                'Tejto súťaže sa nemôžeš zúčastniť, pretože si vo vysokom ročníku. Ak ho máš nastavený zle, zmeň si ho v profile.'
               }
               variant="button2"
             >
