@@ -10,7 +10,13 @@ export const FlatpageEdit: FC = () => (
       <FormTab label="content.labels.general">
         <TextInput source="url" fullWidth validate={required()} />
         <TextInput source="title" fullWidth validate={required()} />
-        <TextInput source="content" multiline fullWidth validate={required()} />
+        <TextInput
+          source="content"
+          multiline
+          fullWidth
+          validate={required()}
+          helperText="Úlohy môžu obsahovať iba TeX a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
+        />
       </FormTab>
       <FormTab label="content.labels.preview">
         <FlatpagePreview />

@@ -12,7 +12,12 @@ export const PostEdit: FC = () => (
       <FormTab label="content.labels.general">
         <TextInput source="caption" fullWidth validate={required()} />
         <TextInput source="short_text" fullWidth validate={maxLength(200, 'Text musí mať najviac 200 znakov.')} />
-        <TextInput source="details" multiline fullWidth />
+        <TextInput
+          source="details"
+          multiline
+          fullWidth
+          helperText="Text môže obsahovať iba TeX a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
+        />
         <MyDateTimeInput source="added_at" fullWidth disabled />
         <MyDateTimeInput source="visible_after" fullWidth validate={required()} />
         <MyDateTimeInput source="visible_until" fullWidth validate={required()} />
