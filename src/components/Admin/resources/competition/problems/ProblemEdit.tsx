@@ -30,7 +30,13 @@ export const ProblemEdit: FC = () => (
         <ReferenceInput source="series" reference="competition/series">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
         </ReferenceInput>
-        <TextInput source="text" multiline fullWidth validate={required()} />
+        <TextInput
+          source="text"
+          multiline
+          fullWidth
+          validate={required()}
+          helperText="Úlohy môžu obsahovať iba TeX a Markdown (nie html). Návod: https://www.markdownguide.org/basic-syntax/"
+        />
         <LatexPreview source="text" />
         <TextInput source="order" fullWidth validate={required()} />
         <ImageInput source="image" accept={Accept.Image}>
