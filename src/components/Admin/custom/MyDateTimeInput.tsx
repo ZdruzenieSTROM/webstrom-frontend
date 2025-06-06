@@ -31,7 +31,7 @@ export const myDateTimeInputParse = (value?: string) => {
 export const MyDateTimeInput: FC<DateTimeInputProps> = ({source, ...rest}) => (
   <DateTimeInput
     source={source}
-    helperText={'Please provide time in Europe/Bratislava timezone'}
+    helperText={'Časy uvádzaj v časovom pásme Europe/Bratislava'}
     format={myDateTimeInputFormat}
     parse={myDateTimeInputParse}
     {...rest}
