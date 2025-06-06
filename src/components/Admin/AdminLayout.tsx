@@ -11,7 +11,7 @@ const AppMenuBar = () => {
   return (
     <AppBar
       userMenu={false}
-      position="relative"
+      position="fixed"
       toolbar={
         <Stack gap={2} direction="row">
           <Button component={Link} color="inherit" href="/strom">

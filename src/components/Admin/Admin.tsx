@@ -1,8 +1,13 @@
 import {deepmerge} from '@mui/utils'
 import {QueryClient} from '@tanstack/react-query'
-import {FC} from 'react'
+import {useRouter} from 'next/router'
+import {FC, useEffect, useMemo} from 'react'
 import {Admin as ReactAdmin, defaultDarkTheme, defaultLightTheme, RaThemeOptions, Resource} from 'react-admin'
 
+import {useAlert} from '@/utils/useAlert'
+import {useHasPermissions} from '@/utils/useHasPermissions'
+
+import {Loading} from '../Loading/Loading'
 import {AdminLayout} from './AdminLayout'
 import {dataProvider} from './dataProvider'
 import {myI18nProvider} from './i18nProvider'
@@ -68,18 +73,38 @@ const themeOverrides: RaThemeOptions = {
 const lightTheme = deepmerge(defaultLightTheme, themeOverrides)
 const darkTheme = deepmerge(defaultDarkTheme, themeOverrides)
 
+const Unauthorized: FC = () => {
+  const router = useRouter()
+  const {alert} = useAlert()
+
+  useEffect(() => {
+    alert('Si odhlásený.')
+    router.push('/strom')
+  }, [alert, router])
+
+  return <Loading fullScreen />
+}
+
 export const Admin: FC = () => {
   const authProvider = useAuthProvider()
+  const {permissionsIsLoading, isStaff} = useHasPermissions()
 
   // https://marmelab.com/react-admin/Caching.html#application-cache
   // data cachujeme 5 minut, aby sa nevolalo tolko zbytocnych BE requestov
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 1 * 60 * 1000, // 1 minute
-      },
-    },
-  })
+  const queryClient = useMemo(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1 * 60 * 1000, // 1 minute
+          },
+        },
+      }),
+    [],
+  )
+
+  if (permissionsIsLoading) return <Loading fullScreen />
+  if (!isStaff) return <Unauthorized />
 
   return (
     <ReactAdmin
@@ -90,6 +115,8 @@ export const Admin: FC = () => {
       layout={AdminLayout}
       theme={lightTheme}
       darkTheme={darkTheme}
+      loginPage={false}
+      requireAuth
     >
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
       <Resource

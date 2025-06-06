@@ -10,12 +10,10 @@ import {MyPermissions} from '@/types/api/personal'
 // specialna axios instancia bez error handlingu pridaneho do `apiAxios` nizsie
 const specialApiAxios = newApiAxios()
 
-export const testAuthRequest = async () => specialApiAxios.get<MyPermissions>('/personal/profiles/mypermissions')
-
 // call na lubovolny "auth" endpoint ako test prihlasenia, vracia true/false podla uspesnosti
 export const testAuth = async () => {
   try {
-    await testAuthRequest()
+    await specialApiAxios.get<MyPermissions>('/personal/profiles/mypermissions')
     return true
   } catch {
     return false
