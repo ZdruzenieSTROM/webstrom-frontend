@@ -16,7 +16,7 @@ export const PostEdit: FC = () => (
           source="details"
           multiline
           fullWidth
-          helperText="Text môže obsahovať iba TeX a Markdown (nie html) Návod: https://www.markdownguide.org/basic-syntax/"
+          helperText="Text môže obsahovať iba TeX a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
         />
         <MyDateTimeInput source="added_at" fullWidth disabled />
         <MyDateTimeInput source="visible_after" fullWidth validate={required()} />

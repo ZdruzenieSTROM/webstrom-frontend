@@ -35,7 +35,7 @@ export const ProblemEdit: FC = () => (
           multiline
           fullWidth
           validate={required()}
-          helperText="Úlohy môžu obsahovať iba TeX a Markdown (nie html). Návod: https://www.markdownguide.org/basic-syntax/"
+          helperText="Úlohy môžu obsahovať iba TeX a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
         />
         <LatexPreview source="text" />
         <TextInput source="order" fullWidth validate={required()} />
