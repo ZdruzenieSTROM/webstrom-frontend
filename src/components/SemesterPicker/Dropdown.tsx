@@ -61,6 +61,7 @@ export const Dropdown: FC<{title: string; options: DropdownOption[]}> = ({title,
                 key={option.id}
                 component={Link}
                 href={option.link}
+                onClick={handleClose}
                 sx={{
                   bgcolor: colors.white,
                   color: colors.black,
