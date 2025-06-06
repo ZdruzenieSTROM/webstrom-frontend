@@ -46,7 +46,7 @@ type InvitationFormValues = {
   num_substitutes: number
 }
 
-const defaultInvitationValues: InvitationFormValues = {
+const defaultValues: InvitationFormValues = {
   num_participants: 32,
   num_substitutes: 20,
 }
@@ -77,7 +77,7 @@ export const SemesterAdministration: FC = () => {
   const toggleInvitationDialog = () => {
     setDisplayInvitationDialog((prev) => !prev)
   }
-  const {handleSubmit, control, getValues} = useForm<InvitationFormValues>({defaultInvitationValues})
+  const {control, getValues} = useForm<InvitationFormValues>({defaultValues})
 
   const getResults = async (seriesId: number | null) => {
     const isSemester = seriesId === null
