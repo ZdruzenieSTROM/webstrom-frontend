@@ -151,7 +151,16 @@ export const Problem: FC<{
             diskusia ({problem.num_comments})
           </Button>
           {canSubmit && (
-            <Button onClick={handleUploadClick} disabled={isAuthed && !canRegister} variant="button2">
+            <Button
+              onClick={handleUploadClick}
+              disabled={isAuthed && !canRegister}
+              disabledTooltip={
+                isAuthed
+                  ? 'Tejto súťaže sa nemôžeš zúčastniť, pretože si vo vysokom ročníku. Ak ho máš nastavený zle, zmeň si ho v profile.'
+                  : 'Nie si prihlásený'
+              }
+              variant="button2"
+            >
               odovzdať
             </Button>
           )}
