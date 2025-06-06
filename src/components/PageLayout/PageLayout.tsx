@@ -8,7 +8,6 @@ import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {Seminar, useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Footer} from './Footer/Footer'
-import {HeaderHeightContainer} from './Header/HeaderHeightContainer'
 import {StromLogo} from './StromLogo/StromLogo'
 import {TopGrid} from './TopGrid/TopGrid'
 
@@ -41,45 +40,43 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
       </Head>
       <PageTitleContainer.Provider initialState={title}>
         <BannerContainer.Provider>
-          <HeaderHeightContainer.Provider>
-            <Stack sx={{minHeight: '100dvh'}}>
-              <TopGrid />
-              <Stack sx={{flex: 1}}>
-                <Box
+          <Stack sx={{minHeight: '100dvh'}}>
+            <TopGrid />
+            <Stack sx={{flex: 1}}>
+              <Box
+                sx={{
+                  display: {xs: 'none', md: 'block'},
+                  pt: horizontalContentPadding,
+                  position: 'fixed',
+                  width: '25%',
+                }}
+              >
+                <StromLogo />
+              </Box>
+
+              <Grid container disableEqualOverflow sx={{flex: 1}}>
+                <Grid
+                  xsOffset={0}
+                  mdOffset={3}
+                  xs={12}
+                  md={contentWidth * 3}
                   sx={{
-                    display: {xs: 'none', md: 'block'},
-                    pt: horizontalContentPadding,
-                    position: 'fixed',
-                    width: '25%',
+                    py: horizontalContentPadding,
+                    px: 2,
+                    ...sx,
+                    // v server-renderi bol v consoli warning, ale first-child je tu asi uplne v pohode selector :D
+                    // https://github.com/emotion-js/emotion/issues/1105#issuecomment-557726922
+                    '> :first-child /* emotion-disable-server-rendering-unsafe-selector-warning-please-do-not-use-this-the-warning-exists-for-a-reason */':
+                      {mt: 0, pt: 0},
                   }}
                 >
-                  <StromLogo />
-                </Box>
-
-                <Grid container disableEqualOverflow sx={{flex: 1}}>
-                  <Grid
-                    xsOffset={0}
-                    mdOffset={3}
-                    xs={12}
-                    md={contentWidth * 3}
-                    sx={{
-                      py: horizontalContentPadding,
-                      px: 2,
-                      ...sx,
-                      // v server-renderi bol v consoli warning, ale first-child je tu asi uplne v pohode selector :D
-                      // https://github.com/emotion-js/emotion/issues/1105#issuecomment-557726922
-                      '> :first-child /* emotion-disable-server-rendering-unsafe-selector-warning-please-do-not-use-this-the-warning-exists-for-a-reason */':
-                        {mt: 0, pt: 0},
-                    }}
-                  >
-                    {children}
-                  </Grid>
+                  {children}
                 </Grid>
-              </Stack>
-
-              <Footer />
+              </Grid>
             </Stack>
-          </HeaderHeightContainer.Provider>
+
+            <Footer />
+          </Stack>
         </BannerContainer.Provider>
       </PageTitleContainer.Provider>
     </>

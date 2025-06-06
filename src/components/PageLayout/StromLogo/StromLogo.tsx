@@ -3,11 +3,7 @@ import {FC} from 'react'
 
 import Strom from '@/svg/strom.svg'
 
-import {HeaderHeightContainer} from '../Header/HeaderHeightContainer'
-
 export const StromLogo: FC = () => {
-  const {height} = HeaderHeightContainer.useContainer()
-
   return (
     <Box
       sx={{
