@@ -21,7 +21,7 @@ export const SchoolEdit: FC = () => (
       <TextInput
         fullWidth
         source="abbreviation"
-        helperText="Skratka školy. Zadávajte v tvare napr.: SNov3BA (Druh školy, adresa, číslo, okres)"
+        helperText="Skratka školy. Zadávaj v tvare napr.: SNov3BA (Druh školy, adresa, číslo, okres)"
         validate={required()}
       />
       <TextInput

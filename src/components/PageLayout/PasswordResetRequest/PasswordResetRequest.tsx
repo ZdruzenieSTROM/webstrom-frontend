@@ -51,7 +51,7 @@ export const PasswordResetRequestForm: FC<PasswordResetRequestFormmProps> = ({cl
             ...requiredRule,
             pattern: {
               value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/iu,
-              message: '* Vložte správnu emailovú adresu.',
+              message: '* Vlož správnu emailovú adresu.',
             },
           }}
         />
