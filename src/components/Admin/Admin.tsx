@@ -78,7 +78,7 @@ const Unauthorized: FC = () => {
   const {alert} = useAlert()
 
   useEffect(() => {
-    alert('Nemáš oprávnenie pristupovať do tejto sekcie. Možno ti vypršalo prihlásenie.')
+    alert('Si odhlásený.')
     router.push('/strom')
   }, [alert, router])
 
