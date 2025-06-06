@@ -40,18 +40,19 @@ export const Button: FC<ButtonProps> = ({
         ...sx,
       }}
     >
-      <Stack
-        direction="row"
-        // toto pridava bottom border
-        sx={buttonInnerSx}
-      >
-        <Tooltip title={disabled ? disabledTooltip : ''}>
+      <Tooltip title={disabled ? disabledTooltip : ''}>
+        <Stack
+          direction="row"
+          // toto pridava bottom border
+          sx={buttonInnerSx}
+        >
           <Typography variant={variant ?? 'button3'} sx={textSx}>
             {children}
           </Typography>
-        </Tooltip>
-        {endElement}
-      </Stack>
+
+          {endElement}
+        </Stack>
+      </Tooltip>
     </Box>
   )
 }
