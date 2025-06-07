@@ -14,6 +14,7 @@ import {TopGrid} from './TopGrid/TopGrid'
 type PageLayoutProps = {
   contentWidth?: number
   title?: string
+  bannerMessages?: string[]
   children: ReactNode
   sx?: SxProps
 }
@@ -26,7 +27,7 @@ const seminarTitle: Record<Seminar, string> = {
 
 // pre pouzitie len na seminarovych strankach a podstrankach - `/matik(/*)`
 // ked budeme potrebovat top-level stranky ako `/ina-stranka`, budeme musiet upravit, ako sa pracuje s `useSeminarInfo`
-export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', children, sx}) => {
+export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', bannerMessages, children, sx}) => {
   const {seminar} = useSeminarInfo()
   const browserTitlePrefix = title && `${title} | `
   const browserTitle = `${browserTitlePrefix}${seminarTitle[seminar]}`
@@ -39,7 +40,7 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', c
         <title>{browserTitle}</title>
       </Head>
       <PageTitleContainer.Provider initialState={title}>
-        <BannerContainer.Provider>
+        <BannerContainer.Provider initialState={bannerMessages}>
           <Stack sx={{minHeight: '100dvh'}}>
             <TopGrid />
             <Stack sx={{flex: 1}}>

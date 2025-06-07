@@ -1,15 +1,20 @@
-import {dehydrate, QueryClient} from '@tanstack/react-query'
+import {dehydrate, QueryClient, useQuery} from '@tanstack/react-query'
 import {GetServerSideProps, NextPage} from 'next'
 
 import {apiOptions} from '@/api/api'
 import {commonQueries} from '@/api/commonQueries'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Problems} from '@/components/Problems/Problems'
+import {useDataFromURL} from '@/utils/useDataFromURL'
 import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
 
 const Zadania: NextPage = () => {
+  const {id} = useDataFromURL()
+
+  const {data: bannerMessages} = useQuery(apiOptions.cms.infoBanner.seriesProblems(id.seriesId))
+
   return (
-    <PageLayout contentWidth={2} title="Zadania">
+    <PageLayout contentWidth={2} title="Zadania" bannerMessages={bannerMessages}>
       <Problems />
     </PageLayout>
   )
