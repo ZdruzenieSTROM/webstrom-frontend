@@ -22,7 +22,7 @@ export const FileDropZone: FC<FileDropZoneProps> = ({text, getRootProps, getInpu
         fontStyle: 'italic',
         color: '#BBB',
         bgcolor: '#EEE',
-        border: '2px dashed black',
+        border: '2px solid black',
         ':hover': {
           bgcolor: '#DDD',
         },

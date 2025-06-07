@@ -9,7 +9,7 @@ import {Accept} from '@/utils/dropzone-accept'
 import {useAlert} from '@/utils/useAlert'
 
 import {Button} from '../Clickable/Button'
-import {Link} from '../Clickable/Link'
+import {InlineLink} from '../Clickable/InlineLink'
 import {Dialog} from '../Dialog/Dialog'
 import {FileDropZone} from '../FileDropZone/FileDropZone'
 import {Loading} from '../Loading/Loading'
@@ -127,21 +127,18 @@ export const UploadProblemForm: FC<{
               onClick={handleCloseButton}
               size={24}
               invertColors
-              sx={{position: 'absolute', top: 2, right: 2}}
+              sx={{position: 'absolute', top: 2, right: 2, background: 'unset'}}
             />
             <FileDropZone
               getRootProps={getRootProps}
               getInputProps={getInputProps}
               text="Vlož riešenie vo formáte pdf"
             />
-            <Typography variant="body2" textAlign="center" component="div">
+            <Typography variant="body2" textAlign="center">
               Dbaj na čitateľnosť riešenia - namiesto odfotenia zo zošita ho radšej napíš na čistý papier formátu A4,
               oskenuj (prípadne využi mobilné aplikácie, ktoré skener nahradia) a nahraj ho správne orientované. Ak máš
               riešenie v inom formáte ako PDF, skonvertuj ho napríklad pomocou stránky{' '}
-              <Link variant="button3" href="https://www.ilovepdf.com/" sx={{textTransform: 'unset'}}>
-                ilovepdf.com
-              </Link>
-              .
+              <InlineLink href="https://www.ilovepdf.com/">ilovepdf.com</InlineLink>.
             </Typography>
           </>
         )}
