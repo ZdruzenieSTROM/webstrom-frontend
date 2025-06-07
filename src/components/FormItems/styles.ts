@@ -4,6 +4,12 @@ export const formItemStyle = {
   '.MuiFormHelperText-contained': {
     color: 'black !important',
     textTransform: 'uppercase',
+    fontStyle: 'italic',
+    // tie helper texty su nejaky body2 spany vnorene do tohto containeru helperText containeru...
+    // asi sa to da vyriesit aj lepsie, priamym targetovanim MUI stylu
+    '& > span': {
+      fontStyle: 'unset',
+    },
   },
   '.MuiInputLabel-root.Mui-error': {
     color: colors.white,
