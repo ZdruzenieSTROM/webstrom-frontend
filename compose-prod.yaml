@@ -3,23 +3,23 @@ version: '3'
 services:
   webstrom-frontend:
     build:
-      dockerfile: deployment/Dockerfile
-      context: ..
+      dockerfile: docker/Dockerfile
+      context: .
       args:
         - BE_PROTOCOL=http
         - BE_HOSTNAME=localhost
-        - BE_PORT=8920
-        - BE_FORWARDED_HOST=test.strom.sk
+        - BE_PORT=8930
+        - BE_FORWARDED_HOST=prod.strom.sk
         - BE_FORWARDED_PROTO=https
 
-    image: webstrom-test-frontend
+    image: webstrom-frontend
 
     environment:
-      - PORT=8922
+      - PORT=8932
       - BE_PROTOCOL=http
       - BE_HOSTNAME=localhost
-      - BE_PORT=8920
-      - BE_FORWARDED_HOST=test.strom.sk
+      - BE_PORT=8930
+      - BE_FORWARDED_HOST=prod.strom.sk
       - BE_FORWARDED_PROTO=https
 
     network_mode: host

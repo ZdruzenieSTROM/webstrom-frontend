@@ -1,4 +1,4 @@
-name: Deploy Test Environment
+name: Deploy Prod Environment
 
 on: workflow_dispatch
 
@@ -8,11 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: webstrom-test
+          path: webstrom-prod
       - uses: wshihadeh/docker-deployment-action@v2
         with:
           remote_docker_host: webstrom@server.strom.sk
           ssh_private_key: ${{ secrets.WEBSTROM_DEPLOY_SSH_PRIVATE_KEY }}
           ssh_public_key: ${{ secrets.WEBSTROM_DEPLOY_SSH_PUBLIC_KEY }}
-          stack_file_name: webstrom-test/compose-test.yaml
+          stack_file_name: webstrom-prod/compose-prod.yaml
           args: up --build --force-recreate --detach

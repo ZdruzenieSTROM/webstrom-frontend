@@ -2,7 +2,7 @@
 
 ## Co pustam
 
-- `docker-compose -f deployment/local-mac/compose.yaml up --build --force-recreate`
+- `docker-compose -f docker/local-mac/compose.yaml up --build --force-recreate`
   - da sa prihodit aj `--detach` ked chceme pustit v backgrounde (bez neho vidime server logy priamo v terminali)
 
 Treba mat samozrejme Docker a docker-compose atd.
