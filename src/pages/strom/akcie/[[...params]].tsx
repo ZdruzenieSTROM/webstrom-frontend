@@ -6,36 +6,44 @@ import {ParsedUrlQuery} from 'querystring'
 import {apiOptions} from '@/api/api'
 import {commonQueries} from '@/api/commonQueries'
 import {CompetitionPage} from '@/components/CompetitionPage/CompetitionPage'
-import {RulesPage} from '@/components/CompetitionPage/RulesPage'
+import {Loading} from '@/components/Loading/Loading'
+import {Markdown} from '@/components/Markdown/Markdown'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
+
+const SUBSITES = new Set(['podrobnosti', 'pravidla'])
 
 // z nazvu suboru `[[...params]]` - vzdy to musi byt string[]
 const PARAM = 'params'
+
 const getParams = (query: ParsedUrlQuery) => {
   const params = query[PARAM] as string[]
   const requestedUrl = params[0]
-  const isRules = params.length === 2 && params[1] === 'pravidla'
+  const subsite = params.length >= 2 ? params[1] : undefined
 
-  return {requestedUrl, isRules}
+  return {requestedUrl, subsite}
 }
 
 const StaticPage: NextPage = () => {
   const {query} = useRouter()
-  const {requestedUrl, isRules} = getParams(query)
+  const {requestedUrl, subsite} = getParams(query)
 
   const {data, isPending, isError} = useQuery(apiOptions.competition.competition.slug(requestedUrl))
 
-  // TODO: handle
-  if (isPending) return null
+  if (isPending) return <Loading />
+  // TODO: show error? redirect on server?
   if (isError) return null
+
+  // invalid (unknown) subsite
+  if (subsite && !SUBSITES.has(subsite)) {
+    // TODO: show error? redirect on server?
+    return null
+  }
 
   return (
     <PageLayout title={data.name}>
-      {isRules ? (
-        <RulesPage name={data.name} rules={data.rules} upcoming_or_current_event={data.upcoming_or_current_event} />
-      ) : (
-        <CompetitionPage competition={data} />
-      )}
+      {subsite === 'podrobnosti' && <Markdown content={data.long_description ?? ''} />}
+      {subsite === 'pravidla' && <Markdown content={data.rules ?? ''} />}
+      {!subsite && <CompetitionPage competition={data} />}
     </PageLayout>
   )
 }
