@@ -61,7 +61,6 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre užívateľa po škole
   useEffect(() => {
-    console.log('without_school', without_school, withoutSchoolItem, noGradeItem)
     if (!withoutSchoolItem || !noGradeItem) return
 
     if (without_school) {
@@ -74,11 +73,9 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [without_school, withoutSchoolItem, noGradeItem])
-  // }, [without_school, schoolsData, gradesData])
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre neznámu školu
   useEffect(() => {
-    console.log('school_not_found', school_not_found, otherSchoolItem)
     if (!otherSchoolItem) return
 
     if (school_not_found) {
@@ -88,7 +85,6 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [school_not_found, otherSchoolItem])
-  // }, [school_not_found, schoolsData])
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   return (
