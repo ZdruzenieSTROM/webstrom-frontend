@@ -225,7 +225,7 @@ export const ProblemAdministration: FC = () => {
         }
       />
       <Stack gap={2}>
-        <Stack direction="row" justifyContent="space-between">
+        <Stack direction="row" justifyContent="space-between" alignItems="end">
           <Typography variant="h2">Opravovanie {problem.order}. úlohy</Typography>
 
           <Link variant="button2" href={`/strom/admin/opravovanie/${semesterUrl}`}>
