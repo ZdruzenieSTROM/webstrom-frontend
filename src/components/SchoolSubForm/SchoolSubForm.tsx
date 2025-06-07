@@ -1,6 +1,6 @@
 import {Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import {useEffect, useRef} from 'react'
+import {useEffect, useMemo} from 'react'
 import {Control, UseFormSetValue, UseFormWatch} from 'react-hook-form'
 
 import {apiAxios} from '@/api/apiAxios'
@@ -30,68 +30,61 @@ type SchoolSubFormProps<T extends SchoolSubFormValues> = {
 export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProps<SchoolSubFormValues>) => {
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
-  const otherSchoolItem = useRef<SelectOption>(undefined)
-  const withoutSchoolItem = useRef<SelectOption>(undefined)
-  const noGradeItem = useRef<SelectOption>(undefined)
-
-  const firstRender = useRef(true)
-
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   const {data: gradesData} = useQuery({
     queryKey: ['competition', 'grade'],
     queryFn: () => apiAxios.get<IGrade[]>(`/competition/grade`),
   })
-  const grades = gradesData?.data ?? []
-  const gradeItems: SelectOption[] = grades.map(({id, name}) => ({id, label: name}))
+  const grades = useMemo(() => gradesData?.data ?? [], [gradesData])
+  const gradeItems: SelectOption[] = useMemo(() => grades.map(({id, name}) => ({id, label: name})), [grades])
+  const noGradeItem = useMemo(() => gradeItems.find(({id}) => id === 13), [gradeItems])
 
   // načítanie škôl z BE, ktorými vyplníme FormAutocomplete so školami
   const {data: schoolsData} = useQuery({
     queryKey: ['personal', 'schools'],
     queryFn: () => apiAxios.get<ISchool[]>(`/personal/schools`),
   })
-  const schools = (schoolsData?.data ?? []).sort((a, b) => a.name.localeCompare(b.name))
-  const allSchoolItems: SelectOption[] = schools.map(({code, city, name, street}) => ({
-    id: code,
-    label: city ? `${name} ${street}, ${city}` : name,
-  }))
-  const emptySchoolItems = allSchoolItems.filter(({id}) => [0, 1].includes(id))
-  otherSchoolItem.current = emptySchoolItems.find(({id}) => id === 0)
-  withoutSchoolItem.current = emptySchoolItems.find(({id}) => id === 1)
-  const schoolItems = allSchoolItems.filter(({id}) => ![0, 1].includes(id))
-  noGradeItem.current = gradeItems.find(({id}) => id === 13)
+  const schools = useMemo(() => (schoolsData?.data ?? []).sort((a, b) => a.name.localeCompare(b.name)), [schoolsData])
+  const allSchoolItems: SelectOption[] = useMemo(
+    () =>
+      schools.map(({code, city, name, street}) => ({
+        id: code,
+        label: city ? `${name} ${street}, ${city}` : name,
+      })),
+    [schools],
+  )
+  const emptySchoolItems = useMemo(() => allSchoolItems.filter(({id}) => [0, 1].includes(id)), [allSchoolItems])
+  const schoolItems = useMemo(() => allSchoolItems.filter(({id}) => ![0, 1].includes(id)), [allSchoolItems])
+
+  const otherSchoolItem = useMemo(() => emptySchoolItems.find(({id}) => id === 0), [emptySchoolItems])
+  const withoutSchoolItem = useMemo(() => emptySchoolItems.find(({id}) => id === 1), [emptySchoolItems])
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre užívateľa po škole
   useEffect(() => {
-    if (firstRender.current) return
+    if (!withoutSchoolItem || !noGradeItem) return
 
     if (without_school) {
-      setValue('school', withoutSchoolItem.current)
-      setValue('grade', noGradeItem.current!)
+      setValue('school', withoutSchoolItem)
+      setValue('grade', noGradeItem)
       setValue('school_not_found', false)
     } else {
       setValue('school', null)
       setValue('grade', null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [without_school])
+  }, [without_school, withoutSchoolItem, noGradeItem])
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre neznámu školu
   useEffect(() => {
-    if (firstRender.current) return
+    if (!otherSchoolItem) return
 
     if (school_not_found) {
-      setValue('school', otherSchoolItem.current)
+      setValue('school', otherSchoolItem)
     } else if (!without_school) {
       setValue('school', null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [school_not_found])
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-    }
-  }, [])
+  }, [school_not_found, otherSchoolItem])
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   return (
