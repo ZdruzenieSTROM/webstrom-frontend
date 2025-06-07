@@ -1,0 +1,26 @@
+services:
+  webstrom-frontend:
+    build:
+      dockerfile: docker/local-mac/Dockerfile
+      context: ../..
+      args:
+        - BE_PROTOCOL=http
+        - BE_HOSTNAME=host.docker.internal
+        - BE_PORT=8000
+        - BE_FORWARDED_HOST=test.strom.sk
+        - BE_FORWARDED_PROTO=https
+
+    image: webstrom-test-frontend
+
+    environment:
+      - PORT=3000
+      - BE_PROTOCOL=http
+      - BE_HOSTNAME=host.docker.internal
+      - BE_PORT=8000
+      - BE_FORWARDED_HOST=test.strom.sk
+      - BE_FORWARDED_PROTO=https
+
+    ports:
+      - '3000:3000'
+
+    restart: always
