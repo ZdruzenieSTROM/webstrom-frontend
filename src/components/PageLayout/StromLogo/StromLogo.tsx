@@ -13,13 +13,13 @@ export const StromLogo: FC = () => {
     >
       {/* TODO: vyriesit lepsie pre vysoke obrazovky :D nastavit nejak SVG ako background a nejake repeat-nieco? */}
       <Box>
-        <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" />
+        <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="black" />
       </Box>
       <Box>
-        <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" />
+        <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="black" />
       </Box>
       <Box>
-        <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" />
+        <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="black" />
       </Box>
     </Box>
   )
