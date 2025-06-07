@@ -1,14 +1,13 @@
 import {Stack, Typography} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {useRouter} from 'next/router'
-import {FC, useEffect, useState} from 'react'
+import {FC, useState} from 'react'
 import {useInterval} from 'usehooks-ts'
 
+import {apiOptions} from '@/api/api'
 import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
-import {SeriesWithProblems} from '@/types/api/competition'
-import {BannerContainer} from '@/utils/BannerContainer'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useProfile} from '@/utils/useProfile'
@@ -25,8 +24,6 @@ export const Problems: FC = () => {
 
   const router = useRouter()
 
-  const {setBannerMessages} = BannerContainer.useContainer()
-
   const {profile} = useProfile()
 
   const [discussionProblem, setDiscussionProblem] = useState<DiscussionProblem>()
@@ -38,20 +35,8 @@ export const Problems: FC = () => {
   }
   const closeDiscussion = () => setDiscussionOpen(false)
 
-  const {data: seriesData, isLoading: seriesIsLoading} = useQuery({
-    queryKey: ['competition', 'series', id.seriesId],
-    queryFn: () => apiAxios.get<SeriesWithProblems>(`/competition/series/${id.seriesId}`),
-    enabled: id.seriesId !== -1,
-  })
+  const {data: series, isLoading: seriesIsLoading} = useQuery(apiOptions.competition.series.byId(id.seriesId))
 
-  const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
-    queryKey: ['cms', 'info-banner', 'series-problems', id.seriesId],
-    queryFn: () => apiAxios.get<string[]>(`/cms/info-banner/series-problems/${id.seriesId}`),
-    enabled: id.seriesId !== -1,
-  })
-
-  const bannerMessages = bannerMessage?.data
-  const series = seriesData?.data
   const problems = series?.problems ?? []
   const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
@@ -72,12 +57,8 @@ export const Problems: FC = () => {
 
   const queryClient = useQueryClient()
 
-  const invalidateSeriesQuery = () => queryClient.invalidateQueries({queryKey: ['competition', 'series', id.seriesId]})
-
-  useEffect(() => {
-    if (isBannerLoading || bannerMessages === undefined) setBannerMessages([])
-    else setBannerMessages(bannerMessages)
-  }, [setBannerMessages, isBannerLoading, bannerMessages])
+  const invalidateSeriesQuery = () =>
+    queryClient.invalidateQueries({queryKey: apiOptions.competition.series.byId(id.seriesId).queryKey})
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => apiAxios.post(`/competition/event/${id}/register`),
