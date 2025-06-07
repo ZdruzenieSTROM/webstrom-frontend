@@ -14,7 +14,7 @@ export const backendRewriteMiddleware = ({req, trailingSlash}: {req: NextRequest
   const newUrl = new URL(`${newPathname}${search}`, getBackendServerUrl())
 
   // eslint-disable-next-line no-console
-  if (process.env.DEBUG === 'true') console.log('[MIDDLEWARE]', method, href, '->', newUrl.href)
+  if (process.env.DEBUG_SERVER === 'true') console.log('[MIDDLEWARE]', method, href, '->', newUrl.href)
 
   // server-side requesty z deployed FE na deployed BE potrebuju tieto hlavicky (podla settings_test.py)
   if (process.env.BE_FORWARDED_HOST) {
