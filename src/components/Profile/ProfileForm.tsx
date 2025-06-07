@@ -1,5 +1,5 @@
 import {Stack} from '@mui/material'
-import {useMutation} from '@tanstack/react-query'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
@@ -77,11 +77,16 @@ export const ProfileForm: FC = () => {
     new_school_description: data.new_school_description || '',
   })
 
-  const {mutate: submitFormData} = useMutation({
+  const queryClient = useQueryClient()
+
+  const {mutate: submitFormData, isPending: isSubmitting} = useMutation({
     mutationFn: (data: ProfileFormValues) => {
       return apiAxios.patch<IGeneralPostResponse>(`/user/user`, transformFormData(data))
     },
-    onSuccess: () => router.push(`/${seminar}/profil`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['personal', 'profiles', 'myprofile']})
+      router.push(`/${seminar}/profil`)
+    },
   })
 
   const onSubmit: SubmitHandler<ProfileFormValues> = (data) => {
@@ -113,10 +118,10 @@ export const ProfileForm: FC = () => {
         <FormInput control={control} name="parent_phone" label="telefónne číslo na rodiča" rules={phoneRule} />
         <p style={{fontWeight: 'bold'}}>* takto označené polia sú povinné</p>
         <Stack direction={'row'} mt={3} gap={2} justifyContent="space-between">
-          <Button onClick={returnBack} variant="button2">
+          <Button onClick={returnBack} variant="button2" type="button">
             Späť
           </Button>
-          <Button type="submit" onClick={scrollToTop} variant="button2">
+          <Button type="submit" onClick={scrollToTop} variant="button2" disabled={isSubmitting}>
             Uložiť údaje
           </Button>
         </Stack>
