@@ -9,13 +9,16 @@ import remarkMath from 'remark-math'
 import {H1, H2, H3, MarkdownLink, Ol, P, Table, Td, Th, Ul} from './Texts'
 
 type MarkdownProps = {
-  content: string
+  // optional pre istotu - mali sme problem vo flat page administracii, tak nech sa fallback poriesi tu
+  content?: string
 }
 
 const Empty: FC = () => <></>
 
 export const Markdown: FC<MarkdownProps> = ({content}) => {
   const clean = (value: string) => value.replaceAll(/\\\(|\\\)/g, '$').replaceAll(/\\\[|\\]/g, '$$')
+
+  const cleanContent = content ? clean(content) : ''
 
   return (
     <ReactMarkdown
@@ -38,7 +41,7 @@ export const Markdown: FC<MarkdownProps> = ({content}) => {
         script: Empty,
       }}
     >
-      {clean(content)}
+      {cleanContent}
     </ReactMarkdown>
   )
 }
