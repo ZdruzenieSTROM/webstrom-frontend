@@ -2,6 +2,7 @@ import {AxiosResponse} from 'axios'
 
 import {ILogo} from '@/components/PageLayout/Footer/Logo'
 import {IPost} from '@/components/Posts/Post'
+import {Result} from '@/components/Results/ResultsRow'
 import {FlatPage} from '@/types/api/base'
 import {MenuItemShort} from '@/types/api/cms'
 import {Competition, Event, Semester, SeriesWithProblems} from '@/types/api/competition'
@@ -26,6 +27,11 @@ export const apiOptions = {
       seriesProblems: (seriesId: number) => ({
         queryKey: ['cms', 'info-banner', 'series-problems', seriesId],
         queryFn: () => unwrap(apiAxios.get<string[]>(`/cms/info-banner/series-problems/${seriesId}`)),
+        enabled: seriesId !== -1,
+      }),
+      seriesResults: (seriesId: number) => ({
+        queryKey: ['cms', 'info-banner', 'series-results', seriesId],
+        queryFn: () => unwrap(apiAxios.get<string[]>(`/cms/info-banner/series-results/${seriesId}`)),
         enabled: seriesId !== -1,
       }),
     },
@@ -65,7 +71,19 @@ export const apiOptions = {
       }),
       current: (seminarId: SeminarId) => ({
         queryKey: ['competition', 'series', 'current', seminarId],
-        queryFn: () => unwrap(apiAxios.get<SeriesWithProblems>(`/competition/series/current/` + seminarId)),
+        queryFn: () => unwrap(apiAxios.get<SeriesWithProblems>(`/competition/series/current/${seminarId}`)),
+      }),
+      results: (seriesId: number) => ({
+        queryKey: ['competition', 'series', seriesId, 'results'],
+        queryFn: () => unwrap(apiAxios.get<Result[]>(`/competition/series/${seriesId}/results`)),
+        enabled: seriesId !== -1,
+      }),
+    },
+    semester: {
+      results: (semesterId: number) => ({
+        queryKey: ['competition', 'semester', semesterId, 'results'],
+        queryFn: () => unwrap(apiAxios.get<Result[]>(`/competition/semester/${semesterId}/results`)),
+        enabled: semesterId !== -1,
       }),
     },
   },
