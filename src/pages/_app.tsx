@@ -4,6 +4,7 @@ import {HydrationBoundary, QueryClient, QueryClientProvider} from '@tanstack/rea
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import {isAxiosError} from 'axios'
 import {AppProps} from 'next/app'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {FC, PropsWithChildren, useMemo} from 'react'
@@ -85,6 +86,16 @@ const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }
 
+const ReactQueryDevtoolsProduction = dynamic(
+  () =>
+    import('@tanstack/react-query-devtools/production').then((d) => ({
+      default: d.ReactQueryDevtools,
+    })),
+  {
+    ssr: false,
+  },
+)
+
 const MyApp: FC<AppProps> = ({Component, pageProps}) => {
   const router = useRouter()
   const isAdminRoute = router.pathname.startsWith('/admin')
@@ -100,6 +111,7 @@ const MyApp: FC<AppProps> = ({Component, pageProps}) => {
           <HydrationBoundary state={pageProps.dehydratedState}>
             {/* Admin defines its own DevTools because it also has its own queryClient */}
             {!isAdminRoute && <ReactQueryDevtools />}
+            {!isAdminRoute && <ReactQueryDevtoolsProduction />}
             <CookiesProvider>
               <AuthContainer.Provider>
                 <BannerAnimationContainer.Provider>

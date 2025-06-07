@@ -34,6 +34,7 @@ export const UploadProblemForm: FC<{
   const {mutate: uploadSolution, isPending: isUploading} = useMutation({
     mutationFn: (formData: FormData) => apiAxios.post(`/competition/problem/${problemId}/upload-solution`, formData),
     onSuccess: (response) => {
+      console.log('uploadSolution onSuccess', response)
       if (response.status === 201) {
         // refetch serie, nech sa aktualizuje problem.submitted
         invalidateSeriesQuery()
