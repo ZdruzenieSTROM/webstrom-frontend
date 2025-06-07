@@ -91,6 +91,11 @@ const _theme = createTheme({
       xl: 1921, // changed to fullHD, default = 1536
     },
   },
+  palette: {
+    primary: {
+      main: colors.black,
+    },
+  },
   typography: {
     ...font.style,
     // disable these variants
