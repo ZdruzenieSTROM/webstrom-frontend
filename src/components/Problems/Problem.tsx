@@ -60,9 +60,7 @@ export const Problem: FC<{
 
   return (
     <div>
-      <Typography variant="h3" fontStyle="unset">
-        {problem.order}. ÚLOHA
-      </Typography>
+      <Typography variant="h3">{problem.order}. ÚLOHA</Typography>
       <Markdown content={problem.text} />
       {problem.image && (
         <Stack alignItems="center">
