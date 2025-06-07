@@ -118,6 +118,7 @@ const _theme = createTheme({
       ...font.style,
       textTransform: 'uppercase',
       fontWeight: 800,
+      fontStyle: 'italic',
     },
     body1: {
       ...font.style,
@@ -138,6 +139,7 @@ const _theme = createTheme({
       ...font.style,
       textTransform: 'uppercase',
       fontWeight: 800,
+      fontStyle: 'italic',
     },
     button2: {
       ...font.style,

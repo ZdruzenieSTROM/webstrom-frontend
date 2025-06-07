@@ -42,6 +42,7 @@ const styles = {
     display: 'grid',
     gridTemplateColumns: '2fr 1fr 1fr 1fr',
     textTransform: 'uppercase',
+    fontStyle: 'italic',
     fontWeight: 'bold',
     padding: '10px',
   },

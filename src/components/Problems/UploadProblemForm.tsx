@@ -93,10 +93,12 @@ export const UploadProblemForm: FC<{
       }}
     >
       {isAfterDeadline && (
-        <Box sx={{fontWeight: 'bold', fontStyle: 'italic'}}>Toto riešenie už nahrávaš po termíne.</Box>
+        <Box sx={{fontWeight: 'bold', textTransform: 'uppercase', fontStyle: 'italic'}}>
+          Toto riešenie už nahrávaš po termíne.
+        </Box>
       )}
       {problemSubmitted && (
-        <Box sx={{fontWeight: 'bold', fontStyle: 'italic'}}>
+        <Box sx={{fontWeight: 'bold', textTransform: 'uppercase', fontStyle: 'italic'}}>
           Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.
         </Box>
       )}

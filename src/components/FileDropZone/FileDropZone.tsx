@@ -19,6 +19,7 @@ export const FileDropZone: FC<FileDropZoneProps> = ({text, getRootProps, getInpu
         height: '5rem',
         fontWeight: 'bold',
         textTransform: 'uppercase',
+        fontStyle: 'italic',
         color: '#BBB',
         bgcolor: '#EEE',
         border: '2px dashed black',
