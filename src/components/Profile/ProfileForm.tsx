@@ -1,5 +1,5 @@
 import {Stack} from '@mui/material'
-import {useMutation} from '@tanstack/react-query'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
@@ -77,11 +77,16 @@ export const ProfileForm: FC = () => {
     new_school_description: data.new_school_description || '',
   })
 
+  const queryClient = useQueryClient()
+
   const {mutate: submitFormData} = useMutation({
     mutationFn: (data: ProfileFormValues) => {
       return apiAxios.patch<IGeneralPostResponse>(`/user/user`, transformFormData(data))
     },
-    onSuccess: () => router.push(`/${seminar}/profil`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['personal', 'profiles', 'myprofile']})
+router.push(`/${seminar}/profil`)
+    },
   })
 
   const onSubmit: SubmitHandler<ProfileFormValues> = (data) => {
