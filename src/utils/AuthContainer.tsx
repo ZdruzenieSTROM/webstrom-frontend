@@ -23,12 +23,14 @@ export const testAuth = async () => {
 const useAuth = () => {
   // stav, ktory napoveda, ci mame sessionid cookie a vieme robit auth requesty
   const [isAuthed, setIsAuthed] = useState(false)
+  const [initialLoading, setInitialLoading] = useState(true)
 
   useEffect(() => {
     // zistime, ci ma user platne sessionid - request na nejaky autentikovany endpoint
     ;(async () => {
       const success = await testAuth()
       if (success) setIsAuthed(true)
+      setInitialLoading(false)
     })()
     // one-time vec pri prvom nacitani stranky
   }, [])
@@ -118,7 +120,7 @@ const useAuth = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthed])
 
-  return {isAuthed, login, logout, /* for react admin - this one can throw */ loginAsync, logoutAsync}
+  return {isAuthed, initialLoading, login, logout, /* for react admin - this one can throw */ loginAsync, logoutAsync}
 }
 
 export const AuthContainer = createContainer(useAuth)
