@@ -2,29 +2,26 @@ import {useQuery} from '@tanstack/react-query'
 import {useRouter} from 'next/router'
 import {useMemo} from 'react'
 
-import {apiAxios} from '@/api/apiAxios'
-import {Semester, SeriesWithProblems} from '@/types/api/competition'
+import {apiOptions} from '@/api/api'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 export const useDataFromURL = () => {
   const {seminarId, seminar} = useSeminarInfo()
   const router = useRouter()
 
-  const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery({
-    queryKey: ['competition', 'semester-list', {competition: seminarId}],
-    queryFn: () => apiAxios.get<Semester[]>(`/competition/semester-list?competition=${seminarId}`),
-  })
+  const {data: semesterListData, isLoading: semesterListIsLoading} = useQuery(
+    apiOptions.competition.semesterList(seminarId),
+  )
   // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
-  const semesterList = useMemo(() => semesterListData?.data || [], [semesterListData])
+  const semesterList = useMemo(() => semesterListData || [], [semesterListData])
 
   // aktualna seria. z tejto query sa vyuziva len `currentSeriesId` a len vtedy, ked nemame uplnu URL
   // - napr. prideme na `/zadania` cez menu, nie na `/zadania/44/leto/2`
-  const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery({
-    queryKey: ['competition', 'series', 'current', seminarId],
-    queryFn: () => apiAxios.get<SeriesWithProblems>(`/competition/series/current/` + seminarId),
-  })
-  const currentSeriesId = currentSeriesData?.data.id ?? -1
-  const currentSemesterId = currentSeriesData?.data.semester ?? -1
+  const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery(
+    apiOptions.competition.series.current(seminarId),
+  )
+  const currentSeriesId = currentSeriesData?.id ?? -1
+  const currentSemesterId = currentSeriesData?.semester ?? -1
 
   const {semesterId, seriesId, displayWholeSemesterOnResults} = useMemo(() => {
     const currentIds = {semesterId: currentSemesterId, seriesId: currentSeriesId, displayWholeSemesterOnResults: true}
