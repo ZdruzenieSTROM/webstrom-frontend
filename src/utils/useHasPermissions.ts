@@ -7,7 +7,7 @@ import {AuthContainer} from './AuthContainer'
 import {useSeminarInfo} from './useSeminarInfo'
 
 export const useHasPermissions = () => {
-  const {isAuthed} = AuthContainer.useContainer()
+  const {isAuthed, initialLoading} = AuthContainer.useContainer()
 
   const {data, isLoading: permissionsIsLoading} = useQuery({
     queryKey: ['personal', 'profiles', 'mypermissions'],
@@ -25,5 +25,5 @@ export const useHasPermissions = () => {
 
   const hasPermissions = !permissions ? false : permissions.includes(seminarId)
 
-  return {hasPermissions, isSuperuser, isStaff, permissionsIsLoading}
+  return {hasPermissions, isSuperuser, isStaff, permissionsIsLoading: initialLoading || permissionsIsLoading}
 }
