@@ -110,7 +110,7 @@ export const Problem: FC<{
               vzorové riešenie
             </Link>
           )}
-          {registered && (
+          {registered && !canCorrect && (
             <>
               <Link
                 href={`/api/competition/problem/${problem.id}/my-solution`}
@@ -150,7 +150,7 @@ export const Problem: FC<{
           <Button onClick={() => openDiscussion(problem)} variant="button2">
             diskusia ({problem.num_comments})
           </Button>
-          {canSubmit && (
+          {canSubmit && !canCorrect && (
             <Button
               onClick={handleUploadClick}
               disabled={isAuthed && !canRegister}
