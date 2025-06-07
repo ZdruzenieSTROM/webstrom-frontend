@@ -1,13 +1,12 @@
 import {Box, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import {FC, useEffect} from 'react'
+import {FC} from 'react'
 
-import {apiAxios} from '@/api/apiAxios'
-import {BannerContainer} from '@/utils/BannerContainer'
+import {apiOptions} from '@/api/api'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 
 import {Loading} from '../Loading/Loading'
-import {Result, ResultsRow} from './ResultsRow'
+import {ResultsRow} from './ResultsRow'
 
 export const Results: FC = () => {
   const {id, displayWholeSemesterOnResults} = useDataFromURL()
@@ -15,24 +14,10 @@ export const Results: FC = () => {
   const competitionEndpoint = displayWholeSemesterOnResults ? 'semester' : 'series'
   const idForEndpoint = displayWholeSemesterOnResults ? id.semesterId : id.seriesId
 
-  const {data: resultsData, isLoading: resultsIsLoading} = useQuery({
-    queryKey: ['competition', competitionEndpoint, idForEndpoint, 'results'],
-    queryFn: () => apiAxios.get<Result[]>(`/competition/${competitionEndpoint}/${idForEndpoint}/results`),
-    enabled: id.semesterId !== -1 || id.seriesId !== -1,
-  })
-  const results = resultsData?.data ?? []
-  const {setBannerMessages} = BannerContainer.useContainer()
-  const {data: bannerMessage, isLoading: isBannerLoading} = useQuery({
-    queryKey: ['cms', 'info-banner', 'series-results', id.seriesId],
-    queryFn: () => apiAxios.get<string[]>(`/cms/info-banner/series-results/${id.seriesId}`),
-    enabled: id.seriesId !== -1,
-  })
-
-  const bannerMessages = bannerMessage?.data
-  useEffect(() => {
-    if (isBannerLoading || bannerMessages === undefined) setBannerMessages([])
-    else setBannerMessages(bannerMessages)
-  }, [setBannerMessages, isBannerLoading, bannerMessages])
+  const {data: resultsData, isLoading: resultsIsLoading} = useQuery(
+    apiOptions.competition[competitionEndpoint].results(idForEndpoint),
+  )
+  const results = resultsData ?? []
 
   return (
     <>
