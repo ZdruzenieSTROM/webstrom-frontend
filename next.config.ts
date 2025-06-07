@@ -2,14 +2,7 @@ import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: process.env.BE_PROTOCOL as 'http' | 'https' | undefined,
-        hostname: process.env.BE_HOSTNAME ?? 'localhost',
-        port: process.env.BE_PORT,
-        pathname: '/media/**',
-      },
-    ],
+    unoptimized: true,
   },
   turbopack: {
     rules: {
