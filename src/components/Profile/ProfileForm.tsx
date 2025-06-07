@@ -79,13 +79,13 @@ export const ProfileForm: FC = () => {
 
   const queryClient = useQueryClient()
 
-  const {mutate: submitFormData} = useMutation({
+  const {mutate: submitFormData, isPending: isSubmitting} = useMutation({
     mutationFn: (data: ProfileFormValues) => {
       return apiAxios.patch<IGeneralPostResponse>(`/user/user`, transformFormData(data))
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['personal', 'profiles', 'myprofile']})
-router.push(`/${seminar}/profil`)
+      router.push(`/${seminar}/profil`)
     },
   })
 
@@ -121,7 +121,7 @@ router.push(`/${seminar}/profil`)
           <Button onClick={returnBack} variant="button2" type="button">
             Späť
           </Button>
-          <Button type="submit" onClick={scrollToTop} variant="button2">
+          <Button type="submit" onClick={scrollToTop} variant="button2" disabled={isSubmitting}>
             Uložiť údaje
           </Button>
         </Stack>
