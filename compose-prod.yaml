@@ -9,7 +9,7 @@ services:
         - BE_PROTOCOL=http
         - BE_HOSTNAME=localhost
         - BE_PORT=8930
-        - BE_FORWARDED_HOST=prod.strom.sk
+        - BE_FORWARDED_HOST=strom.sk
         - BE_FORWARDED_PROTO=https
 
     image: webstrom-frontend
@@ -19,7 +19,7 @@ services:
       - BE_PROTOCOL=http
       - BE_HOSTNAME=localhost
       - BE_PORT=8930
-      - BE_FORWARDED_HOST=prod.strom.sk
+      - BE_FORWARDED_HOST=strom.sk
       - BE_FORWARDED_PROTO=https
 
     network_mode: host
