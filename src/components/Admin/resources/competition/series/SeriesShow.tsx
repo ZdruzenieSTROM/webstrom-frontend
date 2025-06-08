@@ -22,6 +22,7 @@ export const SeriesShow: FC = () => (
           <ReferenceField source="semester" reference="competition/semester" link="show" />
           <DateTimeField source="deadline" />
           <TextField source="order" />
+          <ReferenceField source="sum-methods" reference="competition/series/sum-methods" link="show" />
           <BooleanField source="complete" />
         </SimpleShowLayout>
       </Tab>

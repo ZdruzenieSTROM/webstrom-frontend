@@ -22,6 +22,7 @@ export const SeriesList: FC = () => (
       <ReferenceField source="semester" reference="competition/semester" link={false} sortable={false} />
       <DateTimeField source="deadline" />
       <TextField source="order" sortable={false} />
+      <ReferenceField source="sum-methods" reference="competition/series/sum-methods" link={false} sortable={false} />
       <BooleanField source="complete" sortable={false} />
       <FunctionField<RaRecord>
         label="content.labels.problem_count"

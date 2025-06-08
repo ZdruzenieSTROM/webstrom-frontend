@@ -13,6 +13,9 @@ export const SeriesCreate: FC = () => (
         </ReferenceInput>
         <MyDateTimeInput source="deadline" fullWidth validate={required()} />
         <NumberInput source="order" fullWidth validate={required()} />
+        <ReferenceInput source="sum-methods" reference="competition/series/sum-methods">
+          <AutocompleteInput optionText="name" fullWidth validate={required()}/>
+        </ReferenceInput>
       </FormTab>
     </TabbedForm>
   </MyCreate>
