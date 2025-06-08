@@ -12,6 +12,7 @@ export const CompetitionList: FC = () => (
       <TextField source="slug" sortable={false} />
       <TextField source="start_year" />
       <TruncatedTextField source="description" maxTextWidth={30} sortable={false} />
+      <TruncatedTextField source="long_description" maxTextWidth={30} sortable={false} />
       <TruncatedTextField source="rules" maxTextWidth={30} sortable={false} />
       <TextField source="competition_type.name" label="content.labels.competition_type" sortable={false} />
       <SitesArrayField source="sites" sortable={false} />

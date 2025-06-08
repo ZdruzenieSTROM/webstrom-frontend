@@ -27,6 +27,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
     upcoming_or_current_event,
     history_events,
     rules,
+    long_description,
   },
 }) => {
   const {setBannerMessages} = BannerContainer.useContainer()
@@ -44,7 +45,8 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
   }, [setBannerMessages, isBannerLoading, bannerMessages])
 
   const router = useRouter()
-  const rulesLink = `${router.asPath}/pravidla`
+  const detailsLink = long_description && `${router.asPath}/podrobnosti`
+  const rulesLink = rules && `${router.asPath}/pravidla`
 
   return (
     <Stack gap={5}>
@@ -53,16 +55,25 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         {who_can_participate && ` Súťaž je určená pre ${who_can_participate}.`}
       </Typography>
 
-      {rules && (
+      {(detailsLink || rulesLink) && (
         <Stack
+          direction="row"
           sx={{
             mt: 0.5,
-            alignItems: 'end',
+            gap: 0.5,
+            justifyContent: 'end',
           }}
         >
-          <Link variant="button2" href={rulesLink}>
-            Pravidlá
-          </Link>
+          {detailsLink && (
+            <Link variant="button2" href={detailsLink}>
+              Podrobnosti
+            </Link>
+          )}
+          {rulesLink && (
+            <Link variant="button2" href={rulesLink}>
+              Pravidlá
+            </Link>
+          )}
         </Stack>
       )}
 

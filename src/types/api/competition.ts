@@ -90,6 +90,7 @@ export interface Competition {
   min_years_until_graduation: number | null
   sites: number[]
   permission_group: number[] | null
+  long_description: string | null
 }
 
 export interface EventRegistration {
