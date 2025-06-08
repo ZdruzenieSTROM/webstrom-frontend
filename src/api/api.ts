@@ -24,6 +24,11 @@ export const apiOptions = {
       }),
     },
     infoBanner: {
+      competition: (competitionId: number) => ({
+        queryKey: ['cms', 'info-banner', 'competition', competitionId],
+        queryFn: () => unwrap(apiAxios.get<string[]>(`/cms/info-banner/competition/${competitionId}`)),
+        enabled: competitionId !== -1,
+      }),
       seriesProblems: (seriesId: number) => ({
         queryKey: ['cms', 'info-banner', 'series-problems', seriesId],
         queryFn: () => unwrap(apiAxios.get<string[]>(`/cms/info-banner/series-problems/${seriesId}`)),
