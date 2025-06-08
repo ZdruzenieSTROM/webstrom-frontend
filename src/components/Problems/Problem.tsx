@@ -1,4 +1,4 @@
-import {WarningAmber} from '@mui/icons-material'
+import {Warning} from '@mui/icons-material'
 import {Stack, Tooltip, Typography} from '@mui/material'
 import Image from 'next/image'
 import {FC, useState} from 'react'
@@ -124,7 +124,7 @@ export const Problem: FC<{
                 >
                   <Stack direction="row" alignItems="center" gap={0.5} component="span">
                     moje riešenie
-                    {problem.submitted?.late_tag && <WarningAmber sx={{width: '16px', height: '16px'}} />}
+                    {problem.submitted?.late_tag && <Warning sx={{width: '16px', height: '16px'}} />}
                   </Stack>
                 </Tooltip>
               </Link>

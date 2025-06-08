@@ -43,7 +43,11 @@ const SeminarButtons: FC<SeminarButtonsProps> = ({seminar}) => {
   )
 }
 
-export const TopGrid: FC = () => {
+type TopGridProps = {
+  bannerMessages?: string[]
+}
+
+export const TopGrid: FC<TopGridProps> = ({bannerMessages}) => {
   const {seminar} = useSeminarInfo()
 
   // z napr. `/matik/zadania(/*)` vytiahne `zadania`
@@ -93,7 +97,7 @@ export const TopGrid: FC = () => {
         )}
       </Grid>
 
-      <Banner />
+      <Banner bannerMessages={bannerMessages} />
     </Stack>
   )
 }

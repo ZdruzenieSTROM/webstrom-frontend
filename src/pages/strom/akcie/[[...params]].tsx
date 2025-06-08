@@ -28,6 +28,8 @@ const StaticPage: NextPage = () => {
   const {requestedUrl, subsite} = getParams(query)
 
   const {data, isPending, isError} = useQuery(apiOptions.competition.competition.slug(requestedUrl))
+  // TODO: prefetch in SSR
+  const {data: bannerMessages} = useQuery(apiOptions.cms.infoBanner.competition(data?.id ?? -1))
 
   if (isPending) return <Loading />
   // TODO: show error? redirect on server?
@@ -40,7 +42,7 @@ const StaticPage: NextPage = () => {
   }
 
   return (
-    <PageLayout title={data.name}>
+    <PageLayout title={data.name} bannerMessages={bannerMessages}>
       {subsite === 'podrobnosti' && <Markdown content={data.long_description ?? ''} />}
       {subsite === 'pravidla' && <Markdown content={data.rules ?? ''} />}
       {!subsite && <CompetitionPage competition={data} />}
