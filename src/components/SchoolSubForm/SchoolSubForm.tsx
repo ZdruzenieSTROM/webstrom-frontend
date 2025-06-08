@@ -31,7 +31,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
-  const {data: gradesData} = useQuery({
+  const {data: gradesData, isLoading: isGradesLoading} = useQuery({
     queryKey: ['competition', 'grade'],
     queryFn: () => apiAxios.get<IGrade[]>(`/competition/grade`),
   })
@@ -40,7 +40,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   const noGradeItem = useMemo(() => gradeItems.find(({id}) => id === 13), [gradeItems])
 
   // načítanie škôl z BE, ktorými vyplníme FormAutocomplete so školami
-  const {data: schoolsData} = useQuery({
+  const {data: schoolsData, isLoading: isSchoolsLoading} = useQuery({
     queryKey: ['personal', 'schools'],
     queryFn: () => apiAxios.get<ISchool[]>(`/personal/schools`),
   })
@@ -59,10 +59,24 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   const otherSchoolItem = useMemo(() => emptySchoolItems.find(({id}) => id === 0), [emptySchoolItems])
   const withoutSchoolItem = useMemo(() => emptySchoolItems.find(({id}) => id === 1), [emptySchoolItems])
 
+  const isLoading = isGradesLoading || isSchoolsLoading
+
+  useEffect(() => {
+    if (isLoading) return
+    if (without_school) {
+      setValue('school', withoutSchoolItem)
+      setValue('grade', noGradeItem)
+      setValue('school_not_found', false)
+    }
+    if (school_not_found) {
+      setValue('school', otherSchoolItem)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading])
+
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre užívateľa po škole
   useEffect(() => {
-    if (!withoutSchoolItem || !noGradeItem) return
-
+    if (isLoading) return
     if (without_school) {
       setValue('school', withoutSchoolItem)
       setValue('grade', noGradeItem)
@@ -72,19 +86,18 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
       setValue('grade', null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [without_school, withoutSchoolItem, noGradeItem])
+  }, [without_school])
 
   // predvyplnenie/zmazania hodnôt pri zakliknutí checkboxu pre neznámu školu
   useEffect(() => {
-    if (!otherSchoolItem) return
-
+    if (isLoading) return
     if (school_not_found) {
       setValue('school', otherSchoolItem)
     } else if (!without_school) {
       setValue('school', null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [school_not_found, otherSchoolItem])
+  }, [school_not_found])
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
   return (

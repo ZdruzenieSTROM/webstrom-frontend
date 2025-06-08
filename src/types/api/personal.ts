@@ -67,6 +67,7 @@ export interface Profile {
   email: string
   nickname: string | null
   school: SchoolProfile
+  other_school_info: string | null
   phone: string | null
   parent_phone: string | null
   gdpr: boolean

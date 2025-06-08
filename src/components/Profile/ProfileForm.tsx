@@ -13,6 +13,7 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Button'
 import {InlineLink} from '../Clickable/InlineLink'
+import {Loading} from '../Loading/Loading'
 import {SchoolSubForm, SchoolSubFormValues} from '../SchoolSubForm/SchoolSubForm'
 
 interface ProfileFormValues extends SchoolSubFormValues {
@@ -35,14 +36,14 @@ const defaultValues: ProfileFormValues = {
 }
 
 export const ProfileForm: FC = () => {
-  const {profile} = useProfile()
+  const {profile, isLoading} = useProfile()
 
   const profileValues: ProfileFormValues = {
     first_name: profile?.first_name,
     last_name: profile?.last_name,
     phone: profile?.phone ?? '',
     parent_phone: profile?.parent_phone ?? '',
-    new_school_description: '',
+    new_school_description: profile?.other_school_info ?? '',
     without_school: profile?.school_id === 1,
     school: profile ? ({id: profile.school.code, label: profile.school.verbose_name} as SelectOption) : null,
     school_not_found: profile?.school_id === 0,
@@ -53,8 +54,6 @@ export const ProfileForm: FC = () => {
     defaultValues,
     values: profileValues,
   })
-
-  watch(['first_name'])
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -104,7 +103,9 @@ export const ProfileForm: FC = () => {
         return '* Zadaj telefónne číslo vo formáte +421 123 456 789 alebo +421123456789.'
     },
   }
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap={2}>
         <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} disabled={true} />
