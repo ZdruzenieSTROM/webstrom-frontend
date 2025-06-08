@@ -47,7 +47,7 @@ export const UpcomingOrCurrentEventInfo: FC<{event: Event; name: string; shortNa
       </Typography>
       <Stack direction="row" sx={{justifyContent: 'end', gap: {xs: 1, sm: 2}}}>
         {invitationFile && (
-          <Link variant="button2" href={invitationFile.name ?? undefined} target="_blank">
+          <Link variant="button2" href={invitationFile.file ?? undefined} target="_blank">
             Pozvánka
           </Link>
         )}
