@@ -36,13 +36,13 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         {description}
         {who_can_participate &&
           competition_type?.short_name === 'tábor' &&
-          `Tábor je určený pre ${who_can_participate}.`}
+          ` Tábor je určený pre ${who_can_participate}.`}
         {who_can_participate &&
           competition_type?.short_name === 'súťaž' &&
-          `Súťaž je určená pre ${who_can_participate}.`}
+          ` Súťaž je určená pre ${who_can_participate}.`}
         {who_can_participate &&
           competition_type?.short_name === 'seminár' &&
-          `Seminár je určený pre ${who_can_participate}.`}
+          ` Seminár je určený pre ${who_can_participate}.`}
       </Typography>
 
       {(detailsLink || rulesLink) && (
