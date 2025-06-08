@@ -1,4 +1,5 @@
-import {Stack, Typography} from '@mui/material'
+import {ExpandMore} from '@mui/icons-material'
+import {Accordion, AccordionDetails, AccordionSummary, Stack, SxProps, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import {FC} from 'react'
 
@@ -32,11 +33,12 @@ const PublicationButton: FC<{
 const ResultsButton: FC<{
   eventYear: number
   eventSeason: number
-}> = ({eventYear, eventSeason}) => {
+  sx?: SxProps
+}> = ({eventYear, eventSeason, sx}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
   const url = `../poradie/${eventYear}/${season}`
   return (
-    <Link variant="button2" href={url}>
+    <Link variant="button2" href={url} sx={sx}>
       Poradie
     </Link>
   )
@@ -45,14 +47,22 @@ const ResultsButton: FC<{
 const ProblemsButton: FC<{
   eventYear: number
   eventSeason: number
-}> = ({eventYear, eventSeason}) => {
+  sx?: SxProps
+}> = ({eventYear, eventSeason, sx}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
   const url = `../zadania/${eventYear}/${season}/1`
   return (
-    <Link variant="button2" href={url}>
+    <Link variant="button2" href={url} sx={sx}>
       Zadania
     </Link>
   )
+}
+
+const showInSummary = {display: {xs: 'none', sm: 'flex', md: 'none', lg: 'flex'}}
+const showInDetails = {display: {xs: 'flex', sm: 'none', md: 'flex', lg: 'none'}}
+const alignEndInDetails = {
+  justifyContent: {sm: 'end', md: 'unset', lg: 'end'},
+  pr: {sm: '35px', md: 'unset', lg: '35px'},
 }
 
 export const Archive: FC = () => {
@@ -65,23 +75,30 @@ export const Archive: FC = () => {
   const eventList = eventListData?.data ?? []
 
   return (
-    <Stack gap={2.5}>
+    <Stack gap={1}>
       {eventListIsLoading && <Loading />}
+
       {eventList.map((event) => (
-        <Stack key={event.id} direction="row" justifyContent="space-between">
-          <Typography variant="h3" component="span">
-            {event.year + '. ročník '}
-            {event.season_code === 0 ? 'zimný' : 'letný'}
-            {' semester'}
-          </Typography>
-          <Stack gap={2} direction="row" alignItems="center">
-            <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
-            <ProblemsButton eventYear={event.year} eventSeason={event.season_code} />
-            {event.publication_set.map((publication) => (
-              <PublicationButton key={publication.id} publication={publication} />
-            ))}
-          </Stack>
-        </Stack>
+        <Accordion key={event.id} disableGutters square={false} sx={{boxShadow: 'none', '&:before': {display: 'none'}}}>
+          <AccordionSummary expandIcon={<ExpandMore color="primary" fontSize="large" />} sx={{p: 0}}>
+            <Stack direction="row" sx={{flexGrow: 1}}>
+              <Typography variant="h2" sx={{flexGrow: 1}}>
+                {event.year + '. ročník ' + (event.season_code === 0 ? 'zimný' : 'letný') + ' semester'}
+              </Typography>
+              <ResultsButton eventYear={event.year} eventSeason={event.season_code} sx={showInSummary} />
+              <ProblemsButton eventYear={event.year} eventSeason={event.season_code} sx={showInSummary} />
+            </Stack>
+          </AccordionSummary>
+          <AccordionDetails sx={{p: 0}}>
+            <Stack direction="row" sx={{flexWrap: 'wrap', rowGap: 0.5, ...alignEndInDetails}}>
+              <ResultsButton eventYear={event.year} eventSeason={event.season_code} sx={showInDetails} />
+              <ProblemsButton eventYear={event.year} eventSeason={event.season_code} sx={showInDetails} />
+              {event.publication_set.map((publication) => (
+                <PublicationButton key={publication.id} publication={publication} />
+              ))}
+            </Stack>
+          </AccordionDetails>
+        </Accordion>
       ))}
     </Stack>
   )
