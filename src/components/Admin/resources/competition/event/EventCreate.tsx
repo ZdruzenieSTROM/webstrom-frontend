@@ -29,14 +29,14 @@ export const EventCreate: FC = () => {
       }}
     >
       <SimpleForm>
-        <NumberInput source="year" helperText="ročník súťaže, napr. 48" fullWidth validate={required()} />
-        <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth validate={required()} />
-        <MyDateTimeInput source="start" fullWidth validate={required()} />
-        <MyDateTimeInput source="end" fullWidth validate={required()} />
+        <NumberInput source="year" helperText="ročník súťaže, napr. 48" validate={required()} />
+        <TextInput source="school_year" helperText="napr. 2023/2024" validate={required()} />
+        <MyDateTimeInput source="start" validate={required()} />
+        <MyDateTimeInput source="end" validate={required()} />
         <ReferenceInput source="competition" reference="competition/competition">
-          <SelectInput fullWidth validate={required()} />
+          <SelectInput validate={required()} />
         </ReferenceInput>
-        <TextInput source="location" fullWidth />
+        <TextInput source="location" />
         <FormControlLabel
           control={<Checkbox checked={includeRegLink} onChange={(e) => setIncludeRegLink(e.target.checked)} />}
           // FormControlLabel nie je RA component, takze translate treba explicitne
@@ -45,10 +45,10 @@ export const EventCreate: FC = () => {
         {includeRegLink && (
           <Labeled label="content.labels.reg_link">
             <>
-              <TextInput source="registration_link.url" fullWidth validate={required()} />
-              <MyDateTimeInput source="registration_link.start" fullWidth validate={required()} />
-              <MyDateTimeInput source="registration_link.end" fullWidth validate={required()} />
-              <TextInput source="registration_link.additional_info" fullWidth />
+              <TextInput source="registration_link.url" validate={required()} />
+              <MyDateTimeInput source="registration_link.start" validate={required()} />
+              <MyDateTimeInput source="registration_link.end" validate={required()} />
+              <TextInput source="registration_link.additional_info" />
             </>
           </Labeled>
         )}

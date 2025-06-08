@@ -16,16 +16,16 @@ export const SolutionEdit: FC = () => (
   >
     <SimpleForm>
       <ReferenceInput source="problem" reference="competition/problem">
-        <AutocompleteInput fullWidth validate={required()} />
+        <AutocompleteInput validate={required()} />
       </ReferenceInput>
       <ReferenceInput source="semester_registration" reference="competition/event-registration">
-        <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+        <AutocompleteInput optionText="verbose_name" validate={required()} />
       </ReferenceInput>
       <FileInput source="solution" accept={Accept.Pdf}>
         <MyFileField />
       </FileInput>
       <ReferenceInput source="late_tag" reference="competition/late-tag" label="content.labels.is_late">
-        <AutocompleteInput optionText="name" fullWidth />
+        <AutocompleteInput optionText="name" />
       </ReferenceInput>
       <BooleanInput source="is_online" label="content.labels.is_online" />
     </SimpleForm>
