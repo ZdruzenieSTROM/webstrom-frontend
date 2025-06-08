@@ -1,15 +1,6 @@
 import {Checkbox, FormControlLabel} from '@mui/material'
 import {FC, useState} from 'react'
-import {
-  Labeled,
-  NumberInput,
-  ReferenceInput,
-  required,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-  useTranslate,
-} from 'react-admin'
+import {NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate} from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
@@ -43,14 +34,12 @@ export const EventCreate: FC = () => {
           label={translate('content.labels.reg_link_add')}
         />
         {includeRegLink && (
-          <Labeled label="content.labels.reg_link">
-            <>
-              <TextInput source="registration_link.url" validate={required()} />
-              <MyDateTimeInput source="registration_link.start" validate={required()} />
-              <MyDateTimeInput source="registration_link.end" validate={required()} />
-              <TextInput source="registration_link.additional_info" />
-            </>
-          </Labeled>
+          <>
+            <TextInput source="registration_link.url" label="content.labels.reg_link" validate={required()} />
+            <MyDateTimeInput source="registration_link.start" validate={required()} />
+            <MyDateTimeInput source="registration_link.end" validate={required()} />
+            <TextInput source="registration_link.additional_info" />
+          </>
         )}
       </SimpleForm>
     </MyCreate>
