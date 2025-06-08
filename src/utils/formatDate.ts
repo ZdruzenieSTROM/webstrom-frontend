@@ -24,5 +24,5 @@ export function formatDateTimeInterval(date1: string, date2: string) {
       DateFormat.TIME,
     )}`
 
-  return `${dateTime1.toFormat(DateFormat.DATE_TIME)} - ${dateTime2.toFormat(DateFormat.DATE_TIME)}`
+  return `${dateTime1.toFormat(DateFormat.DATE_DIGITS)} - ${dateTime2.toFormat(DateFormat.DATE_DIGITS)}`
 }
