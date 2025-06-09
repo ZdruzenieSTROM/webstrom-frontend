@@ -23,7 +23,7 @@ export const sk_SK = {
   },
   resources: {
     'cms/post': {
-      name: 'Príspevky',
+      name: 'Novinky',
       fields: {
         caption: 'Názov',
         short_text: 'Krátky text',
