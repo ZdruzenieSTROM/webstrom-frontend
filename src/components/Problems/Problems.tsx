@@ -83,9 +83,11 @@ export const Problems: FC = () => {
 
   const [displayLoginDialog, setDisplayLoginDialog] = useState<boolean>(false)
   const closeLoginDialog = () => setDisplayLoginDialog(false)
-
+  const {params} = router.query
   const rulesLink = `/${seminar}/akcie/${seminar}/pravidla`
-  const resultsLink = `/${seminar}/poradie/${semesterId}/zima`
+  const resultsLink = params
+    ? `/${seminar}/poradie/${Array.isArray(params) ? params.join('/') : params}`
+    : `/${seminar}/poradie`
 
   return (
     <>
