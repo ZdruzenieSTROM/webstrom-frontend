@@ -8,7 +8,7 @@ import {Archive} from '../../../components/Archive/Archive'
 
 const Archiv: NextPage = () => {
   return (
-    <PageLayout title="Archív" contentWidth={2}>
+    <PageLayout title="Minulé ročníky" contentWidth={2}>
       <Archive />
     </PageLayout>
   )
