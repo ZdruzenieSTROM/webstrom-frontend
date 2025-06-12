@@ -83,8 +83,11 @@ export const Problems: FC = () => {
 
   const [displayLoginDialog, setDisplayLoginDialog] = useState<boolean>(false)
   const closeLoginDialog = () => setDisplayLoginDialog(false)
-
+  const {params} = router.query
   const rulesLink = `/${seminar}/akcie/${seminar}/pravidla`
+  const resultsLink = params
+    ? `/${seminar}/poradie/${Array.isArray(params) ? params.join('/') : params}`
+    : `/${seminar}/poradie`
 
   return (
     <>
@@ -141,9 +144,15 @@ export const Problems: FC = () => {
             </Typography>
             <InlineLink href={`/${seminar}/ako-riesit`}>pár tipov</InlineLink>.
           </Stack>
-          <Link variant="button2" href={rulesLink}>
-            Pravidlá
-          </Link>
+          {isAfterDeadline ? (
+            <Link variant="button2" href={resultsLink}>
+              Poradie
+            </Link>
+          ) : (
+            <Link variant="button2" href={rulesLink}>
+              Pravidlá
+            </Link>
+          )}
         </Stack>
         {(loading.semesterListIsLoading ||
           loading.currentSeriesIsLoading ||
