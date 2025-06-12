@@ -19,6 +19,6 @@
     "paths": {"@/*": ["src/*"]},
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "vitest.config.mts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "eslint.config.mjs", "svgo.config.js", "vitest.config.mts"],
   "exclude": ["node_modules"]
 }

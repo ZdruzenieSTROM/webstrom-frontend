@@ -106,7 +106,7 @@ export interface ProblemCorrection {
 
 export interface Problem {
   id: number
-  submitted?: Solution
+  submitted?: Solution | null
   text: string
   order: number
   image: string | null

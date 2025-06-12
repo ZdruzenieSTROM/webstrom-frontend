@@ -24,7 +24,7 @@ export const SolutionCreate: FC = () => (
       <FileInput source="solution" accept={Accept.Pdf}>
         <MyFileField />
       </FileInput>
-      <ReferenceInput source="late_tag" reference="competition/late-tag" label="content.labels.is_late">
+      <ReferenceInput source="late_tag" reference="competition/late-tag">
         <AutocompleteInput optionText="name" />
       </ReferenceInput>
       <BooleanInput source="is_online" label="content.labels.is_online" />

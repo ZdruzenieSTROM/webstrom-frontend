@@ -12,7 +12,10 @@ export const SolutionList: FC = () => (
         label="content.labels.has_solution"
         render={(record) => record && <BooleanField record={{xxx: !!record['solution']}} source="xxx" />}
       />
-      <ReferenceField source="late_tag" reference="competition/late-tag" link={false} />
+      <FunctionField<RaRecord>
+        source="late_tag"
+        render={(record) => record && <span>{record['late_tag'].name}</span>}
+      />
       <BooleanField source="is_online" />
     </Datagrid>
   </List>

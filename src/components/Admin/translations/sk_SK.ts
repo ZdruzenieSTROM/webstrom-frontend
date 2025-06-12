@@ -189,7 +189,6 @@ export const sk_SK = {
       reg_link_add: 'Pridať odkaz na registráciu',
       problem_count: 'Počet úloh',
       is_online: 'Internetové riešenie?',
-      is_late: 'Riešenie po termíne?',
       next_event: 'Prebiehajúca alebo najbližšia akcia',
       has_vzorak: 'Má vzorák',
       has_solution: 'Má nahraté riešenie',

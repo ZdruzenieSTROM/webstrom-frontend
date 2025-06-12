@@ -124,9 +124,6 @@ export const getDataFromUrl = ({
 }
 
 const getNumber = (n: string) => {
-  if (Number.isNaN(Number(n))) {
-    return -1
-  } else {
-    return Number(n) ?? -1
-  }
+  const num = Number(n)
+  return Number.isNaN(num) ? -1 : num
 }

@@ -17,8 +17,7 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
   const killNavigation = useCallback(() => {
     router.events.emit('routeChangeError', '', '', {shallow: false})
 
-    // eslint-disable-next-line no-throw-literal
-    throw 'Canceling navigation due to unsaved changes in the page'
+    throw new Error('Canceling navigation due to unsaved changes in the page')
   }, [router])
 
   useEffect(() => {
