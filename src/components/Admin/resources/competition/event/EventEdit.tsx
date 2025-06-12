@@ -1,15 +1,6 @@
 import {Checkbox, FormControlLabel} from '@mui/material'
 import {FC, useState} from 'react'
-import {
-  Labeled,
-  NumberInput,
-  ReferenceInput,
-  required,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-  useTranslate,
-} from 'react-admin'
+import {NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate} from 'react-admin'
 
 import {MyCreateButton} from '@/components/Admin/custom/MyCreateButton'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
@@ -32,28 +23,26 @@ export const EventEdit: FC = () => {
       }}
     >
       <SimpleForm>
-        <NumberInput source="year" helperText="ročník súťaže, napr. 48" fullWidth validate={required()} />
-        <TextInput source="school_year" helperText="napr. 2023/2024" fullWidth validate={required()} />
-        <MyDateTimeInput source="start" fullWidth validate={required()} />
-        <MyDateTimeInput source="end" fullWidth validate={required()} />
+        <NumberInput source="year" helperText="ročník súťaže, napr. 48" validate={required()} />
+        <TextInput source="school_year" helperText="napr. 2023/2024" validate={required()} />
+        <MyDateTimeInput source="start" validate={required()} />
+        <MyDateTimeInput source="end" validate={required()} />
         <ReferenceInput source="competition" reference="competition/competition">
-          <SelectInput fullWidth validate={required()} />
+          <SelectInput validate={required()} />
         </ReferenceInput>
-        <TextInput source="location" fullWidth />
+        <TextInput source="location" />
         <FormControlLabel
           control={<Checkbox checked={includeRegLink} onChange={(e) => setIncludeRegLink(e.target.checked)} />}
           // FormControlLabel nie je RA component, takze translate treba explicitne
           label={translate('content.labels.reg_link_add')}
         />
         {includeRegLink && (
-          <Labeled label="content.labels.reg_link">
-            <>
-              <TextInput source="registration_link.url" fullWidth validate={required()} />
-              <MyDateTimeInput source="registration_link.start" fullWidth validate={required()} />
-              <MyDateTimeInput source="registration_link.end" fullWidth validate={required()} />
-              <TextInput source="registration_link.additional_info" fullWidth />
-            </>
-          </Labeled>
+          <>
+            <TextInput source="registration_link.url" label="content.labels.reg_link" validate={required()} />
+            <MyDateTimeInput source="registration_link.start" validate={required()} />
+            <MyDateTimeInput source="registration_link.end" validate={required()} />
+            <TextInput source="registration_link.additional_info" />
+          </>
         )}
         <MyCreateButton label="ra.action.publication.create" resource="competition/publication" />
       </SimpleForm>

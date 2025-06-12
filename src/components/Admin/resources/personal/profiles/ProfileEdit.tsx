@@ -14,10 +14,10 @@ export const ProfileEdit: FC = () => (
       <TextInput source="first_name" validate={required()} />
       <TextInput source="last_name" validate={required()} />
       <ReferenceInput source="school.code" reference="personal/schools">
-        <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+        <AutocompleteInput optionText="verbose_name" validate={required()} />
       </ReferenceInput>
       <ReferenceInput source="grade" reference="competition/grade">
-        <AutocompleteInput optionText="name" fullWidth validate={required()} />
+        <AutocompleteInput optionText="name" validate={required()} />
       </ReferenceInput>
     </SimpleForm>
   </MyEdit>

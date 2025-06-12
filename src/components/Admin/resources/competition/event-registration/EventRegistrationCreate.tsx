@@ -14,7 +14,7 @@ const ProfileInput = () => {
 
   return (
     <ReferenceInput source="profile" reference="personal/profiles">
-      <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} onChange={prefill} />
+      <AutocompleteInput optionText="verbose_name" validate={required()} onChange={prefill} />
     </ReferenceInput>
   )
 }
@@ -25,10 +25,10 @@ export const EventRegistrationCreate: FC = () => {
       <SimpleForm>
         <ProfileInput />
         <ReferenceInput source="school" reference="personal/schools">
-          <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+          <AutocompleteInput optionText="verbose_name" validate={required()} />
         </ReferenceInput>
         <ReferenceInput source="grade" reference="competition/grade">
-          <AutocompleteInput optionText="name" fullWidth validate={required()} />
+          <AutocompleteInput optionText="name" validate={required()} />
         </ReferenceInput>
         <EventReferenceInput />
       </SimpleForm>
@@ -42,7 +42,7 @@ const EventReferenceInput = () => {
 
   return (
     <ReferenceInput source="event" reference="competition/event" filter={{grade, future: true}}>
-      <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+      <AutocompleteInput optionText="verbose_name" validate={required()} />
     </ReferenceInput>
   )
 }

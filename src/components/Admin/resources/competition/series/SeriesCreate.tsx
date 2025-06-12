@@ -9,10 +9,10 @@ export const SeriesCreate: FC = () => (
     <TabbedForm>
       <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
-          <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+          <AutocompleteInput optionText="verbose_name" validate={required()} />
         </ReferenceInput>
-        <MyDateTimeInput source="deadline" fullWidth validate={required()} />
-        <NumberInput source="order" fullWidth validate={required()} />
+        <MyDateTimeInput source="deadline" validate={required()} />
+        <NumberInput source="order" validate={required()} />
       </FormTab>
     </TabbedForm>
   </MyCreate>

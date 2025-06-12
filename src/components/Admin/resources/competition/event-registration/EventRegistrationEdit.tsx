@@ -14,16 +14,16 @@ export const EventRegistrationEdit: FC = () => (
   >
     <SimpleForm>
       <ReferenceInput source="profile.id" reference="personal/profiles">
-        <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+        <AutocompleteInput optionText="verbose_name" validate={required()} />
       </ReferenceInput>
       <ReferenceInput source="school.code" reference="personal/schools">
-        <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+        <AutocompleteInput optionText="verbose_name" validate={required()} />
       </ReferenceInput>
       <ReferenceInput source="grade.id" reference="competition/grade">
-        <AutocompleteInput optionText="name" fullWidth validate={required()} />
+        <AutocompleteInput optionText="name" validate={required()} />
       </ReferenceInput>
       <ReferenceInput source="event" reference="competition/event">
-        <AutocompleteInput optionText="verbose_name" fullWidth validate={required()} />
+        <AutocompleteInput optionText="verbose_name" validate={required()} />
       </ReferenceInput>
     </SimpleForm>
   </MyEdit>
