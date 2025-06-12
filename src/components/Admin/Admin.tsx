@@ -117,6 +117,7 @@ export const Admin: FC = () => {
       darkTheme={darkTheme}
       loginPage={false}
       requireAuth
+      disableTelemetry
     >
       <Resource name="cms/post" list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
       <Resource
