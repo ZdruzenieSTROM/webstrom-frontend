@@ -9,8 +9,8 @@
     "dev": "next dev --turbopack",
     "start": "next start",
     "build": "next build --turbopack",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "test": "vitest"
   },
   "dependencies": {
