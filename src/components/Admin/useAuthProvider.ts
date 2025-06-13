@@ -24,7 +24,7 @@ export const useAuthProvider = () => {
       },
       canAccess: async () => {
         // TODO: e.g. superadmin resources, or block viewing strom stuff for kricky admins
-        return true
+        return Promise.resolve(true)
       },
       checkError: async (error) => {
         // rovnaky handling ako v `responseInterceptor` v `AuthContainer`

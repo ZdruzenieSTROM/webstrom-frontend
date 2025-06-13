@@ -81,6 +81,7 @@ export const SemesterAdministration: FC = () => {
 
   const getResults = async (seriesId: number | null) => {
     const isSemester = seriesId === null
+
     const {data} = await apiAxios.get<Result[]>(
       isSemester ? `/competition/semester/${semesterId}/results` : `/competition/series/${seriesId}/results`,
     )
@@ -99,10 +100,10 @@ export const SemesterAdministration: FC = () => {
           if (isSemester) {
             const subtotal = result.subtotal[0]
             const points = result.solutions[1].map((problem) => problem.points).join('&')
-            return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${subtotal}&${points}&${result.total}\\\\`
+            return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade.tag}&${subtotal}&${points}&${result.total}\\\\`
           } else {
             const points = result.solutions[0].map((problem) => problem.points).join('&')
-            return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade}&${points}&${result.total}\\\\`
+            return `${rank}&${name}&${result.registration.school.abbreviation}&${result.registration.grade.tag}&${points}&${result.total}\\\\`
           }
         })
         .join('\n'),
@@ -201,10 +202,10 @@ export const SemesterAdministration: FC = () => {
         title="Pozvánky"
         actions={
           <>
-            <Button variant="button2" onClick={getInvites}>
+            <Button variant="button2" onClick={() => void getInvites()}>
               Pozvánky pre účastníkov
             </Button>
-            <Button variant="button2" onClick={getSchoolInvites}>
+            <Button variant="button2" onClick={() => void getSchoolInvites()}>
               Pozvánky pre školy
             </Button>
           </>
@@ -275,11 +276,11 @@ export const SemesterAdministration: FC = () => {
       </Typography>
       <Stack pl={2} alignItems="start">
         {[...semester.series_set].reverse().map((series) => (
-          <Button key={series.id} variant="button2" onClick={() => getResults(series.id)}>
+          <Button key={series.id} variant="button2" onClick={() => void getResults(series.id)}>
             Poradie {series.order}. série
           </Button>
         ))}
-        <Button variant="button2" onClick={() => getResults(null)}>
+        <Button variant="button2" onClick={() => void getResults(null)}>
           Poradie semestra
         </Button>
       </Stack>
@@ -288,10 +289,10 @@ export const SemesterAdministration: FC = () => {
         Generovanie štítkov
       </Typography>
       <Stack pl={2} alignItems="start">
-        <Button variant="button2" onClick={() => getPostalCards(false)}>
+        <Button variant="button2" onClick={() => void getPostalCards(false)}>
           Štítky na školy
         </Button>
-        <Button variant="button2" onClick={() => getPostalCards(true)}>
+        <Button variant="button2" onClick={() => void getPostalCards(true)}>
           Štítky na školy (iba papierové riešenia)
         </Button>
       </Stack>
@@ -317,7 +318,7 @@ export const SemesterAdministration: FC = () => {
       {textareaContent && (
         <Stack mt={5} gap={2} alignItems="end">
           <textarea rows={10} value={textareaContent} readOnly style={{width: '100%'}} />
-          <Button variant="button2" onClick={() => navigator.clipboard.writeText(textareaContent)}>
+          <Button variant="button2" onClick={() => void navigator.clipboard.writeText(textareaContent)}>
             kopírovať
           </Button>
         </Stack>

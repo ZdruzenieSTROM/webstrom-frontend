@@ -1,6 +1,6 @@
 import {CssBaseline} from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles'
-import {HydrationBoundary, QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {DehydratedState, HydrationBoundary, QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import {isAxiosError} from 'axios'
 import {AppProps} from 'next/app'
@@ -85,7 +85,9 @@ const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }
 
-const MyApp: FC<AppProps> = ({Component, pageProps}) => {
+type PageProps = {dehydratedState: DehydratedState}
+
+const MyApp: FC<AppProps<PageProps>> = ({Component, pageProps}) => {
   const router = useRouter()
   const isAdminRoute = router.pathname.startsWith('/admin')
 

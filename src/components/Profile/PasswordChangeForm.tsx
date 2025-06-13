@@ -60,9 +60,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
     onError: onError,
   })
 
-  const onSubmit: SubmitHandler<PasswordChangeDialogValues> = async (data) => {
-    submitFormData(data)
-  }
+  const onSubmit: SubmitHandler<PasswordChangeDialogValues> = (data) => submitFormData(data)
 
   const onClose = () => {
     reset()

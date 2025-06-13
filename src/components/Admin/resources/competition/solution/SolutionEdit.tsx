@@ -1,5 +1,13 @@
 import {FC} from 'react'
-import {AutocompleteInput, BooleanInput, FileInput, ReferenceInput, required, SimpleForm} from 'react-admin'
+import {
+  AutocompleteInput,
+  BooleanInput,
+  FileInput,
+  ReferenceInput,
+  required,
+  SimpleForm,
+  useRecordContext,
+} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
@@ -14,7 +22,16 @@ export const SolutionEdit: FC = () => (
       return record
     }}
   >
-    <SimpleForm>
+    <MySimpleForm />
+  </MyEdit>
+)
+
+// kvoli tomu, ze `late_tag` pride z BE ako objekt, ale pri update posielame len IDcko
+const MySimpleForm: FC = () => {
+  const record = useRecordContext()
+
+  return (
+    <SimpleForm record={{...record, late_tag: record?.late_tag?.id}}>
       <ReferenceInput source="problem" reference="competition/problem">
         <AutocompleteInput validate={required()} />
       </ReferenceInput>
@@ -24,10 +41,10 @@ export const SolutionEdit: FC = () => (
       <FileInput source="solution" accept={Accept.Pdf}>
         <MyFileField />
       </FileInput>
-      <ReferenceInput source="late_tag" reference="competition/late-tag" label="content.labels.is_late">
+      <ReferenceInput source="late_tag" reference="competition/late-tag">
         <AutocompleteInput optionText="name" />
       </ReferenceInput>
       <BooleanInput source="is_online" label="content.labels.is_online" />
     </SimpleForm>
-  </MyEdit>
-)
+  )
+}

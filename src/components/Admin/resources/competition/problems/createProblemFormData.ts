@@ -6,6 +6,9 @@ import {Problem} from '@/types/api/competition'
 export const createProblemFormData = ({
   image,
   solution_pdf,
+  // we never update `submitted` field in Admin
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  submitted,
   ...data
 }: Omit<Problem, 'image' | 'solution'> & {
   image?: {rawFile: File}
@@ -16,7 +19,8 @@ export const createProblemFormData = ({
   formData.append('image', image?.rawFile ?? '')
   formData.append('solution_pdf', solution_pdf?.rawFile ?? '')
   Object.entries(data).forEach(([key, value]) => {
-    if (value) formData.append(key, value.toString())
+    // dolezity explicitny check, kedze `if (value)` by zabranil updatnut boolean na `false`
+    if (value != null) formData.append(key, value.toString())
   })
 
   return formData

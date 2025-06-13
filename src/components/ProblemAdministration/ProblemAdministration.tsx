@@ -164,12 +164,13 @@ export const ProblemAdministration: FC = () => {
   })
 
   const uploadZipFileErrorData =
-    isAxiosError(uploadZipFileError) && uploadZipFileError.response && uploadZipFileError.response.data
+    isAxiosError(uploadZipFileError) && uploadZipFileError.response && (uploadZipFileError.response.data as unknown)
   const uploadZipFileErrorArray = Array.isArray(uploadZipFileErrorData) ? uploadZipFileErrorData : []
   const uploadZipFileErrors = uploadZipFileErrorArray
-    .map((errorObj) => {
-      const filename = 'filename' in errorObj ? `${errorObj.filename}: ` : ''
-      const status = 'status' in errorObj ? `${errorObj.status}` : ''
+    .map((errorObj: unknown) => {
+      const error = typeof errorObj === 'object' && errorObj
+      const filename = error && 'filename' in error && typeof error.filename === 'string' ? `${error.filename}: ` : ''
+      const status = error && 'status' in error && typeof error.status === 'number' ? `${error.status}` : ''
       return `${filename}${status}`
     })
     .join('\n')
