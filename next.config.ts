@@ -1,4 +1,6 @@
 import type {NextConfig} from 'next'
+// eslint-disable-next-line node/no-extraneous-import
+import type {Configuration} from 'webpack'
 
 const nextConfig: NextConfig = {
   images: {
@@ -11,6 +13,16 @@ const nextConfig: NextConfig = {
         as: '*.js',
       },
     },
+  },
+  // musime zatial nechat webpack (nie turbopack) pre build, napr. kvoli tejto issue:
+  // https://github.com/vercel/next.js/discussions/77721#discussioncomment-13468362
+  // ked to bude fixed, mozeme znovu vratit `--turbopack` do `build` scriptu v package.json
+  webpack(config: Configuration) {
+    config.module?.rules?.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+    return config
   },
   output: 'standalone',
   reactStrictMode: true,
