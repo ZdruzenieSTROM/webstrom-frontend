@@ -1,0 +1,58 @@
+# spusti pomocou: `docker-compose -f compose-local.yaml up --build --force-recreate`
+# da sa prihodit aj `--detach` ked chceme pustit v backgrounde (bez neho vidime server logy priamo v terminali)
+services:
+  webstrom-frontend:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      args:
+        ## local BE
+        # - BE_PROTOCOL=http
+        # - BE_HOSTNAME=host.docker.internal
+        # - BE_PORT=8000
+        # - BE_FORWARDED_HOST=test.strom.sk
+        # - BE_FORWARDED_PROTO=https
+
+        ## test BE
+        - BE_PROTOCOL=https
+        - BE_HOSTNAME=test.strom.sk
+        - BE_PORT=
+        - BE_FORWARDED_HOST=test.strom.sk
+        - BE_FORWARDED_PROTO=https
+
+        ## prod BE
+        # - BE_PROTOCOL=https
+        # - BE_HOSTNAME=strom.sk
+        # - BE_PORT=
+        # - BE_FORWARDED_HOST=strom.sk
+        # - BE_FORWARDED_PROTO=https
+
+    image: webstrom-test-frontend
+
+    environment:
+      - PORT=3000
+
+      ## local BE
+      # - BE_PROTOCOL=http
+      # - BE_HOSTNAME=host.docker.internal
+      # - BE_PORT=8000
+      # - BE_FORWARDED_HOST=test.strom.sk
+      # - BE_FORWARDED_PROTO=https
+
+      ## test BE
+      - BE_PROTOCOL=https
+      - BE_HOSTNAME=test.strom.sk
+      - BE_PORT=
+      - BE_FORWARDED_HOST=test.strom.sk
+      - BE_FORWARDED_PROTO=https
+
+      ## prod BE
+      # - BE_PROTOCOL=https
+      # - BE_HOSTNAME=strom.sk
+      # - BE_PORT=
+      # - BE_FORWARDED_HOST=strom.sk
+      # - BE_FORWARDED_PROTO=https
+
+    network_mode: host
+
+    restart: always

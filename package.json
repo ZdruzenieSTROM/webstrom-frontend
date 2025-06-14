@@ -7,8 +7,9 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "start": "next start",
-    "build": "next build --turbopack",
+    "start": "node .next/standalone/server.js",
+    "build": "next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
+    "build:docker": "next build",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "test": "vitest"
@@ -56,6 +57,7 @@
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
     "@types/react-router-dom": "^5.3.3",
+    "@types/webpack": "^5.28.5",
     "@vitejs/plugin-react": "^4.5.0",
     "@vitest/eslint-plugin": "^1.2.1",
     "confusing-browser-globals": "^1.0.11",
