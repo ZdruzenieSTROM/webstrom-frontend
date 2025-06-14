@@ -1,4 +1,4 @@
-import {CssBaseline, Typography} from '@mui/material'
+import {CssBaseline} from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles'
 import {DehydratedState, HydrationBoundary, QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
@@ -97,9 +97,6 @@ const MyApp: FC<AppProps<PageProps>> = ({Component, pageProps}) => {
         <title>STROM</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div>
-        <Typography>TEST</Typography>
-      </div>
       <AlertContainer.Provider>
         <ReactQueryProvider>
           <HydrationBoundary state={pageProps.dehydratedState}>
