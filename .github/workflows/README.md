@@ -79,3 +79,16 @@ For single-container deployments, Docker Compose adds unnecessary complexity. Di
 - Containers automatically restart on failure with `--restart always`
 - Container names match existing Docker Compose convention for consistency with backend and static services
 - The `_1` suffix is kept to maintain compatibility with existing monitoring/management scripts
+
+## Build Caching
+
+The workflow uses **registry-based caching** for fast builds:
+
+1. **Cache sources**: Previous builds and a dedicated cache image
+2. **Smart Dockerfile layering**: Dependencies are cached separately from source code
+3. **Result**: Yarn dependencies are only reinstalled when `package.json` or `yarn.lock` changes
+
+Typical rebuild times:
+
+- With cache hit (no dependency changes): ~30-60 seconds
+- Without cache (first build or dependency changes): ~2-3 minutes

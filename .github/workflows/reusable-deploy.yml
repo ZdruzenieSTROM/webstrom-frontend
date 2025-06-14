@@ -49,14 +49,17 @@ jobs:
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
           IMAGE_TAG="${{ inputs.environment }}-${SHORT_SHA}"
           FULL_IMAGE="ghcr.io/${REPO_LOWER}:${IMAGE_TAG}"
+          CACHE_IMAGE="ghcr.io/${REPO_LOWER}:buildcache"
 
-          # Build and push
+          # Build and push with multiple cache sources
           docker buildx build \
             --push \
             --tag "$FULL_IMAGE" \
             --tag "ghcr.io/${REPO_LOWER}:${{ inputs.environment }}-latest" \
-            --cache-from type=gha \
-            --cache-to type=gha,mode=max \
+            --cache-from "type=registry,ref=${CACHE_IMAGE}" \
+            --cache-from "type=registry,ref=ghcr.io/${REPO_LOWER}:${{ inputs.environment }}-latest" \
+            --cache-to "type=registry,ref=${CACHE_IMAGE},mode=max" \
+            --build-arg BUILDKIT_INLINE_CACHE=1 \
             .
 
           echo "image=$FULL_IMAGE" >> $GITHUB_OUTPUT
