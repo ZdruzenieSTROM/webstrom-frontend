@@ -5,6 +5,9 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+      repository: ${{ steps.prep.outputs.repository }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,6 +46,15 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Export image tag
+        id: export-tag
+        run: |
+          # Get the first tag from the metadata output
+          TAGS="${{ steps.meta.outputs.tags }}"
+          FIRST_TAG=$(echo "$TAGS" | head -n1)
+          echo "image=$FIRST_TAG" >> $GITHUB_OUTPUT
+          echo "Exported image: $FIRST_TAG"
 
   deploy:
     needs: build
@@ -88,10 +100,21 @@ jobs:
 
             cd ~/webstrom-test
 
-            # Create .env file with deployment configuration
+                                    # Create .env file with deployment configuration
+            # Get the repository and tag from the build job outputs
+            REPO_LOWER='${{ needs.build.outputs.repository }}'
+            # Get the first tag (which includes the branch and short SHA)
+            FULL_IMAGE_TAG=$(echo '${{ needs.build.outputs.tags }}' | head -n1)
+            # Extract just the tag part after the repository name
+            IMAGE_TAG=$(echo "$FULL_IMAGE_TAG" | sed "s|ghcr.io/$REPO_LOWER:||")
+
+            echo "Repository: $REPO_LOWER"
+            echo "Image tag: $IMAGE_TAG"
+            echo "Full image: ghcr.io/$REPO_LOWER:$IMAGE_TAG"
+
             cat > .env << EOF
-            GITHUB_REPOSITORY=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')
-            IMAGE_TAG=$(echo '${{ github.ref_name }}-${{ github.sha }}' | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9.-]/-/g')
+            GITHUB_REPOSITORY=$REPO_LOWER
+            IMAGE_TAG=$IMAGE_TAG
             EOF
 
             # Log in to GitHub Container Registry (in case previous login expired)
