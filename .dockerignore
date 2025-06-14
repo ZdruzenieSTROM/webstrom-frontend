@@ -7,5 +7,6 @@ README.md
 .next
 .git
 
-# our additions
+# our additions to prevent unnecessary docker rebuilding
 compose-*.yaml
+.github
