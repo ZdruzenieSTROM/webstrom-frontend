@@ -74,12 +74,12 @@ jobs:
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             # Stop and remove old container (ignore errors if doesn't exist)
-            docker stop webstrom-frontend-${{ inputs.environment }} 2>/dev/null || true
-            docker rm webstrom-frontend-${{ inputs.environment }} 2>/dev/null || true
+            docker stop webstrom-${{ inputs.environment }}_webstrom-frontend_1 2>/dev/null || true
+            docker rm webstrom-${{ inputs.environment }}_webstrom-frontend_1 2>/dev/null || true
 
             # Run new container
             docker run -d \
-              --name webstrom-frontend-${{ inputs.environment }} \
+              --name webstrom-${{ inputs.environment }}_webstrom-frontend_1 \
               --network host \
               --restart always \
               -e PORT=${{ inputs.port }} \

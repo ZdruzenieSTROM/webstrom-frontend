@@ -40,7 +40,7 @@ The main workflow that handles:
 ## Key Features
 
 - **No Docker Compose**: Uses direct `docker run` commands for simplicity
-- **Named containers**: Containers are named `webstrom-frontend-test` or `webstrom-frontend-prod`
+- **Named containers**: Matches existing naming: `webstrom-test_webstrom-frontend_1` or `webstrom-prod_webstrom-frontend_1`
 - **Zero-downtime deploys**: Old container is stopped/removed before starting new one
 - **Environment-specific tags**: Images are tagged as `test-<sha>` or `prod-<sha>`
 - **Automatic cleanup**: Old images are pruned after deployment
@@ -55,12 +55,14 @@ For single-container deployments, Docker Compose adds unnecessary complexity. Di
 - Industry standard for single containers
 - Easier to debug
 
+**Note**: We maintain the Docker Compose naming convention (`webstrom-test_webstrom-frontend_1`) for consistency with the existing backend and static services that still use Docker Compose.
+
 ## Environment Configuration
 
-| Environment | Container Name         | Port | Backend Port | Domain        |
-| ----------- | ---------------------- | ---- | ------------ | ------------- |
-| Test        | webstrom-frontend-test | 8922 | 8920         | test.strom.sk |
-| Production  | webstrom-frontend-prod | 8932 | 8930         | strom.sk      |
+| Environment | Container Name                    | Port | Backend Port | Domain        |
+| ----------- | --------------------------------- | ---- | ------------ | ------------- |
+| Test        | webstrom-test_webstrom-frontend_1 | 8922 | 8920         | test.strom.sk |
+| Production  | webstrom-prod_webstrom-frontend_1 | 8932 | 8930         | strom.sk      |
 
 ## Deployment Process
 
@@ -75,3 +77,5 @@ For single-container deployments, Docker Compose adds unnecessary complexity. Di
 - The `compose-test.yaml` and `compose-prod.yaml` files are no longer used
 - Containers run with `--network host` for direct network access
 - Containers automatically restart on failure with `--restart always`
+- Container names match existing Docker Compose convention for consistency with backend and static services
+- The `_1` suffix is kept to maintain compatibility with existing monitoring/management scripts
