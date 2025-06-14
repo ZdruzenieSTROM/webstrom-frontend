@@ -80,9 +80,12 @@ jobs:
             docker stop webstrom-${{ inputs.environment }}_webstrom-frontend_1 2>/dev/null || true
             docker rm webstrom-${{ inputs.environment }}_webstrom-frontend_1 2>/dev/null || true
 
-            # Run new container
+            # Run new container with compose-compatible labels for grouping
             docker run -d \
               --name webstrom-${{ inputs.environment }}_webstrom-frontend_1 \
+              --label "com.docker.compose.project=webstrom-${{ inputs.environment }}" \
+              --label "com.docker.compose.service=webstrom-frontend" \
+              --label "com.docker.compose.container-number=1" \
               --network host \
               --restart always \
               -e PORT=${{ inputs.port }} \

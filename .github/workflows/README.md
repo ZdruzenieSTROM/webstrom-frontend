@@ -41,6 +41,7 @@ The main workflow that handles:
 
 - **No Docker Compose**: Uses direct `docker run` commands for simplicity
 - **Named containers**: Matches existing naming: `webstrom-test_webstrom-frontend_1` or `webstrom-prod_webstrom-frontend_1`
+- **Compose-compatible labels**: Containers include Docker Compose labels for proper grouping in UIs
 - **Zero-downtime deploys**: Old container is stopped/removed before starting new one
 - **Environment-specific tags**: Images are tagged as `test-<sha>` or `prod-<sha>`
 - **Automatic cleanup**: Old images are pruned after deployment
@@ -55,7 +56,7 @@ For single-container deployments, Docker Compose adds unnecessary complexity. Di
 - Industry standard for single containers
 - Easier to debug
 
-**Note**: We maintain the Docker Compose naming convention (`webstrom-test_webstrom-frontend_1`) for consistency with the existing backend and static services that still use Docker Compose.
+**Note**: We maintain the Docker Compose naming convention (`webstrom-test_webstrom-frontend_1`) and add compose labels for consistency with the existing backend and static services that still use Docker Compose. This ensures proper grouping in Docker UIs.
 
 ## Environment Configuration
 
