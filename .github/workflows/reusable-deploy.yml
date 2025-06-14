@@ -1,0 +1,96 @@
+name: Reusable Deploy Workflow
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        description: 'Environment name (test or prod)'
+      port:
+        required: true
+        type: string
+        description: 'Application port'
+      backend_port:
+        required: true
+        type: string
+        description: 'Backend API port'
+      forwarded_host:
+        required: true
+        type: string
+        description: 'Forwarded host header'
+    secrets:
+      ssh_private_key:
+        required: true
+        description: 'SSH private key for deployment'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        id: build
+        run: |
+          # Prepare variables
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          IMAGE_TAG="${{ inputs.environment }}-${SHORT_SHA}"
+          FULL_IMAGE="ghcr.io/${REPO_LOWER}:${IMAGE_TAG}"
+
+          # Build and push
+          docker buildx build \
+            --push \
+            --tag "$FULL_IMAGE" \
+            --tag "ghcr.io/${REPO_LOWER}:${{ inputs.environment }}-latest" \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            .
+
+          echo "image=$FULL_IMAGE" >> $GITHUB_OUTPUT
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: server.strom.sk
+          username: webstrom
+          key: ${{ secrets.ssh_private_key }}
+          script: |
+            set -e
+
+            # Login to registry
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Stop and remove old container (ignore errors if doesn't exist)
+            docker stop webstrom-frontend-${{ inputs.environment }} 2>/dev/null || true
+            docker rm webstrom-frontend-${{ inputs.environment }} 2>/dev/null || true
+
+            # Run new container
+            docker run -d \
+              --name webstrom-frontend-${{ inputs.environment }} \
+              --network host \
+              --restart always \
+              -e PORT=${{ inputs.port }} \
+              -e BE_PROTOCOL=http \
+              -e BE_HOSTNAME=localhost \
+              -e BE_PORT=${{ inputs.backend_port }} \
+              -e BE_FORWARDED_HOST=${{ inputs.forwarded_host }} \
+              -e BE_FORWARDED_PROTO=https \
+              ${{ steps.build.outputs.image }}
+
+            # Cleanup
+            docker image prune -f
+
+            echo "✅ Deployed ${{ inputs.environment }} successfully!"
