@@ -7,8 +7,9 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "start": "next start",
-    "build": "next build --turbopack",
+    "start": "node .next/standalone/server.js",
+    "build": "next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
+    "build:docker": "next build",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "test": "vitest"

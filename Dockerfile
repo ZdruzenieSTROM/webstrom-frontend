@@ -35,7 +35,7 @@ ARG BE_FORWARDED_HOST
 ARG BE_FORWARDED_PROTO
 ARG DEBUG_SERVER
 
-RUN yarn build;
+RUN yarn build:docker;
 
 # Production image, copy all the files and run next
 FROM base AS runner
