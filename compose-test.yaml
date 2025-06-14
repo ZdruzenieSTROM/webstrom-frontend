@@ -1,16 +1,6 @@
 services:
   webstrom-frontend:
-    build:
-      dockerfile: Dockerfile
-      context: .
-      args:
-        - BE_PROTOCOL=http
-        - BE_HOSTNAME=localhost
-        - BE_PORT=8920
-        - BE_FORWARDED_HOST=test.strom.sk
-        - BE_FORWARDED_PROTO=https
-
-    image: webstrom-frontend
+    image: ghcr.io/${GITHUB_REPOSITORY}:${IMAGE_TAG:-latest}
 
     environment:
       - PORT=8922
