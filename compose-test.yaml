@@ -1,9 +1,7 @@
-version: '3'
-
 services:
   webstrom-frontend:
     build:
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
       context: .
       args:
         - BE_PROTOCOL=http
