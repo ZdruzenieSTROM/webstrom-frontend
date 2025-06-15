@@ -1,5 +1,4 @@
-import {Stack, Typography} from '@mui/material'
-import Grid from '@mui/material/Unstable_Grid2'
+import {Grid2, Stack, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, useMemo} from 'react'
 
@@ -67,35 +66,35 @@ export const TopGrid: FC<TopGridProps> = ({bannerMessages}) => {
 
   return (
     <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: colors.white, zIndex: 3}}>
-      <Grid container disableEqualOverflow spacing={1} p={3}>
+      <Grid2 container spacing={1} p={3}>
         {/* first row */}
-        <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}}>
+        <Grid2 size={{xs: 0, md: 3}} sx={{display: {xs: 'none', md: 'block'}}}>
           <Stack sx={{alignItems: 'start'}}>
             <MenuMain />
           </Stack>
-        </Grid>
-        <Grid xs={0} md={9} sx={{display: {xs: 'none', md: 'block'}}}>
+        </Grid2>
+        <Grid2 size={{xs: 0, md: 9}} sx={{display: {xs: 'none', md: 'block'}}}>
           <SeminarButtons seminar={seminar} />
-        </Grid>
-        <Grid xs={12} md={0} sx={{display: {xs: 'block', md: 'none'}}}>
+        </Grid2>
+        <Grid2 size={{xs: 12, md: 0}} sx={{display: {xs: 'block', md: 'none'}}}>
           <Stack sx={{flexDirection: 'row', gap: 2, justifyContent: 'end'}}>
             <SeminarButtons seminar={seminar} />
             <Stack sx={{flexShrink: 0}}>
               <MenuMain />
             </Stack>
           </Stack>
-        </Grid>
+        </Grid2>
 
         {/* second row */}
-        <Grid xs={12} md={6} mdOffset={3}>
+        <Grid2 size={{xs: 12, md: 6}} offset={{xs: 0, md: 3}}>
           <Typography variant="h1">{pageTitle}</Typography>
-        </Grid>
+        </Grid2>
         {semesterPickerPage && (
-          <Grid xs={12} md={3}>
+          <Grid2 size={{xs: 12, md: 3}}>
             <SemesterPicker page={semesterPickerPage} />
-          </Grid>
+          </Grid2>
         )}
-      </Grid>
+      </Grid2>
 
       <Banner bannerMessages={bannerMessages} />
     </Stack>

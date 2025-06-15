@@ -1,5 +1,4 @@
-import {Stack, Typography} from '@mui/material'
-import Grid from '@mui/material/Unstable_Grid2'
+import {Grid2, Stack, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, Fragment} from 'react'
 
@@ -81,27 +80,27 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         )}
       </Stack>
 
-      <Grid container spacing={2}>
+      <Grid2 container spacing={2}>
         {history_events.map((event) => {
           const results = event.publication_set.find((p) => p.publication_type === PublicationTypes.RESULTS.id)
           const solutions = event.publication_set.find((p) => p.publication_type === PublicationTypes.SOLUTIONS.id)
           const problems = event.publication_set.find((p) => p.publication_type === PublicationTypes.PROBLEMS.id)
           return (
             <Fragment key={event.id}>
-              <Grid xs={8}>
+              <Grid2 size={8}>
                 <Typography variant="h2" component="span">
                   {name} {event.school_year}
                   {event.additional_name ? ` (${event.additional_name})` : ''}
                 </Typography>
-              </Grid>
-              <Grid xs={2} display="flex" justifyContent="end">
+              </Grid2>
+              <Grid2 size={2} display="flex" justifyContent="end">
                 {results && (
                   <Link variant="button2" key={results.id} href={results.file} target="_blank">
                     {PublicationTypes.RESULTS.display_name}
                   </Link>
                 )}
-              </Grid>
-              <Grid xs={2} display="flex" justifyContent="end">
+              </Grid2>
+              <Grid2 size={2} display="flex" justifyContent="end">
                 {solutions ? (
                   <Link variant="button2" key={solutions.id} href={solutions.file} target="_blank">
                     {PublicationTypes.SOLUTIONS.display_name}
@@ -113,11 +112,11 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
                     </Link>
                   )
                 )}
-              </Grid>
+              </Grid2>
             </Fragment>
           )
         })}
-      </Grid>
+      </Grid2>
     </Stack>
   )
 }
