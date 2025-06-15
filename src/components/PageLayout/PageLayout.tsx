@@ -1,5 +1,4 @@
-import {Box, Stack, SxProps} from '@mui/material'
-import Grid from '@mui/material/Unstable_Grid2'
+import {Box, Grid2, Stack, SxProps} from '@mui/material'
 import Head from 'next/head'
 import {FC, ReactNode} from 'react'
 
@@ -53,12 +52,10 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', b
               <StromLogo />
             </Box>
 
-            <Grid container disableEqualOverflow sx={{flex: 1}}>
-              <Grid
-                xsOffset={0}
-                mdOffset={3}
-                xs={12}
-                md={contentWidth * 3}
+            <Grid2 container sx={{flex: 1}}>
+              <Grid2
+                offset={{xs: 0, md: 3}}
+                size={{xs: 12, md: contentWidth * 3}}
                 sx={{
                   py: horizontalContentPadding,
                   px: 2,
@@ -70,8 +67,8 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', b
                 }}
               >
                 {children}
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
           </Stack>
 
           <Footer />
