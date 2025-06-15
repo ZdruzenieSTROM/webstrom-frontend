@@ -1,4 +1,4 @@
-import {Grid2, Stack} from '@mui/material'
+import {Grid, Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import {FC} from 'react'
 
@@ -23,7 +23,7 @@ export const Footer: FC = () => {
   const logos = logosData?.filter((logo) => !logo.disabled) ?? []
 
   return (
-    <Grid2
+    <Grid
       container
       sx={{
         width: '100%',
@@ -31,8 +31,8 @@ export const Footer: FC = () => {
         color: colors.white,
       }}
     >
-      <Grid2 size={{xs: 0, md: 3}} sx={{display: {xs: 'none', md: 'block'}}} />
-      <Grid2 size={{xs: 12, md: 6}}>
+      <Grid size={{xs: 0, md: 3}} sx={{display: {xs: 'none', md: 'block'}}} />
+      <Grid size={{xs: 12, md: 6}}>
         <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
           {menuItemsIsLoading && <Loading />}
           {menuItems.map((item) => (
@@ -49,7 +49,7 @@ export const Footer: FC = () => {
           ))}
           {logosError && <p>{logosError.message}</p>}
         </Stack>
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   )
 }

@@ -1,4 +1,4 @@
-import {Grid2, Stack, Typography} from '@mui/material'
+import {Grid, Stack, Typography} from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import {AxiosError} from 'axios'
 import {FC, Fragment, useState} from 'react'
@@ -239,22 +239,22 @@ export const SemesterAdministration: FC = () => {
               <b>Termín série:</b> {formatDateTime(series.deadline)}
             </Typography>
           </Stack>
-          <Grid2 container spacing={2} size={{xs: 12, md: 9}}>
+          <Grid container spacing={2} size={{xs: 12, md: 9}}>
             {series?.problems.map((problem) => (
               <Fragment key={problem.id}>
-                <Grid2 size={4}>
+                <Grid size={4}>
                   <Link key={problem.id} variant="button2" href={`/${seminar}/admin/opravit-ulohu/${problem.id}`}>
                     {problem.order}. úloha
                   </Link>
-                </Grid2>
-                <Grid2 size={4} textAlign="center">
+                </Grid>
+                <Grid size={4} textAlign="center">
                   <Typography variant="body1" component="div">
                     {problem.num_corrected_solutions === problem.num_solutions
                       ? `Opravené (${problem.num_solutions})`
                       : `${problem.num_corrected_solutions}/${problem.num_solutions}`}
                   </Typography>
-                </Grid2>
-                <Grid2 size={4} textAlign="center">
+                </Grid>
+                <Grid size={4} textAlign="center">
                   {problem.solution_pdf ? (
                     <Link key={problem.id} variant="button2" href={problem.solution_pdf}>
                       Vzorák
@@ -262,10 +262,10 @@ export const SemesterAdministration: FC = () => {
                   ) : (
                     <>{'chýba vzorák'}</>
                   )}
-                </Grid2>
+                </Grid>
               </Fragment>
             ))}
-          </Grid2>
+          </Grid>
         </Stack>
       ))}
 

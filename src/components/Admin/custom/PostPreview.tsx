@@ -1,4 +1,4 @@
-import {Grid2, Stack} from '@mui/material'
+import {Grid, Stack} from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles'
 import {FC} from 'react'
 import {FormDataConsumer} from 'react-admin'
@@ -12,8 +12,8 @@ export const PostPreview: FC = () => {
     <ThemeProvider theme={theme}>
       <FormDataConsumer>
         {({formData}) => (
-          <Grid2 container columnSpacing={5} sx={{width: '100%'}}>
-            <Grid2 size={{xs: 12, md: 4}}>
+          <Grid container columnSpacing={5} sx={{width: '100%'}}>
+            <Grid size={{xs: 12, md: 4}}>
               <Stack gap={5} sx={{color: colors.black, background: colors.white, p: '10px'}}>
                 <Post
                   id={0}
@@ -27,8 +27,8 @@ export const PostPreview: FC = () => {
                   sites={formData?.sites ?? []}
                 />
               </Stack>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         )}
       </FormDataConsumer>
     </ThemeProvider>

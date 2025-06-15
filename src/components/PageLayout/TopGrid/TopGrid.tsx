@@ -1,4 +1,4 @@
-import {Grid2, Stack, Typography} from '@mui/material'
+import {Grid, Stack, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, useMemo} from 'react'
 
@@ -66,35 +66,35 @@ export const TopGrid: FC<TopGridProps> = ({bannerMessages}) => {
 
   return (
     <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: colors.white, zIndex: 3}}>
-      <Grid2 container spacing={1} p={3}>
+      <Grid container spacing={1} p={3}>
         {/* first row */}
-        <Grid2 size={{xs: 0, md: 3}} sx={{display: {xs: 'none', md: 'block'}}}>
+        <Grid size={{xs: 0, md: 3}} sx={{display: {xs: 'none', md: 'block'}}}>
           <Stack sx={{alignItems: 'start'}}>
             <MenuMain />
           </Stack>
-        </Grid2>
-        <Grid2 size={{xs: 0, md: 9}} sx={{display: {xs: 'none', md: 'block'}}}>
+        </Grid>
+        <Grid size={{xs: 0, md: 9}} sx={{display: {xs: 'none', md: 'block'}}}>
           <SeminarButtons seminar={seminar} />
-        </Grid2>
-        <Grid2 size={{xs: 12, md: 0}} sx={{display: {xs: 'block', md: 'none'}}}>
+        </Grid>
+        <Grid size={{xs: 12, md: 0}} sx={{display: {xs: 'block', md: 'none'}}}>
           <Stack sx={{flexDirection: 'row', gap: 2, justifyContent: 'end'}}>
             <SeminarButtons seminar={seminar} />
             <Stack sx={{flexShrink: 0}}>
               <MenuMain />
             </Stack>
           </Stack>
-        </Grid2>
+        </Grid>
 
         {/* second row */}
-        <Grid2 size={{xs: 12, md: 6}} offset={{xs: 0, md: 3}}>
+        <Grid size={{xs: 12, md: 6}} offset={{xs: 0, md: 3}}>
           <Typography variant="h1">{pageTitle}</Typography>
-        </Grid2>
+        </Grid>
         {semesterPickerPage && (
-          <Grid2 size={{xs: 12, md: 3}}>
+          <Grid size={{xs: 12, md: 3}}>
             <SemesterPicker page={semesterPickerPage} />
-          </Grid2>
+          </Grid>
         )}
-      </Grid2>
+      </Grid>
 
       <Banner bannerMessages={bannerMessages} />
     </Stack>

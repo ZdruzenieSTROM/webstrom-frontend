@@ -1,4 +1,4 @@
-import {Box, Grid2, Stack, SxProps} from '@mui/material'
+import {Box, Grid, Stack, SxProps} from '@mui/material'
 import Head from 'next/head'
 import {FC, ReactNode} from 'react'
 
@@ -52,8 +52,8 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', b
               <StromLogo />
             </Box>
 
-            <Grid2 container sx={{flex: 1}}>
-              <Grid2
+            <Grid container sx={{flex: 1}}>
+              <Grid
                 offset={{xs: 0, md: 3}}
                 size={{xs: 12, md: contentWidth * 3}}
                 sx={{
@@ -67,8 +67,8 @@ export const PageLayout: FC<PageLayoutProps> = ({contentWidth = 2, title = '', b
                 }}
               >
                 {children}
-              </Grid2>
-            </Grid2>
+              </Grid>
+            </Grid>
           </Stack>
 
           <Footer />
