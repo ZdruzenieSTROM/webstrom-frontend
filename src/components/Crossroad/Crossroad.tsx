@@ -1,4 +1,4 @@
-import {Box, Grid2, Stack} from '@mui/material'
+import {Box, Grid, Stack} from '@mui/material'
 import React from 'react'
 
 import {colors} from '@/colors'
@@ -21,13 +21,13 @@ const crossroadItems = [
 export const Crossroad: React.FC = () => {
   return (
     <Stack alignItems="stretch" height="100vh" sx={{bgcolor: colors.black}}>
-      <Grid2 container columnSpacing={{xs: 2, md: 3, lg: 4}} mt={'30vh'} flexGrow={1}>
-        <Grid2 size={{xs: 0, sm: 3}} display={{xs: 'none', sm: 'flex'}} height="70dvh" justifyContent="end">
+      <Grid container columnSpacing={{xs: 2, md: 3, lg: 4}} mt={'30vh'} flexGrow={1}>
+        <Grid size={{xs: 0, sm: 3}} display={{xs: 'none', sm: 'flex'}} height="70dvh" justifyContent="end">
           <Box>
             <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
           </Box>
-        </Grid2>
-        <Grid2 size={{xs: 12, sm: 9}} height="70dvh" sx={{overflow: 'auto'}}>
+        </Grid>
+        <Grid size={{xs: 12, sm: 9}} height="70dvh" sx={{overflow: 'auto'}}>
           <Stack gap={{xs: 1, sm: 2}}>
             {crossroadItems.map(({label, url, variant}) => (
               <Link key={label} variant={variant} href={url} invertColors>
@@ -35,8 +35,8 @@ export const Crossroad: React.FC = () => {
               </Link>
             ))}
           </Stack>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Stack>
   )
 }
