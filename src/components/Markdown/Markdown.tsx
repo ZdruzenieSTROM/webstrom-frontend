@@ -15,12 +15,10 @@ type MarkdownProps = {
 
 const Empty: FC = () => <></>
 
-export const Markdown: FC<MarkdownProps> = ({content}) => {
-  const clean = (value: string) =>
-    value
-      .replaceAll(/\\\((.+?)\\\)/gs, (_, expr) => `$${expr}$`)
-      .replaceAll(/\\\[(.+?)\\]/gs, (_, expr) => `$$${expr}$$`)
+const clean = (value: string) =>
+  value.replaceAll(/\\\((.+?)\\\)/gs, (_, expr) => `$${expr}$`).replaceAll(/\\\[(.+?)\\]/gs, (_, expr) => `$$${expr}$$`)
 
+export const Markdown: FC<MarkdownProps> = ({content}) => {
   const cleanContent = content ? clean(content) : ''
 
   return (

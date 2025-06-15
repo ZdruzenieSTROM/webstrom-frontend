@@ -11,7 +11,7 @@ import {
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
-import {Accept} from '@/utils/dropzone-accept'
+import {Accept} from '@/utils/dropzoneAccept'
 
 import {createSolutionFormData} from './createSolutionFormData'
 

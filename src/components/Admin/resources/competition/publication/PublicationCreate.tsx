@@ -13,7 +13,7 @@ import {useSearchParams} from 'react-router-dom'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
-import {Accept} from '@/utils/dropzone-accept'
+import {Accept} from '@/utils/dropzoneAccept'
 
 import {createPublicationFormData} from './createPublicationFormData'
 

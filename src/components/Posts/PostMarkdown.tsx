@@ -12,9 +12,9 @@ type PostMarkdownProps = {
   content: string
 }
 
-export const PostMarkdown: FC<PostMarkdownProps> = ({content}) => {
-  const clean = (value: string) => value.replaceAll(/\\\(|\\\)/g, '$').replaceAll(/\\\[|\\]/g, '$$')
+const clean = (value: string) => value.replaceAll(/\\\(|\\\)/g, '$').replaceAll(/\\\[|\\]/g, '$$')
 
+export const PostMarkdown: FC<PostMarkdownProps> = ({content}) => {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm, remarkMath]}
