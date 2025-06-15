@@ -16,14 +16,17 @@ type MarkdownProps = {
 const Empty: FC = () => <></>
 
 export const Markdown: FC<MarkdownProps> = ({content}) => {
-  const clean = (value: string) => value.replaceAll(/\\\(|\\\)/g, '$').replaceAll(/\\\[|\\]/g, '$$')
+  const clean = (value: string) =>
+    value
+      .replaceAll(/\\\((.+?)\\\)/gs, (_, expr) => `$${expr}$`)
+      .replaceAll(/\\\[(.+?)\\]/gs, (_, expr) => `$$${expr}$$`)
 
   const cleanContent = content ? clean(content) : ''
 
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm, remarkMath]}
-      rehypePlugins={[rehypeKatex]}
+      rehypePlugins={[[rehypeKatex, {output: 'html'}]]}
       components={{
         a: MarkdownLink,
         table: Table,
