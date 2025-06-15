@@ -37,9 +37,11 @@ export const FormAutocomplete = <
           renderInput={(params) => (
             <TextField
               {...params}
-              inputProps={{
-                ...params.inputProps,
-                autoComplete: 'disabled',
+              slotProps={{
+                htmlInput: {
+                  ...params.inputProps,
+                  autoComplete: 'disabled',
+                },
               }}
               label={label}
               variant="outlined"
