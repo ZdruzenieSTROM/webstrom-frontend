@@ -28,13 +28,6 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-ARG BE_PROTOCOL
-ARG BE_HOSTNAME
-ARG BE_PORT
-ARG BE_FORWARDED_HOST
-ARG BE_FORWARDED_PROTO
-ARG DEBUG_SERVER
-
 RUN yarn build:docker;
 
 # Production image, copy all the files and run next

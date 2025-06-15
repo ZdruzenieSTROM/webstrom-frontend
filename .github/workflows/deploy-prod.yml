@@ -1,18 +1,17 @@
-name: Deploy Prod Environment
+name: Deploy Production Environment
 
 on: workflow_dispatch
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          path: webstrom-prod
-      - uses: wshihadeh/docker-deployment-action@v2
-        with:
-          remote_docker_host: webstrom@server.strom.sk
-          ssh_private_key: ${{ secrets.WEBSTROM_DEPLOY_SSH_PRIVATE_KEY }}
-          ssh_public_key: ${{ secrets.WEBSTROM_DEPLOY_SSH_PUBLIC_KEY }}
-          stack_file_name: webstrom-prod/compose-prod.yaml
-          args: up --build --force-recreate --detach
+    uses: ./.github/workflows/reusable-deploy.yml
+    with:
+      project_name: webstrom-prod
+      port: '8932'
+      be_protocol: 'http'
+      be_hostname: 'localhost'
+      be_port: '8930'
+      be_forwarded_proto: 'https'
+      be_forwarded_host: 'strom.sk'
+    secrets:
+      ssh_private_key: ${{ secrets.WEBSTROM_DEPLOY_SSH_PRIVATE_KEY }}

@@ -1,0 +1,139 @@
+name: Reusable Deploy Workflow
+
+on:
+  workflow_call:
+    inputs:
+      project_name:
+        required: true
+        type: string
+        description: 'Project name (e.g., webstrom-test, webstrom-prod)'
+      service_name:
+        required: false
+        type: string
+        default: 'webstrom-frontend'
+        description: 'Service name for container and labels'
+      port:
+        required: true
+        type: string
+        description: 'Frontend application port'
+      be_protocol:
+        required: true
+        type: string
+        description: 'Backend protocol (http or https)'
+      be_hostname:
+        required: true
+        type: string
+        description: 'Backend hostname'
+      be_port:
+        required: true
+        type: string
+        description: 'Backend port'
+      be_forwarded_host:
+        required: true
+        type: string
+        description: 'X-Forwarded-Host header value'
+      be_forwarded_proto:
+        required: true
+        type: string
+        description: 'X-Forwarded-Proto header value'
+      debug_server:
+        required: false
+        type: string
+        default: 'false'
+        description: 'Enable debug logging'
+    # reusable workflowy vraj musia deklarovat secrets explicitne, nemaju pristup k repo secretom
+    secrets:
+      ssh_private_key:
+        required: true
+        description: 'SSH private key for deployment'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate metadata
+        id: meta
+        run: |
+          # Prepare variables
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+
+          # Extract environment name from project name (e.g., webstrom-test -> test)
+          ENV_NAME=$(echo "${{ inputs.project_name }}" | sed 's/^webstrom-//')
+
+          # Image names
+          FULL_IMAGE="ghcr.io/${REPO_LOWER}:${ENV_NAME}-${SHORT_SHA}"
+          LATEST_IMAGE="ghcr.io/${REPO_LOWER}:${ENV_NAME}-latest"
+          CACHE_IMAGE="ghcr.io/${REPO_LOWER}:buildcache"
+
+          # Output for next step
+          echo "tags=$FULL_IMAGE,$LATEST_IMAGE" >> $GITHUB_OUTPUT
+          echo "full_image=$FULL_IMAGE" >> $GITHUB_OUTPUT
+          echo "cache_image=$CACHE_IMAGE" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # registry cache (s INLINE configuraciou) nizsie fungovala v pohode, ale skusime GitHub Actions cache
+          # cache-from: type=registry,ref=${{ steps.meta.outputs.cache_image }}
+          # cache-to: type=registry,ref=${{ steps.meta.outputs.cache_image }},mode=max
+          # build-args: |
+          #   BUILDKIT_INLINE_CACHE=1
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: server.strom.sk
+          username: webstrom
+          key: ${{ secrets.ssh_private_key }}
+          script: |
+            set -e
+
+            # Login to registry
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Container name follows Docker Compose pattern: project_service
+            CONTAINER_NAME="${{ inputs.project_name }}_${{ inputs.service_name }}"
+
+            # Stop and remove old container (ignore errors if doesn't exist)
+            docker stop "$CONTAINER_NAME" 2>/dev/null || true
+            docker rm "$CONTAINER_NAME" 2>/dev/null || true
+
+            # Run new container with compose-compatible labels for grouping
+            docker run -d \
+              --name "$CONTAINER_NAME" \
+              --label "com.docker.compose.project=${{ inputs.project_name }}" \
+              --label "com.docker.compose.service=${{ inputs.service_name }}" \
+              --network host \
+              --restart always \
+              -e PORT=${{ inputs.port }} \
+              -e BE_PROTOCOL=${{ inputs.be_protocol }} \
+              -e BE_HOSTNAME=${{ inputs.be_hostname }} \
+              -e BE_PORT=${{ inputs.be_port }} \
+              -e BE_FORWARDED_HOST=${{ inputs.be_forwarded_host }} \
+              -e BE_FORWARDED_PROTO=${{ inputs.be_forwarded_proto }} \
+              -e DEBUG_SERVER=${{ inputs.debug_server }} \
+              ${{ steps.meta.outputs.full_image }}
+
+            # Cleanup
+            docker image prune -f
+
+            echo "✅ Deployed $CONTAINER_NAME successfully!"
