@@ -1,5 +1,3 @@
-// moze tu byt este dost kokocin, aj ked sme to uz kus precistili. snazme sa pouzivat co najviac extendovanych configov a co najmenej explicitnych rules
-
 import {fixupConfigRules} from '@eslint/compat'
 import {FlatCompat} from '@eslint/eslintrc'
 import eslint from '@eslint/js'
@@ -10,7 +8,7 @@ import {globalIgnores} from 'eslint/config'
 import eslintComments from 'eslint-plugin-eslint-comments'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import unicorn from 'eslint-plugin-unicorn'
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
@@ -20,7 +18,6 @@ const compat = new FlatCompat({
   allConfig: eslint.configs.all,
 })
 
-// eslint-disable-next-line import/no-default-export
 export default tseslint.config(
   globalIgnores(['.next/', '.yarn/']),
   eslint.configs.recommended,
@@ -38,6 +35,46 @@ export default tseslint.config(
   },
   // 'import' plugin je definovany nejakym inym extendovanym configom, takze ho ani nemozeme definovat sami
   // importPlugin.flatConfigs.recommended,
+  eslintPluginUnicorn.configs.recommended,
+  {
+    rules: {
+      // not included in recommended config
+      'unicorn/better-regex': 'warn',
+      'unicorn/custom-error-definition': 'warn',
+
+      // we don't want
+      'unicorn/prefer-module': 'off',
+      'unicorn/prevent-abbreviations': 'off',
+      'unicorn/prefer-export-from': 'off',
+      'unicorn/no-null': 'off',
+      'unicorn/prefer-node-protocol': 'off',
+      'unicorn/no-useless-undefined': 'off',
+      'unicorn/no-useless-promise-resolve-reject': 'off',
+      'unicorn/prefer-global-this': 'off',
+      'unicorn/no-negated-condition': 'off',
+      'unicorn/filename-case': 'off',
+    },
+  },
+  {
+    // https://github.com/lydell/eslint-plugin-simple-import-sort#usage
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+    },
+    rules: {
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+      'import/order': 'off',
+    },
+  },
+  {
+    plugins: {
+      'eslint-comments': eslintComments,
+    },
+    rules: {
+      'eslint-comments/no-unused-disable': 'warn',
+      'eslint-comments/no-unlimited-disable': 'warn',
+    },
+  },
   {
     languageOptions: {
       globals: {
@@ -50,11 +87,6 @@ export default tseslint.config(
       sourceType: 'module',
     },
 
-    plugins: {
-      'eslint-comments': eslintComments,
-      unicorn,
-      'simple-import-sort': simpleImportSort,
-    },
     extends: fixupConfigRules(
       compat.extends(
         // for what's included, check: https://github.com/vercel/next.js/blob/canary/packages/eslint-config-next/index.js
@@ -119,44 +151,12 @@ export default tseslint.config(
       ],
 
       'import/no-absolute-path': 'error',
-      'import/order': 'off',
       'import/first': 'warn',
       'import/newline-after-import': 'warn',
       'import/no-duplicates': 'warn',
-
-      'simple-import-sort/imports': 'error',
-      'simple-import-sort/exports': 'error',
-
-      'eslint-comments/no-unused-disable': 'warn',
-      'eslint-comments/no-unlimited-disable': 'warn',
+      'import/no-default-export': 'warn',
 
       'security/detect-object-injection': 'off',
-
-      'unicorn/custom-error-definition': 'warn',
-      'unicorn/error-message': 'warn',
-      'unicorn/throw-new-error': 'warn',
-      'unicorn/better-regex': 'warn',
-      'unicorn/no-array-push-push': 'warn',
-      'unicorn/prefer-array-find': 'warn',
-      'unicorn/prefer-array-flat-map': 'warn',
-      'unicorn/prefer-array-index-of': 'warn',
-      'unicorn/prefer-array-some': 'warn',
-      'unicorn/prefer-includes': 'warn',
-      'unicorn/no-instanceof-array': 'warn',
-      'unicorn/prefer-negative-index': 'warn',
-      'unicorn/no-array-callback-reference': 'warn',
-      'unicorn/prefer-regexp-test': 'warn',
-      'unicorn/prefer-string-replace-all': 'warn',
-      'unicorn/prefer-string-slice': 'warn',
-      'unicorn/prefer-string-starts-ends-with': 'warn',
-      'unicorn/prefer-string-trim-start-end': 'warn',
-      'unicorn/escape-case': 'warn',
-      'unicorn/prefer-number-properties': 'warn',
-      'unicorn/numeric-separators-style': 'warn',
-      'unicorn/no-zero-fractions': 'warn',
-      'unicorn/number-literal-case': 'warn',
-      'unicorn/prefer-math-trunc': 'warn',
-      'unicorn/prefer-set-has': 'warn',
     },
   },
   {
@@ -164,7 +164,6 @@ export default tseslint.config(
     extends: fixupConfigRules(compat.extends('plugin:node/recommended-module')),
     rules: {
       'import/no-commonjs': 'warn',
-      'import/no-default-export': 'warn',
 
       'node/no-missing-import': 'off',
       // screams on import() when using next/dynamic
@@ -199,13 +198,15 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/*.config.mjs', '**/*.config.ts', '**/*.config.mts'],
+    files: ['**/*.config.{mjs,ts,mts}'],
     rules: {
       'node/no-unpublished-import': 'off',
+      'import/no-default-export': 'off',
+      'import/no-anonymous-default-export': 'off',
     },
   },
   {
-    files: ['src/pages/**/*'],
+    files: ['src/pages/**/*.tsx'],
     rules: {
       'import/no-default-export': 'off',
     },

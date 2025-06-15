@@ -142,16 +142,14 @@ const MenuMainItem: FC<{caption: string; url: string}> = ({caption, url}) => {
   // potrebne koncove lomitko pre porovnanie s URLkami z BE
   const pathWithSlash = `${router.asPath}/`
 
-  let active
-
   const urlArray = url.split('/')
-  if (urlArray.length === 3 && urlArray[0] === '' && urlArray[2] === '') {
-    // riesi case ked url je napr. /strom/ a teda nestaci porovnanie so .startsWith
-    // urlArray je tak v tvare ['', 'strom', ''] co overuje dlzka 3 a zaciatok/koniec ako ''
-    active = pathWithSlash === url
-  } else {
-    active = pathWithSlash.startsWith(url)
-  }
+
+  const active =
+    urlArray.length === 3 && urlArray[0] === '' && urlArray[2] === ''
+      ? // riesi case ked url je napr. /strom/ a teda nestaci porovnanie so .startsWith
+        // urlArray je tak v tvare ['', 'strom', ''] co overuje dlzka 3 a zaciatok/koniec ako ''
+        pathWithSlash === url
+      : pathWithSlash.startsWith(url)
 
   return (
     <Link

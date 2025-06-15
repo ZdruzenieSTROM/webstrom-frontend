@@ -16,7 +16,7 @@ export const Banner: FC<BannerProps> = ({bannerMessages}) => {
 
   const bannerTextFormatted =
     bannerMessages && bannerMessages.length > 0
-      ? Array(10).fill(bannerMessages).flat().join(divider) + divider
+      ? Array.from({length: 10}).fill(bannerMessages).flat().join(divider) + divider
       : undefined
 
   if (!bannerTextFormatted) {

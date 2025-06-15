@@ -108,7 +108,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
         name="school"
         label="škola*"
         options={school_not_found || without_school ? emptySchoolItems : schoolItems}
-        disabled={!schoolItems.length || school_not_found || without_school}
+        disabled={schoolItems.length === 0 || school_not_found || without_school}
         rules={requiredRule}
       />
       <FormCheckbox
@@ -131,7 +131,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
         name="grade"
         label="ročník*"
         options={gradeItems.filter(({id}) => id !== 13 || without_school)}
-        disabled={!gradeItems.length || without_school}
+        disabled={gradeItems.length === 0 || without_school}
         rules={requiredRule}
       />
     </Stack>

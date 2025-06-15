@@ -63,24 +63,24 @@ export const dataProvider: DataProvider = {
           hasPreviousPage: !!previous,
         },
       }
-    } catch (e) {
-      throw new Error(parseError(e))
+    } catch (error) {
+      throw new Error(parseError(error))
     }
   },
   getOne: async (resource, params) => {
     try {
       const {data} = await apiAxios.get(`/${resource}/${params.id}`)
       return {data}
-    } catch (e) {
-      throw new Error(parseError(e))
+    } catch (error) {
+      throw new Error(parseError(error))
     }
   },
   getMany: async (resource, params) => {
     try {
       const data = await Promise.all(params.ids.map((id) => apiAxios.get(`/${resource}/${id}`)))
       return {data: data.map(({data}) => data)}
-    } catch (e) {
-      throw new Error(parseError(e))
+    } catch (error) {
+      throw new Error(parseError(error))
     }
   },
   // TODO: ak budeme pouzivat tuto funkciu, upravime podla getList (pagination, sort, filter). uprimne este neviem, pri com sa pouziva
@@ -95,8 +95,8 @@ export const dataProvider: DataProvider = {
         data: data,
         total: data.length,
       }
-    } catch (e) {
-      throw new Error(parseError(e))
+    } catch (error) {
+      throw new Error(parseError(error))
     }
   },
   update: async (resource, params) => {
@@ -109,16 +109,16 @@ export const dataProvider: DataProvider = {
     try {
       const {data} = await apiAxios.patch(`/${resource}/${id}`, body)
       return {data}
-    } catch (e) {
-      throw new Error(parseError(e))
+    } catch (error) {
+      throw new Error(parseError(error))
     }
   },
   updateMany: async (resource, params) => {
     try {
       const data = await Promise.all(params.ids.map((id) => apiAxios.patch(`/${resource}/${id}`, params.data)))
       return {data: data.map(({data}) => data)}
-    } catch (e) {
-      throw new Error(parseError(e))
+    } catch (error) {
+      throw new Error(parseError(error))
     }
   },
   create: async (resource, params) => {
@@ -129,24 +129,24 @@ export const dataProvider: DataProvider = {
     try {
       const {data} = await apiAxios.post(`/${resource}`, body)
       return {data}
-    } catch (e) {
-      throw new Error(parseError(e))
+    } catch (error) {
+      throw new Error(parseError(error))
     }
   },
   delete: async (resource, params) => {
     try {
       const {data} = await apiAxios.delete(`/${resource}/${params.id}`)
       return {data}
-    } catch (e) {
-      throw new Error(parseError(e))
+    } catch (error) {
+      throw new Error(parseError(error))
     }
   },
   deleteMany: async (resource, params) => {
     try {
       const data = await Promise.all(params.ids.map((id) => apiAxios.delete(`/${resource}/${id}`)))
       return {data: data.map(({data}) => data.id)}
-    } catch (e) {
-      throw new Error(parseError(e))
+    } catch (error) {
+      throw new Error(parseError(error))
     }
   },
 }

@@ -4,7 +4,7 @@ import {FC} from 'react'
 
 import {PublicationTypes} from '@/types/api/competition'
 import {SemesterWithProblems} from '@/types/api/generated/competition'
-import {Accept} from '@/utils/dropzone-accept'
+import {Accept} from '@/utils/dropzoneAccept'
 
 import {Link} from '../Clickable/Link'
 import {FileUploader} from '../FileUploader/FileUploader'

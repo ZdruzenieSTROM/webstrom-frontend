@@ -51,6 +51,13 @@ const defaultValues: InvitationFormValues = {
   num_substitutes: 20,
 }
 
+const invitationToName = (dataRow: Invitation) => `${dataRow.first_name} ${dataRow.last_name}`
+
+const formatInvitationRow = (invitation: Invitation) =>
+  invitation.is_participant
+    ? `\\ucastnik{${invitationToName(invitation)}}`
+    : `\\nahradnik{${invitationToName(invitation)}}`
+
 export const SemesterAdministration: FC = () => {
   const {
     id: {semesterId},
@@ -88,14 +95,12 @@ export const SemesterAdministration: FC = () => {
     setTextareaContent(
       data
         .map((result: Result) => {
-          let rank = ''
-          if (result.rank_changed) {
-            if (result.rank_start === result.rank_end) {
-              rank = `${result.rank_start}.`
-            } else {
-              rank = `${result.rank_start}.-${result.rank_end}.`
-            }
-          }
+          const rank = result.rank_changed
+            ? result.rank_start === result.rank_end
+              ? `${result.rank_start}.`
+              : `${result.rank_start}.-${result.rank_end}.`
+            : ''
+
           const name = `${result.registration.profile.first_name} ${result.registration.profile.last_name}`
           if (isSemester) {
             const subtotal = result.subtotal[0]
@@ -120,8 +125,6 @@ export const SemesterAdministration: FC = () => {
         .join('\n'),
     )
   }
-
-  const invitationToName = (dataRow: Invitation) => `${dataRow?.first_name} ${dataRow?.last_name}`
 
   const getInvites = async () => {
     const {num_participants, num_substitutes} = getValues()
@@ -148,10 +151,6 @@ export const SemesterAdministration: FC = () => {
       `/competition/semester/${semesterId}/school-invitations/${num_participants}/${num_substitutes}`,
     )
     toggleInvitationDialog()
-    const formatInvitationRow = (invitation: Invitation) =>
-      invitation.is_participant
-        ? `\\ucastnik{${invitationToName(invitation)}}`
-        : `\\nahradnik{${invitationToName(invitation)}}`
     setTextareaContent(
       data
         .map(
