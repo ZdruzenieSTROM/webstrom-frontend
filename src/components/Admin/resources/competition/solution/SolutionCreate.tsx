@@ -3,7 +3,7 @@ import {AutocompleteInput, BooleanInput, FileInput, ReferenceInput, required, Si
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
-import {Accept} from '@/utils/dropzone-accept'
+import {Accept} from '@/utils/dropzoneAccept'
 
 import {createSolutionFormData} from './createSolutionFormData'
 

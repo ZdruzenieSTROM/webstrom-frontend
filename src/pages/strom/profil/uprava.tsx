@@ -16,7 +16,7 @@ export default Profil
 export const getServerSideProps: GetServerSideProps = async ({resolvedUrl}) => {
   const queryClient = new QueryClient()
 
-  await Promise.all([...commonQueries(queryClient, resolvedUrl)])
+  await Promise.all(commonQueries(queryClient, resolvedUrl))
 
   return {
     props: {

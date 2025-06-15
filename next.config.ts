@@ -38,5 +38,4 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 }
 
-// eslint-disable-next-line import/no-default-export
 export default nextConfig

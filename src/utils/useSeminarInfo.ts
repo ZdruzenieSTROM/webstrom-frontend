@@ -29,7 +29,6 @@ export const useSeminarInfo = () => {
 
 // for admin purposes we need backwards mapping from seminar ID to seminar name
 // need to use `number` signature instead of `SeminarId`
-export const seminarIdToName = Object.entries(seminarToId).reduce<Record<number, Seminar>>(
-  (acc, [seminar, seminarId]) => ((acc[seminarId] = seminar as Seminar), acc),
-  {},
+export const seminarIdToName = Object.fromEntries(
+  Object.entries(seminarToId).map(([seminar, seminarId]) => [seminarId as number, seminar as Seminar]),
 )

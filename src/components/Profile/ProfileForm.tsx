@@ -35,6 +35,13 @@ const defaultValues: ProfileFormValues = {
   grade: null,
 }
 
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
+}
+
 export const ProfileForm: FC = () => {
   const {profile, isLoading} = useProfile()
 
@@ -54,13 +61,6 @@ export const ProfileForm: FC = () => {
     defaultValues,
     values: profileValues,
   })
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    })
-  }
 
   const router = useRouter()
 

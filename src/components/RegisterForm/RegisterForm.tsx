@@ -45,6 +45,13 @@ const defaultValues: RegisterFormValues = {
   grade: null,
 }
 
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
+}
+
 export const RegisterForm: FC = () => {
   const {handleSubmit, control, watch, setValue, getValues, setError} = useForm<RegisterFormValues>({
     defaultValues,
@@ -52,13 +59,6 @@ export const RegisterForm: FC = () => {
   })
 
   const {isDirty} = useFormState<RegisterFormValues>({control: control})
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    })
-  }
 
   const router = useRouter()
 
