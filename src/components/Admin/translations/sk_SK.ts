@@ -92,7 +92,7 @@ export const sk_SK = {
         start: 'Začiatok',
         end: 'Koniec',
         complete: 'complete',
-        additional_name: 'AddditionalName',
+        additional_name: 'Prívlastok súťaže (špecifikácia)',
         registration_link: 'Odkaz na registráciu',
         series_set: 'Série',
         publication_set: 'Publikácie',
