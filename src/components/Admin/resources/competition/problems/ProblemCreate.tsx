@@ -38,7 +38,11 @@ export const ProblemCreate: FC = () => (
         />
         <LatexPreview source="text" />
         <TextInput source="order" validate={required()} />
-        <ImageInput source="image" accept={Accept.Image}>
+        <ImageInput
+          source="image"
+          accept={Accept.Image}
+          helperText=" Povolené iba obrázkové formáty .jpeg, .jpg a .png"
+        >
           <MyImageField />
         </ImageInput>
         <FileInput source="solution_pdf" accept={Accept.Pdf}>
