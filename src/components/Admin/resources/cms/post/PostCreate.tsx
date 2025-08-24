@@ -16,7 +16,7 @@ export const PostCreate: FC = () => {
           <TextInput
             source="details"
             multiline
-            helperText="Text môže obsahovať iba TeX a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
+            helperText="Text môže obsahovať iba TeX (iba matický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
           />
           {/* <MyDateTimeInput source="added_at" disabled /> */}
           <MyDateTimeInput source="visible_after" validate={required()} />
