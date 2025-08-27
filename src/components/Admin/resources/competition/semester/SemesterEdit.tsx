@@ -41,7 +41,11 @@ export const SemesterEdit: FC = () => (
               neviem, ci vieme updatnut cely objekt tym, ze ho pribalim, ako v EventEdit...
               uvidime, ci ten field vobec potrebujeme */}
         <NumberInput source="registration_link" disabled />
-        <ReferenceArrayInput source="late_tags" reference="competition/late-tag">
+        <ReferenceArrayInput
+          source="late_tags"
+          reference="competition/late-tag"
+          helperText="Ako neskoro po termíne môže riešiteľ odovzdávať?"
+        >
           <CheckboxGroupInput />
         </ReferenceArrayInput>
       </FormTab>

@@ -37,12 +37,18 @@ export const EventEdit: FC = () => {
           label={translate('content.labels.reg_link_add')}
         />
         {includeRegLink && (
+
           <>
-            <TextInput source="registration_link.url" label="content.labels.reg_link" validate={required()} />
+            <TextInput
+              source="registration_link.url"
+              validate={required()}
+              helperText="Zadávajte v tvare https://prihlasky.strom.sk/xxx"
+            />
             <MyDateTimeInput source="registration_link.start" validate={required()} />
             <MyDateTimeInput source="registration_link.end" validate={required()} />
             <TextInput source="registration_link.additional_info" />
           </>
+
         )}
         <MyCreateButton label="ra.action.publication.create" resource="competition/publication" />
       </SimpleForm>
