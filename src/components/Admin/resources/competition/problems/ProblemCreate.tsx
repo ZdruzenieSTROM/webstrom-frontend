@@ -41,7 +41,7 @@ export const ProblemCreate: FC = () => (
         <ImageInput
           source="image"
           accept={Accept.Image}
-          helperText=" Povolené iba obrázkové formáty .jpeg, .jpg a .png"
+          helperText="Povolené iba obrázkové formáty .jpeg, .jpg a .png"
         >
           <MyImageField />
         </ImageInput>
