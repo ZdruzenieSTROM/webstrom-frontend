@@ -95,51 +95,6 @@ export const Problems: FC = () => {
 
   return (
     <>
-      <Dialog
-        open={displayRegisterDialog}
-        close={closeRegisterDialog}
-        title="Kontrola údajov"
-        actions={
-          <>
-            <Button variant="button2" onClick={agree}>
-              Údaje sú správne
-            </Button>
-            <Button variant="button2" onClick={editProfile}>
-              Zmeniť údaje
-            </Button>
-          </>
-        }
-      >
-        <Stack gap={2}>
-          <Typography variant="h3" component="span" textAlign="center">
-            Skontroluj prosím, či údaje o&nbsp;ročníku a škole sú správne.
-          </Typography>
-          <Stack direction={'row'} gap={1}>
-            <Typography variant="h3" component="span">
-              Škola
-            </Typography>
-            <Typography variant="h3" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
-              {profile?.school.verbose_name}
-            </Typography>
-          </Stack>
-          <Stack direction={'row'} gap={1}>
-            <Typography variant="h3" component="span">
-              Ročník
-            </Typography>
-            <Typography variant="h3" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
-              {profile?.grade_name}
-            </Typography>
-          </Stack>
-        </Stack>
-      </Dialog>
-
-      <Dialog open={displayLoginDialog} close={closeLoginDialog} title="Prihlásenie">
-        <Stack alignItems={'center'} gap={3}>
-          <Typography variant="body1">Pre odovzdanie sa prihlás.</Typography>
-          <LoginForm closeDialog={closeLoginDialog} />
-        </Stack>
-      </Dialog>
-
       <Stack gap={5}>
         <Stack direction="row" justifyContent="space-between" flexWrap="wrap">
           <Stack direction="row" flexWrap="wrap">
@@ -186,6 +141,52 @@ export const Problems: FC = () => {
           />
         ))}
       </Stack>
+
+      <Dialog
+        open={displayRegisterDialog}
+        close={closeRegisterDialog}
+        title="Kontrola údajov"
+        actions={
+          <>
+            <Button variant="button2" onClick={agree}>
+              Údaje sú správne
+            </Button>
+            <Button variant="button2" onClick={editProfile}>
+              Zmeniť údaje
+            </Button>
+          </>
+        }
+      >
+        <Stack gap={2}>
+          <Typography variant="h3" component="span" textAlign="center">
+            Skontroluj prosím, či údaje o&nbsp;ročníku a škole sú správne.
+          </Typography>
+          <Stack direction={'row'} gap={1}>
+            <Typography variant="h3" component="span">
+              Škola
+            </Typography>
+            <Typography variant="h3" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
+              {profile?.school.verbose_name}
+            </Typography>
+          </Stack>
+          <Stack direction={'row'} gap={1}>
+            <Typography variant="h3" component="span">
+              Ročník
+            </Typography>
+            <Typography variant="h3" fontStyle="normal" fontWeight="400" textTransform="none" component="span">
+              {profile?.grade_name}
+            </Typography>
+          </Stack>
+        </Stack>
+      </Dialog>
+
+      <Dialog open={displayLoginDialog} close={closeLoginDialog} title="Prihlásenie">
+        <Stack alignItems={'center'} gap={3}>
+          <Typography variant="body1">Pre odovzdanie sa prihlás.</Typography>
+          <LoginForm closeDialog={closeLoginDialog} />
+        </Stack>
+      </Dialog>
+
       <Dialog open={discussionOpen} close={closeDiscussion} title={`Diskusia - úloha ${discussionProblem?.order}`}>
         <Discussion problemId={discussionProblem?.id} invalidateSeriesQuery={invalidateSeriesQuery} />
       </Dialog>
