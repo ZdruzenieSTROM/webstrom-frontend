@@ -2,8 +2,8 @@ import {Box, ClickAwayListener, Popper, Stack, Typography} from '@mui/material'
 import Link from 'next/link'
 import {FC, MouseEvent, useState} from 'react'
 
-import {colors} from '@/colors'
 import ArrowDown from '@/svg/ArrowDown.svg'
+import {colors} from '@/theme/colors'
 
 import {Button} from '../Clickable/Button'
 

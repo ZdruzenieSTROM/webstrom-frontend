@@ -1,7 +1,7 @@
 import {Box, Typography} from '@mui/material'
 import {FC, JSX} from 'react'
 
-import {colors} from '@/colors'
+import {colors} from '@/theme/colors'
 
 import {InlineLink} from '../Clickable/InlineLink'
 

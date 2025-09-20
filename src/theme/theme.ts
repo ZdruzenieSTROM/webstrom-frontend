@@ -1,7 +1,7 @@
 import {createTheme, Theme} from '@mui/material/styles'
-import {Poppins} from 'next/font/google'
 
 import {colors} from './colors'
+import {poppins} from './font'
 
 // https://mui.com/material-ui/customization/typography/#adding-amp-disabling-variants
 declare module '@mui/material/styles' {
@@ -72,14 +72,7 @@ declare module '@mui/material/Typography' {
   }
 }
 
-// font sa stiahne z google fonts pri builde a servuje sa od nas
-export const font = Poppins({
-  subsets: ['latin'],
-  weight: ['300', '400', '600', '700', '800'],
-  display: 'swap',
-  // nemalo by sa stat, ze sa toto pouzije, ale tak aspon bezpatkove pismo nech tam je, keby daco
-  fallback: ['sans-serif'],
-})
+const font = poppins
 
 const _theme = createTheme({
   breakpoints: {

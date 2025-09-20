@@ -9,7 +9,7 @@ import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiAxios} from '@/api/apiAxios'
-import {colors} from '@/colors'
+import {colors} from '@/theme/colors'
 import {ProblemWithSolutions, SemesterWithProblems, SolutionAdministration} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'

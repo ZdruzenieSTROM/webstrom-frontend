@@ -3,9 +3,9 @@ import {ThemeProvider} from '@mui/material/styles'
 import {FC} from 'react'
 import {FormDataConsumer} from 'react-admin'
 
-import {colors} from '@/colors'
 import {Post} from '@/components/Posts/Post'
-import {theme} from '@/theme'
+import {colors} from '@/theme/colors'
+import {theme} from '@/theme/theme'
 
 export const PostPreview: FC = () => {
   return (

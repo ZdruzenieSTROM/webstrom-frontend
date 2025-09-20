@@ -10,7 +10,7 @@ import {FC, PropsWithChildren, useMemo} from 'react'
 import {CookiesProvider} from 'react-cookie'
 
 import {AlertBox} from '@/components/Alert/AlertBox'
-import {theme} from '@/theme'
+import {theme} from '@/theme/theme'
 import {AlertContainer} from '@/utils/AlertContainer'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {BannerAnimationContainer} from '@/utils/BannerAnimationProvider'

@@ -1,8 +1,8 @@
 import {Typography} from '@mui/material'
 import {FC} from 'react'
 
-import {colors} from '@/colors'
 import {Marquee} from '@/components/Marquee/Marquee'
+import {colors} from '@/theme/colors'
 import {BannerAnimationContainer} from '@/utils/BannerAnimationProvider'
 
 type BannerProps = {

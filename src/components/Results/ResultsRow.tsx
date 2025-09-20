@@ -2,7 +2,7 @@ import {Box, Stack, Theme, Typography, useMediaQuery} from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
 import {FC} from 'react'
 
-import {colors} from '@/colors'
+import {colors} from '@/theme/colors'
 
 interface Registration {
   school: {
