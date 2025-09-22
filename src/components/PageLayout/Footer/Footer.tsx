@@ -37,7 +37,7 @@ export const Footer: FC = () => {
         <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
           {menuItemsIsLoading && <Loading />}
           {menuItems.map((item) => (
-            <Link key={item.id} variant="button2" href={`/${seminar}${item.url}`} invertColors>
+            <Link key={item.id} variant="button2" href={item.url} invertColors>
               {item.caption}
             </Link>
           ))}

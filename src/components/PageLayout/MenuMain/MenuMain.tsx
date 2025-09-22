@@ -115,7 +115,7 @@ export const MenuMain: FC = () => {
           )}
           <Stack sx={{mt: {xs: 10, md: '164px', lg: '185px', xl: '221px'}}}>
             {menuItems.map(({id, caption, url}) => (
-              <MenuMainItem key={id} caption={caption} url={constructUrl(url)} />
+              <MenuMainItem key={id} caption={caption} url={url} />
             ))}
           </Stack>
           {hasPermissions && (

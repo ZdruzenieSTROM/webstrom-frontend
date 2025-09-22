@@ -36,7 +36,7 @@ const ResultsButton: FC<{
   sx?: SxProps
 }> = ({eventYear, eventSeason, sx}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
-  const url = `../poradie/${eventYear}/${season}`
+  const url = `/poradie/${eventYear}/${season}`
   return (
     <Link variant="button2" href={url} sx={sx}>
       Poradie
@@ -50,7 +50,7 @@ const ProblemsButton: FC<{
   sx?: SxProps
 }> = ({eventYear, eventSeason, sx}) => {
   const season = eventSeason === 0 ? 'zima' : 'leto'
-  const url = `../zadania/${eventYear}/${season}/1`
+  const url = `/zadania/${eventYear}/${season}/1`
   return (
     <Link variant="button2" href={url} sx={sx}>
       Zadania
