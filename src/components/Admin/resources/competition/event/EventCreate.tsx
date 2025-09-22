@@ -1,9 +1,9 @@
-import {Checkbox, FormControlLabel} from '@mui/material'
-import {FC, useState} from 'react'
-import {NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate} from 'react-admin'
+import { Checkbox, FormControlLabel } from '@mui/material'
+import { FC, useState } from 'react'
+import { NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate } from 'react-admin'
 
-import {MyCreate} from '@/components/Admin/custom/MyCreate'
-import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
+import { MyCreate } from '@/components/Admin/custom/MyCreate'
+import { MyDateTimeInput } from '@/components/Admin/custom/MyDateTimeInput'
 
 export const EventCreate: FC = () => {
   const translate = useTranslate()
@@ -35,16 +35,16 @@ export const EventCreate: FC = () => {
         />
         {includeRegLink && (
 
-            <>
-              <TextInput
-                source="registration_link.url"
-                validate={required()}
-                helperText="Zadávajte v tvare https://prihlasky.strom.sk/xxx"
-              />
-              <MyDateTimeInput source="registration_link.start" validate={required()} />
-              <MyDateTimeInput source="registration_link.end" validate={required()} />
-              <TextInput source="registration_link.additional_info" />
-            </>
+          <>
+            <TextInput
+              source="registration_link.url"
+              validate={required()}
+              helperText="Zadávajte v tvare https://prihlasky.strom.sk/xxx"
+            />
+            <MyDateTimeInput source="registration_link.start" validate={required()} />
+            <MyDateTimeInput source="registration_link.end" validate={required()} />
+            <TextInput source="registration_link.additional_info" />
+          </>
 
         )}
       </SimpleForm>

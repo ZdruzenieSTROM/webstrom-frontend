@@ -1,10 +1,10 @@
-import {Checkbox, FormControlLabel} from '@mui/material'
-import {FC, useState} from 'react'
-import {NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate} from 'react-admin'
+import { Checkbox, FormControlLabel } from '@mui/material'
+import { FC, useState } from 'react'
+import { NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate } from 'react-admin'
 
-import {MyCreateButton} from '@/components/Admin/custom/MyCreateButton'
-import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
-import {MyEdit} from '@/components/Admin/custom/MyEdit'
+import { MyCreateButton } from '@/components/Admin/custom/MyCreateButton'
+import { MyDateTimeInput } from '@/components/Admin/custom/MyDateTimeInput'
+import { MyEdit } from '@/components/Admin/custom/MyEdit'
 
 export const EventEdit: FC = () => {
   const translate = useTranslate()
