@@ -1,10 +1,10 @@
-import { Checkbox, FormControlLabel } from '@mui/material'
-import { FC, useState } from 'react'
-import { NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate } from 'react-admin'
+import {Checkbox, FormControlLabel} from '@mui/material'
+import {FC, useState} from 'react'
+import {NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate} from 'react-admin'
 
-import { MyCreateButton } from '@/components/Admin/custom/MyCreateButton'
-import { MyDateTimeInput } from '@/components/Admin/custom/MyDateTimeInput'
-import { MyEdit } from '@/components/Admin/custom/MyEdit'
+import {MyCreateButton} from '@/components/Admin/custom/MyCreateButton'
+import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
+import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
 export const EventEdit: FC = () => {
   const translate = useTranslate()
@@ -37,7 +37,6 @@ export const EventEdit: FC = () => {
           label={translate('content.labels.reg_link_add')}
         />
         {includeRegLink && (
-
           <>
             <TextInput
               source="registration_link.url"
@@ -48,7 +47,6 @@ export const EventEdit: FC = () => {
             <MyDateTimeInput source="registration_link.end" validate={required()} />
             <TextInput source="registration_link.additional_info" />
           </>
-
         )}
         <MyCreateButton label="ra.action.publication.create" resource="competition/publication" />
       </SimpleForm>
