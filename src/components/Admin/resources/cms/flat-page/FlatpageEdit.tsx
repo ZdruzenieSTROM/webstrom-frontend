@@ -14,7 +14,7 @@ export const FlatpageEdit: FC = () => (
           source="content"
           multiline
           validate={required()}
-          helperText="Úlohy môžu obsahovať iba TeX a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
+          helperText="Úlohy môžu obsahovať iba TeX (iba matický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
         />
       </FormTab>
       <FormTab label="content.labels.preview">

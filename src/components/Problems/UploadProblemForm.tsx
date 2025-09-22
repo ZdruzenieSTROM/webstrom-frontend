@@ -145,8 +145,8 @@ export const UploadProblemForm: FC<{
         {fileRejections.length > 0 && (
           <span>
             {fileRejections[0]?.errors[0]?.code === 'file-too-large'
-              ? 'Súbor je príliš veľký. Maximálna povolená veľkosť je 20MB.'
-              : 'Nahraný súbor musí byť vo formáte pdf.'}
+              ? ' Súbor je príliš veľký. Maximálna povolená veľkosť je 20MB.'
+              : ' Nahraný súbor musí byť vo formáte pdf.'}
           </span>
         )}
       </Box>

@@ -34,11 +34,11 @@ export const ProblemCreate: FC = () => (
           source="text"
           multiline
           validate={required()}
-          helperText="Úlohy môžu obsahovať iba TeX a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
+          helperText="Úlohy môžu obsahovať iba TeX (iba matický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
         />
         <LatexPreview source="text" />
         <TextInput source="order" validate={required()} />
-        <ImageInput source="image" accept={Accept.Image}>
+        <ImageInput source="image" accept={Accept.Image} helperText="Povolené iba obrázkové formáty .jpeg, .jpg a .png">
           <MyImageField />
         </ImageInput>
         <FileInput source="solution_pdf" accept={Accept.Pdf}>

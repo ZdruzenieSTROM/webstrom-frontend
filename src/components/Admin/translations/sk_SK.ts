@@ -36,7 +36,7 @@ export const sk_SK = {
       },
     },
     'cms/flat-page': {
-      name: 'Ploché stránky',
+      name: 'Statické stránky',
       fields: {
         id: 'ID',
         url: 'URL',
@@ -46,7 +46,7 @@ export const sk_SK = {
       },
     },
     'competition/competition': {
-      name: 'Súťaže',
+      name: 'Aktivity',
       fields: {
         name: 'Názov',
         slug: 'Slug',
@@ -62,11 +62,11 @@ export const sk_SK = {
       },
     },
     'competition/event': {
-      name: 'Udalosti',
+      name: 'Udalosti (Ročníky súťaží)',
       fields: {
         competition: 'Súťaž',
         year: 'Ročník',
-        season_code: 'season_code',
+        season_code: 'Obdobie',
         school_year: 'Školský rok',
         start: 'Začiatok',
         end: 'Koniec',
@@ -87,12 +87,12 @@ export const sk_SK = {
       fields: {
         competition: 'Súťaž',
         year: 'Ročník',
-        season_code: 'season_code',
+        season_code: 'Obdobie',
         school_year: 'Školský rok',
         start: 'Začiatok',
         end: 'Koniec',
         complete: 'complete',
-        additional_name: 'AddditionalName',
+        additional_name: 'Prívlastok súťaže (špecifikácia)',
         registration_link: 'Odkaz na registráciu',
         series_set: 'Série',
         publication_set: 'Publikácie',
@@ -117,6 +117,23 @@ export const sk_SK = {
         text: 'Zadanie',
         image: 'Obrázok',
         num_comments: 'Počet komentárov',
+      },
+    },
+    'competition/publications': {
+      name: 'Semestre',
+      fields: {
+        competition: 'Súťaž',
+        year: 'Ročník',
+        season_code: 'Obdobie',
+        school_year: 'Školský rok',
+        start: 'Začiatok',
+        end: 'Koniec',
+        complete: 'complete',
+        additional_name: 'Prívlastok súťaže (špecifikácia)',
+        registration_link: 'Odkaz na registráciu',
+        series_set: 'Série',
+        publication_set: 'Publikácie',
+        late_tags: 'late_tags',
       },
     },
     'competition/solution': {
