@@ -91,6 +91,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               <Grid xs={8}>
                 <Typography variant="h2" component="span">
                   {name} {event.school_year}
+                  {event.additional_name ? ` (${event.additional_name})` : ''}
                 </Typography>
               </Grid>
               <Grid xs={2} display="flex" justifyContent="end">
