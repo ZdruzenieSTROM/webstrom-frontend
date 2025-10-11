@@ -40,7 +40,7 @@ export const SemesterPicker: FC<{page: 'zadania' | 'poradie' | 'admin/opravovani
 
   const dropdownSemesterList = semesterList.map((semester) => {
     return {
-      id: semester.id,
+      key: semester.id,
       text: `${getSemesterYear(semester)} - ${getSemesterName(semester)}`,
       link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
       selected: semester.id === selectedItem.semesterId,
@@ -52,7 +52,7 @@ export const SemesterPicker: FC<{page: 'zadania' | 'poradie' | 'admin/opravovani
   if (semester !== undefined) {
     dropdownSeriesList = semester.series_set.map((series) => {
       return {
-        id: series.id,
+        key: series.id,
         text: `${series.order}. séria`,
         link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}/${series.order}`,
         selected: !displayWholeSemesterOnResults && series.id === selectedItem.seriesId,
@@ -61,7 +61,7 @@ export const SemesterPicker: FC<{page: 'zadania' | 'poradie' | 'admin/opravovani
 
     if (page === 'poradie') {
       dropdownSeriesList.push({
-        id: -1,
+        key: 'all-series',
         text: 'obe série',
         link: `/${seminar}/${page}/${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'}`,
         selected: displayWholeSemesterOnResults,
