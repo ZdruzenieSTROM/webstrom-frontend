@@ -28,6 +28,7 @@ const getIdsFromUrl = ({
 
   // mame aspon 1 param (`/44/...`), tak vytiahneme a spracujeme rok
   const seriesYear = getNumber(params[0])
+  if (seriesYear === undefined) return currentIds
   const semestersForYear = semesterList.filter(({year}) => year === seriesYear)
 
   // ked mame len jeden param (`/44`)
@@ -61,6 +62,7 @@ const getIdsFromUrl = ({
 
   // mame aspon 3 params (`/44/leto/2/...`), tak vytiahneme a spracujeme poradie serie
   const seriesOrder = getNumber(params[2])
+  if (seriesOrder === undefined) return currentIds
   const series = semester.series_set.find(({order}) => order === seriesOrder)
   if (!series) return currentIds
 
@@ -126,5 +128,5 @@ export const getDataFromUrl = ({
 
 const getNumber = (n: string) => {
   const num = Number(n)
-  return Number.isNaN(num) ? -1 : num
+  return Number.isNaN(num) ? undefined : num
 }
