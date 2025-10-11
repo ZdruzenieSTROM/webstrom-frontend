@@ -43,9 +43,10 @@ const getIdsFromUrl = ({
   }
 
   // mame aspon 2 params (`/44/leto/...`), tak vytiahneme a spracujeme sezonu
-  let seasonCode = -1
+  let seasonCode: number | undefined
   if (params[1] === 'zima') seasonCode = 0
   if (params[1] === 'leto') seasonCode = 1
+  if (seasonCode === undefined) return currentIds
   const semester = semestersForYear.find(({season_code}) => season_code === seasonCode)
   if (!semester) return currentIds
 
