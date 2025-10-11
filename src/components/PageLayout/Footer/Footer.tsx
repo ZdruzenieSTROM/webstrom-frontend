@@ -1,5 +1,4 @@
-import {Stack} from '@mui/material'
-import Grid from '@mui/material/Unstable_Grid2'
+import {Grid, Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import {FC} from 'react'
 
@@ -32,8 +31,8 @@ export const Footer: FC = () => {
         color: colors.white,
       }}
     >
-      <Grid xs={0} md={3} sx={{display: {xs: 'none', md: 'block'}}} />
-      <Grid xs={12} md={6}>
+      <Grid size={{xs: 0, md: 3}} sx={{display: {xs: 'none', md: 'block'}}} />
+      <Grid size={{xs: 12, md: 6}}>
         <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
           {menuItemsIsLoading && <Loading />}
           {menuItems.map((item) => (
