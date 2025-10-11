@@ -38,7 +38,6 @@ export const Problems: FC = () => {
   const {data: series, isLoading: seriesIsLoading} = useQuery(apiOptions.competition.series.byId(id.seriesId))
 
   const problems = series?.problems ?? []
-  const semesterId = series?.semester ?? -1
   const canSubmit = series?.can_submit ?? false
   const canResubmit = series?.can_resubmit ?? false
   const [isAfterDeadline, setIsAfterDeadline] = useState<boolean>(new Date(series?.deadline ?? '') < new Date())
@@ -77,7 +76,8 @@ export const Problems: FC = () => {
     router.push(`/${seminar}/profil/uprava`)
   }
   const agree = () => {
-    if (displayRegisterDialog) registerToSemester(semesterId)
+    if (series?.semester == null) return
+    if (displayRegisterDialog) registerToSemester(series.semester)
     closeRegisterDialog()
   }
 
