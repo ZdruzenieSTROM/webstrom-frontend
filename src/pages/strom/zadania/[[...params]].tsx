@@ -32,16 +32,16 @@ export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query
 
   const queryClient = new QueryClient()
 
-  const [currentSeries] = await Promise.all([
+  const [currentSeries, semesterList] = await Promise.all([
     // queries for `useDataFromURL()`
     queryClient.fetchQuery(ssrApiOptions.competition.series.current(seminarId)).catch(() => undefined),
-    queryClient.prefetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
+    queryClient.fetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
     ...commonQueries(queryClient, resolvedUrl, req),
   ])
 
   const params = query[PARAM]
   const {id} = getDataFromUrl({
-    semesterList: await queryClient.fetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
+    semesterList,
     currentSeriesData: currentSeries,
     params,
   })

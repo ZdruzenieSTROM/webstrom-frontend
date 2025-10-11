@@ -14,9 +14,9 @@ const getIdsFromUrl = ({
 }: {
   semesterList: Semester[]
   currentSeriesId?: number
-  currentSemesterId?: number
+  currentSemesterId?: number | null
   params: string | string[] | undefined
-}): {semesterId?: number; seriesId?: number; displayWholeSemesterOnResults: boolean} => {
+}): {semesterId?: number | null; seriesId?: number; displayWholeSemesterOnResults: boolean} => {
   const currentIds = {semesterId: currentSemesterId, seriesId: currentSeriesId, displayWholeSemesterOnResults: true}
 
   // sutaz bez semestrov, nemalo by sa stat
@@ -113,7 +113,7 @@ export const getDataFromUrl = ({
   currentSeriesData?: SeriesWithProblems
   params: string | string[] | undefined
 }): {
-  id: {semesterId?: number; seriesId?: number}
+  id: {semesterId?: number | null; seriesId?: number}
   displayWholeSemesterOnResults: boolean
 } => {
   const currentSeriesId = currentSeriesData?.id
