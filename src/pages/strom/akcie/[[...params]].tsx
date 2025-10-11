@@ -29,7 +29,7 @@ const StaticPage: NextPage = () => {
 
   const {data, isPending, isError} = useQuery(apiOptions.competition.competition.slug(requestedUrl))
   // TODO: prefetch in SSR
-  const {data: bannerMessages} = useQuery(apiOptions.cms.infoBanner.competition(data?.id ?? -1))
+  const {data: bannerMessages} = useQuery(apiOptions.cms.infoBanner.competition(data?.id))
 
   if (isPending) return <Loading />
   // TODO: show error? redirect on server?

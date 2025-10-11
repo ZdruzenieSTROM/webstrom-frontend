@@ -27,10 +27,10 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
       }),
     },
     infoBanner: {
-      competition: (competitionId: number) => ({
+      competition: (competitionId: number | undefined) => ({
         queryKey: ['cms', 'info-banner', 'competition', competitionId],
         queryFn: () => unwrap(axiosInstance.get<string[]>(`/cms/info-banner/competition/${competitionId}`)),
-        enabled: competitionId !== -1,
+        enabled: competitionId != null,
       }),
       seriesProblems: (seriesId: number) => ({
         queryKey: ['cms', 'info-banner', 'series-problems', seriesId],
