@@ -8,16 +8,15 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 const getIdsFromUrl = ({
   semesterList,
-  currentSeriesData,
+  currentSeriesId = -1,
+  currentSemesterId = -1,
   params,
 }: {
   semesterList: Semester[]
-  currentSeriesData?: SeriesWithProblems
+  currentSeriesId: number
+  currentSemesterId: number
   params: string | string[] | undefined
 }): {semesterId: number; seriesId: number; displayWholeSemesterOnResults: boolean} => {
-  const currentSeriesId = currentSeriesData?.id ?? -1
-  const currentSemesterId = currentSeriesData?.semester ?? -1
-
   const currentIds = {semesterId: currentSemesterId, seriesId: currentSeriesId, displayWholeSemesterOnResults: true}
 
   // sutaz bez semestrov, nemalo by sa stat
@@ -81,15 +80,18 @@ export const useDataFromURL = () => {
   // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
   const semesterList = useMemo(() => semesterListData || [], [semesterListData])
 
-  // aktualna seria. z tejto query sa vyuziva len `currentSeriesId` a len vtedy, ked nemame uplnu URL
-  // - napr. prideme na `/zadania` cez menu, nie na `/zadania/44/leto/2`
+  // aktualna seria. DOLEZITA query - idu z nej `seriesId` a `semesterId` pre kazdu stranku,
+  // kde nemame v URL vsetky parametre (napr. `/zadania`, nie `/zadania/44/leto/2`)
   const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery(
     apiOptions.competition.series.current(seminarId),
   )
 
+  const currentSeriesId = currentSeriesData?.id
+  const currentSemesterId = currentSeriesData?.semester
+
   const {semesterId, seriesId, displayWholeSemesterOnResults} = useMemo(
-    () => getIdsFromUrl({semesterList, currentSeriesData, params}),
-    [semesterList, currentSeriesData, params],
+    () => getIdsFromUrl({semesterList, currentSeriesId, currentSemesterId, params}),
+    [semesterList, currentSeriesId, currentSemesterId, params],
   )
 
   return {
@@ -114,9 +116,13 @@ export const getDataFromUrl = ({
   id: {semesterId: number; seriesId: number}
   displayWholeSemesterOnResults: boolean
 } => {
+  const currentSeriesId = currentSeriesData?.id
+  const currentSemesterId = currentSeriesData?.semester
+
   const {semesterId, seriesId, displayWholeSemesterOnResults} = getIdsFromUrl({
     semesterList,
-    currentSeriesData,
+    currentSeriesId,
+    currentSemesterId,
     params,
   })
 
