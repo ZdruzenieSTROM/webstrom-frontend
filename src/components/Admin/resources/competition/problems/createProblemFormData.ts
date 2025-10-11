@@ -18,10 +18,10 @@ export const createProblemFormData = ({
   // vzdy appendneme kazdy kluc, aj tieto fily, len null sa tu neda pouzit. null znamena, ze file odstranujeme
   formData.append('image', image?.rawFile ?? '')
   formData.append('solution_pdf', solution_pdf?.rawFile ?? '')
-  Object.entries(data).forEach(([key, value]) => {
+  for (const [key, value] of Object.entries(data)) {
     // dolezity explicitny check, kedze `if (value)` by zabranil updatnut boolean na `false`
     if (value != null) formData.append(key, value.toString())
-  })
+  }
 
   return formData
 }

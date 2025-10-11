@@ -45,10 +45,8 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
   }
 
   const onError = (error: AxiosError<ChangePasswordErrorResponseData>) => {
-    if (error.response?.status === 400) {
-      if (error.response.data.old_password) {
-        setError('old_password', {type: 'manual', message: `* ${error.response.data.old_password[0]}`}) // TODO: We might want to simplify/reword this message
-      }
+    if (error.response?.status === 400 && error.response.data.old_password) {
+      setError('old_password', {type: 'manual', message: `* ${error.response.data.old_password[0]}`}) // TODO: We might want to simplify/reword this message
     }
   }
 

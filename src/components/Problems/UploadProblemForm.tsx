@@ -5,7 +5,7 @@ import {useDropzone} from 'react-dropzone'
 
 import {apiAxios} from '@/api/apiAxios'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
-import {Accept} from '@/utils/dropzone-accept'
+import {Accept} from '@/utils/dropzoneAccept'
 import {useAlert} from '@/utils/useAlert'
 
 import {Button} from '../Clickable/Button'

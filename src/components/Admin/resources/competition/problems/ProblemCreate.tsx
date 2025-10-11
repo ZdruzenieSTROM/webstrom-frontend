@@ -14,7 +14,7 @@ import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
-import {Accept} from '@/utils/dropzone-accept'
+import {Accept} from '@/utils/dropzoneAccept'
 
 import {createProblemFormData} from './createProblemFormData'
 

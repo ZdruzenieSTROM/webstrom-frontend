@@ -21,7 +21,7 @@ const getIdsFromUrl = ({
   const currentIds = {semesterId: currentSemesterId, seriesId: currentSeriesId, displayWholeSemesterOnResults: true}
 
   // sutaz bez semestrov, nemalo by sa stat
-  if (!semesterList.length) return currentIds
+  if (semesterList.length === 0) return currentIds
 
   // ked nemame params (`/`), pouzijeme aktualny semester a seriu. na vysledkoch zobrazime cely semester
   if (params === undefined || params.length === 0) return currentIds
