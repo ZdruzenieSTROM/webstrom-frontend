@@ -46,11 +46,11 @@ export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query
     params,
   })
 
-  if (id.seriesId) {
-    await Promise.all([
-      queryClient.prefetchQuery(ssrApiOptions.competition.series.byId(id.seriesId)),
-      queryClient.prefetchQuery(ssrApiOptions.cms.infoBanner.seriesProblems(id.seriesId)),
-    ])
+  const seriesQuery = ssrApiOptions.competition.series.byId(id.seriesId)
+  const seriesProblemsQuery = ssrApiOptions.cms.infoBanner.seriesProblems(id.seriesId)
+
+  if (seriesProblemsQuery.enabled && seriesQuery.enabled) {
+    await Promise.all([queryClient.prefetchQuery(seriesQuery), queryClient.prefetchQuery(seriesProblemsQuery)])
   }
 
   return {

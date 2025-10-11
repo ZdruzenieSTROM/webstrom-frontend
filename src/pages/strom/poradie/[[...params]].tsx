@@ -49,10 +49,13 @@ export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query
   const competitionEndpoint = displayWholeSemesterOnResults ? 'semester' : 'series'
   const idForEndpoint = displayWholeSemesterOnResults ? id.semesterId : id.seriesId
 
-  if (id.seriesId !== -1 && id.semesterId !== -1) {
+  const seriesResultsQuery = ssrApiOptions.cms.infoBanner.seriesResults(id.seriesId)
+  const competitionResultsQuery = ssrApiOptions.competition[competitionEndpoint].results(idForEndpoint)
+
+  if (seriesResultsQuery.enabled && competitionResultsQuery.enabled) {
     await Promise.all([
-      queryClient.prefetchQuery(ssrApiOptions.cms.infoBanner.seriesResults(id.seriesId)),
-      queryClient.prefetchQuery(ssrApiOptions.competition[competitionEndpoint].results(idForEndpoint)),
+      queryClient.prefetchQuery(seriesResultsQuery),
+      queryClient.prefetchQuery(competitionResultsQuery),
     ])
   }
 

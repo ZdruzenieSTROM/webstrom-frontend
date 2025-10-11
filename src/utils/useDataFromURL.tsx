@@ -8,15 +8,15 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 const getIdsFromUrl = ({
   semesterList,
-  currentSeriesId = -1,
-  currentSemesterId = -1,
+  currentSeriesId,
+  currentSemesterId,
   params,
 }: {
   semesterList: Semester[]
-  currentSeriesId: number
-  currentSemesterId: number
+  currentSeriesId?: number
+  currentSemesterId?: number
   params: string | string[] | undefined
-}): {semesterId: number; seriesId: number; displayWholeSemesterOnResults: boolean} => {
+}): {semesterId?: number; seriesId?: number; displayWholeSemesterOnResults: boolean} => {
   const currentIds = {semesterId: currentSemesterId, seriesId: currentSeriesId, displayWholeSemesterOnResults: true}
 
   // sutaz bez semestrov, nemalo by sa stat
@@ -25,7 +25,7 @@ const getIdsFromUrl = ({
   // ked nemame params (`/`), pouzijeme aktualny semester a seriu. na vysledkoch zobrazime cely semester
   if (params === undefined || params.length === 0) return currentIds
 
-  // mame aspon 1 param (`/44/...`), tak vytiahneme a spracujeme rok
+  // -> mame aspon 1 param (`/44/...`), tak vytiahneme a spracujeme rok
   const seriesYear = getNumber(params[0])
   if (seriesYear === undefined) return currentIds
   const semestersForYear = semesterList.filter(({year}) => year === seriesYear)
@@ -42,7 +42,7 @@ const getIdsFromUrl = ({
     return {semesterId: semester.id, seriesId: series.id, displayWholeSemesterOnResults: false}
   }
 
-  // mame aspon 2 params (`/44/leto/...`), tak vytiahneme a spracujeme sezonu
+  // -> mame aspon 2 params (`/44/leto/...`), tak vytiahneme a spracujeme sezonu
   let seasonCode: number | undefined
   if (params[1] === 'zima') seasonCode = 0
   if (params[1] === 'leto') seasonCode = 1
@@ -59,7 +59,7 @@ const getIdsFromUrl = ({
     return {semesterId: semester.id, seriesId: series.id, displayWholeSemesterOnResults: true}
   }
 
-  // mame aspon 3 params (`/44/leto/2/...`), tak vytiahneme a spracujeme poradie serie
+  // -> mame aspon 3 params (`/44/leto/2/...`), tak vytiahneme a spracujeme poradie serie
   const seriesOrder = getNumber(params[2])
   if (seriesOrder === undefined) return currentIds
   const series = semester.series_set.find(({order}) => order === seriesOrder)
@@ -113,7 +113,7 @@ export const getDataFromUrl = ({
   currentSeriesData?: SeriesWithProblems
   params: string | string[] | undefined
 }): {
-  id: {semesterId: number; seriesId: number}
+  id: {semesterId?: number; seriesId?: number}
   displayWholeSemesterOnResults: boolean
 } => {
   const currentSeriesId = currentSeriesData?.id

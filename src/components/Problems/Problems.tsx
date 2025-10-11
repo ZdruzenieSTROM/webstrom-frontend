@@ -56,8 +56,12 @@ export const Problems: FC = () => {
 
   const queryClient = useQueryClient()
 
-  const invalidateSeriesQuery = () =>
-    queryClient.invalidateQueries({queryKey: apiOptions.competition.series.byId(id.seriesId).queryKey})
+  const invalidateSeriesQuery = async () => {
+    const seriesQuery = apiOptions.competition.series.byId(id.seriesId)
+    if (seriesQuery.enabled) {
+      await queryClient.invalidateQueries({queryKey: seriesQuery.queryKey})
+    }
+  }
 
   const {mutate: registerToSemester} = useMutation({
     mutationFn: (id: number) => apiAxios.post(`/competition/event/${id}/register`),

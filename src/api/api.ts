@@ -17,7 +17,9 @@ type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Eve
 const unwrap = <T>(response: Promise<AxiosResponse<T>>) => response.then((res) => res.data)
 
 // kod chceme zdielat medzi serverom a clientom (browserom). client axios automaticky zahrna cookies,
-// no na serveri musime cookies/headers z originalneho requestu pridat do axiosu explicitne - preto ina instancia
+// no na serveri musime cookies/headers z originalneho requestu pridat do axiosu explicitne - preto ina instancia.
+// nase typy maju IDcka ako `number | undefined`, ale fakt sa bojim, ze z BE moze chodit aj null,
+// preto enabled checky mame ako falsy checky `!= null`, ktore kontroluju aj null aj undefined
 export const createApiOptions = (axiosInstance: AxiosInstance) => ({
   cms: {
     flatPage: {
@@ -32,15 +34,15 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
         queryFn: () => unwrap(axiosInstance.get<string[]>(`/cms/info-banner/competition/${competitionId}`)),
         enabled: competitionId != null,
       }),
-      seriesProblems: (seriesId: number) => ({
+      seriesProblems: (seriesId: number | undefined) => ({
         queryKey: ['cms', 'info-banner', 'series-problems', seriesId],
         queryFn: () => unwrap(axiosInstance.get<string[]>(`/cms/info-banner/series-problems/${seriesId}`)),
-        enabled: seriesId !== -1,
+        enabled: seriesId != null,
       }),
-      seriesResults: (seriesId: number) => ({
+      seriesResults: (seriesId: number | undefined) => ({
         queryKey: ['cms', 'info-banner', 'series-results', seriesId],
         queryFn: () => unwrap(axiosInstance.get<string[]>(`/cms/info-banner/series-results/${seriesId}`)),
-        enabled: seriesId !== -1,
+        enabled: seriesId != null,
       }),
     },
     logo: () => ({
@@ -72,26 +74,26 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
       queryFn: () => unwrap(axiosInstance.get<Semester[]>(`/competition/semester-list?competition=${seminarId}`)),
     }),
     series: {
-      byId: (seriesId: number) => ({
+      byId: (seriesId: number | undefined) => ({
         queryKey: ['competition', 'series', seriesId],
         queryFn: () => unwrap(axiosInstance.get<SeriesWithProblems>(`/competition/series/${seriesId}`)),
-        enabled: seriesId !== -1,
+        enabled: seriesId != null,
       }),
       current: (seminarId: SeminarId) => ({
         queryKey: ['competition', 'series', 'current', seminarId],
         queryFn: () => unwrap(axiosInstance.get<SeriesWithProblems>(`/competition/series/current/${seminarId}`)),
       }),
-      results: (seriesId: number) => ({
+      results: (seriesId: number | undefined) => ({
         queryKey: ['competition', 'series', seriesId, 'results'],
         queryFn: () => unwrap(axiosInstance.get<Result[]>(`/competition/series/${seriesId}/results`)),
-        enabled: seriesId !== -1,
+        enabled: seriesId != null,
       }),
     },
     semester: {
-      results: (semesterId: number) => ({
+      results: (semesterId: number | undefined) => ({
         queryKey: ['competition', 'semester', semesterId, 'results'],
         queryFn: () => unwrap(axiosInstance.get<Result[]>(`/competition/semester/${semesterId}/results`)),
-        enabled: semesterId !== -1,
+        enabled: semesterId != null,
       }),
     },
   },
