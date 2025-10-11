@@ -36,7 +36,7 @@ export const Banner: FC<BannerProps> = ({bannerMessages}) => {
         py: '0.2rem',
       }}
     >
-      <Typography variant="h2" component="span" sx={{whiteSpace: 'nowrap'}}>
+      <Typography variant="h2" component="span" sx={{whiteSpace: 'pre'}}>
         {bannerTextFormatted}
       </Typography>
     </Marquee>
