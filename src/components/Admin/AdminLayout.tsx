@@ -1,4 +1,4 @@
-import {Home, Logout} from '@mui/icons-material/'
+import {Home, Logout} from '@mui/icons-material'
 import {Button, Stack, Typography} from '@mui/material'
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 import Link from 'next/link'
