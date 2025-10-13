@@ -9,6 +9,8 @@ import {Loading} from '@/components/Loading/Loading'
 import {Logo} from '@/components/PageLayout/Footer/Logo'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
+const isRelativeLink = (href: string) => href.startsWith('/')
+
 export const Footer: FC = () => {
   const {seminar, seminarId} = useSeminarInfo()
 
@@ -36,7 +38,13 @@ export const Footer: FC = () => {
         <Stack direction="row" m={2} gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>
           {menuItemsIsLoading && <Loading />}
           {menuItems.map((item) => (
-            <Link key={item.id} variant="button2" href={`/${seminar}${item.url}`} invertColors>
+            <Link
+              key={item.id}
+              variant="button2"
+              // itemy z BE su bud relativne k seminar URL alebo absolutne
+              href={isRelativeLink(item.url) ? `/${seminar}${item.url}` : item.url}
+              invertColors
+            >
               {item.caption}
             </Link>
           ))}
