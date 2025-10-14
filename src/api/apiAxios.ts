@@ -34,7 +34,7 @@ export const newApiAxios = (req?: GetServerSidePropsContext['req']) => {
     //   - na localhoste to chyti next middleware, kde to rewritneme na BE URL (podla env vars)
     baseURL: isServer ? `${getBackendServerUrl()}/api` : '/api',
     // auth pozostava z comba:
-    // 1. `sessionid` httpOnly cookie - nastavuje a maze su server pri login/logout
+    // 1. `sessionid` httpOnly cookie - nastavuje a maze ju server pri login/logout
     // 2. CSRF hlavicka - server nastavuje cookie, ktorej hodnotu treba vlozit do hlavicky. axios riesi automaticky podla tohto configu
     withXSRFToken: true,
     xsrfCookieName: 'csrftoken',

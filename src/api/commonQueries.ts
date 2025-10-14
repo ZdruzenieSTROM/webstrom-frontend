@@ -1,15 +1,19 @@
 import {QueryClient} from '@tanstack/react-query'
+import {GetServerSidePropsContext} from 'next'
 
 import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
 
-import {apiOptions} from './api'
+import {createSSRApiOptions} from './api'
 
-export const commonQueries = (queryClient: QueryClient, resolvedUrl: string) => {
+export const commonQueries = (queryClient: QueryClient, resolvedUrl: string, req: GetServerSidePropsContext['req']) => {
   const {seminarId} = getSeminarInfoFromPathname(resolvedUrl)
 
+  // Use SSR API options with forwarded request headers
+  const ssrApiOptions = createSSRApiOptions(req)
+
   return [
-    queryClient.prefetchQuery(apiOptions.cms.menuItem.onSite(seminarId, 'menu')),
-    queryClient.prefetchQuery(apiOptions.cms.menuItem.onSite(seminarId, 'footer')),
-    queryClient.prefetchQuery(apiOptions.cms.logo()),
+    queryClient.prefetchQuery(ssrApiOptions.cms.menuItem.onSite(seminarId, 'menu')),
+    queryClient.prefetchQuery(ssrApiOptions.cms.menuItem.onSite(seminarId, 'footer')),
+    queryClient.prefetchQuery(ssrApiOptions.cms.logo()),
   ]
 }

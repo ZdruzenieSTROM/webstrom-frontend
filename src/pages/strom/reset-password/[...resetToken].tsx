@@ -36,10 +36,10 @@ const PasswordReset: NextPage = () => {
 
 export default PasswordReset
 
-export const getServerSideProps: GetServerSideProps = async ({resolvedUrl}) => {
+export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, req}) => {
   const queryClient = new QueryClient()
 
-  await Promise.all(commonQueries(queryClient, resolvedUrl))
+  await Promise.all(commonQueries(queryClient, resolvedUrl, req))
 
   return {
     props: {
