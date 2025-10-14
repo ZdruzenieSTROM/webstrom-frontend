@@ -3,7 +3,7 @@ import {GetServerSideProps, NextPage} from 'next'
 import {useRouter} from 'next/router'
 import {ParsedUrlQuery} from 'querystring'
 
-import {apiOptions} from '@/api/api'
+import {apiOptions, createSSRApiOptions} from '@/api/api'
 import {commonQueries} from '@/api/commonQueries'
 import {CompetitionPage} from '@/components/CompetitionPage/CompetitionPage'
 import {Loading} from '@/components/Loading/Loading'
@@ -52,14 +52,16 @@ const StaticPage: NextPage = () => {
 
 export default StaticPage
 
-export const getServerSideProps: GetServerSideProps = async ({query, resolvedUrl}) => {
+export const getServerSideProps: GetServerSideProps = async ({query, resolvedUrl, req}) => {
   const {requestedUrl} = getParams(query)
+
+  const ssrApiOptions = createSSRApiOptions(req)
 
   const queryClient = new QueryClient()
 
   await Promise.all([
-    ...commonQueries(queryClient, resolvedUrl),
-    queryClient.prefetchQuery(apiOptions.competition.competition.slug(requestedUrl)),
+    ...commonQueries(queryClient, resolvedUrl, req),
+    queryClient.prefetchQuery(ssrApiOptions.competition.competition.slug(requestedUrl)),
   ])
 
   return {

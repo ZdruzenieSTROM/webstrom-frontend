@@ -1,7 +1,7 @@
 import {dehydrate, QueryClient, useQuery} from '@tanstack/react-query'
 import {GetServerSideProps, NextPage} from 'next'
 
-import {apiOptions} from '@/api/api'
+import {apiOptions, createSSRApiOptions} from '@/api/api'
 import {commonQueries} from '@/api/commonQueries'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Results} from '@/components/Results/Results'
@@ -25,21 +25,23 @@ const Poradie: NextPage = () => {
 
 export default Poradie
 
-export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query}) => {
+export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query, req}) => {
   const {seminarId} = getSeminarInfoFromPathname(resolvedUrl)
+
+  const ssrApiOptions = createSSRApiOptions(req)
 
   const queryClient = new QueryClient()
 
   const [currentSeries] = await Promise.all([
     // queries for `useDataFromURL()`
-    queryClient.fetchQuery(apiOptions.competition.series.current(seminarId)).catch(() => undefined),
-    queryClient.prefetchQuery(apiOptions.competition.semesterList(seminarId)),
-    ...commonQueries(queryClient, resolvedUrl),
+    queryClient.fetchQuery(ssrApiOptions.competition.series.current(seminarId)).catch(() => undefined),
+    queryClient.prefetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
+    ...commonQueries(queryClient, resolvedUrl, req),
   ])
 
   const params = query[PARAM]
   const {displayWholeSemesterOnResults, id} = getDataFromUrl({
-    semesterList: await queryClient.fetchQuery(apiOptions.competition.semesterList(seminarId)),
+    semesterList: await queryClient.fetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
     currentSeriesData: currentSeries,
     params,
   })
@@ -49,8 +51,8 @@ export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query
 
   if (id.seriesId !== -1 && id.semesterId !== -1) {
     await Promise.all([
-      queryClient.prefetchQuery(apiOptions.cms.infoBanner.seriesResults(id.seriesId)),
-      queryClient.prefetchQuery(apiOptions.competition[competitionEndpoint].results(idForEndpoint)),
+      queryClient.prefetchQuery(ssrApiOptions.cms.infoBanner.seriesResults(id.seriesId)),
+      queryClient.prefetchQuery(ssrApiOptions.competition[competitionEndpoint].results(idForEndpoint)),
     ])
   }
 

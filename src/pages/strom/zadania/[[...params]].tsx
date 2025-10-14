@@ -1,7 +1,7 @@
 import {dehydrate, QueryClient, useQuery} from '@tanstack/react-query'
 import {GetServerSideProps, NextPage} from 'next'
 
-import {apiOptions} from '@/api/api'
+import {apiOptions, createSSRApiOptions} from '@/api/api'
 import {commonQueries} from '@/api/commonQueries'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Problems} from '@/components/Problems/Problems'
@@ -25,29 +25,31 @@ const Zadania: NextPage = () => {
 
 export default Zadania
 
-export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query}) => {
+export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query, req}) => {
   const {seminarId} = getSeminarInfoFromPathname(resolvedUrl)
+
+  const ssrApiOptions = createSSRApiOptions(req)
 
   const queryClient = new QueryClient()
 
   const [currentSeries] = await Promise.all([
     // queries for `useDataFromURL()`
-    queryClient.fetchQuery(apiOptions.competition.series.current(seminarId)).catch(() => undefined),
-    queryClient.prefetchQuery(apiOptions.competition.semesterList(seminarId)),
-    ...commonQueries(queryClient, resolvedUrl),
+    queryClient.fetchQuery(ssrApiOptions.competition.series.current(seminarId)).catch(() => undefined),
+    queryClient.prefetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
+    ...commonQueries(queryClient, resolvedUrl, req),
   ])
 
   const params = query[PARAM]
   const {id} = getDataFromUrl({
-    semesterList: await queryClient.fetchQuery(apiOptions.competition.semesterList(seminarId)),
+    semesterList: await queryClient.fetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
     currentSeriesData: currentSeries,
     params,
   })
 
   if (id.seriesId) {
     await Promise.all([
-      queryClient.prefetchQuery(apiOptions.competition.series.byId(id.seriesId)),
-      queryClient.prefetchQuery(apiOptions.cms.infoBanner.seriesProblems(id.seriesId)),
+      queryClient.prefetchQuery(ssrApiOptions.competition.series.byId(id.seriesId)),
+      queryClient.prefetchQuery(ssrApiOptions.cms.infoBanner.seriesProblems(id.seriesId)),
     ])
   }
 

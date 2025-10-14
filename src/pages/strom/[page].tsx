@@ -3,7 +3,7 @@ import {GetServerSideProps, NextPage} from 'next'
 import {useRouter} from 'next/router'
 import {ParsedUrlQuery} from 'querystring'
 
-import {apiOptions} from '@/api/api'
+import {apiOptions, createSSRApiOptions} from '@/api/api'
 import {commonQueries} from '@/api/commonQueries'
 import {Markdown} from '@/components/Markdown/Markdown'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
@@ -29,14 +29,16 @@ const StaticPage: NextPage = () => {
 }
 export default StaticPage
 
-export const getServerSideProps: GetServerSideProps = async ({query, resolvedUrl}) => {
+export const getServerSideProps: GetServerSideProps = async ({query, resolvedUrl, req}) => {
   const requestedUrl = getParam(query)
+
+  const ssrApiOptions = createSSRApiOptions(req)
 
   const queryClient = new QueryClient()
 
   await Promise.all([
-    ...commonQueries(queryClient, resolvedUrl),
-    queryClient.prefetchQuery(apiOptions.cms.flatPage.byUrl(requestedUrl)),
+    ...commonQueries(queryClient, resolvedUrl, req),
+    queryClient.prefetchQuery(ssrApiOptions.cms.flatPage.byUrl(requestedUrl)),
   ])
 
   return {
