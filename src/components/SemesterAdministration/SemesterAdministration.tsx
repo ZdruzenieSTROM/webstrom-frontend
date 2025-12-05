@@ -4,11 +4,12 @@ import {AxiosError} from 'axios'
 import {FC, Fragment, useState} from 'react'
 import {useForm} from 'react-hook-form'
 
+import {apiOptions} from '@/api/api'
 import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
-import {SemesterWithProblems, SeriesWithProblems} from '@/types/api/generated/competition'
+import {SeriesWithProblems} from '@/types/api/generated/competition'
 import {formatDateTime} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
@@ -67,16 +68,10 @@ export const SemesterAdministration: FC = () => {
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
   const {
-    data: semesterData,
+    data: semester,
     isLoading: semesterIsLoading,
     refetch,
-  } = useQuery({
-    queryKey: ['competition', 'semester', semesterId],
-    queryFn: () => apiAxios.get<SemesterWithProblems>(`/competition/semester/${semesterId}`),
-    // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
-    enabled: semesterId !== undefined,
-  })
-  const semester = semesterData?.data
+  } = useQuery(apiOptions.competition.semester.byId(semesterId))
 
   const [textareaContent, setTextareaContent] = useState('')
   const [displayInvitationDialog, setDisplayInvitationDialog] = useState(false)
@@ -185,7 +180,7 @@ export const SemesterAdministration: FC = () => {
   )
     return <Loading />
   if (!hasPermissions) return <Typography variant="body1">Nemáš oprávnenie na zobrazenie tejto stránky.</Typography>
-  if (semesterId === undefined || !semester)
+  if (semesterId == null || !semester)
     return (
       <Typography variant="body1">
         Nevalidný semester (semesterId) v URL alebo ho proste nevieme fetchnúť z BE.

@@ -32,16 +32,16 @@ export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query
 
   const queryClient = new QueryClient()
 
-  const [currentSeries] = await Promise.all([
+  const [currentSeries, semesterList] = await Promise.all([
     // queries for `useDataFromURL()`
     queryClient.fetchQuery(ssrApiOptions.competition.series.current(seminarId)).catch(() => undefined),
-    queryClient.prefetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
+    queryClient.fetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
     ...commonQueries(queryClient, resolvedUrl, req),
   ])
 
   const params = query[PARAM]
   const {displayWholeSemesterOnResults, id} = getDataFromUrl({
-    semesterList: await queryClient.fetchQuery(ssrApiOptions.competition.semesterList(seminarId)),
+    semesterList,
     currentSeriesData: currentSeries,
     params,
   })
@@ -49,10 +49,13 @@ export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query
   const competitionEndpoint = displayWholeSemesterOnResults ? 'semester' : 'series'
   const idForEndpoint = displayWholeSemesterOnResults ? id.semesterId : id.seriesId
 
-  if (id.seriesId !== -1 && id.semesterId !== -1) {
+  const seriesResultsQuery = ssrApiOptions.cms.infoBanner.seriesResults(id.seriesId)
+  const competitionResultsQuery = ssrApiOptions.competition[competitionEndpoint].results(idForEndpoint)
+
+  if (seriesResultsQuery.enabled && competitionResultsQuery.enabled) {
     await Promise.all([
-      queryClient.prefetchQuery(ssrApiOptions.cms.infoBanner.seriesResults(id.seriesId)),
-      queryClient.prefetchQuery(ssrApiOptions.competition[competitionEndpoint].results(idForEndpoint)),
+      queryClient.prefetchQuery(seriesResultsQuery),
+      queryClient.prefetchQuery(competitionResultsQuery),
     ])
   }
 

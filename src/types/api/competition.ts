@@ -186,7 +186,9 @@ export interface SeriesWithProblems {
   deadline: string
   complete: boolean
   frozen_results: string | null
-  semester?: number
+  // /api/competition/series/current/0 vie vratit len {"order":null,"deadline":null,"sum_method":null,"semester":null},
+  // co solidne porusuje nejaky kontrakt... nastastie nam staci len brat do uvahy, ze semester moze byt aj null
+  semester?: number | null
 }
 
 export interface Semester {

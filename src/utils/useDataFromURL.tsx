@@ -8,16 +8,15 @@ import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 const getIdsFromUrl = ({
   semesterList,
-  currentSeriesData,
+  currentSeriesId,
+  currentSemesterId,
   params,
 }: {
   semesterList: Semester[]
-  currentSeriesData?: SeriesWithProblems
+  currentSeriesId?: number
+  currentSemesterId?: number | null
   params: string | string[] | undefined
-}): {semesterId: number; seriesId: number; displayWholeSemesterOnResults: boolean} => {
-  const currentSeriesId = currentSeriesData?.id ?? -1
-  const currentSemesterId = currentSeriesData?.semester ?? -1
-
+}): {semesterId?: number | null; seriesId?: number; displayWholeSemesterOnResults: boolean} => {
   const currentIds = {semesterId: currentSemesterId, seriesId: currentSeriesId, displayWholeSemesterOnResults: true}
 
   // sutaz bez semestrov, nemalo by sa stat
@@ -26,8 +25,9 @@ const getIdsFromUrl = ({
   // ked nemame params (`/`), pouzijeme aktualny semester a seriu. na vysledkoch zobrazime cely semester
   if (params === undefined || params.length === 0) return currentIds
 
-  // mame aspon 1 param (`/44/...`), tak vytiahneme a spracujeme rok
+  // -> mame aspon 1 param (`/44/...`), tak vytiahneme a spracujeme rok
   const seriesYear = getNumber(params[0])
+  if (seriesYear === undefined) return currentIds
   const semestersForYear = semesterList.filter(({year}) => year === seriesYear)
 
   // ked mame len jeden param (`/44`)
@@ -42,10 +42,11 @@ const getIdsFromUrl = ({
     return {semesterId: semester.id, seriesId: series.id, displayWholeSemesterOnResults: false}
   }
 
-  // mame aspon 2 params (`/44/leto/...`), tak vytiahneme a spracujeme sezonu
-  let seasonCode = -1
+  // -> mame aspon 2 params (`/44/leto/...`), tak vytiahneme a spracujeme sezonu
+  let seasonCode: number | undefined
   if (params[1] === 'zima') seasonCode = 0
   if (params[1] === 'leto') seasonCode = 1
+  if (seasonCode === undefined) return currentIds
   const semester = semestersForYear.find(({season_code}) => season_code === seasonCode)
   if (!semester) return currentIds
 
@@ -58,8 +59,9 @@ const getIdsFromUrl = ({
     return {semesterId: semester.id, seriesId: series.id, displayWholeSemesterOnResults: true}
   }
 
-  // mame aspon 3 params (`/44/leto/2/...`), tak vytiahneme a spracujeme poradie serie
+  // -> mame aspon 3 params (`/44/leto/2/...`), tak vytiahneme a spracujeme poradie serie
   const seriesOrder = getNumber(params[2])
+  if (seriesOrder === undefined) return currentIds
   const series = semester.series_set.find(({order}) => order === seriesOrder)
   if (!series) return currentIds
 
@@ -78,15 +80,18 @@ export const useDataFromURL = () => {
   // memoized because the array fallback would create new object on each render, which would ruin seriesId memoization as semesterList is a dependency
   const semesterList = useMemo(() => semesterListData || [], [semesterListData])
 
-  // aktualna seria. z tejto query sa vyuziva len `currentSeriesId` a len vtedy, ked nemame uplnu URL
-  // - napr. prideme na `/zadania` cez menu, nie na `/zadania/44/leto/2`
+  // aktualna seria. DOLEZITA query - idu z nej `seriesId` a `semesterId` pre kazdu stranku,
+  // kde nemame v URL vsetky parametre (napr. `/zadania`, nie `/zadania/44/leto/2`)
   const {data: currentSeriesData, isLoading: currentSeriesIsLoading} = useQuery(
     apiOptions.competition.series.current(seminarId),
   )
 
+  const currentSeriesId = currentSeriesData?.id
+  const currentSemesterId = currentSeriesData?.semester
+
   const {semesterId, seriesId, displayWholeSemesterOnResults} = useMemo(
-    () => getIdsFromUrl({semesterList, currentSeriesData, params}),
-    [semesterList, currentSeriesData, params],
+    () => getIdsFromUrl({semesterList, currentSeriesId, currentSemesterId, params}),
+    [semesterList, currentSeriesId, currentSemesterId, params],
   )
 
   return {
@@ -108,12 +113,16 @@ export const getDataFromUrl = ({
   currentSeriesData?: SeriesWithProblems
   params: string | string[] | undefined
 }): {
-  id: {semesterId: number; seriesId: number}
+  id: {semesterId?: number | null; seriesId?: number}
   displayWholeSemesterOnResults: boolean
 } => {
+  const currentSeriesId = currentSeriesData?.id
+  const currentSemesterId = currentSeriesData?.semester
+
   const {semesterId, seriesId, displayWholeSemesterOnResults} = getIdsFromUrl({
     semesterList,
-    currentSeriesData,
+    currentSeriesId,
+    currentSemesterId,
     params,
   })
 
@@ -125,5 +134,5 @@ export const getDataFromUrl = ({
 
 const getNumber = (n: string) => {
   const num = Number(n)
-  return Number.isNaN(num) ? -1 : num
+  return Number.isNaN(num) ? undefined : num
 }

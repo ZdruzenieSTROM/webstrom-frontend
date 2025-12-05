@@ -8,7 +8,7 @@ import ArrowDown from '@/svg/ArrowDown.svg'
 import {Button} from '../Clickable/Button'
 
 export interface DropdownOption {
-  id: number
+  key: number | string
   text: string
   link: string
   selected: boolean
@@ -58,7 +58,7 @@ export const Dropdown: FC<{title: string; options: DropdownOption[]}> = ({title,
           >
             {options.map((option) => (
               <Box
-                key={option.id}
+                key={option.key}
                 component={Link}
                 href={option.link}
                 onClick={handleClose}
