@@ -14,7 +14,7 @@ export const SolutionList: FC = () => (
       />
       <FunctionField<RaRecord>
         source="late_tag"
-        render={(record) => record && <span>{record['late_tag'].name}</span>}
+        render={(record) => record && <span>{record['late_tag']?.name}</span>}
       />
       <BooleanField source="is_online" />
     </Datagrid>
