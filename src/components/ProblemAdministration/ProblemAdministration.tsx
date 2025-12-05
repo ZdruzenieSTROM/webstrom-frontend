@@ -3,6 +3,7 @@ import {Box, Stack, Typography} from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
+import Image from 'next/image'
 import {useRouter} from 'next/router'
 import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
@@ -235,6 +236,25 @@ export const ProblemAdministration: FC = () => {
         </Stack>
 
         <Markdown content={problem.text ?? 'Načítavam...'} />
+        {problem.image && (
+          <Stack alignItems="center">
+            <Image
+              src={problem.image}
+              alt={`Obrázok - ${problem.order} úloha`}
+              style={{
+                width: 'auto',
+                height: 'auto',
+                minHeight: '3rem',
+                minWidth: '3rem',
+                maxHeight: '50vh',
+                marginTop: '1rem',
+              }}
+              // width/height dava len nieco vediet nextu, ale realne sa to styluje stylmi vyssie
+              width={800}
+              height={800}
+            />
+          </Stack>
+        )}
 
         <Stack direction="row" gap={1}>
           <Typography variant="body1" component="div">

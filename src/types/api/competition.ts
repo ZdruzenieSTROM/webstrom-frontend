@@ -160,6 +160,7 @@ export interface SolutionAdministration {
 export interface ProblemWithSolutions {
   solution_set: SolutionAdministration[]
   text?: string
+  image?: string | null
   order?: number
   correction?: ProblemCorrection
   series: Series
