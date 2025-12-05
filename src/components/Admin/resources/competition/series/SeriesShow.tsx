@@ -28,7 +28,7 @@ export const SeriesShow: FC = () => (
       <Tab label="content.labels.problems">
         <SimpleShowLayout>
           <ArrayField source="problems">
-            <Datagrid>
+            <Datagrid rowClick={(id) => `/competition/problem/${id}/show`}>
               <TruncatedTextField source="text" maxTextWidth={100} expandable />
             </Datagrid>
           </ArrayField>
