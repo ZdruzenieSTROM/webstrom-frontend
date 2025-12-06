@@ -55,8 +55,8 @@ const invitationToName = (dataRow: Invitation) => `${dataRow.first_name} ${dataR
 
 const formatInvitationRow = (invitation: Invitation) =>
   invitation.is_participant
-    ? `\\ucastnik{${invitationToName(invitation)}}`
-    : `\\nahradnik{${invitationToName(invitation)}}`
+    ? String.raw`\ucastnik{${invitationToName(invitation)}}`
+    : String.raw`\nahradnik{${invitationToName(invitation)}}`
 
 export const SemesterAdministration: FC = () => {
   const {
@@ -115,7 +115,10 @@ export const SemesterAdministration: FC = () => {
     )
     setTextareaContent(
       data
-        .map((result: PostalCard) => `\\stitok{${result.name}}{${result.city}}{${result.zip_code}}{${result.street}}`)
+        .map(
+          (result: PostalCard) =>
+            String.raw`\stitok{${result.name}}{${result.city}}{${result.zip_code}}{${result.street}}`,
+        )
         .join('\n'),
     )
   }
@@ -131,10 +134,12 @@ export const SemesterAdministration: FC = () => {
     const dataSubstitutes = data.filter((item) => !item.is_participant)
 
     for (let i = 0; i < dataInvited.length; i += 2) {
-      result.push(`\\P{${invitationToName(dataInvited[i])}}{${invitationToName(dataInvited[i + 1]) ?? ''}}`)
+      result.push(String.raw`\P{${invitationToName(dataInvited[i])}}{${invitationToName(dataInvited[i + 1]) ?? ''}}`)
     }
     for (let i = 0; i < dataSubstitutes.length; i += 2) {
-      result.push(`\\N{${invitationToName(dataSubstitutes[i])}}{${invitationToName(dataSubstitutes[i + 1]) ?? ''}}`)
+      result.push(
+        String.raw`\N{${invitationToName(dataSubstitutes[i])}}{${invitationToName(dataSubstitutes[i + 1]) ?? ''}}`,
+      )
     }
     setTextareaContent(result.join('\n'))
   }
@@ -268,7 +273,7 @@ export const SemesterAdministration: FC = () => {
         Generovanie poradia
       </Typography>
       <Stack pl={2} alignItems="start">
-        {[...semester.series_set].reverse().map((series) => (
+        {semester.series_set.toReversed().map((series) => (
           <Button key={series.id} variant="button2" onClick={() => void getResults(series.id)}>
             Poradie {series.order}. série
           </Button>
