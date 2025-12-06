@@ -272,6 +272,7 @@ export const ProblemAdministration: FC = () => {
           <FileUploader
             uploadLink={`/competition/problem/${problemId}/upload-model-solution`}
             refetch={refetchProblem}
+            acceptedFormats={Accept.Pdf}
           />
         </Stack>
 
