@@ -7,6 +7,9 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:local": "BE_PROTOCOL=http BE_HOSTNAME=localhost BE_PORT=8000 npm run dev",
+    "dev:test": "BE_PROTOCOL=https BE_HOSTNAME=test.strom.sk BE_PORT= npm run dev",
+    "dev:prod": "BE_PROTOCOL=https BE_HOSTNAME=strom.sk BE_PORT= npm run dev",
     "start": "node .next/standalone/server.js",
     "build": "next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
     "build:docker": "next build",
