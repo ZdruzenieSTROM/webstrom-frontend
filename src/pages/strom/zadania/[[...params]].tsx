@@ -7,6 +7,21 @@ import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Problems} from '@/components/Problems/Problems'
 import {getDataFromUrl, useDataFromURL} from '@/utils/useDataFromURL'
 import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
+import {getSeriesName} from '@/utils/getSeriesName'
+import {formatDateTime} from '@/utils/formatDate'
+import {SeriesWithProblems} from '@/types/api/competition'
+
+// logika odraza `cms/views.py` na BE - uz si to riesime sami, nevolame BE
+const getSeriesState = (series: SeriesWithProblems) => {
+  if (series.complete) {
+    return 'Séria je uzavretá'
+  }
+  // zmena oproti BE - termin pridavame vzdy, v kode nizsie
+  // if (series.can_submit) {
+  //   return `Termín série: ${formatDateTime(series.deadline)}`
+  // }
+  return 'Prebieha opravovanie'
+}
 
 // z nazvu suboru `[[...params]]` - vzdy to musi byt string[]
 const PARAM = 'params'
@@ -14,10 +29,15 @@ const PARAM = 'params'
 const Zadania: NextPage = () => {
   const {id} = useDataFromURL()
 
-  const {data: bannerMessages} = useQuery(apiOptions.cms.infoBanner.seriesProblems(id.seriesId))
+  const {data: series} = useQuery(apiOptions.competition.series.byId(id.seriesId))
+  const seriesName = series && getSeriesName(series)
+  const deadline = series && `Termín: ${formatDateTime(series.deadline)}`
+  const seriesState = series && getSeriesState(series)
+
+  const messages = [seriesName, deadline, seriesState].filter((message): message is string => !!message)
 
   return (
-    <PageLayout contentWidth={2} title="Zadania" bannerMessages={bannerMessages}>
+    <PageLayout contentWidth={2} title="Zadania" bannerMessages={messages}>
       <Problems />
     </PageLayout>
   )
@@ -47,10 +67,9 @@ export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query
   })
 
   const seriesQuery = ssrApiOptions.competition.series.byId(id.seriesId)
-  const seriesProblemsQuery = ssrApiOptions.cms.infoBanner.seriesProblems(id.seriesId)
 
-  if (seriesProblemsQuery.enabled && seriesQuery.enabled) {
-    await Promise.all([queryClient.prefetchQuery(seriesQuery), queryClient.prefetchQuery(seriesProblemsQuery)])
+  if (seriesQuery.enabled) {
+    await queryClient.prefetchQuery(seriesQuery)
   }
 
   return {
