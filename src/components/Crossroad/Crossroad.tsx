@@ -60,13 +60,7 @@ export const Crossroad: React.FC = () => {
             <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
           </Box>
         </Grid>
-        <Grid
-          size={{xs: 12, md: 9}}
-          container
-          height={{xs: '80vh', md: '70vh'}}
-          pr={{xs: 1, md: 3}}
-          sx={{overflow: 'auto'}}
-        >
+        <Grid size={{xs: 12, md: 9}} height={{xs: '80vh', md: '70vh'}} pr={{xs: 1, md: 3}} sx={{overflow: 'auto'}}>
           {/* Mobile view: stacked list */}
           <Stack
             gap={1}
@@ -90,7 +84,7 @@ export const Crossroad: React.FC = () => {
           </Stack>
 
           {/* Desktop view: table */}
-          <Box sx={{width: '100%', height: 'fit-content', display: {xs: 'none', md: 'block'}}}>
+          <Stack sx={{display: {xs: 'none', md: 'flex'}}}>
             <Table
               sx={{
                 '& td': {border: 'none', verticalAlign: 'top', pl: 0, pt: 0, pr: 4, pb: 1},
@@ -179,7 +173,7 @@ export const Crossroad: React.FC = () => {
                 </TableRow>
               </TableBody>
             </Table>
-          </Box>
+          </Stack>
         </Grid>
       </Grid>
     </Stack>
