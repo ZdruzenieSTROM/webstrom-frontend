@@ -10,25 +10,40 @@ interface FileUploaderProps {
   acceptedFormats?: Accept
   adjustFormData?: (formData: FormData) => void
   refetch: () => void
+  alreadyUploaded?: boolean
 }
 
-export const FileUploader: FC<FileUploaderProps> = ({uploadLink, acceptedFormats, adjustFormData, refetch}) => {
-  const {mutate: fileUpload} = useMutation({
+export const FileUploader: FC<FileUploaderProps> = ({
+  uploadLink,
+  acceptedFormats,
+  adjustFormData,
+  refetch,
+  alreadyUploaded,
+}) => {
+  const postMutation = useMutation({
     mutationFn: (formData: FormData) => apiAxios.post(uploadLink, formData),
+    onSuccess: () => refetch(),
+  })
+
+  const patchMutation = useMutation({
+    mutationFn: (formData: FormData) => apiAxios.patch(uploadLink, formData),
     onSuccess: () => refetch(),
   })
 
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
     (acceptedFiles, fileRejections) => {
-      if (fileRejections.length > 0) {
-        return
-      }
+      if (fileRejections.length > 0) return
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
       adjustFormData?.(formData)
-      fileUpload(formData)
+
+      if (alreadyUploaded) {
+        patchMutation.mutate(formData)
+      } else {
+        postMutation.mutate(formData)
+      }
     },
-    [adjustFormData, fileUpload],
+    [adjustFormData, alreadyUploaded, postMutation, patchMutation],
   )
 
   const {getRootProps, getInputProps} = useDropzone({

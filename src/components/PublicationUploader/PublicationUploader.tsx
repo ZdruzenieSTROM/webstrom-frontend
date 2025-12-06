@@ -28,6 +28,8 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
 
   const publication = semesterData.publication_set.find((publication) => publication.order === order)
 
+  const uploadLink = publication ? `/competition/publication/${publication.id}/` : `/competition/publication/`
+
   return (
     <Stack direction="row" gap={2} alignItems="center">
       <Typography variant="body1">{order}. Časopis:</Typography>
@@ -37,10 +39,11 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
         </Link>
       )}
       <FileUploader
-        uploadLink={'/competition/publication/'}
+        uploadLink={uploadLink}
         acceptedFormats={Accept.Pdf}
         adjustFormData={appendFormData}
         refetch={refetch}
+        alreadyUploaded={!!publication}
       />
     </Stack>
   )
