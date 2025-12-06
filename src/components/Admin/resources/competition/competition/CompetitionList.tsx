@@ -21,7 +21,7 @@ export const CompetitionList: FC = () => (
       <FunctionField<RaRecord>
         source="history_events"
         label="content.labels.history_events_count"
-        render={(record) => record && <span>{record['history_events'].length}</span>}
+        render={(record) => record && <span>{record['history_events']?.length}</span>}
         sortable={false}
       />
     </Datagrid>

@@ -19,7 +19,7 @@ export const PostList: FC = () => (
       <SitesArrayField source="sites" sortable={false} />
       <FunctionField<RaRecord>
         source="links"
-        render={(record) => record && <span>{record['links'].length}</span>}
+        render={(record) => record && <span>{record['links']?.length}</span>}
         sortable={false}
       />
     </Datagrid>

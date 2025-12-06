@@ -10,7 +10,7 @@ export const SeasonCodeField: FC<Omit<FunctionFieldProps, 'render'>> = ({source,
     <FunctionField
       source={source}
       render={(record) => {
-        return translate(seasonCodeStrings[record.season_code].name ?? '')
+        return translate(seasonCodeStrings[record.season_code]?.name ?? '')
       }}
       {...rest}
     />

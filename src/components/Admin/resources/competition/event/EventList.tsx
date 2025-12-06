@@ -21,7 +21,7 @@ export const EventList: FC = () => (
       <TextField source="registration_link.url" sortable={false} />
       <FunctionField<RaRecord>
         source="publication_set"
-        render={(record) => record && <span>{record['publication_set'].length}</span>}
+        render={(record) => record && <span>{record['publication_set']?.length}</span>}
         sortable={false}
       />
     </Datagrid>
