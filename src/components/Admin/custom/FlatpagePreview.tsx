@@ -3,7 +3,7 @@ import {FC} from 'react'
 import {FormDataConsumer} from 'react-admin'
 
 import {Markdown} from '@/components/Markdown/Markdown'
-import {theme} from '@/theme'
+import {theme} from '@/theme/theme'
 
 export const FlatpagePreview: FC = () => {
   return (

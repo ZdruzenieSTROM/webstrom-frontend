@@ -1,8 +1,8 @@
 import {Box, Grid, Stack, Table, TableBody, TableCell, TableRow, Typography} from '@mui/material'
 import React from 'react'
 
-import {colors} from '@/colors'
 import Strom from '@/svg/strom.svg'
+import {colors} from '@/theme/colors'
 
 import {Link} from '../Clickable/Link'
 

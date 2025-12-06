@@ -1,8 +1,8 @@
 import {Box, SxProps} from '@mui/material'
 import {FC} from 'react'
 
-import {colors} from '@/colors'
 import Close from '@/svg/close.svg'
+import {colors} from '@/theme/colors'
 
 interface CloseButtonProps {
   onClick: () => void

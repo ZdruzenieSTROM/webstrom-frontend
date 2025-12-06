@@ -4,11 +4,11 @@ import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 
 import {apiOptions} from '@/api/api'
-import {colors} from '@/colors'
 import {Link} from '@/components/Clickable/Link'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Loading} from '@/components/Loading/Loading'
 import Menu from '@/svg/menu.svg'
+import {colors} from '@/theme/colors'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 

@@ -1,6 +1,6 @@
 import {SxProps, Theme} from '@mui/material'
 
-import {colors} from '@/colors'
+import {colors} from '@/theme/colors'
 
 export const getButtonWrapperSx = ({
   invertColors,

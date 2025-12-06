@@ -1,4 +1,4 @@
-import {colors} from '@/colors'
+import {colors} from '@/theme/colors'
 
 export const formItemStyle = {
   '.MuiFormHelperText-contained': {

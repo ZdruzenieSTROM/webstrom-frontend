@@ -3,10 +3,10 @@ import {useQuery} from '@tanstack/react-query'
 import {FC} from 'react'
 
 import {apiOptions} from '@/api/api'
-import {colors} from '@/colors'
 import {Link} from '@/components/Clickable/Link'
 import {Loading} from '@/components/Loading/Loading'
 import {Logo} from '@/components/PageLayout/Footer/Logo'
+import {colors} from '@/theme/colors'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 const isRelativeLink = (href: string) => href.startsWith('/')

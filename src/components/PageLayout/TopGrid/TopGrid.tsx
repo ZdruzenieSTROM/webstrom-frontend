@@ -2,9 +2,9 @@ import {Grid, Stack, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC, useMemo} from 'react'
 
-import {colors} from '@/colors'
 import {Link} from '@/components/Clickable/Link'
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
+import {colors} from '@/theme/colors'
 import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
