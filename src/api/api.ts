@@ -6,7 +6,7 @@ import {IPost} from '@/components/Posts/Post'
 import {Result} from '@/components/Results/ResultsRow'
 import {FlatPage} from '@/types/api/base'
 import {MenuItemShort} from '@/types/api/cms'
-import {Competition, Event, Semester, SeriesWithProblems} from '@/types/api/competition'
+import {Competition, Event, ProblemWithSolutions, Semester, SeriesWithProblems} from '@/types/api/competition'
 import {SemesterWithProblems} from '@/types/api/generated/competition'
 import {Profile} from '@/types/api/personal'
 import {SeminarId} from '@/utils/useSeminarInfo'
@@ -93,13 +93,21 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
     semester: {
       byId: (semesterId: number | undefined | null) => ({
         queryKey: ['competition', 'semester', semesterId],
-        queryFn: () => unwrap(apiAxios.get<SemesterWithProblems>(`/competition/semester/${semesterId}`)),
+        queryFn: () => unwrap(axiosInstance.get<SemesterWithProblems>(`/competition/semester/${semesterId}`)),
         enabled: semesterId != null,
       }),
       results: (semesterId: number | undefined | null) => ({
         queryKey: ['competition', 'semester', semesterId, 'results'],
         queryFn: () => unwrap(axiosInstance.get<Result[]>(`/competition/semester/${semesterId}/results`)),
         enabled: semesterId != null,
+      }),
+    },
+    problemAdministration: {
+      byId: (problemId: string | undefined | null) => ({
+        queryKey: ['competition', 'problem-administration', problemId],
+        queryFn: () =>
+          unwrap(axiosInstance.get<ProblemWithSolutions>(`/competition/problem-administration/${problemId}`)),
+        enabled: problemId != null,
       }),
     },
   },
