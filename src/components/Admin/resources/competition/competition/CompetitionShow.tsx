@@ -50,7 +50,7 @@ export const CompetitionShow: FC = () => (
               <DateTimeField source="end" />
               <FunctionField<RaRecord>
                 source="publication_set"
-                render={(record) => record && <span>{record['publication_set'].length}</span>}
+                render={(record) => record && <span>{record['publication_set']?.length}</span>}
               />
             </Datagrid>
           </ArrayField>

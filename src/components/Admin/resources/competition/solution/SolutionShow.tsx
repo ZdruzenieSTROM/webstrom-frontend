@@ -11,7 +11,7 @@ export const SolutionShow: FC = () => (
       <FileField source="solution" title="Riešenie" />
       <FunctionField<RaRecord>
         source="late_tag"
-        render={(record) => record && <span>{record['late_tag'].name}</span>}
+        render={(record) => record && <span>{record['late_tag']?.name}</span>}
       />
       <BooleanField source="is_online" label="content.labels.is_online" />
     </SimpleShowLayout>

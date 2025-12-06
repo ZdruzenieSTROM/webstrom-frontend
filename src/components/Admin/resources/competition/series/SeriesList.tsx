@@ -25,7 +25,7 @@ export const SeriesList: FC = () => (
       <BooleanField source="complete" sortable={false} />
       <FunctionField<RaRecord>
         label="content.labels.problem_count"
-        render={(record) => record && <span>{record['problems'].length}</span>}
+        render={(record) => record && <span>{record['problems']?.length}</span>}
         sortable={false}
       />
     </Datagrid>
