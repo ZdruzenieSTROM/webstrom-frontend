@@ -1,4 +1,4 @@
-import {Stack,FormHelperText} from '@mui/material'
+import {FormHelperText, Stack} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import {useEffect, useMemo} from 'react'
 import {Control, UseFormSetValue, UseFormWatch} from 'react-hook-form'
@@ -63,8 +63,8 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   const withoutSchoolItem = useMemo(() => emptySchoolItems.find(({id}) => id === 1), [emptySchoolItems])
 
   const isLoading = isGradesLoading || isSchoolsLoading
-  const currentMonth = new Date().getMonth(); 
-  const showSummerHelp = currentMonth === 6 || currentMonth === 7; // Júl alebo August (indexovane od 0)
+  const currentMonth = new Date().getMonth()
+  const showSummerHelp = currentMonth === 6 || currentMonth === 7 // Júl alebo August (indexovane od 0)
   useEffect(() => {
     if (isLoading) return
     if (without_school) {
@@ -139,11 +139,8 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
         rules={requiredRule}
       />
       {showSummerHelp && (
-      <FormHelperText>
-        Ak sa registruješ počas letných prázdnin, zvoľ ročník, ktorý si práve dokončil.
-      </FormHelperText>
+        <FormHelperText>Ak sa registruješ počas letných prázdnin, zvoľ ročník, ktorý si práve dokončil.</FormHelperText>
       )}
-
     </Stack>
   )
 }
