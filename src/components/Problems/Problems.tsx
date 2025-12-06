@@ -42,14 +42,10 @@ export const Problems: FC = () => {
   const canResubmit = series?.can_resubmit ?? false
   const [isAfterDeadline, setIsAfterDeadline] = useState<boolean>(new Date(series?.deadline ?? '') < new Date())
 
-  useInterval(
-    () => {
-      const isAfterDeadlineNew = new Date(series?.deadline ?? '') < new Date()
-      if (isAfterDeadlineNew !== isAfterDeadline) setIsAfterDeadline(isAfterDeadlineNew)
-    },
-    // Delay to null to stop it after deadline
-    isAfterDeadline ? null : 500,
-  )
+  useInterval(() => {
+    const isAfterDeadlineNew = new Date(series?.deadline ?? '') < new Date()
+    if (isAfterDeadlineNew !== isAfterDeadline) setIsAfterDeadline(isAfterDeadlineNew)
+  }, 500)
 
   const canRegister = series?.can_participate ?? false
   const isRegistered = series?.is_registered ?? false
