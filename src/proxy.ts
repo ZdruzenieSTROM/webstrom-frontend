@@ -3,7 +3,7 @@ import {NextRequest, NextResponse} from 'next/server'
 import {backendRewriteMiddleware} from './middleware/backendRewriteMiddleware'
 import {removeTrailingSlash} from './utils/trailingSlash'
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const url = req.nextUrl
 
   // - na deployed serveri tieto lokalne routy chyti nginx proxy a posle ich na BE,
