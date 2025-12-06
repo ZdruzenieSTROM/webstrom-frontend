@@ -30,6 +30,10 @@ export const Markdown: FC<MarkdownProps> = ({content}) => {
         '& .katex *': {
           fontFamily: `${firaMath.style.fontFamily}, KaTeX_Main, Times New Roman, serif !important`,
         },
+        '.katex': {
+          // default .katex styl je `1.21em / 1.2 KaTeX_Main, Times New Roman, serif`, takze nastavuje napr. zbytocne velky font size
+          font: 'inherit',
+        },
       }}
     >
       <ReactMarkdown
