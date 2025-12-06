@@ -44,7 +44,10 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
     queryKey: ['personal', 'schools'],
     queryFn: () => apiAxios.get<ISchool[]>(`/personal/schools`),
   })
-  const schools = useMemo(() => (schoolsData?.data ?? []).sort((a, b) => a.name.localeCompare(b.name)), [schoolsData])
+  const schools = useMemo(
+    () => (schoolsData?.data ?? []).toSorted((a, b) => a.name.localeCompare(b.name)),
+    [schoolsData],
+  )
   const allSchoolItems: SelectOption[] = useMemo(
     () =>
       schools.map(({code, city, name, street}) => ({
