@@ -65,7 +65,6 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   const isLoading = isGradesLoading || isSchoolsLoading
   const currentMonth = new Date().getMonth(); 
   const showSummerHelp = currentMonth === 6 || currentMonth === 7; // Júl alebo August (indexovane od 0)
-  console.log('showSummerHelp', showSummerHelp,currentMonth);
   useEffect(() => {
     if (isLoading) return
     if (without_school) {
