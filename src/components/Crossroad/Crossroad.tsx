@@ -49,7 +49,7 @@ const SectionHeader: React.FC<{children: React.ReactNode}> = ({children}) => (
 export const Crossroad: React.FC = () => {
   return (
     <Stack alignItems="stretch" height="100vh" sx={{bgcolor: colors.black}}>
-      <Grid container columnSpacing={{xs: 2, md: 3, lg: 4}} mt={{xs: '10vh', md: '30vh'}} flexGrow={1}>
+      <Grid container columnSpacing={{xs: 1, md: 2, lg: 4}} mt={{xs: '5vh', md: '30vh'}} flexGrow={1}>
         <Grid
           size={{xs: 12, md: 3}}
           height={{xs: '10vh', md: '70vh'}}
@@ -60,8 +60,37 @@ export const Crossroad: React.FC = () => {
             <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
           </Box>
         </Grid>
-        <Grid size={{xs: 12, md: 9}} container height="70dvh" pr={{xs: 1, md: 3}} sx={{overflow: 'auto'}}>
-          <Box sx={{width: '100%', height: 'fit-content'}}>
+        <Grid
+          size={{xs: 12, md: 9}}
+          container
+          height={{xs: '80vh', md: '70vh'}}
+          pr={{xs: 1, md: 3}}
+          sx={{overflow: 'auto'}}
+        >
+          {/* Mobile view: stacked list */}
+          <Stack
+            gap={1}
+            sx={{
+              display: {xs: 'flex', md: 'none'},
+              width: '100%',
+              alignItems: 'center',
+            }}
+          >
+            <NavigationLink url="/strom/o-nas" label="O združení" />
+            {seminarItems.map((item) => (
+              <NavigationLink key={item.label} url={item.url} label={item.label} />
+            ))}
+            {competitionItems.map((item) => (
+              <NavigationLink key={item.label} url={item.url} label={item.label} />
+            ))}
+            {campItems.map((item) => (
+              <NavigationLink key={item.label} url={item.url} label={item.label} />
+            ))}
+            <NavigationLink url="/strom/podporte-nas" label="Podporte nás" />
+          </Stack>
+
+          {/* Desktop view: table */}
+          <Box sx={{width: '100%', height: 'fit-content', display: {xs: 'none', md: 'block'}}}>
             <Table
               sx={{
                 '& td': {border: 'none', verticalAlign: 'top', pl: 0, pt: 0, pr: 4, pb: 1},
