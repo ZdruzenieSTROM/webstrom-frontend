@@ -37,6 +37,7 @@ export const Link: FC<LinkProps> = ({
           ...getButtonWrapperSx({invertColors, disabled, active}),
           ...sx,
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* https://a11y-guidelines.orange.com/en/articles/disable-elements/#disable-a-link */}
         <Typography
@@ -62,6 +63,7 @@ export const Link: FC<LinkProps> = ({
       href={href ?? ''}
       target={target}
       prefetch={prefetch}
+      onClick={(e) => e.stopPropagation()}
       sx={{
         ...getButtonWrapperSx({invertColors, disabled, active}),
         ...sx,
