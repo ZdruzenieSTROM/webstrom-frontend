@@ -33,6 +33,7 @@ export const Link: FC<LinkProps> = ({
   if (disabled) {
     return (
       <Box
+        alignItems="end"
         sx={{
           ...getButtonWrapperSx({invertColors, disabled, active}),
           ...sx,
@@ -64,6 +65,7 @@ export const Link: FC<LinkProps> = ({
       target={target}
       prefetch={prefetch}
       onClick={(e) => e.stopPropagation()}
+      alignItems="end"
       sx={{
         ...getButtonWrapperSx({invertColors, disabled, active}),
         ...sx,
