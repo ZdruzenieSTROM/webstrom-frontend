@@ -97,7 +97,7 @@ export const Problems: FC = () => {
             <Typography variant="body1" display="inline-flex" mr={0.5}>
               Ak si nevieš poradiť s niektorou z úloh, pozri si
             </Typography>
-            <InlineLink href={`/${seminar}/ako-riesit`}>pár tipov</InlineLink>.
+            <InlineLink href={`/${seminar}/ako-riesit-${seminar}`}>pár tipov</InlineLink>.
           </Stack>
           {isAfterDeadline ? (
             <Link variant="button2" href={resultsLink}>
