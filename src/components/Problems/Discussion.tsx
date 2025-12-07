@@ -123,7 +123,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
               return (
                 <Stack sx={comment.state !== CommentState.Published ? {color: 'gray'} : {}} key={comment.id}>
                   <Stack gap={1} direction="row" justifyContent={'space-between'}>
-                    <Typography variant="h3" component="span" style={{wordBreak: 'break-word'}}>
+                    <Typography variant="h3" component="span" sx={{wordBreak: 'break-word'}}>
                       {comment.posted_by_name}
                       {comment.from_staff ? ' (Vedúci)' : ''}
                     </Typography>
@@ -131,7 +131,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                       {formatDateTime(comment.posted_at)}
                     </Typography>
                   </Stack>
-                  <Typography variant="body1" style={{wordBreak: 'break-word'}}>
+                  <Typography variant="body1" sx={{wordBreak: 'break-word'}}>
                     {comment.text}
                   </Typography>
                   {comment.hidden_response && (
@@ -139,7 +139,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                       <Typography variant="h3" component="span">
                         Vedúci:
                       </Typography>
-                      <Typography variant="body1" style={{wordBreak: 'break-word'}}>
+                      <Typography variant="body1" sx={{wordBreak: 'break-word'}}>
                         {comment.hidden_response}
                       </Typography>
                     </Stack>
