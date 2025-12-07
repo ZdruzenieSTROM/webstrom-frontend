@@ -161,9 +161,26 @@ export const SemesterAdministration: FC = () => {
   }
 
   const [seriesFreezeErrors, setSeriesFreezeErrors] = useState<Map<number, string>>()
+  const [seriesToFreeze, setSeriesToFreeze] = useState<SeriesWithProblems | null>(null)
+  const [seriesToUnfreeze, setSeriesToUnfreeze] = useState<SeriesWithProblems | null>(null)
 
   const {mutate: freezeSeries} = useMutation({
     mutationFn: (series: SeriesWithProblems) => apiAxios.post(`/competition/series/${series.id}/results/freeze`),
+    onSuccess: (_, variables: SeriesWithProblems) => {
+      setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, ''))
+      refetch()
+    },
+    onError: (error: unknown, variables: SeriesWithProblems) => {
+      if (error instanceof AxiosError) {
+        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, error.response?.data.detail))
+      } else {
+        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, 'Nastala neznáma chyba.'))
+      }
+    },
+  })
+
+  const {mutate: unfreezeSeries} = useMutation({
+    mutationFn: (series: SeriesWithProblems) => apiAxios.post(`/competition/series/${series.id}/results/unfreeze`),
     onSuccess: (_, variables: SeriesWithProblems) => {
       setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, ''))
       refetch()
@@ -212,6 +229,51 @@ export const SemesterAdministration: FC = () => {
         <FormInput control={control} name="num_participants" label="počet účastníkov" />
         <FormInput control={control} name="num_substitutes" label="počet náhradníkov" />
       </Dialog>
+      <Dialog
+        open={!!seriesToFreeze}
+        close={() => setSeriesToFreeze(null)}
+        title="Uzavretie série"
+        contentText="Naozaj chceš uzavrieť túto sériu? Po uzavretí už nebude možné meniť výsledky riešiteľov v danej sérii."
+        actions={
+          <>
+            <Button
+              variant="button2"
+              onClick={() => {
+                if (seriesToFreeze) freezeSeries(seriesToFreeze)
+                setSeriesToFreeze(null)
+              }}
+            >
+              Áno
+            </Button>
+            <Button variant="button2" onClick={() => setSeriesToFreeze(null)}>
+              Nie
+            </Button>
+          </>
+        }
+      />
+      <Dialog
+        open={!!seriesToUnfreeze}
+        close={() => setSeriesToUnfreeze(null)}
+        title="Otvorenie série"
+        contentText="Naozaj chceš znovu otvoriť túto sériu a povoliť zmeny vo výsledkoch?"
+        actions={
+          <>
+            <Button
+              variant="button2"
+              onClick={() => {
+                if (seriesToUnfreeze) unfreezeSeries(seriesToUnfreeze)
+                setSeriesToUnfreeze(null)
+              }}
+            >
+              Áno
+            </Button>
+            <Button variant="button2" onClick={() => setSeriesToUnfreeze(null)}>
+              Nie
+            </Button>
+          </>
+        }
+      />
+
       <Stack alignItems="start" direction="row" spacing={2}>
         <Typography variant="h2">Semester</Typography>
         {semester.complete && <Typography variant="body1">Semester je uzavretý</Typography>}
@@ -220,13 +282,13 @@ export const SemesterAdministration: FC = () => {
         <Stack key={series.id} gap={1} mt={5}>
           <Stack alignItems="start" direction="row" spacing={2}>
             <Typography variant="h3">{series.order}. séria</Typography>
-            {series.complete ? (
-              <Typography variant="body1">Séria je uzavretá</Typography>
-            ) : (
-              <Button variant="button2" onClick={() => freezeSeries(series)}>
-                Uzavrieť sériu
-              </Button>
-            )}
+            <Typography variant="body1">{series.complete ? 'Séria je uzavretá' : 'Séria je otvorená'}</Typography>
+            <Button
+              variant="button2"
+              onClick={() => (series.complete ? setSeriesToUnfreeze(series) : setSeriesToFreeze(series))}
+            >
+              {series.complete ? 'Otvoriť sériu' : 'Uzavrieť sériu'}
+            </Button>
             {seriesFreezeErrors?.get(series.id) && (
               <Typography variant="body1">{seriesFreezeErrors?.get(series.id)}</Typography>
             )}
