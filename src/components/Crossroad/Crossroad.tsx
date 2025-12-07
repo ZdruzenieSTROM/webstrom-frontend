@@ -56,7 +56,6 @@ export const Crossroad: React.FC = () => {
           sx={{
             position: 'sticky',
             top: 0,
-            height: '20dvh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -65,7 +64,7 @@ export const Crossroad: React.FC = () => {
             flexShrink: 0,
           }}
         >
-          <Box sx={{height: '10dvh'}}>
+          <Box sx={{height: '10dvh'}} my={'5dvh'}>
             <Strom width="100%" height="100%" preserveAspectRatio="xMidYMid" color="white" />
           </Box>
         </Box>
