@@ -37,6 +37,9 @@ export const getButtonWrapperSx = ({
         },
     ...(withoutPaddingChanges ? undefined : {px: '10px'}),
     ...(withoutPaddingChanges ? undefined : {pb: '4px'}),
+    // parent wrapper Box sa niekedy roztahuje na vysku inych elementov a potom sa podciarknutie oddelovalo od textu.
+    // takto sa to zarovna na spodok
+    alignItems: 'end',
   } satisfies SxProps<Theme>
 }
 
