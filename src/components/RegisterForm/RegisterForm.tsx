@@ -80,11 +80,10 @@ export const RegisterForm: FC = () => {
     new_school_description: data.new_school_description || '',
   })
 
-  const {mutate: submitFormData} = useMutation({
+  const {mutate: submitFormData, isPending} = useMutation({
     mutationFn: (data: RegisterFormValues) => {
       return apiAxios.post<IGeneralPostResponse>(`/user/registration?seminar=${seminar}`, transformFormData(data))
     },
-    // TODO: show alert/toast and redirect to homepage instead of redirect to info page
     onSuccess: () =>
       alert(
         'Verifikačný e-mail bol odoslaný na zadanú e-mailovú adresu. Ak ho do pár minút neuvidíš, skontroluj, či ti náhodou neprišiel do priečinku spam.',
@@ -104,6 +103,7 @@ export const RegisterForm: FC = () => {
       } else {
         alert('Neznáma chyba pri registrácii. Skús to prosím neskôr.')
       }
+      scrollToTop()
     },
   })
 
@@ -151,7 +151,7 @@ export const RegisterForm: FC = () => {
         }
       />
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit, scrollToTop)}>
         <Stack gap={2}>
           <FormInput
             control={control}
@@ -184,7 +184,7 @@ export const RegisterForm: FC = () => {
             .
           </Typography>
           <Stack direction="row" justifyContent="flex-end" mt={3}>
-            <Button variant="button2" type="submit" onClick={scrollToTop}>
+            <Button variant="button2" type="submit" disabled={isPending}>
               Registrovať
             </Button>
           </Stack>

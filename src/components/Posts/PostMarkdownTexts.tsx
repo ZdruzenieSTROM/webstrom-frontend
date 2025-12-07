@@ -1,12 +1,12 @@
 import {Typography} from '@mui/material'
 import {FC, JSX} from 'react'
 
-import {Link} from '../Clickable/Link'
+import {InlineLink} from '../Clickable/InlineLink'
 
 export const MarkdownLink: FC<JSX.IntrinsicElements['a']> = ({children, href}) => (
-  <Link href={href}>
+  <InlineLink href={href}>
     <Typography variant="postBody">{children}</Typography>
-  </Link>
+  </InlineLink>
 )
 
 export const Ol: FC<JSX.IntrinsicElements['ol']> = ({children}) => (

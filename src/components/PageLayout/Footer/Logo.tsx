@@ -15,7 +15,7 @@ export const Logo: FC<ILogo> = ({name, image}) => {
       src={image}
       alt={name}
       sx={{
-        maxHeight: '9rem',
+        maxHeight: '4rem',
       }}
     />
   )
