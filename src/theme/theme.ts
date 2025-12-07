@@ -212,8 +212,10 @@ const _theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         // rewrite default textAlign: justify to left
+        // rewrite default backgroundColor to black for overscrolling issue
         body: {
           textAlign: 'left',
+          backgroundColor: colors.black,
         },
         /* stuff from Josh Comeau's global CSS reset: https://www.joshwcomeau.com/css/custom-css-reset/ */
         // 3. Allow percentage-based heights in the application

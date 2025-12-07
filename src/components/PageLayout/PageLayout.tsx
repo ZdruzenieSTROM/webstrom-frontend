@@ -2,6 +2,7 @@ import {Box, Grid, Stack, SxProps} from '@mui/material'
 import Head from 'next/head'
 import {FC, ReactNode} from 'react'
 
+import {colors} from '@/theme/colors'
 import {Seminar, useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Footer} from './Footer/Footer'
@@ -45,7 +46,7 @@ export const PageLayout: FC<PageLayoutProps> = ({
         {/* mali sme tu pred zmenou warning, musi to byt jeden text child: `A title element received an array with more than 1 element as children.` */}
         <title>{browserTitle}</title>
       </Head>
-      <Stack sx={{minHeight: '100dvh'}}>
+      <Stack sx={{minHeight: '100dvh', backgroundColor: colors.white}}>
         <TopGrid title={title} subtitle={subtitle} bannerMessages={bannerMessages} />
         <Stack sx={{flex: 1}}>
           <Box
