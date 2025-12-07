@@ -12,6 +12,7 @@ import {
 
 import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
+import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
 import {Accept} from '@/utils/dropzoneAccept'
@@ -25,7 +26,7 @@ export const ProblemCreate: FC = () => (
       return record
     }}
   >
-    <TabbedForm>
+    <TabbedForm toolbar={<MyCreateToolbar />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="series" reference="competition/series">
           <AutocompleteInput optionText="verbose_name" validate={required()} />

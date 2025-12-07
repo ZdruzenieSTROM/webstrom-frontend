@@ -3,6 +3,7 @@ import {AutocompleteInput, FormTab, NumberInput, ReferenceInput, required, Tabbe
 
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
+import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
 
 export const SeriesEdit: FC = () => (
   <MyEdit
@@ -13,7 +14,7 @@ export const SeriesEdit: FC = () => (
       return record
     }}
   >
-    <TabbedForm>
+    <TabbedForm toolbar={<MyEditToolbar />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
           <AutocompleteInput optionText="verbose_name" validate={required()} />

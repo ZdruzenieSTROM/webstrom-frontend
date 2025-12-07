@@ -5,6 +5,7 @@ import {NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInpu
 import {MyCreateButton} from '@/components/Admin/custom/MyCreateButton'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
+import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
 
 export const EventEdit: FC = () => {
   const translate = useTranslate()
@@ -22,7 +23,7 @@ export const EventEdit: FC = () => {
         return record
       }}
     >
-      <SimpleForm>
+      <SimpleForm toolbar={<MyEditToolbar />}>
         <NumberInput source="year" helperText="ročník súťaže, napr. 48" validate={required()} />
         <TextInput source="school_year" helperText="napr. 2023/2024" validate={required()} />
         <MyDateTimeInput source="start" validate={required()} />

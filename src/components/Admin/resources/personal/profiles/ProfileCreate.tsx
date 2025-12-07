@@ -2,6 +2,7 @@ import {FC} from 'react'
 import {AutocompleteInput, ReferenceInput, required, SimpleForm, TextInput} from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
+import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 
 export const ProfileCreate: FC = () => (
   <MyCreate
@@ -10,7 +11,7 @@ export const ProfileCreate: FC = () => (
       return {...rest, school_id: school}
     }}
   >
-    <SimpleForm>
+    <SimpleForm toolbar={<MyCreateToolbar />}>
       <TextInput source="first_name" validate={required()} />
       <TextInput source="last_name" validate={required()} />
       <ReferenceInput source="school" reference="personal/schools">

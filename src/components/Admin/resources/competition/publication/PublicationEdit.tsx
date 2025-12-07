@@ -11,6 +11,7 @@ import {
 } from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
+import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {Accept} from '@/utils/dropzoneAccept'
 
@@ -23,7 +24,7 @@ export const PublicationEdit: FC = () => (
       return record
     }}
   >
-    <SimpleForm>
+    <SimpleForm toolbar={<MyEditToolbar />}>
       <TextInput source="name" isRequired={true} />
       <ReferenceInput source="event" reference="competition/event" isRequired={true}>
         <AutocompleteInput optionText="verbose_name" validate={required()} />

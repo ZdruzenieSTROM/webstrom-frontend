@@ -12,6 +12,7 @@ import {
 import {useSearchParams} from 'react-router-dom'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
+import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {Accept} from '@/utils/dropzoneAccept'
 
@@ -27,7 +28,7 @@ export const PublicationCreate: FC = () => {
         return record
       }}
     >
-      <SimpleForm>
+      <SimpleForm toolbar={<MyCreateToolbar />}>
         <TextInput source="name" validate={required()} />
         <ReferenceInput source="event" reference="competition/event">
           <AutocompleteInput

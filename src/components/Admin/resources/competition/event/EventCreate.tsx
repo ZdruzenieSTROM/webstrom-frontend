@@ -3,6 +3,7 @@ import {FC, useState} from 'react'
 import {NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate} from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
+import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 
 export const EventCreate: FC = () => {
@@ -19,7 +20,7 @@ export const EventCreate: FC = () => {
         return record
       }}
     >
-      <SimpleForm>
+      <SimpleForm toolbar={<MyCreateToolbar />}>
         <NumberInput source="year" helperText="ročník súťaže, napr. 48" validate={required()} />
         <TextInput source="school_year" helperText="napr. 2023/2024" validate={required()} />
         <MyDateTimeInput source="start" validate={required()} />
