@@ -183,7 +183,7 @@ export const Problems: FC = () => {
         </Stack>
       </Dialog>
 
-      <Dialog open={discussionOpen} close={closeDiscussion} title={`Diskusia - úloha ${discussionProblem?.order}`}>
+      <Dialog open={discussionOpen} close={closeDiscussion} title={`Diskusia - úloha\u00A0${discussionProblem?.order}`}>
         <Discussion problemId={discussionProblem?.id} invalidateSeriesQuery={invalidateSeriesQuery} />
       </Dialog>
     </>
