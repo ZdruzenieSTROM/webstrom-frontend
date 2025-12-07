@@ -37,7 +37,7 @@ export const Footer: FC = () => {
     >
       <Grid size={{xs: 0, md: 3}} sx={{display: {xs: 'none', md: 'block'}}} />
       <Grid size={{xs: 12, md: 6}} display="flex" flexDirection="column" gap={2} py={2}>
-        <Stack direction="row" gap={0} justifyContent="center" sx={{flexWrap: 'wrap'}}>
+        <Stack direction="row" gap={1} justifyContent="center" sx={{flexWrap: 'wrap'}}>
           {menuItemsIsLoading && <Loading />}
           {menuItems.map((item) => (
             <Link
