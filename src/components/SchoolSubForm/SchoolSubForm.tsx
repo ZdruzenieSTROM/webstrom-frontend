@@ -1,4 +1,4 @@
-import {FormHelperText, Stack} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import {useEffect, useMemo} from 'react'
 import {Control, UseFormSetValue, UseFormWatch} from 'react-hook-form'
@@ -139,7 +139,19 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
         rules={requiredRule}
       />
       {showSummerHelp && (
-        <FormHelperText>Ak sa registruješ počas letných prázdnin, zvoľ ročník, ktorý si práve dokončil.</FormHelperText>
+        <Typography
+          variant="body2"
+          ml={1}
+          mr={2}
+          mt={-1.5}
+          sx={{
+            textTransform: 'uppercase',
+            fontStyle: 'italic',
+            color: gradeItems.length === 0 || without_school ? 'rgba(0, 0, 0, 0.38)' : 'inherit',
+          }}
+        >
+          Ak sa registruješ počas letných prázdnin, zvoľ ročník, ktorý si práve dokončil.
+        </Typography>
       )}
     </Stack>
   )
