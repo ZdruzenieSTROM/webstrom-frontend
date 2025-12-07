@@ -1,8 +1,12 @@
 import {SaveButton, Toolbar, useNotify} from 'react-admin'
 import {useFormContext} from 'react-hook-form'
 
-export const MyCreateToolbar = () => {
-  const {reset} = useFormContext()
+interface MyCreateToolbarProps {
+  dontResetFields?: string[]
+}
+
+export const MyCreateToolbar = ({dontResetFields}: MyCreateToolbarProps = {}) => {
+  const {reset, getValues} = useFormContext()
   const notify = useNotify()
   return (
     <Toolbar sx={{gap: 1}}>
@@ -12,8 +16,16 @@ export const MyCreateToolbar = () => {
         mutationOptions={{
           onSuccess: () => {
             notify('Záznam vytvorený')
-            // TODO: customizovat - niektore fieldy nechame predvyplnene
-            reset()
+            if (dontResetFields) {
+              const currentValues = getValues()
+              const preservedValues: Record<string, unknown> = {}
+              for (const field of dontResetFields) {
+                preservedValues[field] = currentValues[field]
+              }
+              reset(preservedValues)
+            } else {
+              reset()
+            }
           },
         }}
         type="button"

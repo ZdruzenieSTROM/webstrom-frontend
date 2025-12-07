@@ -7,7 +7,7 @@ import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 
 export const SeriesCreate: FC = () => (
   <MyCreate>
-    <TabbedForm toolbar={<MyCreateToolbar />}>
+    <TabbedForm toolbar={<MyCreateToolbar dontResetFields={['semester']} />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
