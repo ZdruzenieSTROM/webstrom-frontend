@@ -1,5 +1,13 @@
 import {FC} from 'react'
-import {BooleanField, FileField, FunctionField, RaRecord, ReferenceField, SimpleShowLayout} from 'react-admin'
+import {
+  BooleanField,
+  DateField,
+  FileField,
+  FunctionField,
+  RaRecord,
+  ReferenceField,
+  SimpleShowLayout,
+} from 'react-admin'
 
 import {MyShow} from '@/components/Admin/custom/MyShow'
 
@@ -14,6 +22,7 @@ export const SolutionShow: FC = () => (
         render={(record) => record && <span>{record['late_tag']?.name}</span>}
       />
       <BooleanField source="is_online" label="content.labels.is_online" />
+      <DateField source="uploaded_at" showTime label="Dátum nahratia" />
     </SimpleShowLayout>
   </MyShow>
 )
