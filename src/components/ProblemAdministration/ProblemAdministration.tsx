@@ -5,14 +5,14 @@ import {useMutation, useQuery} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
 import Image from 'next/image'
 import {useRouter} from 'next/router'
-import React, {FC, useCallback, useEffect, useState} from 'react'
+import {FC, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
+import {apiOptions} from '@/api/api'
 import {apiAxios} from '@/api/apiAxios'
 import {colors} from '@/theme/colors'
-import {ProblemWithSolutions, SemesterWithProblems, SolutionAdministration} from '@/types/api/competition'
+import {SolutionAdministration} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
-import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useNavigationTrap} from '@/utils/useNavigationTrap'
 
@@ -68,7 +68,6 @@ const styles = {
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
   const {params} = router.query
-  const {setPageTitle} = PageTitleContainer.useContainer()
 
   const problemId = params && params[0]
 
@@ -83,34 +82,15 @@ export const ProblemAdministration: FC = () => {
   })
 
   const {
-    data: problemData,
+    data: problem,
     refetch: refetchProblem,
     isLoading: problemIsLoading,
-  } = useQuery({
-    queryKey: ['competition', 'problem-administration', problemId],
-    queryFn: () => apiAxios.get<ProblemWithSolutions>(`/competition/problem-administration/${problemId}`),
-    // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym problemId
-    enabled: problemId !== undefined,
-  })
-  const problem = problemData?.data
+  } = useQuery(apiOptions.competition.problemAdministration.byId(problemId))
 
-  const semesterId = problem?.series.semester
-  const {data: semesterData, isLoading: semesterIsLoading} = useQuery({
-    queryKey: ['competition', 'semester', semesterId],
-    queryFn: () => apiAxios.get<SemesterWithProblems>(`/competition/semester/${semesterId}`),
-    // router.query.params su v prvom renderi undefined, tak pustime query az so spravnym semesterId
-    enabled: semesterId !== undefined,
-  })
-  const semester = semesterData?.data
+  const semesterId = problem?.series?.semester
+  const {data: semester, isLoading: semesterIsLoading} = useQuery(apiOptions.competition.semester.byId(semesterId))
   const semesterName = semester?.season_code === 0 ? 'zima' : 'leto'
   const semesterUrl = `${semester?.year}/${semesterName}`
-
-  useEffect(() => {
-    if (!!problem && !!semester)
-      setPageTitle(
-        `${problem?.order}. úloha - ${problem?.series.order}. séria - ${semesterUrl} (${semester?.school_year})`,
-      )
-  }, [problem, semester, semesterUrl, setPageTitle])
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 

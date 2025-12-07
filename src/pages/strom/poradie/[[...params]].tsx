@@ -5,6 +5,9 @@ import {apiOptions, createSSRApiOptions} from '@/api/api'
 import {commonQueries} from '@/api/commonQueries'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Results} from '@/components/Results/Results'
+import {getSemesterName} from '@/utils/getSemesterName'
+import {getSemesterYear} from '@/utils/getSemesterYear'
+import {getSeriesName} from '@/utils/getSeriesName'
 import {getDataFromUrl, useDataFromURL} from '@/utils/useDataFromURL'
 import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
 
@@ -12,12 +15,27 @@ import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
 const PARAM = 'params'
 
 const Poradie: NextPage = () => {
-  const {id} = useDataFromURL()
+  const {id: currentIds, semesterList, displayWholeSemesterOnResults} = useDataFromURL()
 
-  const {data: bannerMessages} = useQuery(apiOptions.cms.infoBanner.seriesResults(id.seriesId))
+  const semester = semesterList.find(({id}) => id === currentIds.semesterId)
+  const series = semester?.series_set.find(({id}) => id === currentIds.seriesId)
+
+  let title = 'Poradie'
+  let subtitle: string | undefined
+  if (semester) {
+    const semesterTitle = `${getSemesterYear(semester)} - ${getSemesterName(semester)}`
+    if (displayWholeSemesterOnResults) {
+      title = semesterTitle
+    } else if (series) {
+      title = getSeriesName(series)
+      subtitle = semesterTitle
+    }
+  }
+
+  const {data: bannerMessages} = useQuery(apiOptions.cms.infoBanner.seriesResults(currentIds.seriesId))
 
   return (
-    <PageLayout contentWidth={2} sx={{px: 0}} title="Poradie" bannerMessages={bannerMessages}>
+    <PageLayout contentWidth={2} sx={{px: 0}} title={title} subtitle={subtitle} bannerMessages={bannerMessages}>
       <Results />
     </PageLayout>
   )

@@ -1,3 +1,3 @@
 import {Series} from '@/types/api/competition'
 
-export const getSeriesName = (series: Series) => `${series.order}. séria`
+export const getSeriesName = (series: Pick<Series, 'order'>) => `${series.order}. séria`

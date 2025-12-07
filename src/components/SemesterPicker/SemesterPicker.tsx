@@ -1,10 +1,8 @@
 import {Stack} from '@mui/material'
-import {FC, useEffect} from 'react'
+import {FC} from 'react'
 
 import {getSemesterName} from '@/utils/getSemesterName'
 import {getSemesterYear} from '@/utils/getSemesterYear'
-import {getSeriesName} from '@/utils/getSeriesName'
-import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -12,31 +10,10 @@ import {Dropdown, DropdownOption} from './Dropdown'
 
 export const SemesterPicker: FC<{page: 'zadania' | 'poradie' | 'admin/opravovanie'}> = ({page}) => {
   const {seminar} = useSeminarInfo()
-  const {setPageTitle} = PageTitleContainer.useContainer()
 
   const {id: selectedItem, semesterList, displayWholeSemesterOnResults} = useDataFromURL()
 
   const semester = semesterList.find(({id}) => id === selectedItem.semesterId)
-  const series = semester?.series_set.find(({id}) => id === selectedItem.seriesId)
-
-  useEffect(() => {
-    // setPageTitle using selectedItem variable
-    if (semester) {
-      const semesterTitle = `${getSemesterYear(semester)} - ${getSemesterName(semester)}`
-      let pageTitleToSet = semesterTitle
-      if (page === 'admin/opravovanie') {
-        pageTitleToSet = `Opravovanie - ${semester.year}/${semester.season_code === 0 ? 'zima' : 'leto'} (${
-          semester.school_year
-        })`
-        // ak je page poradie a zobrazujeme cely semester, tak sa nezobrazuje seria v nazve
-        // pre seriu sa chceme stale pokusit zobrazit nazov serie
-      } else if (!(page === 'poradie' && displayWholeSemesterOnResults) && series) {
-        pageTitleToSet = `${semesterTitle}${series.order ? ` - ${getSeriesName(series)}` : ''}`
-      }
-      setPageTitle(pageTitleToSet)
-    }
-    // `semester` a `series` su nami vytiahnute objekty, tak mozu triggerovat effekt kazdy render. nemalo by vadit
-  }, [displayWholeSemesterOnResults, semester, series, page, setPageTitle])
 
   const dropdownSemesterList = semesterList.map((semester) => {
     return {

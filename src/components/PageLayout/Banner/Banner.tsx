@@ -1,4 +1,4 @@
-import {Typography} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {FC} from 'react'
 
 import {Marquee} from '@/components/Marquee/Marquee'
@@ -12,16 +12,14 @@ type BannerProps = {
 export const Banner: FC<BannerProps> = ({bannerMessages}) => {
   const {play, togglePlay} = BannerAnimationContainer.useContainer()
 
-  const divider = '  -  '
-
-  const bannerTextFormatted =
-    bannerMessages && bannerMessages.length > 0
-      ? Array.from({length: 10}).fill(bannerMessages).flat().join(divider) + divider
-      : undefined
-
-  if (!bannerTextFormatted) {
+  if (!bannerMessages || bannerMessages.length === 0) {
     return null
   }
+
+  // ['1', '2'] -> ['1', '2', '1', '2', ...,  '1', '2'] (length 20)
+  const multipliedMessages = Array.from({length: 10}, () => bannerMessages).flat()
+  // ['1', '2', '1', '2', ...,  '1', '2'] (length 20) -> ['1', '-', '2', '-', ...,  '1', '-', '2', '-'] (length 40)
+  const messages = multipliedMessages.flatMap((message) => [message, '-'])
 
   return (
     <Marquee
@@ -36,9 +34,13 @@ export const Banner: FC<BannerProps> = ({bannerMessages}) => {
         py: '0.2rem',
       }}
     >
-      <Typography variant="h2" component="span" sx={{whiteSpace: 'pre'}}>
-        {bannerTextFormatted}
-      </Typography>
+      <Stack direction="row" gap={5} mr={5}>
+        {messages.map((text, index) => (
+          <Typography key={index} variant="h2" component="span" sx={{whiteSpace: 'pre'}}>
+            {text}
+          </Typography>
+        ))}
+      </Stack>
     </Marquee>
   )
 }
