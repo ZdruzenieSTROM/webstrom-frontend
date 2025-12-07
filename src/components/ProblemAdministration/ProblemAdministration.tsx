@@ -13,7 +13,6 @@ import {apiAxios} from '@/api/apiAxios'
 import {colors} from '@/theme/colors'
 import {SolutionAdministration} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
-import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useNavigationTrap} from '@/utils/useNavigationTrap'
 
@@ -69,7 +68,6 @@ const styles = {
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
   const {params} = router.query
-  const {setPageTitle} = PageTitleContainer.useContainer()
 
   const problemId = params && params[0]
 
@@ -93,13 +91,6 @@ export const ProblemAdministration: FC = () => {
   const {data: semester, isLoading: semesterIsLoading} = useQuery(apiOptions.competition.semester.byId(semesterId))
   const semesterName = semester?.season_code === 0 ? 'zima' : 'leto'
   const semesterUrl = `${semester?.year}/${semesterName}`
-
-  useEffect(() => {
-    if (!!problem && !!semester)
-      setPageTitle(
-        `${problem?.order}. úloha - ${problem?.series.order}. séria - ${semesterUrl} (${semester?.school_year})`,
-      )
-  }, [problem, semester, semesterUrl, setPageTitle])
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 

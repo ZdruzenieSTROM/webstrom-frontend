@@ -5,7 +5,6 @@ import {FC, useMemo} from 'react'
 import {Link} from '@/components/Clickable/Link'
 import {SemesterPicker} from '@/components/SemesterPicker/SemesterPicker'
 import {colors} from '@/theme/colors'
-import {PageTitleContainer} from '@/utils/PageTitleContainer'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Banner} from '../Banner/Banner'
@@ -43,10 +42,12 @@ const SeminarButtons: FC<SeminarButtonsProps> = ({seminar}) => {
 }
 
 type TopGridProps = {
+  title: string
+  subtitle?: string
   bannerMessages?: string[]
 }
 
-export const TopGrid: FC<TopGridProps> = ({bannerMessages}) => {
+export const TopGrid: FC<TopGridProps> = ({title, subtitle, bannerMessages}) => {
   const {seminar} = useSeminarInfo()
 
   // z napr. `/matik/zadania(/*)` vytiahne `zadania`
@@ -61,8 +62,6 @@ export const TopGrid: FC<TopGridProps> = ({bannerMessages}) => {
     }
     return undefined
   }, [pathname])
-
-  const {pageTitle} = PageTitleContainer.useContainer()
 
   return (
     <Stack sx={{position: 'sticky', top: 0, width: '100%', backgroundColor: colors.white, zIndex: 3}}>
@@ -87,7 +86,8 @@ export const TopGrid: FC<TopGridProps> = ({bannerMessages}) => {
 
         {/* second row */}
         <Grid size={{xs: 12, md: 6}} offset={{xs: 0, md: 3}}>
-          <Typography variant="h1">{pageTitle}</Typography>
+          {subtitle && <Typography variant="h2">{subtitle}</Typography>}
+          <Typography variant="h1">{title}</Typography>
         </Grid>
         {semesterPickerPage && (
           <Grid size={{xs: 12, md: 3}}>

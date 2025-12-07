@@ -5,11 +5,13 @@ import {apiOptions, createSSRApiOptions} from '@/api/api'
 import {commonQueries} from '@/api/commonQueries'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
 import {Problems} from '@/components/Problems/Problems'
+import {SeriesWithProblems} from '@/types/api/competition'
+import {formatDateTime} from '@/utils/formatDate'
+import {getSemesterName} from '@/utils/getSemesterName'
+import {getSemesterYear} from '@/utils/getSemesterYear'
+import {getSeriesName} from '@/utils/getSeriesName'
 import {getDataFromUrl, useDataFromURL} from '@/utils/useDataFromURL'
 import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
-import {getSeriesName} from '@/utils/getSeriesName'
-import {formatDateTime} from '@/utils/formatDate'
-import {SeriesWithProblems} from '@/types/api/competition'
 
 // logika odraza `cms/views.py` na BE - uz si to riesime sami, nevolame BE
 const getSeriesState = (series: SeriesWithProblems) => {
@@ -27,9 +29,26 @@ const getSeriesState = (series: SeriesWithProblems) => {
 const PARAM = 'params'
 
 const Zadania: NextPage = () => {
-  const {id} = useDataFromURL()
+  const {id: currentIds, semesterList} = useDataFromURL()
 
-  const {data: series} = useQuery(apiOptions.competition.series.byId(id.seriesId))
+  const {data: series} = useQuery(apiOptions.competition.series.byId(currentIds.seriesId))
+
+  const semester = semesterList.find(({id}) => id === currentIds.semesterId)
+
+  let title = 'Zadania'
+  let subtitle: string | undefined
+
+  if (semester) {
+    const semesterTitle = `${getSemesterYear(semester)} - ${getSemesterName(semester)}`
+
+    if (series) {
+      title = getSeriesName(series)
+      subtitle = semesterTitle
+    } else {
+      title = semesterTitle
+    }
+  }
+
   const seriesName = series && getSeriesName(series)
   const deadline = series && `Termín: ${formatDateTime(series.deadline)}`
   const seriesState = series && getSeriesState(series)
@@ -37,7 +56,7 @@ const Zadania: NextPage = () => {
   const messages = [seriesName, deadline, seriesState].filter((message): message is string => !!message)
 
   return (
-    <PageLayout contentWidth={2} title="Zadania" bannerMessages={messages}>
+    <PageLayout contentWidth={2} title={title} subtitle={subtitle} bannerMessages={messages}>
       <Problems />
     </PageLayout>
   )
