@@ -9,6 +9,8 @@ export const sk_SK = {
     },
     action: {
       ...slovakMessages.ra.action,
+      save_and_stay: 'Uložiť a zostať na stránke',
+      save_and_create_another: 'Uložiť a vytvoriť ďalší',
       publication: {
         create: 'Pridať novú publikáciu',
       },

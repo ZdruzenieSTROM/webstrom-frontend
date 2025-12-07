@@ -13,7 +13,7 @@ import {
 
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
-import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
+import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
 
 import {seasonCodeStrings} from '../../../seasonCodeStrings'
 
@@ -27,7 +27,7 @@ export const SemesterEdit: FC = () => (
       return record
     }}
   >
-    <TabbedForm toolbar={<MyToolbar />}>
+    <TabbedForm toolbar={<MyEditToolbar />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="competition" reference="competition/competition">
           <SelectInput validate={required()} />

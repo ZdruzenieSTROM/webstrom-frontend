@@ -1,22 +1,22 @@
 import {SaveButton, Toolbar, useNotify} from 'react-admin'
 import {useFormContext} from 'react-hook-form'
 
-export const MyToolbar = () => {
+export const MyCreateToolbar = () => {
   const {reset} = useFormContext()
   const notify = useNotify()
   return (
     <Toolbar>
-      <SaveButton label="Uložiť" />
+      <SaveButton />
       <SaveButton
-        label="Uložiť a vytvoriť ďalší"
+        label="ra.action.save_and_create_another"
         mutationOptions={{
           onSuccess: () => {
             notify('Záznam vytvorený')
+            // TODO: customizovat - niektore fieldy nechame predvyplnene
             reset()
           },
         }}
         type="button"
-        variant="text"
       />
     </Toolbar>
   )

@@ -2,8 +2,8 @@ import {FC} from 'react'
 import {AutocompleteInput, BooleanInput, FileInput, ReferenceInput, required, SimpleForm} from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
+import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
-import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createSolutionFormData} from './createSolutionFormData'
@@ -15,7 +15,7 @@ export const SolutionCreate: FC = () => (
       return record
     }}
   >
-    <SimpleForm toolbar={<MyToolbar />}>
+    <SimpleForm toolbar={<MyCreateToolbar />}>
       <ReferenceInput source="problem" reference="competition/problem">
         <AutocompleteInput validate={required()} />
       </ReferenceInput>

@@ -11,14 +11,14 @@ import {
 } from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
+import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
-import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
 
 import {seasonCodeStrings} from '../../../seasonCodeStrings'
 
 export const SemesterCreate: FC = () => (
   <MyCreate>
-    <SimpleForm toolbar={<MyToolbar />}>
+    <SimpleForm toolbar={<MyCreateToolbar />}>
       <ReferenceInput source="competition" reference="competition/competition">
         <SelectInput validate={required()} />
       </ReferenceInput>

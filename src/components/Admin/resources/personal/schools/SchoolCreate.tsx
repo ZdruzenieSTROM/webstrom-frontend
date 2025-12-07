@@ -2,11 +2,11 @@ import {FC} from 'react'
 import {AutocompleteInput, email, ReferenceInput, required, SimpleForm, TextInput} from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
-import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
+import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 
 export const SchoolCreate: FC = () => (
   <MyCreate>
-    <SimpleForm toolbar={<MyToolbar />}>
+    <SimpleForm toolbar={<MyCreateToolbar />}>
       <TextInput source="name" helperText="Oficiálny názov školy. Napr. Gymnázium Jura Hronca" validate={required()} />
       <TextInput source="street" validate={required()} />
       <TextInput source="city" validate={required()} />

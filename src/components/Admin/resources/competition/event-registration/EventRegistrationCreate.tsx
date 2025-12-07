@@ -3,7 +3,7 @@ import {AutocompleteInput, RaRecord, ReferenceInput, required, SimpleForm} from 
 import {useFormContext} from 'react-hook-form'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
-import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
+import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 
 const ProfileInput = () => {
   const {setValue} = useFormContext()
@@ -23,7 +23,7 @@ const ProfileInput = () => {
 export const EventRegistrationCreate: FC = () => {
   return (
     <MyCreate>
-      <SimpleForm toolbar={<MyToolbar />}>
+      <SimpleForm toolbar={<MyCreateToolbar />}>
         <ProfileInput />
         <ReferenceInput source="school" reference="personal/schools">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
