@@ -3,7 +3,6 @@ import {FC} from 'react'
 
 import {getSemesterName} from '@/utils/getSemesterName'
 import {getSemesterYear} from '@/utils/getSemesterYear'
-import {getSeriesName} from '@/utils/getSeriesName'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -15,7 +14,6 @@ export const SemesterPicker: FC<{page: 'zadania' | 'poradie' | 'admin/opravovani
   const {id: selectedItem, semesterList, displayWholeSemesterOnResults} = useDataFromURL()
 
   const semester = semesterList.find(({id}) => id === selectedItem.semesterId)
-  const series = semester?.series_set.find(({id}) => id === selectedItem.seriesId)
 
   const dropdownSemesterList = semesterList.map((semester) => {
     return {
