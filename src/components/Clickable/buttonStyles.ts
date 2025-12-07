@@ -6,10 +6,12 @@ export const getButtonWrapperSx = ({
   invertColors,
   disabled,
   active,
+  withoutPaddingChanges,
 }: {
   invertColors?: boolean
   disabled?: boolean
   active?: boolean
+  withoutPaddingChanges?: boolean
 }) => {
   const invert = !!invertColors !== !!active
 
@@ -17,7 +19,7 @@ export const getButtonWrapperSx = ({
     display: 'inline-flex',
     cursor: disabled ? 'default' : 'pointer',
     // reset default <button> styles
-    padding: 0,
+    ...(withoutPaddingChanges ? undefined : {padding: 0}),
     border: 0,
     // nakoniec to nemusi byt napisane cez CSS vars, ale mame takto moznost napr. referovat farby v children elementoch
     bgcolor: 'var(--bgcolor)',
@@ -30,9 +32,11 @@ export const getButtonWrapperSx = ({
       : {
           '--bgcolor': disabled ? colors.gray : invert ? colors.white : colors.black,
           '--color': disabled ? colors.white : invert ? colors.black : colors.white,
+          bgcolor: disabled ? colors.gray : invert ? colors.white : colors.black,
+          color: disabled ? colors.white : invert ? colors.black : colors.white,
         },
-    px: '10px',
-    pb: '4px',
+    ...(withoutPaddingChanges ? undefined : {px: '10px'}),
+    ...(withoutPaddingChanges ? undefined : {pb: '4px'}),
   } satisfies SxProps<Theme>
 }
 
