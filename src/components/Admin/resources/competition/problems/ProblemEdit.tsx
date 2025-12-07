@@ -14,6 +14,7 @@ import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
+import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createProblemFormData} from './createProblemFormData'
@@ -25,7 +26,7 @@ export const ProblemEdit: FC = () => (
       return record
     }}
   >
-    <TabbedForm>
+    <TabbedForm toolbar={<MyToolbar />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="series" reference="competition/series">
           <AutocompleteInput optionText="verbose_name" validate={required()} />

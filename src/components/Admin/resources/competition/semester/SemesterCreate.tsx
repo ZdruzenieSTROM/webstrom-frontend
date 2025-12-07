@@ -12,12 +12,13 @@ import {
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
+import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
 
 import {seasonCodeStrings} from '../../../seasonCodeStrings'
 
 export const SemesterCreate: FC = () => (
   <MyCreate>
-    <SimpleForm>
+    <SimpleForm toolbar={<MyToolbar />}>
       <ReferenceInput source="competition" reference="competition/competition">
         <SelectInput validate={required()} />
       </ReferenceInput>

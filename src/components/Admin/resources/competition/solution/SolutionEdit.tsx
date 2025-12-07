@@ -11,6 +11,7 @@ import {
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
+import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createSolutionFormData} from './createSolutionFormData'
@@ -31,7 +32,7 @@ const MySimpleForm: FC = () => {
   const record = useRecordContext()
 
   return (
-    <SimpleForm record={{...record, late_tag: record?.late_tag?.id}}>
+    <SimpleForm record={{...record, late_tag: record?.late_tag?.id}} toolbar={<MyToolbar />}>
       <ReferenceInput source="problem" reference="competition/problem">
         <AutocompleteInput validate={required()} />
       </ReferenceInput>

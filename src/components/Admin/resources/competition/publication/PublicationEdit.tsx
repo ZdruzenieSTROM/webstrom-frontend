@@ -12,6 +12,7 @@ import {
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
+import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createPublicationFormData} from './createPublicationFormData'
@@ -23,7 +24,7 @@ export const PublicationEdit: FC = () => (
       return record
     }}
   >
-    <SimpleForm>
+    <SimpleForm toolbar={<MyToolbar />}>
       <TextInput source="name" isRequired={true} />
       <ReferenceInput source="event" reference="competition/event" isRequired={true}>
         <AutocompleteInput optionText="verbose_name" validate={required()} />

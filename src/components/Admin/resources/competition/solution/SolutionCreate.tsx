@@ -3,6 +3,7 @@ import {AutocompleteInput, BooleanInput, FileInput, ReferenceInput, required, Si
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyFileField} from '@/components/Admin/custom/MyFileField'
+import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createSolutionFormData} from './createSolutionFormData'
@@ -14,7 +15,7 @@ export const SolutionCreate: FC = () => (
       return record
     }}
   >
-    <SimpleForm>
+    <SimpleForm toolbar={<MyToolbar />}>
       <ReferenceInput source="problem" reference="competition/problem">
         <AutocompleteInput validate={required()} />
       </ReferenceInput>

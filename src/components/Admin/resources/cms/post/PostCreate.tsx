@@ -3,13 +3,14 @@ import {ArrayInput, FormTab, maxLength, required, SimpleFormIterator, TabbedForm
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
+import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
 import {PostPreview} from '@/components/Admin/custom/PostPreview'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
 export const PostCreate: FC = () => {
   return (
     <MyCreate>
-      <TabbedForm>
+      <TabbedForm toolbar={<MyToolbar />}>
         <FormTab label="content.labels.general">
           <TextInput source="caption" validate={required()} />
           <TextInput source="short_text" validate={maxLength(200, 'Text musí mať najviac 200 znakov.')} />

@@ -3,10 +3,11 @@ import {AutocompleteInput, FormTab, NumberInput, ReferenceInput, required, Tabbe
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
+import {MyToolbar} from '@/components/Admin/custom/MyToolbar'
 
 export const SeriesCreate: FC = () => (
   <MyCreate>
-    <TabbedForm>
+    <TabbedForm toolbar={<MyToolbar />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
