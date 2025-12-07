@@ -54,10 +54,10 @@ export const Footer: FC = () => {
         </Stack>
         <Stack direction="row" justifyContent="center" gap={2}>
           <IconButton href="https://www.facebook.com/zdruzeniestrom" aria-label="Facebook" invertColors>
-            <Facebook />
+            <Facebook sx={{fontSize: 32}} />
           </IconButton>
           <IconButton href="https://www.instagram.com/zdruzeniestrom" aria-label="Instagram" invertColors>
-            <Instagram />
+            <Instagram sx={{fontSize: 32}} />
           </IconButton>
         </Stack>
         <Stack direction="row" gap={2} justifyContent="center" sx={{flexWrap: 'wrap'}}>

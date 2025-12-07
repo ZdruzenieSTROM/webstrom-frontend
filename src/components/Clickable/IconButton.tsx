@@ -20,6 +20,8 @@ export const IconButton: FC<IconButtonProps> = ({href, 'aria-label': ariaLabel, 
       aria-label={ariaLabel}
       sx={{
         ...getButtonWrapperSx({invertColors, withoutPaddingChanges: true}),
+        p: 0,
+        borderRadius: '25%',
         ...sx,
       }}
     >
