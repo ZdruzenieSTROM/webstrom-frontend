@@ -8,7 +8,7 @@ import {Posts} from '@/components/Posts/Posts'
 import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
 
 const Home: NextPage = () => (
-  <PageLayout title="Novinky" contentWidth={1}>
+  <PageLayout title="Novinky" contentWidth={2}>
     <Posts />
   </PageLayout>
 )
