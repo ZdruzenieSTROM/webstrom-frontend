@@ -15,7 +15,7 @@ export const SolutionCreate: FC = () => (
       return record
     }}
   >
-    <SimpleForm toolbar={<MyCreateToolbar />}>
+    <SimpleForm toolbar={<MyCreateToolbar dontResetFields={['semester_registration']} />}>
       <ReferenceInput source="problem" reference="competition/problem">
         <AutocompleteInput validate={required()} />
       </ReferenceInput>

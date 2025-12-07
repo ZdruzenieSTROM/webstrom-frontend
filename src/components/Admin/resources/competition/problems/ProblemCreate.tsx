@@ -26,7 +26,7 @@ export const ProblemCreate: FC = () => (
       return record
     }}
   >
-    <TabbedForm toolbar={<MyCreateToolbar />}>
+    <TabbedForm toolbar={<MyCreateToolbar dontResetFields={['series']} />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="series" reference="competition/series">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
