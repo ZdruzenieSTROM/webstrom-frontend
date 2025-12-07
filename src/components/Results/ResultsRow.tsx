@@ -77,7 +77,7 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
           {registration.grade.tag}
         </Typography>
       </Stack>
-      <Stack sx={{justifyContent: 'center', px: {xs: '3px', sm: '5px'}, zIndex: -1}}>
+      <Stack sx={{justifyContent: 'center', px: {xs: '3px', sm: '5px'}}}>
         {solutions.map((series, index) => (
           <Stack key={index} direction="row">
             {series.map((solution, index) => (
