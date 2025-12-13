@@ -1,19 +1,10 @@
 import {FC} from 'react'
-import {
-  AutocompleteInput,
-  FileInput,
-  FormTab,
-  ImageInput,
-  ReferenceInput,
-  required,
-  TabbedForm,
-  TextInput,
-} from 'react-admin'
+import {AutocompleteInput, FormTab, ImageInput, ReferenceInput, required, TabbedForm, TextInput} from 'react-admin'
 
+import {MyCreateFileInput} from '@/components/Admin/custom/file-handling/MyCreateFileInput'
 import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
-import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
 import {Accept} from '@/utils/dropzoneAccept'
 
@@ -42,9 +33,7 @@ export const ProblemCreate: FC = () => (
         <ImageInput source="image" accept={Accept.Image} helperText="Povolené iba obrázkové formáty .jpeg, .jpg a .png">
           <MyImageField />
         </ImageInput>
-        <FileInput source="solution_pdf" accept={Accept.Pdf}>
-          <MyFileField />
-        </FileInput>
+        <MyCreateFileInput source="solution_pdf" accept={Accept.Pdf} />
       </FormTab>
     </TabbedForm>
   </MyCreate>

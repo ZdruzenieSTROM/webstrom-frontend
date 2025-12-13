@@ -1,18 +1,9 @@
 import {FC} from 'react'
-import {
-  AutocompleteInput,
-  FileInput,
-  NumberInput,
-  ReferenceInput,
-  required,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-} from 'react-admin'
+import {AutocompleteInput, NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput} from 'react-admin'
 
+import {MyEditFileInput} from '@/components/Admin/custom/file-handling/MyEditFileInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
-import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createPublicationFormData} from './createPublicationFormData'
@@ -33,9 +24,7 @@ export const PublicationEdit: FC = () => (
         <SelectInput />
       </ReferenceInput>
       <NumberInput source="order" />
-      <FileInput source="file" maxSize={10_485_760} accept={Accept.Pdf} isRequired={true}>
-        <MyFileField />
-      </FileInput>
+      <MyEditFileInput source="file" maxSize={10_485_760} accept={Accept.Pdf} isRequired={true} />
     </SimpleForm>
   </MyEdit>
 )

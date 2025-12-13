@@ -1,6 +1,7 @@
 import {FC} from 'react'
-import {FileField, NumberField, ReferenceField, SimpleShowLayout, TextField} from 'react-admin'
+import {NumberField, ReferenceField, SimpleShowLayout, TextField} from 'react-admin'
 
+import {MyShowFileField} from '@/components/Admin/custom/file-handling/MyShowFileField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
 
 export const PublicationShow: FC = () => (
@@ -10,7 +11,7 @@ export const PublicationShow: FC = () => (
       <ReferenceField source="event" reference="competition/event" link="show" />
       <ReferenceField source="publication_type" reference="competition/publication-type" />
       <NumberField source="order" />
-      <FileField source="file" title="Publikácia" />
+      <MyShowFileField source="file" />
     </SimpleShowLayout>
   </MyShow>
 )

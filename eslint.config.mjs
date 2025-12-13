@@ -143,6 +143,19 @@ export default tseslint.config(
     ),
     rules: {
       'no-restricted-globals': ['error', ...restrictedGlobals],
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'react-admin',
+              importNames: ['FileField', 'FileInput'],
+              message:
+                'Please use MyShowFileField, MyCreateFileInput, MyEditFileInput components from `@/components/Admin/custom/file-handling` instead.',
+            },
+          ],
+        },
+      ],
       eqeqeq: ['warn', 'smart'],
       'prefer-const': 'warn',
       'no-return-await': 'warn',
