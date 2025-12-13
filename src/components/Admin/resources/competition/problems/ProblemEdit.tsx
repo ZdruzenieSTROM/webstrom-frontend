@@ -1,19 +1,10 @@
 import {FC} from 'react'
-import {
-  AutocompleteInput,
-  FileInput,
-  FormTab,
-  ImageInput,
-  ReferenceInput,
-  required,
-  TabbedForm,
-  TextInput,
-} from 'react-admin'
+import {AutocompleteInput, FormTab, ImageInput, ReferenceInput, required, TabbedForm, TextInput} from 'react-admin'
 
+import {MyEditFileInput} from '@/components/Admin/custom/file-handling/MyEditFileInput'
 import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
-import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
 import {Accept} from '@/utils/dropzoneAccept'
 
@@ -42,9 +33,7 @@ export const ProblemEdit: FC = () => (
         <ImageInput source="image" accept={Accept.Image}>
           <MyImageField />
         </ImageInput>
-        <FileInput source="solution_pdf" accept={Accept.Pdf}>
-          <MyFileField />
-        </FileInput>
+        <MyEditFileInput source="solution_pdf" accept={Accept.Pdf} />
       </FormTab>
     </TabbedForm>
   </MyEdit>
