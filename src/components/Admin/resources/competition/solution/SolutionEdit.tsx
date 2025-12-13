@@ -1,10 +1,11 @@
 import {FC} from 'react'
-import {AutocompleteInput, BooleanInput, FileInput, ReferenceInput, SimpleForm, useRecordContext} from 'react-admin'
+import {AutocompleteInput, BooleanInput, ReferenceInput, SimpleForm, useRecordContext} from 'react-admin'
 
+import {MyEditFileInput} from '@/components/Admin/custom/file-handling/MyEditFileInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
-import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {Accept} from '@/utils/dropzoneAccept'
+import {getCorrectedSolutionUrl, getSolutionUrl} from '@/utils/getSolutionUrl'
 
 import {createSolutionFormData} from './createSolutionFormData'
 import {ProblemReferenceInput} from './ProblemReferenceInput'
@@ -29,9 +30,8 @@ const MySimpleForm: FC = () => {
     <SimpleForm record={{...record, late_tag: record?.late_tag?.id}} toolbar={<MyEditToolbar />}>
       <SemesterRegistrationReferenceInput />
       <ProblemReferenceInput />
-      <FileInput source="solution" accept={Accept.Pdf}>
-        <MyFileField />
-      </FileInput>
+      <MyEditFileInput source="solution" accept={Accept.Pdf} reformatUrlFromId={getSolutionUrl} />
+      <MyEditFileInput source="corrected_solution" accept={Accept.Pdf} reformatUrlFromId={getCorrectedSolutionUrl} />
       <ReferenceInput source="late_tag" reference="competition/late-tag">
         <AutocompleteInput optionText="name" />
       </ReferenceInput>
