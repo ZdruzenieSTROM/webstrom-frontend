@@ -14,7 +14,7 @@ export const MyShowFileField: FC<MyShowFileFieldProps> = ({source, title, reform
 
   if (!record) return null
 
-  const existingFile = getExistingFile(record[source], record.id, reformatUrlFromId, record[title])
+  const existingFile = getExistingFile(record[source], record.id, reformatUrlFromId, title ? record[title] : undefined)
 
   return (
     // vytvorime vlastny record context pre FileField
