@@ -146,6 +146,7 @@ export const sk_SK = {
         late_tag: 'Po termíne',
         is_online: 'Internetové riešenie',
         solution: 'Riešenie',
+        uploaded_at: 'Dátum nahratia',
       },
     },
     'competition/event-registration': {
