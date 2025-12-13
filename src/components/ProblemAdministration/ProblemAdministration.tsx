@@ -13,6 +13,7 @@ import {apiAxios} from '@/api/apiAxios'
 import {colors} from '@/theme/colors'
 import {SolutionAdministration} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
+import {getCorrectedSolutionUrl, getSolutionUrl} from '@/utils/getSolutionUrl'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useNavigationTrap} from '@/utils/useNavigationTrap'
 
@@ -310,7 +311,7 @@ export const ProblemAdministration: FC = () => {
                 {solution.solution ? (
                   <Box
                     component="a"
-                    href={`/api/competition/solution/${solution.id}/file-solution`}
+                    href={getSolutionUrl(solution.id)}
                     target="_blank"
                     rel="noreferrer"
                     sx={styles.icon}
@@ -331,7 +332,7 @@ export const ProblemAdministration: FC = () => {
                 {solution.corrected_solution ? (
                   <Box
                     component="a"
-                    href={`/api/competition/solution/${solution.id}/file-corrected`}
+                    href={getCorrectedSolutionUrl(solution.id)}
                     target="_blank"
                     rel="noreferrer"
                     sx={styles.icon}
