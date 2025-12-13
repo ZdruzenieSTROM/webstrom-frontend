@@ -17,7 +17,7 @@ import {SemesterFilterSection} from '@/components/Admin/custom/list-filtering/Se
 import {SeriesFilterSection} from '@/components/Admin/custom/list-filtering/SeriesFilterSection'
 
 export const SolutionList: FC = () => (
-  <List aside={<SolutionListFilters />}>
+  <List aside={<SolutionListFilters />} sort={{field: 'uploaded_at', order: 'DESC'}}>
     <Datagrid>
       <ReferenceField source="problem" reference="competition/problem" link={false} />
       <ReferenceField source="semester_registration" reference="competition/event-registration" link={false} />
