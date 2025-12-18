@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {AutocompleteInput, BooleanInput, FileInput, ReferenceInput, required, SimpleForm} from 'react-admin'
+import {AutocompleteInput, BooleanInput, FileInput, ReferenceInput, SimpleForm} from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
@@ -7,6 +7,8 @@ import {MyFileField} from '@/components/Admin/custom/MyFileField'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createSolutionFormData} from './createSolutionFormData'
+import {ProblemReferenceInput} from './ProblemReferenceInput'
+import {SemesterRegistrationReferenceInput} from './SemesterRegistrationReferenceInput'
 
 export const SolutionCreate: FC = () => (
   <MyCreate
@@ -16,12 +18,8 @@ export const SolutionCreate: FC = () => (
     }}
   >
     <SimpleForm toolbar={<MyCreateToolbar dontResetFields={['semester_registration']} />}>
-      <ReferenceInput source="problem" reference="competition/problem">
-        <AutocompleteInput validate={required()} />
-      </ReferenceInput>
-      <ReferenceInput source="semester_registration" reference="competition/event-registration">
-        <AutocompleteInput optionText="verbose_name" validate={required()} />
-      </ReferenceInput>
+      <SemesterRegistrationReferenceInput />
+      <ProblemReferenceInput />
       <FileInput source="solution" accept={Accept.Pdf}>
         <MyFileField />
       </FileInput>
