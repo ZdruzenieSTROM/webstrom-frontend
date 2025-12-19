@@ -3,7 +3,6 @@ import {
   ArrayField,
   Datagrid,
   EditButton,
-  FileField,
   NumberField,
   ReferenceField,
   SimpleShowLayout,
@@ -14,6 +13,7 @@ import {
 } from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
+import {MyShowFileField} from '@/components/Admin/custom/file-handling/MyShowFileField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
 import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
@@ -44,7 +44,7 @@ export const EventShow: FC = () => {
           <SimpleShowLayout>
             <ArrayField source="publication_set">
               <Datagrid rowClick={(id) => createPath({resource: 'competition/publication', type: 'edit', id: id})}>
-                <FileField source="file" title="verbose_name" />
+                <MyShowFileField source="file" title="verbose_name" />
                 <ReferenceField source="publication_type" reference="competition/publication-type">
                   <TextField source="name" />
                 </ReferenceField>

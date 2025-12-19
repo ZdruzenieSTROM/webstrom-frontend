@@ -26,6 +26,10 @@ export const SolutionList: FC = () => (
         render={(record) => record && <BooleanField record={{xxx: !!record['solution']}} source="xxx" />}
       />
       <FunctionField<RaRecord>
+        label="content.labels.has_corrected_solution"
+        render={(record) => record && <BooleanField record={{xxx: !!record['corrected_solution']}} source="xxx" />}
+      />
+      <FunctionField<RaRecord>
         source="late_tag"
         render={(record) => record && <span>{record['late_tag']?.name}</span>}
       />
