@@ -9,7 +9,7 @@ export const PublicationList: FC = () => (
       <TextField source="name" />
       <ReferenceField source="event" reference="competition/event" link="show" />
       <ReferenceField source="publication_type" reference="competition/publication-type" />
-      <MyShowFileField source="file" title="Publikácia" />
+      <MyShowFileField source="file" />
     </Datagrid>
   </List>
 )
