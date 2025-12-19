@@ -4,6 +4,7 @@ import {useQuery} from '@tanstack/react-query'
 import {FC} from 'react'
 
 import {apiAxios} from '@/api/apiAxios'
+import {Gallery} from '@/types/api/cms'
 import {Event, Publication} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -18,6 +19,17 @@ type MyEvent = Omit<Event, 'publication_set'> & {
   year: number
   school_year: string
   publication_set: MyPublication[]
+  galleries: Gallery[]
+}
+
+const GalleryButton: FC<{
+  gallery: Gallery
+}> = ({gallery}) => {
+  return (
+    <Link variant="button2" href={gallery.gallery_link} target="_blank">
+      {gallery.name}
+    </Link>
+  )
 }
 
 const PublicationButton: FC<{
@@ -95,6 +107,9 @@ export const Archive: FC = () => {
               <ProblemsButton eventYear={event.year} eventSeason={event.season_code} sx={showInDetails} />
               {event.publication_set.map((publication) => (
                 <PublicationButton key={publication.id} publication={publication} />
+              ))}
+              {event.galleries.map((gallery) => (
+                <GalleryButton key={gallery.id} gallery={gallery} />
               ))}
             </Stack>
           </AccordionDetails>
