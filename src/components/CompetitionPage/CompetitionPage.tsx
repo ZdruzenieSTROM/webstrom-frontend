@@ -85,13 +85,21 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
           const results = event.publication_set.find((p) => p.publication_type === PublicationTypes.RESULTS.id)
           const solutions = event.publication_set.find((p) => p.publication_type === PublicationTypes.SOLUTIONS.id)
           const problems = event.publication_set.find((p) => p.publication_type === PublicationTypes.PROBLEMS.id)
+          const firstGallery = event.galleries.length > 0 ? event.galleries[0] : null
           return (
             <Fragment key={event.id}>
-              <Grid size={8}>
+              <Grid size={6}>
                 <Typography variant="h2" component="span">
                   {name} {event.school_year}
                   {event.additional_name ? ` (${event.additional_name})` : ''}
                 </Typography>
+              </Grid>
+              <Grid size={2} display="flex" justifyContent="end">
+                {firstGallery ? (
+                  <Link variant="button2" href={firstGallery.gallery_link} target="_blank">
+                    {firstGallery.name}
+                  </Link>
+                ) : null}
               </Grid>
               <Grid size={2} display="flex" justifyContent="end">
                 {results && (

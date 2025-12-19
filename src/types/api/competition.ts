@@ -1,3 +1,4 @@
+import {Gallery} from './cms'
 import {ProfileShort, SchoolShort} from './personal'
 
 export type IGrade = {
@@ -60,6 +61,7 @@ export interface Event {
   is_registered: boolean
   publication_set: Publication[]
   registration_link?: RegistrationLink
+  galleries: Gallery[]
   location: string | null
   year: number | null
   school_year: string | null

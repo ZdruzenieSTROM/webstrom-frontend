@@ -31,3 +31,11 @@ export interface InfoBanner {
 export interface MessageTemplate {
   message: string
 }
+
+export interface Gallery {
+  id: number
+  name: string
+  gallery_link: string
+  event: number
+  event_name: string | null
+}
