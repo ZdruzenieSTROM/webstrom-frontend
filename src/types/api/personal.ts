@@ -96,9 +96,9 @@ export interface ProfileCreate {
 }
 
 export interface ProfileShort {
+  id: number
   first_name: string
   last_name: string
-  nickname: string | null
 }
 
 export interface ProfileMail {

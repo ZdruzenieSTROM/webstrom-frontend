@@ -1,58 +1,11 @@
 import {Box, Stack, Theme, Typography, useMediaQuery} from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
-import NextLink from 'next/link'
 import {FC} from 'react'
 
 import {colors} from '@/theme/colors'
-import {Result, SolutionShort} from '@/types/api/competition'
-import {useHasPermissions} from '@/utils/useHasPermissions'
+import {Result} from '@/types/api/competition'
 
-const ResultsRowNumber: FC<{solution: SolutionShort; registrationId: number}> = ({solution, registrationId}) => {
-  const {hasPermissions} = useHasPermissions()
-  const commonStyles = {width: {xs: '12px', sm: '18px'}, textAlign: 'center'}
-
-  const solutionContent = (
-    <Typography variant="resultsScore" sx={commonStyles}>
-      {solution.points}
-    </Typography>
-  )
-
-  if (!hasPermissions) {
-    return solutionContent
-  }
-
-  const href =
-    solution.solution_pk === null
-      ? `/admin#/competition/solution/create?semester_registration=${registrationId}&problem=${solution.problem_pk}`
-      : `/admin#/competition/solution/${solution.solution_pk}`
-
-  return (
-    <Box
-      component={NextLink}
-      href={href}
-      target="_blank"
-      sx={{
-        display: 'inline-flex',
-        cursor: 'pointer',
-        border: 0,
-        bgcolor: 'inherit',
-        color: 'inherit',
-        borderColor: 'inherit',
-        '--bgcolor': 'inherit',
-        '--color': 'inherit',
-        '&:hover': {
-          '--bgcolor': colors.white,
-          '--color': colors.black,
-          bgcolor: colors.white,
-          color: colors.black,
-        },
-        ...commonStyles,
-      }}
-    >
-      {solutionContent}
-    </Box>
-  )
-}
+import {ResultsRowNumber} from './ResultsRowNumber'
 
 export const ResultsRow: FC<{result: Result}> = ({result}) => {
   const {solutions, rank_changed, rank_start, registration, subtotal, total} = result
@@ -94,7 +47,7 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
         {solutions.map((series, index) => (
           <Stack key={index} direction="row">
             {series.map((solution, solutionIndex) => (
-              <ResultsRowNumber key={solutionIndex} solution={solution} registrationId={registration.id} />
+              <ResultsRowNumber key={solutionIndex} solution={solution} registration={registration} />
             ))}
             <Tooltip title={`Súčet bodov za ${index + 1}. sériu po uplatnení bonifikácie`}>
               <Typography
