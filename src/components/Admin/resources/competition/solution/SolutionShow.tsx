@@ -1,6 +1,6 @@
 import type {FC} from 'react'
 import type {RaRecord} from 'react-admin'
-import {BooleanField, FunctionField, ReferenceField, SimpleShowLayout} from 'react-admin'
+import {BooleanField, FunctionField, NumberInput, ReferenceField, SimpleShowLayout} from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShowFileField} from '@/components/Admin/custom/file-handling/MyShowFileField'
@@ -18,6 +18,7 @@ export const SolutionShow: FC = () => (
         source="late_tag"
         render={(record) => record && <span>{record['late_tag']?.name}</span>}
       />
+      <NumberInput source="score" />
       <BooleanField source="is_online" />
       <DateTimeField source="uploaded_at" />
     </SimpleShowLayout>

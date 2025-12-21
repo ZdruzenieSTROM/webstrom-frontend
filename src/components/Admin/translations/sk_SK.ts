@@ -147,6 +147,7 @@ export const sk_SK = {
         is_online: 'Internetové',
         solution: 'Riešenie',
         corrected_solution: 'Opravené riešenie',
+        score: 'Body',
         uploaded_at: 'Dátum nahratia',
       },
     },

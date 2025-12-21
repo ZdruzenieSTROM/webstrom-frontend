@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {AutocompleteInput, BooleanInput, ReferenceInput, SimpleForm} from 'react-admin'
+import {AutocompleteInput, BooleanInput, NumberInput, ReferenceInput, SimpleForm} from 'react-admin'
 import {useSearchParams} from 'react-router-dom'
 
 import {MyCreateFileInput} from '@/components/Admin/custom/file-handling/MyCreateFileInput'
@@ -32,6 +32,7 @@ export const SolutionCreate: FC = () => {
         <ProblemReferenceInput />
         <MyCreateFileInput source="solution" accept={Accept.Pdf} />
         <MyCreateFileInput source="corrected_solution" accept={Accept.Pdf} />
+        <NumberInput source="score" />
         <ReferenceInput source="late_tag" reference="competition/late-tag">
           <AutocompleteInput optionText="name" />
         </ReferenceInput>
