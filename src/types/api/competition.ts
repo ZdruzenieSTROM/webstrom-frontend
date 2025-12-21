@@ -1,7 +1,7 @@
 import {Gallery} from './cms'
 import {ProfileShort, SchoolShort} from './personal'
 
-export type IGrade = {
+export type Grade = {
   id: number
   name: string
   tag: string
@@ -97,7 +97,7 @@ export interface Competition {
 
 export interface EventRegistration {
   school: SchoolShort
-  grade: string
+  grade: Grade
   profile: ProfileShort
 }
 
@@ -231,11 +231,4 @@ export interface LateTag {
   slug: string
   upper_bound: string
   comment: string
-}
-
-export interface Grade {
-  id: number
-  name: string
-  tag: string
-  years_until_graduation: number
 }
