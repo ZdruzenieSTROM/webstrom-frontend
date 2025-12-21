@@ -4,8 +4,8 @@ import {useEffect, useState} from 'react'
 import {createContainer} from 'unstated-next'
 
 import {apiAxios, newApiAxios} from '@/api/apiAxios'
-import {Login, Token} from '@/types/api/generated/user'
 import {MyPermissions} from '@/types/api/personal'
+import {Login, Token} from '@/types/api/user'
 
 // specialna axios instancia bez error handlingu pridaneho do `apiAxios` nizsie
 const specialApiAxios = newApiAxios()

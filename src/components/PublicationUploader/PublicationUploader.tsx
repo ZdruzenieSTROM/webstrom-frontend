@@ -2,8 +2,7 @@ import {Stack, Typography} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
 import {FC} from 'react'
 
-import {PublicationTypes} from '@/types/api/competition'
-import {SemesterWithProblems} from '@/types/api/generated/competition'
+import {PublicationTypes, SemesterWithProblems} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {Link} from '../Clickable/Link'

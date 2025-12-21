@@ -4,50 +4,10 @@ import NextLink from 'next/link'
 import {FC} from 'react'
 
 import {colors} from '@/theme/colors'
+import {Result, SolutionShort} from '@/types/api/competition'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
-interface Registration {
-  id: number
-  school: {
-    code: number
-    name: string
-    abbreviation: string
-    street: string
-    city: string
-    zip_code: string
-  }
-  grade: {
-    name: string
-    tag: string
-    years_until_graduation: number
-    is_active: boolean
-  }
-  profile: {
-    first_name: string
-    last_name: string
-    nickname: string
-  }
-}
-
-export interface Result {
-  rank_start: number
-  rank_end: number
-  rank_changed: boolean
-  registration: Registration
-  subtotal: number[]
-  total: number
-  solutions: {
-    points: string
-    solution_pk: number | null
-    problem_pk: number
-    votes: number
-  }[][]
-}
-
-const ResultsRowNumber: FC<{solution: Result['solutions'][0][0]; registrationId: number}> = ({
-  solution,
-  registrationId,
-}) => {
+const ResultsRowNumber: FC<{solution: SolutionShort; registrationId: number}> = ({solution, registrationId}) => {
   const {hasPermissions} = useHasPermissions()
   const commonStyles = {width: {xs: '12px', sm: '18px'}, textAlign: 'center'}
 

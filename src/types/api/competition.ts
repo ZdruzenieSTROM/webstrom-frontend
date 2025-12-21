@@ -96,6 +96,7 @@ export interface Competition {
 }
 
 export interface EventRegistration {
+  id: number
   school: SchoolShort
   grade: Grade
   profile: ProfileShort
@@ -108,7 +109,9 @@ export interface ProblemCorrection {
 
 export interface Problem {
   id: number
-  submitted?: Solution | null
+  submitted: Solution | null
+  num_solutions: number
+  num_corrected_solutions: number
   text: string
   order: number
   image: string | null
@@ -220,6 +223,7 @@ export interface SemesterWithProblems {
   start: string
   end: string
   additional_name: string | null
+  complete: boolean
   frozen_results: string | null
   competition: number
   late_tags: number[]
@@ -231,4 +235,21 @@ export interface LateTag {
   slug: string
   upper_bound: string
   comment: string
+}
+
+export interface Result {
+  rank_start: number
+  rank_end: number
+  rank_changed: boolean
+  registration: EventRegistration
+  subtotal: number[]
+  total: number
+  solutions: SolutionShort[][]
+}
+
+export interface SolutionShort {
+  points: string
+  solution_pk: number | null
+  problem_pk: number
+  votes: number
 }

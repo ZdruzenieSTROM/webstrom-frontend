@@ -9,7 +9,7 @@ import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
-import {SeriesWithProblems} from '@/types/api/generated/competition'
+import {Result, SeriesWithProblems} from '@/types/api/competition'
 import {formatDateTime} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
@@ -18,7 +18,6 @@ import {School} from '../../types/api/personal'
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 import {PublicationUploader} from '../PublicationUploader/PublicationUploader'
-import {Result} from '../Results/ResultsRow'
 
 interface PostalCard {
   code: number
