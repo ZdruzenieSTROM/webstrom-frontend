@@ -1,6 +1,5 @@
 <!-- STROM logo bez noziciek -->
-<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="21.45 19.434 40.15 80.566">
+<svg version="1.1" viewBox="21.45 19.434 40.15 80.566" xmlns="http://www.w3.org/2000/svg">
   <polygon fill="currentColor" points="21.45 99.976 46.857 60.032 33.573 60.032 59.111 19.434 61.6 19.434 61.6 99.976"/>
 </svg>
 

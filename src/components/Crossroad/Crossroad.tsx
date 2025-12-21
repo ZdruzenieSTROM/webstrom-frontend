@@ -2,7 +2,6 @@ import {Box, Grid, Stack, Table, TableBody, TableCell, TableRow, Typography} fro
 import React from 'react'
 
 import StromOfficial from '@/svg/strom-oficial.svg'
-import StromTrimmed from '@/svg/strom-trimmed.svg'
 import {colors} from '@/theme/colors'
 
 import {Link} from '../Clickable/Link'
@@ -98,7 +97,7 @@ export const Crossroad: React.FC = () => {
         <Grid container columnSpacing={{md: 2, lg: 4}} mt="30dvh" flexGrow={1}>
           <Grid size={3} height="70dvh" justifyContent="end" display="flex">
             <Box>
-              <StromTrimmed width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
+              <StromOfficial width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
             </Box>
           </Grid>
           <Grid size={9} height="70dvh" pr={3} sx={{overflow: 'auto'}}>
