@@ -1,8 +1,19 @@
-<svg width="257" height="684" viewBox="0 0 257 684" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<!-- STROM logo bez noziciek -->
+<svg version="1.1" viewBox="21.45 19.434 40.15 80.566" xmlns="http://www.w3.org/2000/svg">
+  <polygon fill="currentColor" points="21.45 99.976 46.857 60.032 33.573 60.032 59.111 19.434 61.6 19.434 61.6 99.976"/>
+</svg>
+
+<!-- Oficialne STROM logo -->
+<!-- <svg version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <polygon fill="currentColor" transform="matrix(.18709074 0 0 .18709074 -1.5622079 -7.3152397)" points="324.3 573.6 324.3 469.6 123 469.6 258.8 256.1 187.8 256.1 324.3 39.1"/>
+</svg> -->
+
+<!-- stary STROM z povodneho Dorotinho designu -->
+<!-- <svg width="257" height="684" viewBox="0 0 257 684" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 <path d="M257 0V184H99L257 0Z" fill="currentColor"/>
 <path d="M257 173V412H36L257 173Z" fill="currentColor"/>
 <path d="M257 397V684H0L257 397Z" fill="currentColor"/>
-</svg>
+</svg> -->
 
 <!-- 4 triangles -->
 <!-- <svg width="293" height="900" viewBox="0 0 293 1000" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

@@ -1,14 +1,15 @@
 import {Box} from '@mui/material'
 import {FC} from 'react'
 
-import Strom from '@/svg/strom.svg'
+import Strom from '@/svg/strom-trimmed.svg'
 
 export const StromLogo: FC = () => {
   return (
     <Box
       sx={{
-        width: '100%',
+        width: '70%',
         zIndex: -1,
+        marginLeft: 'auto',
       }}
     >
       {/* TODO: vyriesit lepsie pre vysoke obrazovky :D nastavit nejak SVG ako background a nejake repeat-nieco? */}

@@ -1,7 +1,7 @@
 import {Box, Grid, Stack, Table, TableBody, TableCell, TableRow, Typography} from '@mui/material'
 import React from 'react'
 
-import Strom from '@/svg/strom.svg'
+import StromOfficial from '@/svg/strom-oficial.svg'
 import {colors} from '@/theme/colors'
 
 import {Link} from '../Clickable/Link'
@@ -65,7 +65,7 @@ export const Crossroad: React.FC = () => {
           }}
         >
           <Box sx={{height: '10dvh'}} my={'5dvh'}>
-            <Strom width="100%" height="100%" preserveAspectRatio="xMidYMid" color="white" />
+            <StromOfficial width="100%" height="100%" preserveAspectRatio="xMidYMid" color="white" />
           </Box>
         </Box>
 
@@ -97,7 +97,7 @@ export const Crossroad: React.FC = () => {
         <Grid container columnSpacing={{md: 2, lg: 4}} mt="30dvh" flexGrow={1}>
           <Grid size={3} height="70dvh" justifyContent="end" display="flex">
             <Box>
-              <Strom width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
+              <StromOfficial width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
             </Box>
           </Grid>
           <Grid size={9} height="70dvh" pr={3} sx={{overflow: 'auto'}}>
