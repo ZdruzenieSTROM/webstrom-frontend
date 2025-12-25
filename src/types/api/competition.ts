@@ -100,6 +100,8 @@ export interface EventRegistration {
   school: SchoolShort
   grade: Grade
   profile: ProfileShort
+  verbose_name: string
+  event: number
 }
 
 export interface ProblemCorrection {

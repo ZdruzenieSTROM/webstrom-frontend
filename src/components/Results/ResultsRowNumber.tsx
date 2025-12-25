@@ -1,6 +1,6 @@
 import {Box, Typography} from '@mui/material'
 import NextLink from 'next/link'
-import {FC} from 'react'
+import {FC, ReactNode} from 'react'
 
 import {colors} from '@/theme/colors'
 import {EventRegistration, SolutionShort} from '@/types/api/competition'
@@ -9,10 +9,10 @@ import {useProfile} from '@/utils/useProfile'
 
 const numberWidthStyle = {width: {xs: '12px', sm: '18px'}, textAlign: 'center'}
 
-const NumberAsLink: FC<{
+const LinkBoxWrapper: FC<{
   numberHref: string
-  solutionPoints: string
-}> = ({numberHref, solutionPoints}) => (
+  children: ReactNode
+}> = ({numberHref, children}) => (
   <Box
     component={NextLink}
     href={numberHref}
@@ -21,14 +21,8 @@ const NumberAsLink: FC<{
       display: 'inline-flex',
       cursor: 'pointer',
       border: 0,
-      bgcolor: 'inherit',
       color: 'inherit',
-      borderColor: 'inherit',
-      '--bgcolor': 'inherit',
-      '--color': 'inherit',
       '&:hover': {
-        '--bgcolor': colors.white,
-        '--color': colors.black,
         bgcolor: colors.white,
         color: colors.black,
       },
@@ -36,7 +30,7 @@ const NumberAsLink: FC<{
       ...numberWidthStyle,
     }}
   >
-    <Typography variant="resultsScore">{solutionPoints}</Typography>
+    {children}
   </Box>
 )
 
@@ -58,7 +52,11 @@ export const ResultsRowNumber: FC<{solution: SolutionShort; registration: EventR
   }
 
   if (numberHref) {
-    return <NumberAsLink numberHref={numberHref} solutionPoints={solution.points} />
+    return (
+      <LinkBoxWrapper numberHref={numberHref}>
+        <Typography variant="resultsScore">{solution.points}</Typography>
+      </LinkBoxWrapper>
+    )
   }
 
   return (
