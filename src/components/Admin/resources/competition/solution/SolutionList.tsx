@@ -6,6 +6,7 @@ import {
   FilterListItem,
   FunctionField,
   List,
+  NumberField,
   RaRecord,
   ReferenceField,
 } from 'react-admin'
@@ -29,6 +30,7 @@ export const SolutionList: FC = () => (
         label="content.labels.has_corrected_solution"
         render={(record) => record && <BooleanField record={{xxx: !!record['corrected_solution']}} source="xxx" />}
       />
+      <NumberField source="score" />
       <FunctionField<RaRecord>
         source="late_tag"
         render={(record) => record && <span>{record['late_tag']?.name}</span>}

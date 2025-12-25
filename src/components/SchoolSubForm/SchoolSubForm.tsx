@@ -4,7 +4,7 @@ import {useEffect, useMemo} from 'react'
 import {Control, UseFormSetValue, UseFormWatch} from 'react-hook-form'
 
 import {apiAxios} from '@/api/apiAxios'
-import {IGrade} from '@/types/api/competition'
+import {Grade} from '@/types/api/competition'
 import {ISchool} from '@/types/api/personal'
 
 import {FormAutocomplete} from '../FormItems/FormAutocomplete/FormAutocomplete'
@@ -33,7 +33,7 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
   const {data: gradesData, isLoading: isGradesLoading} = useQuery({
     queryKey: ['competition', 'grade'],
-    queryFn: () => apiAxios.get<IGrade[]>(`/competition/grade`),
+    queryFn: () => apiAxios.get<Grade[]>(`/competition/grade`),
   })
   const grades = useMemo(() => gradesData?.data ?? [], [gradesData])
   const gradeItems: SelectOption[] = useMemo(() => grades.map(({id, name}) => ({id, label: name})), [grades])

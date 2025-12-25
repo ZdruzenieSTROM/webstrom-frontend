@@ -3,43 +3,9 @@ import Tooltip from '@mui/material/Tooltip'
 import {FC} from 'react'
 
 import {colors} from '@/theme/colors'
+import {Result} from '@/types/api/competition'
 
-interface Registration {
-  school: {
-    code: number
-    name: string
-    abbreviation: string
-    street: string
-    city: string
-    zip_code: string
-  }
-  grade: {
-    name: string
-    tag: string
-    years_until_graduation: number
-    is_active: boolean
-  }
-  profile: {
-    first_name: string
-    last_name: string
-    nickname: string
-  }
-}
-
-export interface Result {
-  rank_start: number
-  rank_end: number
-  rank_changed: boolean
-  registration: Registration
-  subtotal: number[]
-  total: number
-  solutions: {
-    points: string
-    solution_pk: number
-    problem_pk: number
-    votes: number
-  }[][]
-}
+import {ResultsRowNumber} from './ResultsRowNumber'
 
 export const ResultsRow: FC<{result: Result}> = ({result}) => {
   const {solutions, rank_changed, rank_start, registration, subtotal, total} = result
@@ -80,14 +46,8 @@ export const ResultsRow: FC<{result: Result}> = ({result}) => {
       <Stack sx={{justifyContent: 'center', px: {xs: '3px', sm: '5px'}}}>
         {solutions.map((series, index) => (
           <Stack key={index} direction="row">
-            {series.map((solution, index) => (
-              <Typography
-                key={index}
-                variant="resultsScore"
-                sx={{width: {xs: '12px', sm: '18px'}, textAlign: 'center'}}
-              >
-                {solution.points}
-              </Typography>
+            {series.map((solution, solutionIndex) => (
+              <ResultsRowNumber key={solutionIndex} solution={solution} registration={registration} />
             ))}
             <Tooltip title={`Súčet bodov za ${index + 1}. sériu po uplatnení bonifikácie`}>
               <Typography

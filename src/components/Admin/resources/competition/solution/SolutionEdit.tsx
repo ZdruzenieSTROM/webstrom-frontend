@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {AutocompleteInput, BooleanInput, ReferenceInput, SimpleForm, useRecordContext} from 'react-admin'
+import {AutocompleteInput, BooleanInput, NumberInput, ReferenceInput, SimpleForm, useRecordContext} from 'react-admin'
 
 import {MyEditFileInput} from '@/components/Admin/custom/file-handling/MyEditFileInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
@@ -32,6 +32,7 @@ const MySimpleForm: FC = () => {
       <ProblemReferenceInput />
       <MyEditFileInput source="solution" accept={Accept.Pdf} reformatUrlFromId={getSolutionUrl} />
       <MyEditFileInput source="corrected_solution" accept={Accept.Pdf} reformatUrlFromId={getCorrectedSolutionUrl} />
+      <NumberInput source="score" />
       <ReferenceInput source="late_tag" reference="competition/late-tag">
         <AutocompleteInput optionText="name" />
       </ReferenceInput>

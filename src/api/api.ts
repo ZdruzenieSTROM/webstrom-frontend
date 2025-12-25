@@ -3,11 +3,17 @@ import {GetServerSidePropsContext} from 'next'
 
 import {ILogo} from '@/components/PageLayout/Footer/Logo'
 import {IPost} from '@/components/Posts/Post'
-import {Result} from '@/components/Results/ResultsRow'
 import {FlatPage} from '@/types/api/base'
 import {MenuItemShort} from '@/types/api/cms'
-import {Competition, Event, ProblemWithSolutions, Semester, SeriesWithProblems} from '@/types/api/competition'
-import {SemesterWithProblems} from '@/types/api/generated/competition'
+import {
+  Competition,
+  Event,
+  ProblemWithSolutions,
+  Result,
+  Semester,
+  SemesterWithProblems,
+  SeriesWithProblems,
+} from '@/types/api/competition'
 import {Profile} from '@/types/api/personal'
 import {SeminarId} from '@/utils/useSeminarInfo'
 

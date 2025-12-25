@@ -154,6 +154,12 @@ export default tseslint.config(
                 'Please use MyShowFileField, MyCreateFileInput, MyEditFileInput components from `@/components/Admin/custom/file-handling` instead.',
             },
           ],
+          patterns: [
+            {
+              group: ['**/types/api/generated', '**/types/api/generated/**'],
+              message: 'Please use types from src/types/api/ instead of **/generated/.',
+            },
+          ],
         },
       ],
       eqeqeq: ['warn', 'smart'],
