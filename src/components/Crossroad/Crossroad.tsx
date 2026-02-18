@@ -13,7 +13,7 @@ const seminarItems = [
 ] as const
 const competitionItems = [
   {label: 'Matboj', url: 'strom/akcie/matboj'},
-  {label: 'Náboj', url: 'strom/akcie/naboj'},
+  {label: 'Náboj', url: 'https://math.naboj.org/sk/sk/'},
   {label: 'Lomihlav', url: 'matik/akcie/lomihlav'},
   {label: 'Mamut', url: 'malynar/akcie/mamut'},
   {label: 'Máš problém?!', url: 'https://masproblem.strom.sk'},
@@ -79,8 +79,8 @@ export const Crossroad: React.FC = () => {
             justifyContent: 'center',
           }}
         >
-          <NavigationLink url="/strom/o-nas" label="O združení - KEKEKE" />
           <NavigationLink url="/strom/50-vyrocie" label="50. výročie" />
+          <NavigationLink url="/strom/o-nas" label="O združení" />
           {seminarItems.map((item) => (
             <NavigationLink key={item.label} url={item.url} label={item.label} />
           ))}
@@ -96,13 +96,13 @@ export const Crossroad: React.FC = () => {
 
       {/* Desktop view */}
       <Stack sx={{display: {xs: 'none', md: 'flex'}}} alignItems="stretch" flexGrow={1}>
-        <Grid container columnSpacing={{md: 2, lg: 4}} mt="30dvh" flexGrow={1}>
-          <Grid size={3} height="70dvh" justifyContent="end" display="flex">
+        <Grid container columnSpacing={{md: 2, lg: 4}} mt="20dvh" flexGrow={1}>
+          <Grid size={3} height="90dvh" justifyContent="end" display="flex">
             <Box>
               <StromOfficial width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
             </Box>
           </Grid>
-          <Grid size={9} height="70dvh" pr={3} sx={{overflow: 'auto'}}>
+          <Grid size={9} height="90dvh" pr={3} sx={{overflow: 'auto'}}>
             <Stack>
               <Table
                 sx={{
@@ -112,7 +112,7 @@ export const Crossroad: React.FC = () => {
                 }}
               >
                 <TableBody>
-                  {/* Row 1: O združení | empty | empty */}
+                  {/* Row 0: 50tka | empty | empty */}
                   <TableRow>
                     <TableCell>
                       <NavigationLink url="/strom/o-nas" label="50. výročie" />
@@ -155,7 +155,7 @@ export const Crossroad: React.FC = () => {
                     </TableCell>
                   </TableRow>
 
-                  {/* Row 4: Matik | Lomihlav | Primat */}
+                  {/* Row 4: Matik | Náboj | Primat */}
                   <TableRow>
                     <TableCell>
                       <NavigationLink url={seminarItems[1].url} label={seminarItems[1].label} />
@@ -168,7 +168,7 @@ export const Crossroad: React.FC = () => {
                     </TableCell>
                   </TableRow>
 
-                  {/* Row 5: Malynár | Mamut | empty */}
+                  {/* Row 5: Malynár | Lomihlav | empty */}
                   <TableRow>
                     <TableCell>
                       <NavigationLink url={seminarItems[2].url} label={seminarItems[2].label} />
@@ -179,7 +179,7 @@ export const Crossroad: React.FC = () => {
                     <TableCell />
                   </TableRow>
 
-                  {/* Row 6: empty | Máš problém?! | empty */}
+                  {/* Row 6: empty | Mamut | empty */}
                   <TableRow>
                     <TableCell />
                     <TableCell>
@@ -187,7 +187,7 @@ export const Crossroad: React.FC = () => {
                     </TableCell>
                     <TableCell />
                   </TableRow>
-                  {/* Row 6: empty | Máš problém?! | empty */}
+                  {/* Row 7: empty | Máš problém?! | empty */}
                   <TableRow>
                     <TableCell />
                     <TableCell>
@@ -196,7 +196,7 @@ export const Crossroad: React.FC = () => {
                     <TableCell />
                   </TableRow>
 
-                  {/* Row 7: empty | Kôš | Podporte nás */}
+                  {/* Row 8: empty | Kôš | Podporte nás */}
                   <TableRow>
                     <TableCell />
                     <TableCell>
