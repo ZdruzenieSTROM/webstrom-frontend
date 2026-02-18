@@ -13,6 +13,7 @@ const seminarItems = [
 ] as const
 const competitionItems = [
   {label: 'Matboj', url: 'strom/akcie/matboj'},
+  {label: 'Náboj', url: 'strom/akcie/naboj'},
   {label: 'Lomihlav', url: 'matik/akcie/lomihlav'},
   {label: 'Mamut', url: 'malynar/akcie/mamut'},
   {label: 'Máš problém?!', url: 'https://masproblem.strom.sk'},
@@ -78,7 +79,8 @@ export const Crossroad: React.FC = () => {
             justifyContent: 'center',
           }}
         >
-          <NavigationLink url="/strom/o-nas" label="O združení" />
+          <NavigationLink url="/strom/o-nas" label="O združení - KEKEKE" />
+          <NavigationLink url="/strom/50-vyrocie" label="50. výročie" />
           {seminarItems.map((item) => (
             <NavigationLink key={item.label} url={item.url} label={item.label} />
           ))}
@@ -110,6 +112,14 @@ export const Crossroad: React.FC = () => {
                 }}
               >
                 <TableBody>
+                  {/* Row 1: O združení | empty | empty */}
+                  <TableRow>
+                    <TableCell>
+                      <NavigationLink url="/strom/o-nas" label="50. výročie" />
+                    </TableCell>
+                    <TableCell />
+                    <TableCell />
+                  </TableRow>
                   {/* Row 1: O združení | empty | empty */}
                   <TableRow>
                     <TableCell>
@@ -177,12 +187,20 @@ export const Crossroad: React.FC = () => {
                     </TableCell>
                     <TableCell />
                   </TableRow>
+                  {/* Row 6: empty | Máš problém?! | empty */}
+                  <TableRow>
+                    <TableCell />
+                    <TableCell>
+                      <NavigationLink url={competitionItems[4].url} label={competitionItems[4].label} />
+                    </TableCell>
+                    <TableCell />
+                  </TableRow>
 
                   {/* Row 7: empty | Kôš | Podporte nás */}
                   <TableRow>
                     <TableCell />
                     <TableCell>
-                      <NavigationLink url={competitionItems[4].url} label={competitionItems[4].label} />
+                      <NavigationLink url={competitionItems[5].url} label={competitionItems[5].label} />
                     </TableCell>
                     <TableCell>
                       <NavigationLink url="/strom/podporte-nas" label="Podporte nás" />
