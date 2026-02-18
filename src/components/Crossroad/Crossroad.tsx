@@ -79,8 +79,8 @@ export const Crossroad: React.FC = () => {
             justifyContent: 'center',
           }}
         >
-          <NavigationLink url="/strom/50-vyrocie" label="50. výročie" />
           <NavigationLink url="/strom/o-nas" label="O združení" />
+          <NavigationLink url="/strom/50-vyrocie" label="50. výročie" />
           {seminarItems.map((item) => (
             <NavigationLink key={item.label} url={item.url} label={item.label} />
           ))}
@@ -96,13 +96,13 @@ export const Crossroad: React.FC = () => {
 
       {/* Desktop view */}
       <Stack sx={{display: {xs: 'none', md: 'flex'}}} alignItems="stretch" flexGrow={1}>
-        <Grid container columnSpacing={{md: 2, lg: 4}} mt="20dvh" flexGrow={1}>
-          <Grid size={3} height="90dvh" justifyContent="end" display="flex">
+        <Grid container columnSpacing={{md: 2, lg: 4}} mt="30dvh" flexGrow={1}>
+          <Grid size={3} height="70dvh" justifyContent="end" display="flex">
             <Box>
               <StromOfficial width="100%" height="100%" preserveAspectRatio="xMaxYMin" color="white" />
             </Box>
           </Grid>
-          <Grid size={9} height="90dvh" pr={3} sx={{overflow: 'auto'}}>
+          <Grid size={9} height="70dvh" pr={3} sx={{overflow: 'auto'}}>
             <Stack>
               <Table
                 sx={{
@@ -112,20 +112,14 @@ export const Crossroad: React.FC = () => {
                 }}
               >
                 <TableBody>
-                  {/* Row 0: 50tka | empty | empty */}
-                  <TableRow>
-                    <TableCell>
-                      <NavigationLink url="/strom/o-nas" label="50. výročie" />
-                    </TableCell>
-                    <TableCell />
-                    <TableCell />
-                  </TableRow>
                   {/* Row 1: O združení | empty | empty */}
                   <TableRow>
                     <TableCell>
                       <NavigationLink url="/strom/o-nas" label="O združení" />
                     </TableCell>
-                    <TableCell />
+                    <TableCell>
+                      <NavigationLink url="/strom/50-vyrocie" label="50. výročie" />
+                    </TableCell>
                     <TableCell />
                   </TableRow>
 
