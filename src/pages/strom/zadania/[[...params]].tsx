@@ -51,8 +51,14 @@ const Zadania: NextPage = () => {
 
   const seriesName = series && getSeriesName(series)
   const deadline = series && `Termín: ${formatDateTime(series.deadline)}`
-  const seriesState = series && getSeriesState(series)
 
+  const isAfterDeadline =
+    series && Date.now() > new Date(series.deadline).getTime()
+
+  const seriesState = isAfterDeadline
+    ? getSeriesState(series)
+    : undefined
+  
   const messages = [seriesName, deadline, seriesState].filter((message): message is string => !!message)
 
   return (
