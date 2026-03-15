@@ -1,7 +1,7 @@
 import {Box, Grid, Stack, Table, TableBody, TableCell, TableRow, Typography} from '@mui/material'
 import React from 'react'
 
-import StromOfficial from '@/svg/strom-oficial.svg'
+import StromOfficial from '@/svg/strom/strom-oficial-pointy.svg'
 import {colors} from '@/theme/colors'
 
 import {Link} from '../Clickable/Link'

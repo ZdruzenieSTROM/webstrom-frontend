@@ -1,7 +1,7 @@
 import {Box} from '@mui/material'
 import {FC} from 'react'
 
-import Strom from '@/svg/strom-trimmed.svg'
+import Strom from '@/svg/strom/strom-trimmed-pointy.svg'
 
 export const StromLogo: FC = () => {
   return (
