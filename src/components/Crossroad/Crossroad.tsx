@@ -13,6 +13,7 @@ const seminarItems = [
 ] as const
 const competitionItems = [
   {label: 'Matboj', url: 'strom/akcie/matboj'},
+  {label: 'Náboj', url: 'https://math.naboj.org/sk/sk/'},
   {label: 'Lomihlav', url: 'matik/akcie/lomihlav'},
   {label: 'Mamut', url: 'malynar/akcie/mamut'},
   {label: 'Máš problém?!', url: 'https://masproblem.strom.sk'},
@@ -79,6 +80,7 @@ export const Crossroad: React.FC = () => {
           }}
         >
           <NavigationLink url="/strom/o-nas" label="O združení" />
+          <NavigationLink url="/strom/50-vyrocie" label="50. výročie" />
           {seminarItems.map((item) => (
             <NavigationLink key={item.label} url={item.url} label={item.label} />
           ))}
@@ -115,7 +117,9 @@ export const Crossroad: React.FC = () => {
                     <TableCell>
                       <NavigationLink url="/strom/o-nas" label="O združení" />
                     </TableCell>
-                    <TableCell />
+                    <TableCell>
+                      <NavigationLink url="/strom/50-vyrocie" label="50. výročie" />
+                    </TableCell>
                     <TableCell />
                   </TableRow>
 
@@ -145,7 +149,7 @@ export const Crossroad: React.FC = () => {
                     </TableCell>
                   </TableRow>
 
-                  {/* Row 4: Matik | Lomihlav | Primat */}
+                  {/* Row 4: Matik | Náboj | Primat */}
                   <TableRow>
                     <TableCell>
                       <NavigationLink url={seminarItems[1].url} label={seminarItems[1].label} />
@@ -158,7 +162,7 @@ export const Crossroad: React.FC = () => {
                     </TableCell>
                   </TableRow>
 
-                  {/* Row 5: Malynár | Mamut | empty */}
+                  {/* Row 5: Malynár | Lomihlav | empty */}
                   <TableRow>
                     <TableCell>
                       <NavigationLink url={seminarItems[2].url} label={seminarItems[2].label} />
@@ -169,7 +173,7 @@ export const Crossroad: React.FC = () => {
                     <TableCell />
                   </TableRow>
 
-                  {/* Row 6: empty | Máš problém?! | empty */}
+                  {/* Row 6: empty | Mamut | empty */}
                   <TableRow>
                     <TableCell />
                     <TableCell>
@@ -177,12 +181,20 @@ export const Crossroad: React.FC = () => {
                     </TableCell>
                     <TableCell />
                   </TableRow>
-
-                  {/* Row 7: empty | Kôš | Podporte nás */}
+                  {/* Row 7: empty | Máš problém?! | empty */}
                   <TableRow>
                     <TableCell />
                     <TableCell>
                       <NavigationLink url={competitionItems[4].url} label={competitionItems[4].label} />
+                    </TableCell>
+                    <TableCell />
+                  </TableRow>
+
+                  {/* Row 8: empty | Kôš | Podporte nás */}
+                  <TableRow>
+                    <TableCell />
+                    <TableCell>
+                      <NavigationLink url={competitionItems[5].url} label={competitionItems[5].label} />
                     </TableCell>
                     <TableCell>
                       <NavigationLink url="/strom/podporte-nas" label="Podporte nás" />
