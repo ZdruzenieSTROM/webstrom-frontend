@@ -18,10 +18,10 @@ const getSeriesState = (series: SeriesWithProblems) => {
   if (series.complete) {
     return 'Séria je uzavretá'
   }
-  // zmena oproti BE - termin pridavame vzdy, v kode nizsie
-  // if (series.can_submit) {
-  //   return `Termín série: ${formatDateTime(series.deadline)}`
-  // }
+  if (series.can_submit) {
+    // zmena oproti BE - termin pridavame vzdy, v kode nizsie
+    return undefined
+  }
   return 'Prebieha opravovanie'
 }
 
