@@ -3,7 +3,6 @@
 // inak aj pri `false` sa stale prefetchne pri hoveri, co je acceptable.
 export const isExternalLink = (href?: string) => {
   if (!href) return false
-
-  const isMedia = href.startsWith('/media')
-  return isMedia
+  if (href.startsWith('/media') || href.startsWith('/api/')) return true
+  return /^([a-z][\d+.a-z-]*:|\/\/)/i.test(href)
 }
