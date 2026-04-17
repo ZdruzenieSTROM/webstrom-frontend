@@ -8,6 +8,8 @@ export const ProfileList: FC = () => (
     <Datagrid>
       <TextField source="first_name" />
       <TextField source="last_name" />
+      <TextField source="email" />
+      <TextField source="phone" />
       <TextField source="school.verbose_name" />
       <ReferenceField source="grade" reference="competition/grade">
         <TextField source="tag" />
