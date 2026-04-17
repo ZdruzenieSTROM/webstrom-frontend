@@ -118,6 +118,12 @@ export const RegisterForm: FC = () => {
         return '* Zadaj telefónne číslo vo formáte s predvoľbou (napr. +421 123 456 789).'
     },
   }
+  const nameRule = {
+    pattern: {
+      value: /^\p{Script=Latin}+$/u,
+      message: '* Zadaj len písmená.',
+    },
+  }
 
   const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -167,8 +173,8 @@ export const RegisterForm: FC = () => {
             }}
           />
           <NewPasswordSubForm control={control} getValues={getValues} gap={2} />
-          <FormInput control={control} name="first_name" label="krstné meno*" rules={requiredRule} />
-          <FormInput control={control} name="last_name" label="priezvisko*" rules={requiredRule} />
+          <FormInput control={control} name="first_name" label="krstné meno*" rules={{...requiredRule, ...nameRule}} />
+          <FormInput control={control} name="last_name" label="priezvisko*" rules={{...requiredRule, ...nameRule}} />
           <SchoolSubForm control={control} watch={watch} setValue={setValue} gap={2} />
           <FormInput control={control} name="phone" label="telefón v tvare +421 ..." rules={phoneRule} />
           <FormInput control={control} name="parent_phone" label="telefón na rodiča" rules={phoneRule} />
