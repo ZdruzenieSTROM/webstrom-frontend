@@ -5,7 +5,7 @@ import {useMutation, useQuery} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
 import Image from 'next/image'
 import {useRouter} from 'next/router'
-import {FC, useCallback, useEffect, useState} from 'react'
+import {FC, startTransition, useCallback, useEffect, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiOptions} from '@/api/api'
@@ -65,7 +65,43 @@ const styles = {
     justifyContent: 'space-around',
     gap: '8px',
   },
+  sortHeaderButton: {
+    background: 'none',
+    border: 'none',
+    padding: 0,
+    cursor: 'pointer',
+    textAlign: 'left',
+    color: 'inherit',
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    fontStyle: 'inherit',
+    fontWeight: 'inherit',
+    textTransform: 'inherit',
+    lineHeight: 'inherit',
+  },
+  sortHeaderButtonCentered: {
+    placeSelf: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    gap: '8px',
+    width: '100%',
+    background: 'none',
+    border: 'none',
+    padding: 0,
+    cursor: 'pointer',
+    color: 'inherit',
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    fontStyle: 'inherit',
+    fontWeight: 'inherit',
+    textTransform: 'inherit',
+    lineHeight: 'inherit',
+  },
 }
+
+const getSolutionName = (solution: SolutionAdministration) =>
+  `${solution.semester_registration?.profile.first_name ?? ''} ${solution.semester_registration?.profile.last_name ?? ''}`.trim()
 
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
@@ -98,11 +134,17 @@ export const ProblemAdministration: FC = () => {
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
   const [solutions, setSolutions] = useState<SolutionAdministration[]>()
+  const [sortKey, setSortKey] = useState<'name' | 'points'>('name')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
     // TODO: asi to nechceme updatovat vzdy pri zmene dat zo serveru, moze nam to prepisovat lokalny stav...
     // netreba robit novy array, podstatne je spravne ohandlit zmeny
-    if (problem) setSolutions(problem.solution_set)
+    if (problem) {
+      startTransition(() => {
+        setSolutions(problem.solution_set)
+      })
+    }
   }, [problem])
 
   const {mutate: uploadPoints} = useMutation({
@@ -185,6 +227,34 @@ export const ProblemAdministration: FC = () => {
   const handleSavePoints = () => {
     setIsDirty(false)
     uploadPoints(problemId)
+  }
+
+  const sortedSolutions = (solutions ?? [])
+    .map((solution, originalIndex) => ({solution, originalIndex}))
+    .toSorted((left, right) => {
+      if (sortKey === 'name') {
+        const leftName = getSolutionName(left.solution)
+        const rightName = getSolutionName(right.solution)
+
+        return sortDirection === 'asc'
+          ? leftName.localeCompare(rightName, 'sk')
+          : rightName.localeCompare(leftName, 'sk')
+      }
+
+      const leftPoints = left.solution.score ?? Number.NEGATIVE_INFINITY
+      const rightPoints = right.solution.score ?? Number.NEGATIVE_INFINITY
+
+      return sortDirection === 'asc' ? leftPoints - rightPoints : rightPoints - leftPoints
+    })
+
+  const toggleSort = (key: 'name' | 'points') => {
+    if (sortKey === key) {
+      setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'))
+      return
+    }
+
+    setSortKey(key)
+    setSortDirection(key === 'name' ? 'asc' : 'desc')
   }
 
   return (
@@ -279,12 +349,21 @@ export const ProblemAdministration: FC = () => {
 
         <Box sx={styles.table}>
           <Box sx={styles.tableHeader}>
-            <div>Riešiteľ</div>
-            <Box sx={styles.centerCell}>Body</Box>
+            <Box component="button" type="button" onClick={() => toggleSort('name')} sx={styles.sortHeaderButton}>
+              Riešiteľ {sortKey === 'name' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+            </Box>
+            <Box
+              component="button"
+              type="button"
+              onClick={() => toggleSort('points')}
+              sx={styles.sortHeaderButtonCentered}
+            >
+              Body {sortKey === 'points' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+            </Box>
             <Box sx={styles.centerCell}>Riešenie</Box>
             <Box sx={styles.centerCell}>Opravené</Box>
           </Box>
-          {solutions?.map((solution, index) => (
+          {sortedSolutions.map(({solution, originalIndex}) => (
             <Box key={solution.id} sx={styles.tableRow}>
               <div>
                 {solution.semester_registration?.profile.first_name} {solution.semester_registration?.profile.last_name}
@@ -305,7 +384,7 @@ export const ProblemAdministration: FC = () => {
                   type="text"
                   pattern="[0-9]"
                   value={solution.score ?? ''}
-                  onChange={(event) => updatePoints(index, event.target.value)}
+                  onChange={(event) => updatePoints(originalIndex, event.target.value)}
                   sx={styles.input}
                 />
               </Box>
@@ -327,7 +406,7 @@ export const ProblemAdministration: FC = () => {
                 )}
                 <FileUploader
                   uploadLink={`/competition/solution/${solution.id}/upload-solution-file`}
-                  refetch={() => updateSolution(index)}
+                  refetch={() => updateSolution(originalIndex)}
                 />
               </Box>
               <Box sx={styles.centerCell}>
@@ -348,7 +427,7 @@ export const ProblemAdministration: FC = () => {
                 )}
                 <FileUploader
                   uploadLink={`/competition/solution/${solution.id}/upload-corrected-solution-file`}
-                  refetch={() => updateCorrectedSolution(index)}
+                  refetch={() => updateCorrectedSolution(originalIndex)}
                 />
               </Box>
             </Box>
