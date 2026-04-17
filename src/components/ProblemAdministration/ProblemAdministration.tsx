@@ -16,6 +16,7 @@ import {Accept} from '@/utils/dropzoneAccept'
 import {getCorrectedSolutionUrl, getSolutionUrl} from '@/utils/getSolutionUrl'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useNavigationTrap} from '@/utils/useNavigationTrap'
+import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Button} from '../Clickable/Button'
 import {Link} from '../Clickable/Link'
@@ -68,6 +69,7 @@ const styles = {
 
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
+  const {seminar} = useSeminarInfo()
   const {params} = router.query
 
   const problemId = params && params[0]
@@ -211,7 +213,7 @@ export const ProblemAdministration: FC = () => {
         <Stack direction="row" justifyContent="space-between" alignItems="end">
           <Typography variant="h2">Opravovanie {problem.order}. úlohy</Typography>
 
-          <Link variant="button2" href={`/strom/admin/opravovanie/${semesterUrl}`}>
+          <Link variant="button2" href={`/${seminar}/admin/opravovanie/${semesterUrl}`}>
             Späť na semester
           </Link>
         </Stack>
