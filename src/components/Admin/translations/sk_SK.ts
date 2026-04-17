@@ -47,6 +47,15 @@ export const sk_SK = {
         sites: 'Stránky',
       },
     },
+    'cms/gallery': {
+      name: 'Galéria',
+      fields: {
+        name: 'Názov',
+        gallery_link: 'Odkaz',
+        event: 'Event',
+        event_name: 'Event',
+      },
+    },
     'competition/competition': {
       name: 'Aktivity',
       fields: {
