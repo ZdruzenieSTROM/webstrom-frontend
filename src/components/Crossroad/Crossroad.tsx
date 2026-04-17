@@ -34,7 +34,7 @@ const NavigationLink: React.FC<NavigationLinkProps> = ({label, url}) => (
     variant="h1"
     href={url}
     invertColors
-    sx={{width: {xs: 'auto', md: '100%'}, pl: 0}}
+    sx={{width: {xs: 'auto', md: '100%'}}}
     textSx={{width: {xs: 'auto', md: '100%'}}}
   >
     {label}
@@ -42,7 +42,7 @@ const NavigationLink: React.FC<NavigationLinkProps> = ({label, url}) => (
 )
 
 const SectionHeader: React.FC<{children: React.ReactNode}> = ({children}) => (
-  <Typography variant="h3" color="white" sx={{pt: 3, pb: 2}}>
+  <Typography variant="h3" color="white" sx={{pt: 3, pb: 2, pr: 1, pl: 1}}>
     {children}
   </Typography>
 )
