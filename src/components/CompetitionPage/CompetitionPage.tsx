@@ -96,26 +96,26 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               </Grid>
               <Grid size={2} display="flex" justifyContent="end">
                 {firstGallery ? (
-                  <Link variant="button2" href={firstGallery.gallery_link} target="_blank">
+                  <Link variant="button2" href={firstGallery.gallery_link}>
                     {firstGallery.name}
                   </Link>
                 ) : null}
               </Grid>
               <Grid size={2} display="flex" justifyContent="end">
                 {results && (
-                  <Link variant="button2" key={results.id} href={results.file} target="_blank">
+                  <Link variant="button2" key={results.id} href={results.file}>
                     {PublicationTypes.RESULTS.display_name}
                   </Link>
                 )}
               </Grid>
               <Grid size={2} display="flex" justifyContent="end">
                 {solutions ? (
-                  <Link variant="button2" key={solutions.id} href={solutions.file} target="_blank">
+                  <Link variant="button2" key={solutions.id} href={solutions.file}>
                     {PublicationTypes.SOLUTIONS.display_name}
                   </Link>
                 ) : (
                   problems && (
-                    <Link variant="button2" key={problems.id} href={problems.file} target="_blank">
+                    <Link variant="button2" key={problems.id} href={problems.file}>
                       {PublicationTypes.PROBLEMS.display_name}
                     </Link>
                   )
