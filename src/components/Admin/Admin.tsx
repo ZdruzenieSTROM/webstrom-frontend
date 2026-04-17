@@ -58,6 +58,10 @@ import {SchoolCreate} from './resources/personal/schools/SchoolCreate'
 import {SchoolEdit} from './resources/personal/schools/SchoolEdit'
 import {SchoolList} from './resources/personal/schools/SchoolList'
 import {SchoolShow} from './resources/personal/schools/SchoolShow'
+import {GalleryCreate} from './resources/cms/gallery/GalleryCreate'
+import {GalleryEdit} from './resources/cms/gallery/GalleryEdit'
+import {GalleryList} from './resources/cms/gallery/GalleryList'
+import {GalleryShow} from './resources/cms/gallery/GalleryShow'
 import {useAuthProvider} from './useAuthProvider'
 
 const themeOverrides: RaThemeOptions = {
@@ -213,6 +217,14 @@ export const Admin: FC = () => {
         show={PublicationShow}
         edit={PublicationEdit}
         create={PublicationCreate}
+      />
+      <Resource
+        name="cms/gallery"
+        recordRepresentation="verbose_name"
+        list={GalleryList}
+        show={GalleryShow}
+        edit={GalleryEdit}
+        create={GalleryCreate}
       />
     </ReactAdmin>
   )
