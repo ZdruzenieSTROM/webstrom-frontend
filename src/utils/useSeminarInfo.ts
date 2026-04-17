@@ -3,7 +3,7 @@ import {useRouter} from 'next/router'
 export type Seminar = 'strom' | 'matik' | 'malynar'
 export type SeminarId = 0 | 1 | 2
 
-const seminarToId: Record<Seminar, SeminarId> = {
+export const seminarToId: Record<Seminar, SeminarId> = {
   strom: 0,
   matik: 1,
   malynar: 2,
