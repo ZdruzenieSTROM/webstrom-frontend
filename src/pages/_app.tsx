@@ -38,8 +38,8 @@ const MyApp: FC<AppProps<PageProps>> = ({Component, pageProps}) => {
                 <BannerAnimationContainer.Provider>
                   <ThemeProvider theme={theme}>
                     <CssBaseline />
-                    <AlertBox />
                     <ErrorBoundary>
+                      <AlertBox />
                       <Component {...pageProps} />
                     </ErrorBoundary>
                   </ThemeProvider>
