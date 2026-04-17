@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {AutocompleteInput, ReferenceInput, required, SimpleForm, TextInput} from 'react-admin'
+import {AutocompleteInput, email, ReferenceInput, required, SimpleForm, TextInput} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
@@ -14,6 +14,8 @@ export const ProfileEdit: FC = () => (
     <SimpleForm toolbar={<MyEditToolbar />}>
       <TextInput source="first_name" validate={required()} />
       <TextInput source="last_name" validate={required()} />
+      <TextInput source="email" validate={email()} disabled />
+      <TextInput source="phone" />
       <ReferenceInput source="school.code" reference="personal/schools">
         <AutocompleteInput optionText="verbose_name" validate={required()} />
       </ReferenceInput>
