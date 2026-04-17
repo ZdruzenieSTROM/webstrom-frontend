@@ -13,8 +13,11 @@ export const PostPreview: FC = () => {
       <FormDataConsumer>
         {({formData}) => (
           <Grid container columnSpacing={5} sx={{width: '100%'}}>
-            <Grid size={{xs: 12, md: 4}}>
-              <Stack gap={5} sx={{color: colors.black, background: colors.white, p: '10px'}}>
+            <Grid size={12}>
+              <Stack
+                gap={5}
+                sx={{color: colors.black, background: colors.white, p: '10px', width: {xs: '100%', md: '50vw'}}}
+              >
                 <Post
                   id={0}
                   links={formData?.links ?? []}
