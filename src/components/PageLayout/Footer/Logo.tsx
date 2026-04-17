@@ -32,7 +32,13 @@ export const Logo: FC<ILogo> = ({name, image, url}) => {
   const isExternal = isExternalLink(trimmedUrl)
 
   return (
-    <Box component={isExternal ? 'a' : NextLink} href={trimmedUrl} sx={{display: 'inline-flex'}}>
+    <Box
+      component={isExternal ? 'a' : NextLink}
+      href={trimmedUrl}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noreferrer' : undefined}
+      sx={{display: 'inline-flex'}}
+    >
       {imageElement}
     </Box>
   )
