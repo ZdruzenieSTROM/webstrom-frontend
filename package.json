@@ -87,6 +87,7 @@
   "packageManager": "yarn@4.9.1",
   "resolutions": {
     "@tanstack/react-query": "npm:@tanstack/react-query@5.77.0",
-    "react-hook-form": "npm:react-hook-form@7.56.4"
+    "react-hook-form": "npm:react-hook-form@7.56.4",
+    "import-in-the-middle": "^3.0.1"
   }
 }
