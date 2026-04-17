@@ -13,7 +13,6 @@ export interface ILogo {
 }
 
 export const Logo: FC<ILogo> = ({name, image, url}) => {
-  const hasUrl = url != null && url.trim() !== ''
   const imageElement = (
     <Box
       component={'img'}
@@ -25,14 +24,15 @@ export const Logo: FC<ILogo> = ({name, image, url}) => {
     />
   )
 
-  if (!hasUrl) {
+  if (!url || !url.trim()) {
     return imageElement
   }
 
-  const isExternal = isExternalLink(url)
+  const trimmedUrl = url.trim()
+  const isExternal = isExternalLink(trimmedUrl)
 
   return (
-    <Box component={isExternal ? 'a' : NextLink} href={url} sx={{display: 'inline-flex'}}>
+    <Box component={isExternal ? 'a' : NextLink} href={trimmedUrl} sx={{display: 'inline-flex'}}>
       {imageElement}
     </Box>
   )
