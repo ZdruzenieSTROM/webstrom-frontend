@@ -9,6 +9,7 @@ import {FC} from 'react'
 import {CookiesProvider} from 'react-cookie'
 
 import {AlertBox} from '@/components/Alert/AlertBox'
+import {ErrorBoundary} from '@/components/ErrorBoundary/ErrorBoundary'
 import {theme} from '@/theme/theme'
 import {AlertContainer} from '@/utils/AlertContainer'
 import {AuthContainer} from '@/utils/AuthContainer'
@@ -37,8 +38,10 @@ const MyApp: FC<AppProps<PageProps>> = ({Component, pageProps}) => {
                 <BannerAnimationContainer.Provider>
                   <ThemeProvider theme={theme}>
                     <CssBaseline />
-                    <AlertBox />
-                    <Component {...pageProps} />
+                    <ErrorBoundary>
+                      <AlertBox />
+                      <Component {...pageProps} />
+                    </ErrorBoundary>
                   </ThemeProvider>
                 </BannerAnimationContainer.Provider>
               </AuthContainer.Provider>
