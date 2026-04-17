@@ -38,6 +38,8 @@ export const PageLayout: FC<PageLayoutProps> = ({
   const combinedTitle = subtitle ? `${subtitle} - ${title}` : title
   const browserTitlePrefix = combinedTitle && `${combinedTitle} | `
   const browserTitle = `${browserTitlePrefix}${seminarTitle[seminar]}`
+  const description = `${seminarTitle[seminar]} - korešpondenčný seminár`
+  const shareImagePath = '/og/strom-share.png'
   const horizontalContentPadding = {xs: 4, md: 8, lg: 12}
 
   return (
@@ -45,6 +47,20 @@ export const PageLayout: FC<PageLayoutProps> = ({
       <Head>
         {/* mali sme tu pred zmenou warning, musi to byt jeden text child: `A title element received an array with more than 1 element as children.` */}
         <title>{browserTitle}</title>
+        <meta name="description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={seminarTitle[seminar]} />
+        <meta property="og:title" content={browserTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={shareImagePath} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`${seminarTitle[seminar]} logo`} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={browserTitle} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={shareImagePath} />
       </Head>
       <Stack sx={{minHeight: '100dvh', backgroundColor: colors.white}}>
         <TopGrid title={title} subtitle={subtitle} bannerMessages={bannerMessages} />
