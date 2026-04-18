@@ -26,7 +26,7 @@ const GalleryButton: FC<{
   gallery: Gallery
 }> = ({gallery}) => {
   return (
-    <Link variant="button2" href={gallery.gallery_link} target="_blank">
+    <Link variant="button2" href={gallery.gallery_link}>
       {gallery.name}
     </Link>
   )
@@ -36,7 +36,7 @@ const PublicationButton: FC<{
   publication: Publication
 }> = ({publication}) => {
   return (
-    <Link variant="button2" href={publication.file} target="_blank">
+    <Link variant="button2" href={publication.file}>
       {publication.name}
     </Link>
   )

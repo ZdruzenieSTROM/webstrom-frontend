@@ -61,7 +61,8 @@ export const Link: FC<LinkProps> = ({
     <Box
       component={isExternal ? 'a' : NextLink}
       href={href ?? ''}
-      target={target}
+      target={target ?? (isExternal ? '_blank' : undefined)}
+      rel={isExternal ? 'noreferrer' : undefined}
       prefetch={prefetch}
       onClick={(e) => e.stopPropagation()}
       sx={{

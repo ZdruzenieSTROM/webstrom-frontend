@@ -103,7 +103,7 @@ export const Problem: FC<{
           }}
         >
           {problem.solution_pdf && (
-            <Link href={problem.solution_pdf} target="_blank" variant="button2">
+            <Link href={problem.solution_pdf} variant="button2">
               vzorové riešenie
             </Link>
           )}
@@ -111,7 +111,6 @@ export const Problem: FC<{
             <>
               <Link
                 href={`/api/competition/problem/${problem.id}/my-solution`}
-                target="_blank"
                 disabled={!problem.submitted}
                 variant="button2"
               >
@@ -130,7 +129,6 @@ export const Problem: FC<{
               </Link>
               <Link
                 href={`/api/competition/problem/${problem.id}/corrected-solution`}
-                target="_blank"
                 disabled={!problem.submitted?.corrected_solution}
                 variant="button2"
               >

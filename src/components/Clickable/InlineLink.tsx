@@ -15,7 +15,14 @@ export const InlineLink: FC<InlineLinkProps> = ({children, href, target, sx, tex
   const isExternal = isExternalLink(href)
 
   return (
-    <Box component={isExternal ? 'a' : NextLink} href={href ?? ''} target={target} prefetch={prefetch} sx={sx}>
+    <Box
+      component={isExternal ? 'a' : NextLink}
+      href={href ?? ''}
+      target={target ?? (isExternal ? '_blank' : undefined)}
+      rel={isExternal ? 'noreferrer' : undefined}
+      prefetch={prefetch}
+      sx={sx}
+    >
       <Typography variant="inlineLink" sx={textSx}>
         {children}
       </Typography>
