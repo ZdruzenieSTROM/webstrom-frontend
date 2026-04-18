@@ -185,9 +185,10 @@ export const Archive: FC = () => {
     <Stack gap={1}>
       {eventListIsLoading && <Loading />}
 
-      {yearGroups.map((group) => (
+      {yearGroups.map((group, index) => (
         <Accordion
           key={group.year}
+          defaultExpanded={index === 0}
           disableGutters
           square={false}
           sx={{boxShadow: 'none', '&:before': {display: 'none'}}}
@@ -200,14 +201,14 @@ export const Archive: FC = () => {
             </Stack>
           </AccordionSummary>
           <AccordionDetails sx={{p: 0}}>
-            <Stack gap={2}>
+            <Stack gap={1}>
               {group.events.map((event) => {
                 const seasonLeaflet = getLeafletPublication(event, 1)
                 const firstSeriesLeaflet = getLeafletPublication(event, 2)
                 const secondSeriesLeaflet = getLeafletPublication(event, 3)
 
                 return (
-                  <Stack key={event.id} gap={1}>
+                  <Stack key={event.id} gap={0}>
                     <ArchiveRow label={getSeasonLabel(event.season_code)} gap={'7px'}>
                       {seasonLeaflet && <PublicationButton publication={seasonLeaflet} label="Časopis" />}
                       <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
