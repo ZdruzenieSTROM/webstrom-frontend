@@ -37,6 +37,10 @@ export const Problems: FC = () => {
 
   const {data: series, isLoading: seriesIsLoading} = useQuery(apiOptions.competition.series.byId(id.seriesId))
 
+  const {data: semester} = useQuery(apiOptions.competition.semester.byId(id.semesterId))
+  const semesterName = semester?.season_code === 0 ? 'zima' : 'leto'
+  const semesterUrl = `${semester?.year}/${semesterName}`
+
   const problems = series?.problems ?? []
   const canSubmit = series?.can_submit ?? false
   const canResubmit = series?.can_resubmit ?? false
@@ -115,7 +119,7 @@ export const Problems: FC = () => {
           permissionsIsLoading) && <Loading />}
         {hasPermissions && (
           <Stack alignSelf="end">
-            <Link href={`/${seminar}/admin/opravovanie/${id.semesterId}`} variant="button2">
+            <Link href={`/${seminar}/admin/opravovanie/${semesterUrl}`} variant="button2">
               Admin: Opravovanie
             </Link>
           </Stack>
