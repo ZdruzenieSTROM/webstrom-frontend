@@ -88,7 +88,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
           const firstGallery = event.galleries.length > 0 ? event.galleries[0] : null
           return (
             <Fragment key={event.id}>
-              <Grid size={6}>
+              <Grid size={4}>
                 <Typography variant="h2" component="span">
                   {name} {event.school_year}
                   {event.additional_name ? ` (${event.additional_name})` : ''}
@@ -109,17 +109,18 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
                 )}
               </Grid>
               <Grid size={2} display="flex" justifyContent="end">
+                {problems ? (
+                  <Link variant="button2" key={problems.id} href={problems.file} target="_blank">
+                    {PublicationTypes.PROBLEMS.display_name}
+                  </Link>
+                ) : null}
+              </Grid>
+              <Grid size={2} display="flex" justifyContent="end">
                 {solutions ? (
                   <Link variant="button2" key={solutions.id} href={solutions.file}>
                     {PublicationTypes.SOLUTIONS.display_name}
                   </Link>
-                ) : (
-                  problems && (
-                    <Link variant="button2" key={problems.id} href={problems.file}>
-                      {PublicationTypes.PROBLEMS.display_name}
-                    </Link>
-                  )
-                )}
+                ) : null}
               </Grid>
             </Fragment>
           )
