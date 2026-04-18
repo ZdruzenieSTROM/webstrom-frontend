@@ -5,7 +5,7 @@ import {useMutation, useQuery} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
 import Image from 'next/image'
 import {useRouter} from 'next/router'
-import {FC, useCallback, useEffect, useState} from 'react'
+import {FC, startTransition, useCallback, useEffect, useMemo, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiOptions} from '@/api/api'
@@ -67,6 +67,11 @@ const styles = {
   },
 }
 
+type SortKey = 'name' | 'points'
+
+const getSolutionName = (solution: SolutionAdministration) =>
+  `${solution.semester_registration?.profile.first_name ?? ''} ${solution.semester_registration?.profile.last_name ?? ''}`.trim()
+
 export const ProblemAdministration: FC = () => {
   const router = useRouter()
   const {seminar} = useSeminarInfo()
@@ -98,11 +103,18 @@ export const ProblemAdministration: FC = () => {
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
   const [solutions, setSolutions] = useState<SolutionAdministration[]>()
+  const [sortKey, setSortKey] = useState<SortKey>('name')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
     // TODO: asi to nechceme updatovat vzdy pri zmene dat zo serveru, moze nam to prepisovat lokalny stav...
     // netreba robit novy array, podstatne je spravne ohandlit zmeny
-    if (problem) setSolutions(problem.solution_set)
+    // startTransition marks the update as non-urgent, defers it and silences the react-hooks/set-state-in-effect warning
+    if (problem) {
+      startTransition(() => {
+        setSolutions(problem.solution_set)
+      })
+    }
   }, [problem])
 
   const {mutate: uploadPoints} = useMutation({
@@ -177,6 +189,28 @@ export const ProblemAdministration: FC = () => {
     accept: Accept.Zip,
   })
 
+  const sortedSolutions = useMemo(
+    () =>
+      (solutions ?? [])
+        .map((solution, originalIndex) => ({solution, originalIndex}))
+        .toSorted((left, right) => {
+          if (sortKey === 'name') {
+            const leftName = getSolutionName(left.solution)
+            const rightName = getSolutionName(right.solution)
+
+            return sortDirection === 'asc'
+              ? leftName.localeCompare(rightName, 'sk')
+              : rightName.localeCompare(leftName, 'sk')
+          }
+
+          const leftPoints = left.solution.score ?? Number.NEGATIVE_INFINITY
+          const rightPoints = right.solution.score ?? Number.NEGATIVE_INFINITY
+
+          return sortDirection === 'asc' ? leftPoints - rightPoints : rightPoints - leftPoints
+        }),
+    [solutions, sortKey, sortDirection],
+  )
+
   if (permissionsIsLoading || problemIsLoading || semesterIsLoading) return <Loading />
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
   if (problemId === undefined || !problem)
@@ -186,6 +220,18 @@ export const ProblemAdministration: FC = () => {
     setIsDirty(false)
     uploadPoints(problemId)
   }
+
+  const toggleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'))
+      return
+    }
+
+    setSortKey(key)
+    setSortDirection(key === 'name' ? 'asc' : 'desc')
+  }
+
+  const getSortArrow = (key: SortKey) => (sortKey === key ? (sortDirection === 'asc' ? '↑' : '↓') : '')
 
   return (
     <>
@@ -279,12 +325,26 @@ export const ProblemAdministration: FC = () => {
 
         <Box sx={styles.table}>
           <Box sx={styles.tableHeader}>
-            <div>Riešiteľ</div>
-            <Box sx={styles.centerCell}>Body</Box>
+            <Box
+              component="button"
+              type="button"
+              onClick={() => toggleSort('name')}
+              sx={{all: 'unset', cursor: 'pointer', justifySelf: 'start'}}
+            >
+              Riešiteľ {getSortArrow('name')}
+            </Box>
+            <Box
+              component="button"
+              type="button"
+              onClick={() => toggleSort('points')}
+              sx={{all: 'unset', cursor: 'pointer', placeSelf: 'center'}}
+            >
+              Body {getSortArrow('points')}
+            </Box>
             <Box sx={styles.centerCell}>Riešenie</Box>
             <Box sx={styles.centerCell}>Opravené</Box>
           </Box>
-          {solutions?.map((solution, index) => (
+          {sortedSolutions.map(({solution, originalIndex}) => (
             <Box key={solution.id} sx={styles.tableRow}>
               <div>
                 {solution.semester_registration?.profile.first_name} {solution.semester_registration?.profile.last_name}
@@ -305,7 +365,7 @@ export const ProblemAdministration: FC = () => {
                   type="text"
                   pattern="[0-9]"
                   value={solution.score ?? ''}
-                  onChange={(event) => updatePoints(index, event.target.value)}
+                  onChange={(event) => updatePoints(originalIndex, event.target.value)}
                   sx={styles.input}
                 />
               </Box>
@@ -327,7 +387,7 @@ export const ProblemAdministration: FC = () => {
                 )}
                 <FileUploader
                   uploadLink={`/competition/solution/${solution.id}/upload-solution-file`}
-                  refetch={() => updateSolution(index)}
+                  refetch={() => updateSolution(originalIndex)}
                 />
               </Box>
               <Box sx={styles.centerCell}>
@@ -348,7 +408,7 @@ export const ProblemAdministration: FC = () => {
                 )}
                 <FileUploader
                   uploadLink={`/competition/solution/${solution.id}/upload-corrected-solution-file`}
-                  refetch={() => updateCorrectedSolution(index)}
+                  refetch={() => updateCorrectedSolution(originalIndex)}
                 />
               </Box>
             </Box>
