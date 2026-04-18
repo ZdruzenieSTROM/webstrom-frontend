@@ -23,6 +23,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   const [hiddenResponseText, setHiddenResponseText] = useState('')
   const [hiddenResponseDialogId, sethiddenResponseDialogId] = useState<number>()
   const [deleteDialogId, setDeleteDialogId] = useState<number | undefined>()
+  const [publishDialogId, setPublishDialogId] = useState<number | undefined>()
 
   const queryKey = ['competition', 'problem', problemId, 'comments']
   const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
@@ -94,6 +95,12 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
     close()
   }
 
+  const closePublishDialog = () => setPublishDialogId(undefined)
+  const agreePublish = () => {
+    if (publishDialogId !== undefined) publishComment(publishDialogId)
+    closePublishDialog()
+  }
+
   return (
     <>
       {/* delete comment dialog */}
@@ -108,6 +115,23 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
               Potvrdiť
             </Button>
             <Button variant="button2" onClick={close}>
+              Zavrieť
+            </Button>
+          </>
+        }
+      />
+      {/* publish comment with hidden response confirmation dialog */}
+      <Dialog
+        open={publishDialogId !== undefined}
+        close={closePublishDialog}
+        title="Zverejniť komentár?"
+        contentText="Komentár obsahuje odpoveď vedúceho, ktorá bude po zverejnení stratená."
+        actions={
+          <>
+            <Button variant="button2" onClick={agreePublish}>
+              Potvrdiť
+            </Button>
+            <Button variant="button2" onClick={closePublishDialog}>
               Zavrieť
             </Button>
           </>
@@ -170,7 +194,14 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                   ) : (
                     <Stack gap={1} alignSelf="end" direction="row">
                       {comment.state !== CommentState.Published && hasPermissions && (
-                        <Button onClick={() => publishComment(comment.id)} variant="button3">
+                        <Button
+                          onClick={() =>
+                            comment.hidden_response
+                              ? setPublishDialogId(comment.id)
+                              : publishComment(comment.id)
+                          }
+                          variant="button3"
+                        >
                           Zverejniť
                         </Button>
                       )}
