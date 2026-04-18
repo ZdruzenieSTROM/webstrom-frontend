@@ -130,23 +130,6 @@ export const sk_SK = {
         num_comments: 'Počet komentárov',
       },
     },
-    'competition/publications': {
-      name: 'Semestre',
-      fields: {
-        competition: 'Súťaž',
-        year: 'Ročník',
-        season_code: 'Obdobie',
-        school_year: 'Školský rok',
-        start: 'Začiatok',
-        end: 'Koniec',
-        complete: 'complete',
-        additional_name: 'Prívlastok súťaže (špecifikácia)',
-        registration_link: 'Odkaz na registráciu',
-        series_set: 'Série',
-        publication_set: 'Publikácie',
-        late_tags: 'late_tags',
-      },
-    },
     'competition/solution': {
       name: 'Riešenia',
       fields: {
@@ -193,6 +176,15 @@ export const sk_SK = {
           verbose_name: 'Škola',
         },
         grade: 'Ročník',
+      },
+    },
+    'competition/publication': {
+      name: 'Publikácie',
+      fields: {
+        name: 'Názov',
+        event: 'Udalosť',
+        publication_type: 'Typ',
+        file: 'Súbor',
       },
     },
   },

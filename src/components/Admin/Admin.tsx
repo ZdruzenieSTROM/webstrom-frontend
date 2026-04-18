@@ -212,7 +212,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/publication"
-        recordRepresentation="verbose_name"
+        recordRepresentation="name"
         list={PublicationList}
         show={PublicationShow}
         edit={PublicationEdit}
