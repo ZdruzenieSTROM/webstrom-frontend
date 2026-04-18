@@ -65,39 +65,6 @@ const styles = {
     justifyContent: 'space-around',
     gap: '8px',
   },
-  sortHeaderButton: {
-    background: 'none',
-    border: 'none',
-    padding: 0,
-    cursor: 'pointer',
-    textAlign: 'left',
-    color: 'inherit',
-    fontFamily: 'inherit',
-    fontSize: 'inherit',
-    fontStyle: 'inherit',
-    fontWeight: 'inherit',
-    textTransform: 'inherit',
-    lineHeight: 'inherit',
-  },
-  sortHeaderButtonCentered: {
-    placeSelf: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    gap: '8px',
-    width: '100%',
-    background: 'none',
-    border: 'none',
-    padding: 0,
-    cursor: 'pointer',
-    color: 'inherit',
-    fontFamily: 'inherit',
-    fontSize: 'inherit',
-    fontStyle: 'inherit',
-    fontWeight: 'inherit',
-    textTransform: 'inherit',
-    lineHeight: 'inherit',
-  },
 }
 
 const getSolutionName = (solution: SolutionAdministration) =>
@@ -349,14 +316,19 @@ export const ProblemAdministration: FC = () => {
 
         <Box sx={styles.table}>
           <Box sx={styles.tableHeader}>
-            <Box component="button" type="button" onClick={() => toggleSort('name')} sx={styles.sortHeaderButton}>
+            <Box
+              component="button"
+              type="button"
+              onClick={() => toggleSort('name')}
+              sx={{all: 'unset', cursor: 'pointer', justifySelf: 'start'}}
+            >
               Riešiteľ {sortKey === 'name' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
             </Box>
             <Box
               component="button"
               type="button"
               onClick={() => toggleSort('points')}
-              sx={styles.sortHeaderButtonCentered}
+              sx={{all: 'unset', cursor: 'pointer', placeSelf: 'center'}}
             >
               Body {sortKey === 'points' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
             </Box>
