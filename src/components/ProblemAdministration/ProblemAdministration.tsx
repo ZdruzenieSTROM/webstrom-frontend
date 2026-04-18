@@ -5,7 +5,7 @@ import {useMutation, useQuery} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
 import Image from 'next/image'
 import {useRouter} from 'next/router'
-import {FC, startTransition, useCallback, useEffect, useState} from 'react'
+import {FC, startTransition, useCallback, useEffect, useMemo, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiOptions} from '@/api/api'
@@ -67,6 +67,8 @@ const styles = {
   },
 }
 
+type SortKey = 'name' | 'points'
+
 const getSolutionName = (solution: SolutionAdministration) =>
   `${solution.semester_registration?.profile.first_name ?? ''} ${solution.semester_registration?.profile.last_name ?? ''}`.trim()
 
@@ -101,12 +103,13 @@ export const ProblemAdministration: FC = () => {
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
   const [solutions, setSolutions] = useState<SolutionAdministration[]>()
-  const [sortKey, setSortKey] = useState<'name' | 'points'>('name')
+  const [sortKey, setSortKey] = useState<SortKey>('name')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
     // TODO: asi to nechceme updatovat vzdy pri zmene dat zo serveru, moze nam to prepisovat lokalny stav...
     // netreba robit novy array, podstatne je spravne ohandlit zmeny
+    // startTransition marks the update as non-urgent, defers it and silences the react-hooks/set-state-in-effect warning
     if (problem) {
       startTransition(() => {
         setSolutions(problem.solution_set)
@@ -186,6 +189,28 @@ export const ProblemAdministration: FC = () => {
     accept: Accept.Zip,
   })
 
+  const sortedSolutions = useMemo(
+    () =>
+      (solutions ?? [])
+        .map((solution, originalIndex) => ({solution, originalIndex}))
+        .toSorted((left, right) => {
+          if (sortKey === 'name') {
+            const leftName = getSolutionName(left.solution)
+            const rightName = getSolutionName(right.solution)
+
+            return sortDirection === 'asc'
+              ? leftName.localeCompare(rightName, 'sk')
+              : rightName.localeCompare(leftName, 'sk')
+          }
+
+          const leftPoints = left.solution.score ?? Number.NEGATIVE_INFINITY
+          const rightPoints = right.solution.score ?? Number.NEGATIVE_INFINITY
+
+          return sortDirection === 'asc' ? leftPoints - rightPoints : rightPoints - leftPoints
+        }),
+    [solutions, sortKey, sortDirection],
+  )
+
   if (permissionsIsLoading || problemIsLoading || semesterIsLoading) return <Loading />
   if (!hasPermissions) return <span>Nemáš oprávnenie na zobrazenie tejto stránky.</span>
   if (problemId === undefined || !problem)
@@ -196,25 +221,7 @@ export const ProblemAdministration: FC = () => {
     uploadPoints(problemId)
   }
 
-  const sortedSolutions = (solutions ?? [])
-    .map((solution, originalIndex) => ({solution, originalIndex}))
-    .toSorted((left, right) => {
-      if (sortKey === 'name') {
-        const leftName = getSolutionName(left.solution)
-        const rightName = getSolutionName(right.solution)
-
-        return sortDirection === 'asc'
-          ? leftName.localeCompare(rightName, 'sk')
-          : rightName.localeCompare(leftName, 'sk')
-      }
-
-      const leftPoints = left.solution.score ?? Number.NEGATIVE_INFINITY
-      const rightPoints = right.solution.score ?? Number.NEGATIVE_INFINITY
-
-      return sortDirection === 'asc' ? leftPoints - rightPoints : rightPoints - leftPoints
-    })
-
-  const toggleSort = (key: 'name' | 'points') => {
+  const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
       setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'))
       return
@@ -223,6 +230,8 @@ export const ProblemAdministration: FC = () => {
     setSortKey(key)
     setSortDirection(key === 'name' ? 'asc' : 'desc')
   }
+
+  const getSortArrow = (key: SortKey) => (sortKey === key ? (sortDirection === 'asc' ? '↑' : '↓') : '')
 
   return (
     <>
@@ -322,7 +331,7 @@ export const ProblemAdministration: FC = () => {
               onClick={() => toggleSort('name')}
               sx={{all: 'unset', cursor: 'pointer', justifySelf: 'start'}}
             >
-              Riešiteľ {sortKey === 'name' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+              Riešiteľ {getSortArrow('name')}
             </Box>
             <Box
               component="button"
@@ -330,7 +339,7 @@ export const ProblemAdministration: FC = () => {
               onClick={() => toggleSort('points')}
               sx={{all: 'unset', cursor: 'pointer', placeSelf: 'center'}}
             >
-              Body {sortKey === 'points' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+              Body {getSortArrow('points')}
             </Box>
             <Box sx={styles.centerCell}>Riešenie</Box>
             <Box sx={styles.centerCell}>Opravené</Box>
