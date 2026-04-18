@@ -8,7 +8,12 @@ import {PostPreview} from '@/components/Admin/custom/PostPreview'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
 export const PostEdit: FC = () => (
-  <MyEdit>
+  <MyEdit
+    transform={(record) => ({
+      ...record,
+      details: record.details ?? '',
+    })}
+  >
     <TabbedForm toolbar={<MyEditToolbar />}>
       <FormTab label="content.labels.general">
         <TextInput source="caption" validate={required()} />
