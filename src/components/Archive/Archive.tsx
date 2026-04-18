@@ -1,9 +1,10 @@
 import {ExpandMore} from '@mui/icons-material'
-import {Accordion, AccordionDetails, AccordionSummary, Stack, Typography} from '@mui/material'
+import {Accordion, AccordionDetails, AccordionSummary, Stack, SxProps, Theme, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import {FC} from 'react'
 
 import {apiAxios} from '@/api/apiAxios'
+import {colors} from '@/theme/colors'
 import {Gallery} from '@/types/api/cms'
 import {Event, Publication, PublicationTypes} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
@@ -37,11 +38,28 @@ const getSeasonLabel = (eventSeason: number) => {
   return eventSeason === 0 ? 'zimný semester' : 'letný semester'
 }
 
+const getArchiveButtonSx = (disabled = false): SxProps<Theme> => {
+  return {
+    '.archive-row:hover &': {
+      '--bgcolor': colors.black,
+      '--color': disabled ? colors.gray : colors.white,
+      bgcolor: colors.black,
+      color: disabled ? colors.gray : colors.white,
+    },
+    '.archive-row:hover &:hover': {
+      '--bgcolor': disabled ? colors.gray : colors.white,
+      '--color': disabled ? colors.white : colors.black,
+      bgcolor: disabled ? colors.gray : colors.white,
+      color: disabled ? colors.white : colors.black,
+    },
+  }
+}
+
 const GalleryButton: FC<{
   gallery: Gallery
 }> = ({gallery}) => {
   return (
-    <Link variant="button2" href={gallery.gallery_link}>
+    <Link variant="button2" href={gallery.gallery_link} sx={getArchiveButtonSx()}>
       {gallery.name}
     </Link>
   )
@@ -56,6 +74,7 @@ const PublicationButton: FC<{
       variant="button2"
       disabled={!publication}
       href={publication?.file || '#'}
+      sx={getArchiveButtonSx(!publication)}
     >
       {label ?? publication?.name}
     </Link>
@@ -101,7 +120,7 @@ const ResultsButton: FC<{
   const season = getSeasonSlug(eventSeason)
   const url = `../poradie/${eventYear}/${season}`
   return (
-    <Link variant="button2" href={url}>
+    <Link variant="button2" href={url} sx={getArchiveButtonSx()}>
       Poradie
     </Link>
   )
@@ -115,7 +134,7 @@ const ProblemsButton: FC<{
   const season = getSeasonSlug(eventSeason)
   const url = `../zadania/${eventYear}/${season}/${seriesOrder}`
   return (
-    <Link variant="button2" href={url}>
+    <Link variant="button2" href={url} sx={getArchiveButtonSx()}>
       Zadania
     </Link>
   )
@@ -128,11 +147,20 @@ const ArchiveRow: FC<{
 }> = ({label, children, indented = false}) => {
   return (
     <Stack
+      className="archive-row"
       direction="row"
       justifyContent="space-between"
       alignItems="flex-start"
       gap={1}
-      sx={{pl: indented ? 2 : 0}}
+      sx={{
+        pl: indented ? 3 : 1,
+        pr: 1,
+        py: 0.5,
+        '&:hover': {
+          bgcolor: colors.black,
+          color: colors.white,
+        },
+      }}
     >
       <Typography variant="h3">{label}</Typography>
       <Stack direction="row" flexWrap="wrap" justifyContent="flex-end" gap={0.5}>
