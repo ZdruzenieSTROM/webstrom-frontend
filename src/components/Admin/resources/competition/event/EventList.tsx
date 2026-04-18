@@ -8,7 +8,7 @@ import {SeasonCodeFilterList} from '@/components/Admin/custom/list-filtering/Sea
 import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
 export const EventList: FC = () => (
-  <List aside={<EventListFilters />}>
+  <List aside={<EventListFilters />} filter={{competition_type_exclude: 0}}>
     <Datagrid>
       <ReferenceField source="competition" reference="competition/competition" link={false} sortable={false} />
       <NumberField source="year" />
