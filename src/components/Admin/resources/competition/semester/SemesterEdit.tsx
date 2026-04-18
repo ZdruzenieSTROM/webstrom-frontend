@@ -38,10 +38,6 @@ export const SemesterEdit: FC = () => (
         <MyDateTimeInput source="start" />
         <MyDateTimeInput source="end" />
         <TextInput source="additional_name" />
-        {/* nechavam viditelne disabled nech sa rozhodneme, co s tym. BE nam posiela ID, 
-              neviem, ci vieme updatnut cely objekt tym, ze ho pribalim, ako v EventEdit...
-              uvidime, ci ten field vobec potrebujeme */}
-        <NumberInput source="registration_link" disabled />
         <ReferenceArrayInput
           source="late_tags"
           reference="competition/late-tag"

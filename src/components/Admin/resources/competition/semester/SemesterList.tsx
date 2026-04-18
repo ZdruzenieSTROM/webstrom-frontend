@@ -27,7 +27,6 @@ export const SemesterList: FC = () => (
       <DateTimeField source="end" />
       <BooleanField source="complete" sortable={false} />
       <TextField source="additional_name" sortable={false} />
-      <NumberField source="registration_link" sortable={false} />
       <FunctionField<RaRecord>
         source="series_set"
         render={(record) => record && <span>{record['series_set']?.length}</span>}
