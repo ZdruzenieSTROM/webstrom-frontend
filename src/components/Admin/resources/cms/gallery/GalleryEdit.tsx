@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {AutocompleteInput, FormTab, required, ReferenceInput, TabbedForm, TextInput} from 'react-admin'
+import {AutocompleteInput, FormTab, ReferenceInput, required, TabbedForm, TextInput} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 
@@ -10,10 +10,7 @@ export const GalleryEdit: FC = () => (
         <TextInput source="name" validate={required()} />
         <TextInput source="gallery_link" validate={required()} />
         <ReferenceInput source="event" reference="competition/event">
-          <AutocompleteInput
-            optionText="verbose_name"
-            validate={required()}
-          />
+          <AutocompleteInput optionText="verbose_name" validate={required()} />
         </ReferenceInput>
       </FormTab>
     </TabbedForm>
