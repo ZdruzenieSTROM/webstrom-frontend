@@ -13,7 +13,7 @@ export const createPublicationFormData = ({
   // vzdy appendneme kazdy kluc, aj tieto fily, len null sa tu neda pouzit. null znamena, ze file odstranujeme
   formData.append('file', file?.rawFile ?? '')
   for (const [key, value] of Object.entries(data)) {
-    if (value !== null && value !== undefined) {
+    if (value != null) {
       formData.append(key, value.toString())
     }
   }
