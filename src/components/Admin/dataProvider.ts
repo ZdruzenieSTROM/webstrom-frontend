@@ -1,8 +1,9 @@
-import {isAxiosError} from 'axios'
 import {stringify} from 'querystring'
-import {DataProvider, FilterPayload, PaginationPayload, /* PaginationPayload, */ SortPayload} from 'react-admin'
+import {DataProvider, FilterPayload, PaginationPayload, SortPayload} from 'react-admin'
 
 import {apiAxios} from '@/api/apiAxios'
+
+import {toHttpError} from './parseError'
 
 const getFilterQuery = ({q, ...otherSearchParams}: FilterPayload) => ({
   ...otherSearchParams,
@@ -14,27 +15,6 @@ const getPaginationQuery = ({page, perPage}: PaginationPayload) => ({
   offset: (page - 1) * perPage,
   limit: perPage,
 })
-
-/* field errors by mali byt zachytene uz FE validaciou, dumpujem do 'Nastala neznáma chyba' */
-const parseError = (error: unknown) => {
-  // povacsine matchuje `mutations.onError` v `_app.tsx`
-  if (isAxiosError(error)) {
-    const data = error.response?.data as unknown
-    if (typeof data === 'object' && data) {
-      const detail = 'detail' in data && data.detail
-      if (typeof detail === 'string') return detail
-
-      const nonFieldErrors = 'non_field_errors' in data && data.non_field_errors
-      const nonFieldErrorsUnknown = Array.isArray(nonFieldErrors) ? (nonFieldErrors as unknown[]) : []
-      const nonFieldErrorsJoined = nonFieldErrorsUnknown.every((e) => typeof e === 'string')
-        ? nonFieldErrorsUnknown.join('\n')
-        : ''
-      if (nonFieldErrorsJoined) return nonFieldErrorsJoined
-    }
-  }
-
-  return 'Nastala neznáma chyba'
-}
 
 // skopirovane a dost upravene z https://github.com/bmihelac/ra-data-django-rest-framework/blob/master/src/index.ts
 export const dataProvider: DataProvider = {
@@ -64,7 +44,7 @@ export const dataProvider: DataProvider = {
         },
       }
     } catch (error) {
-      throw new Error(parseError(error))
+      throw toHttpError(error)
     }
   },
   getOne: async (resource, params) => {
@@ -72,7 +52,7 @@ export const dataProvider: DataProvider = {
       const {data} = await apiAxios.get(`/${resource}/${params.id}`)
       return {data}
     } catch (error) {
-      throw new Error(parseError(error))
+      throw toHttpError(error)
     }
   },
   getMany: async (resource, params) => {
@@ -80,7 +60,7 @@ export const dataProvider: DataProvider = {
       const data = await Promise.all(params.ids.map((id) => apiAxios.get(`/${resource}/${id}`)))
       return {data: data.map(({data}) => data)}
     } catch (error) {
-      throw new Error(parseError(error))
+      throw toHttpError(error)
     }
   },
   // TODO: ak budeme pouzivat tuto funkciu, upravime podla getList (pagination, sort, filter). uprimne este neviem, pri com sa pouziva
@@ -96,7 +76,7 @@ export const dataProvider: DataProvider = {
         total: data.length,
       }
     } catch (error) {
-      throw new Error(parseError(error))
+      throw toHttpError(error)
     }
   },
   update: async (resource, params) => {
@@ -110,7 +90,7 @@ export const dataProvider: DataProvider = {
       const {data} = await apiAxios.patch(`/${resource}/${id}`, body)
       return {data}
     } catch (error) {
-      throw new Error(parseError(error))
+      throw toHttpError(error)
     }
   },
   updateMany: async (resource, params) => {
@@ -118,7 +98,7 @@ export const dataProvider: DataProvider = {
       const data = await Promise.all(params.ids.map((id) => apiAxios.patch(`/${resource}/${id}`, params.data)))
       return {data: data.map(({data}) => data)}
     } catch (error) {
-      throw new Error(parseError(error))
+      throw toHttpError(error)
     }
   },
   create: async (resource, params) => {
@@ -130,7 +110,7 @@ export const dataProvider: DataProvider = {
       const {data} = await apiAxios.post(`/${resource}`, body)
       return {data}
     } catch (error) {
-      throw new Error(parseError(error))
+      throw toHttpError(error)
     }
   },
   delete: async (resource, params) => {
@@ -138,7 +118,7 @@ export const dataProvider: DataProvider = {
       const {data} = await apiAxios.delete(`/${resource}/${params.id}`)
       return {data}
     } catch (error) {
-      throw new Error(parseError(error))
+      throw toHttpError(error)
     }
   },
   deleteMany: async (resource, params) => {
@@ -146,7 +126,7 @@ export const dataProvider: DataProvider = {
       const data = await Promise.all(params.ids.map((id) => apiAxios.delete(`/${resource}/${id}`)))
       return {data: data.map(({data}) => data.id)}
     } catch (error) {
-      throw new Error(parseError(error))
+      throw toHttpError(error)
     }
   },
 }
