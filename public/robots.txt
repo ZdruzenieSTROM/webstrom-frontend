@@ -1,3 +1,6 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Disallow: /strom/registracia
+Disallow: /matik/registracia
+Disallow: /malynar/registracia
+Sitemap: https://strom.sk/sitemap.xml

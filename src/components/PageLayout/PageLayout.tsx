@@ -1,8 +1,10 @@
 import {Box, Grid, Stack, SxProps} from '@mui/material'
 import Head from 'next/head'
+import {useRouter} from 'next/router'
 import {FC, ReactNode} from 'react'
 
 import {colors} from '@/theme/colors'
+import {removeTrailingSlash} from '@/utils/trailingSlash'
 import {Seminar, useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Footer} from './Footer/Footer'
@@ -34,10 +36,17 @@ export const PageLayout: FC<PageLayoutProps> = ({
   children,
   sx,
 }) => {
+  const router = useRouter()
   const {seminar} = useSeminarInfo()
   const combinedTitle = subtitle ? `${subtitle} - ${title}` : title
   const browserTitlePrefix = combinedTitle && `${combinedTitle} | `
   const browserTitle = `${browserTitlePrefix}${seminarTitle[seminar]}`
+  const description = `${seminarTitle[seminar]} - korešpondenčný seminár`
+  const shareImagePath = '/og/strom-share.png'
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://strom.sk').replace(/\/$/, '')
+  const canonicalPath = removeTrailingSlash(router.asPath.split('#')[0].split('?')[0] || '/')
+  const canonicalUrl = `${siteUrl}${canonicalPath}`
+  const shareImageUrl = `${siteUrl}${shareImagePath}`
   const horizontalContentPadding = {xs: 4, md: 8, lg: 12}
 
   return (
@@ -45,6 +54,22 @@ export const PageLayout: FC<PageLayoutProps> = ({
       <Head>
         {/* mali sme tu pred zmenou warning, musi to byt jeden text child: `A title element received an array with more than 1 element as children.` */}
         <title>{browserTitle}</title>
+        <meta name="description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={seminarTitle[seminar]} />
+        <meta property="og:title" content={browserTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={shareImageUrl} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`${seminarTitle[seminar]} logo`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={browserTitle} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={shareImageUrl} />
+        <link rel="canonical" href={canonicalUrl} />
       </Head>
       <Stack sx={{minHeight: '100dvh', backgroundColor: colors.white}}>
         <TopGrid title={title} subtitle={subtitle} bannerMessages={bannerMessages} />
