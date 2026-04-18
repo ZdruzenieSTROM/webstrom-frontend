@@ -196,9 +196,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                       {comment.state !== CommentState.Published && hasPermissions && (
                         <Button
                           onClick={() =>
-                            comment.hidden_response
-                              ? setPublishDialogId(comment.id)
-                              : publishComment(comment.id)
+                            comment.hidden_response ? setPublishDialogId(comment.id) : publishComment(comment.id)
                           }
                           variant="button3"
                         >
