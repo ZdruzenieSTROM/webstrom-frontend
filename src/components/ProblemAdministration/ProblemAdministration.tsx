@@ -146,7 +146,11 @@ export const ProblemAdministration: FC = () => {
     setSolutions(data)
   }
 
-  const {mutate: uploadZipFile, error: uploadZipFileError, isPending: uploadZipFileIsPending} = useMutation({
+  const {
+    mutate: uploadZipFile,
+    error: uploadZipFileError,
+    isPending: uploadZipFileIsPending,
+  } = useMutation({
     mutationFn: ({data, problemId}: {data: FormData; problemId?: string}) =>
       apiAxios.post(`/competition/problem/${problemId}/upload-corrected`, data),
     onSuccess: () => refetchProblem(),
