@@ -19,7 +19,7 @@ import {seasonCodeStrings} from '../../../seasonCodeStrings'
 export const SemesterCreate: FC = () => (
   <MyCreate>
     <SimpleForm toolbar={<MyCreateToolbar />}>
-      <ReferenceInput source="competition" reference="competition/competition">
+      <ReferenceInput source="competition" reference="competition/competition" filter={{competition_type: 0}}>
         <SelectInput validate={required()} />
       </ReferenceInput>
       <NumberInput source="year" helperText="ročník súťaže, napr. 48" validate={required()} />
