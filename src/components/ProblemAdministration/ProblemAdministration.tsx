@@ -112,7 +112,10 @@ export const ProblemAdministration: FC = () => {
       apiAxios.post(`/competition/problem-administration/${id}/upload-points`, {
         solution_set: solutions,
       }),
-    onSuccess: () => refetchProblem(),
+    onSuccess: () => {
+      refetchProblem()
+      alert('Body boli úspešne uložené.')
+    },
   })
 
   const updatePoints = (index: number, newPointsInput: string) => {
