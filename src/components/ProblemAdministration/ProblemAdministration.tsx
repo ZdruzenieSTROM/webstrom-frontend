@@ -154,9 +154,6 @@ export const ProblemAdministration: FC = () => {
     mutationFn: ({data, problemId}: {data: FormData; problemId?: string}) =>
       apiAxios.post(`/competition/problem/${problemId}/upload-corrected`, data),
     onSuccess: () => refetchProblem(),
-    onError: (error) => {
-      alert('Pri nahrávaní nastala chyba, skontroluj si názvy súborov.')
-    },
   })
 
   const uploadZipFileErrorData =
