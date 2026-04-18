@@ -15,6 +15,10 @@ import {FlatpageCreate} from './resources/cms/flat-page/FlatpageCreate'
 import {FlatpageEdit} from './resources/cms/flat-page/FlatpageEdit'
 import {FlatpageList} from './resources/cms/flat-page/FlatpageList'
 import {FlatpageShow} from './resources/cms/flat-page/FlatpageShow'
+import {GalleryCreate} from './resources/cms/gallery/GalleryCreate'
+import {GalleryEdit} from './resources/cms/gallery/GalleryEdit'
+import {GalleryList} from './resources/cms/gallery/GalleryList'
+import {GalleryShow} from './resources/cms/gallery/GalleryShow'
 import {PostCreate} from './resources/cms/post/PostCreate'
 import {PostEdit} from './resources/cms/post/PostEdit'
 import {PostList} from './resources/cms/post/PostList'
@@ -213,6 +217,14 @@ export const Admin: FC = () => {
         show={PublicationShow}
         edit={PublicationEdit}
         create={PublicationCreate}
+      />
+      <Resource
+        name="cms/gallery"
+        recordRepresentation="verbose_name"
+        list={GalleryList}
+        show={GalleryShow}
+        edit={GalleryEdit}
+        create={GalleryCreate}
       />
     </ReactAdmin>
   )
