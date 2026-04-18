@@ -14,6 +14,7 @@ import {colors} from '@/theme/colors'
 import {SolutionAdministration} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
 import {getCorrectedSolutionUrl, getSolutionUrl} from '@/utils/getSolutionUrl'
+import {useAlert} from '@/utils/useAlert'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useNavigationTrap} from '@/utils/useNavigationTrap'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
@@ -68,6 +69,7 @@ const styles = {
 }
 
 export const ProblemAdministration: FC = () => {
+  const {alert} = useAlert()
   const router = useRouter()
   const {seminar} = useSeminarInfo()
   const {params} = router.query
@@ -145,6 +147,9 @@ export const ProblemAdministration: FC = () => {
     mutationFn: ({data, problemId}: {data: FormData; problemId?: string}) =>
       apiAxios.post(`/competition/problem/${problemId}/upload-corrected`, data),
     onSuccess: () => refetchProblem(),
+    onError: (error) => {
+      alert('Pri nahrávaní nastala chyba, skontroluj si názvy súborov.')
+    },
   })
 
   const uploadZipFileErrorData =
