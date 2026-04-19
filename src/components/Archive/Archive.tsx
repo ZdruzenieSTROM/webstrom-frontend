@@ -38,6 +38,14 @@ const getSeasonLabel = (eventSeason: number) => {
   return eventSeason === 0 ? 'zimný semester' : 'letný semester'
 }
 
+const getResultsUrl = (eventYear: number, eventSeason: number) => {
+  return `../poradie/${eventYear}/${getSeasonSlug(eventSeason)}`
+}
+
+const getProblemsUrl = (eventYear: number, eventSeason: number, seriesOrder: 1 | 2) => {
+  return `../zadania/${eventYear}/${getSeasonSlug(eventSeason)}/${seriesOrder}`
+}
+
 const getArchiveButtonSx = (disabled = false): SxProps<Theme> => {
   return {
     '.archive-row:hover &': {
@@ -55,12 +63,13 @@ const getArchiveButtonSx = (disabled = false): SxProps<Theme> => {
   }
 }
 
-const GalleryButton: FC<{
-  gallery: Gallery
-}> = ({gallery}) => {
+const ArchiveActionButton: FC<{
+  href: string
+  label: string
+}> = ({href, label}) => {
   return (
-    <Link variant="button2" href={gallery.gallery_link} sx={getArchiveButtonSx()}>
-      Fotky
+    <Link variant="button2" href={href} sx={getArchiveButtonSx()}>
+      {label}
     </Link>
   )
 }
@@ -111,33 +120,6 @@ const getYearGroups = (eventList: MyEvent[]): YearGroup[] => {
       ...group,
       events: group.events.toSorted((leftEvent, rightEvent) => leftEvent.season_code - rightEvent.season_code),
     }))
-}
-
-const ResultsButton: FC<{
-  eventYear: number
-  eventSeason: number
-}> = ({eventYear, eventSeason}) => {
-  const season = getSeasonSlug(eventSeason)
-  const url = `../poradie/${eventYear}/${season}`
-  return (
-    <Link variant="button2" href={url} sx={getArchiveButtonSx()}>
-      Poradie
-    </Link>
-  )
-}
-
-const ProblemsButton: FC<{
-  eventYear: number
-  eventSeason: number
-  seriesOrder: 1 | 2
-}> = ({eventYear, eventSeason, seriesOrder}) => {
-  const season = getSeasonSlug(eventSeason)
-  const url = `../zadania/${eventYear}/${season}/${seriesOrder}`
-  return (
-    <Link variant="button2" href={url} sx={getArchiveButtonSx()}>
-      Zadania
-    </Link>
-  )
 }
 
 const ArchiveRow: FC<{
@@ -212,19 +194,19 @@ export const Archive: FC = () => {
                   <Stack key={event.id} gap={0}>
                     <ArchiveRow label={getSeasonLabel(event.season_code)} gap={'7px'}>
                       {seasonLeaflet && <PublicationButton publication={seasonLeaflet} label="Časopis" />}
-                      <ResultsButton eventYear={event.year} eventSeason={event.season_code} />
+                      <ArchiveActionButton href={getResultsUrl(event.year, event.season_code)} label="Poradie" />
                     </ArchiveRow>
                     <ArchiveRow label="1. séria" indented>
-                      <ProblemsButton eventYear={event.year} eventSeason={event.season_code} seriesOrder={1} />
+                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 1)} label="Zadania" />
                       <PublicationButton publication={firstSeriesLeaflet} label="Riešenia" />
                     </ArchiveRow>
                     <ArchiveRow label="2. séria" indented>
-                      <ProblemsButton eventYear={event.year} eventSeason={event.season_code} seriesOrder={2} />
+                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 2)} label="Zadania" />
                       <PublicationButton publication={secondSeriesLeaflet} label="Riešenia" />
                     </ArchiveRow>
                     {firstGallery && (
                       <ArchiveRow label="Sústredenie" indented>
-                        <GalleryButton gallery={firstGallery} />
+                        <ArchiveActionButton href={firstGallery.gallery_link} label="Fotky" />
                       </ArchiveRow>
                     )}
                   </Stack>
