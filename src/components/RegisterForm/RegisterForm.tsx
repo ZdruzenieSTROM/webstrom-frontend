@@ -185,7 +185,7 @@ export const RegisterForm: FC = () => {
             Vyplnením a odoslaním registrácie beriem na vedomie, že moje osobné údaje budú spracované v súlade so
             zákonom o ochrane osobných údajov. Bližšie informácie
             <Link href={`./gdpr`} target="_blank">
-              nájdete tu
+              nájdeš tu
             </Link>
             .
           </Typography>

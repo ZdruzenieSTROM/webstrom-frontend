@@ -42,7 +42,7 @@ export const EventEdit: FC = () => {
             <TextInput
               source="registration_link.url"
               validate={required()}
-              helperText="Zadávajte v tvare https://prihlasky.strom.sk/xxx"
+              helperText="Zadávaj v tvare https://prihlasky.strom.sk/xxx"
             />
             <MyDateTimeInput source="registration_link.start" validate={required()} />
             <MyDateTimeInput source="registration_link.end" validate={required()} />
