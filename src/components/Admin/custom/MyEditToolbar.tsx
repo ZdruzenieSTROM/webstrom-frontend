@@ -11,7 +11,7 @@ export const MyEditToolbar = () => {
           label="ra.action.save_and_stay"
           mutationOptions={{
             onSuccess: () => {
-              notify('Záznam uložený')
+              notify('content.notifications.record_saved')
             },
           }}
           type="button"

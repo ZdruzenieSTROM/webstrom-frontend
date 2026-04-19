@@ -225,5 +225,9 @@ export const sk_SK = {
       summer: 'Letný',
       other: 'Iný',
     },
+    notifications: {
+      record_created: 'Záznam vytvorený',
+      record_saved: 'Záznam uložený',
+    },
   },
 }

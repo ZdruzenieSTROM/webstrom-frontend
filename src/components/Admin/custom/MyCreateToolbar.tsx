@@ -15,7 +15,7 @@ export const MyCreateToolbar = ({dontResetFields}: MyCreateToolbarProps = {}) =>
         label="ra.action.save_and_create_another"
         mutationOptions={{
           onSuccess: () => {
-            notify('Záznam vytvorený')
+            notify('content.notifications.record_created')
             if (dontResetFields) {
               const currentValues = getValues()
               const preservedValues: Record<string, unknown> = {}
