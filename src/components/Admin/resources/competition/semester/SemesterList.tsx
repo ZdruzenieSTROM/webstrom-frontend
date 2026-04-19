@@ -1,14 +1,20 @@
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd'
 import {FC} from 'react'
 import {
   BooleanField,
+  Button,
+  CreateButton,
   Datagrid,
+  ExportButton,
   FunctionField,
   List,
   NumberField,
   RaRecord,
   ReferenceField,
   TextField,
+  TopToolbar,
 } from 'react-admin'
+import {Link} from 'react-router-dom'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {CompetitionSeminarFilterSection} from '@/components/Admin/custom/list-filtering/CompetitionSeminarFilterSection'
@@ -16,8 +22,18 @@ import {FilterSidebar} from '@/components/Admin/custom/list-filtering/FilterSide
 import {SeasonCodeFilterList} from '@/components/Admin/custom/list-filtering/SeasonCodeFilterList'
 import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
+const SemesterListActions: FC = () => (
+  <TopToolbar>
+    <Button component={Link} to="/competition/semester/create-with-series" label="Vytvoriť so sériami">
+      <PlaylistAddIcon />
+    </Button>
+    <CreateButton />
+    <ExportButton />
+  </TopToolbar>
+)
+
 export const SemesterList: FC = () => (
-  <List aside={<SemesterListFilters />}>
+  <List aside={<SemesterListFilters />} actions={<SemesterListActions />}>
     <Datagrid>
       <ReferenceField source="competition" reference="competition/competition" link={false} sortable={false} />
       <NumberField source="year" />

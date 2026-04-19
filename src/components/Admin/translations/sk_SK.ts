@@ -228,6 +228,16 @@ export const sk_SK = {
     notifications: {
       record_created: 'Záznam vytvorený',
       record_saved: 'Záznam uložený',
+      semester_with_series: {
+        prefill_no_semesters: 'Žiadne predchádzajúce semestre pre túto súťaž. Vyplň manuálne.',
+        prefill_fetch_error: 'Chyba pri načítaní predchádzajúcich semestrov.',
+        prefill_no_same_season:
+          'Žiadny predchádzajúci %{season} semester pre túto súťaž — dátumy a late_tags vyplň manuálne.',
+        semester_created: 'Semester vytvorený.',
+        all_series_created: 'Obe série vytvorené.',
+        semester_error: 'Semester: %{message}',
+        series_error: 'Séria %{order}: %{message}',
+      },
     },
   },
 }
