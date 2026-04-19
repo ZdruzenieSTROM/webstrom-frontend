@@ -60,7 +60,7 @@ const GalleryButton: FC<{
 }> = ({gallery}) => {
   return (
     <Link variant="button2" href={gallery.gallery_link} sx={getArchiveButtonSx()}>
-      {gallery.name}
+      Fotky
     </Link>
   )
 }
@@ -206,6 +206,7 @@ export const Archive: FC = () => {
                 const seasonLeaflet = getLeafletPublication(event, 1)
                 const firstSeriesLeaflet = getLeafletPublication(event, 2)
                 const secondSeriesLeaflet = getLeafletPublication(event, 3)
+                const firstGallery = event.galleries[0]
 
                 return (
                   <Stack key={event.id} gap={0}>
@@ -221,11 +222,9 @@ export const Archive: FC = () => {
                       <ProblemsButton eventYear={event.year} eventSeason={event.season_code} seriesOrder={2} />
                       <PublicationButton publication={secondSeriesLeaflet} label="Riešenia" />
                     </ArchiveRow>
-                    {event.galleries.length > 0 && (
+                    {firstGallery && (
                       <ArchiveRow label="Sústredenie" indented>
-                        {event.galleries.map((gallery) => (
-                          <GalleryButton key={gallery.id} gallery={gallery} />
-                        ))}
+                        <GalleryButton gallery={firstGallery} />
                       </ArchiveRow>
                     )}
                   </Stack>
