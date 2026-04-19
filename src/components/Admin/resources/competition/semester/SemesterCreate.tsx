@@ -27,7 +27,6 @@ export const SemesterCreate: FC = () => (
       <TextInput source="school_year" helperText="napr. 2023/2024" />
       <MyDateTimeInput source="start" validate={required()} />
       <MyDateTimeInput source="end" validate={required()} />
-      <TextInput source="additional_name" />
       <ReferenceArrayInput
         source="late_tags"
         reference="competition/late-tag"

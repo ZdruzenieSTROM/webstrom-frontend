@@ -35,7 +35,6 @@ export const SemesterShow: FC = () => {
             <DateTimeField source="start" />
             <DateTimeField source="end" />
             <BooleanField source="complete" />
-            <TextField source="additional_name" />
           </SimpleShowLayout>
         </Tab>
         <Tab label="content.labels.series">

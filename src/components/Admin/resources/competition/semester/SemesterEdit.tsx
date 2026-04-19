@@ -37,7 +37,6 @@ export const SemesterEdit: FC = () => (
         <TextInput source="school_year" helperText="napr. 2023/2024" />
         <MyDateTimeInput source="start" />
         <MyDateTimeInput source="end" />
-        <TextInput source="additional_name" />
         <ReferenceArrayInput
           source="late_tags"
           reference="competition/late-tag"
