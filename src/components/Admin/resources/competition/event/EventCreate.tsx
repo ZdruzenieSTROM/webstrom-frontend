@@ -25,7 +25,7 @@ export const EventCreate: FC = () => {
         <TextInput source="school_year" helperText="napr. 2023/2024" validate={required()} />
         <MyDateTimeInput source="start" validate={required()} />
         <MyDateTimeInput source="end" validate={required()} />
-        <ReferenceInput source="competition" reference="competition/competition">
+        <ReferenceInput source="competition" reference="competition/competition" filter={{competition_type_exclude: 0}}>
           <SelectInput validate={required()} />
         </ReferenceInput>
         <TextInput source="location" />

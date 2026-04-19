@@ -29,7 +29,7 @@ export const SemesterEdit: FC = () => (
   >
     <TabbedForm toolbar={<MyEditToolbar />}>
       <FormTab label="content.labels.general">
-        <ReferenceInput source="competition" reference="competition/competition">
+        <ReferenceInput source="competition" reference="competition/competition" filter={{competition_type: 0}}>
           <SelectInput validate={required()} />
         </ReferenceInput>
         <NumberInput source="year" helperText="ročník súťaže, napr. 48" />

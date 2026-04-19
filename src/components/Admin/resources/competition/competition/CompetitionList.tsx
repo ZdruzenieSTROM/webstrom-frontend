@@ -6,7 +6,7 @@ import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
 export const CompetitionList: FC = () => (
-  <List aside={<CompetitionListFilters />}>
+  <List aside={<CompetitionListFilters />} filter={{competition_type: 0}}>
     <Datagrid>
       <TextField source="name" />
       <TextField source="slug" sortable={false} />
