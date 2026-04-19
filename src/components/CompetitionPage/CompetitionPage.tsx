@@ -1,9 +1,9 @@
-import {Grid, Stack, Typography} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
-import {FC, Fragment} from 'react'
+import {FC} from 'react'
 
 import {Link} from '@/components/Clickable/Link'
-import {Competition, Event, PublicationTypes} from '@/types/api/competition'
+import {Competition, Event, Publication, PublicationTypes} from '@/types/api/competition'
 
 import {UpcomingOrCurrentEventInfo} from './UpcomingOrCurrentEventInfo'
 
@@ -11,6 +11,32 @@ type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Eve
 
 type CompetitionPageProps = {
   competition: OurCompetition
+}
+
+type HistoryPublicationButtonsProps = {
+  problems?: Publication
+  solutions?: Publication
+  results?: Publication
+}
+
+const getHistoryTitle = (event: Event) => {
+  return `${event.year}. ročník \u2013 ${event.school_year}${event.additional_name ? ` (${event.additional_name})` : ''}`
+}
+
+const HistoryPublicationButtons: FC<HistoryPublicationButtonsProps> = ({problems, solutions, results}) => {
+  return (
+    <>
+      <Link variant="button2" href={problems?.file} disabled={!problems}>
+        Zadania
+      </Link>
+      <Link variant="button2" href={solutions?.file} disabled={!solutions}>
+        Riešenia
+      </Link>
+      <Link variant="button2" href={results?.file} disabled={!results}>
+        Poradie
+      </Link>
+    </>
+  )
 }
 
 export const CompetitionPage: FC<CompetitionPageProps> = ({
@@ -80,52 +106,76 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         )}
       </Stack>
 
-      <Grid container spacing={2}>
+      <Stack gap={1}>
         {history_events.map((event) => {
           const results = event.publication_set.find((p) => p.publication_type === PublicationTypes.RESULTS.id)
           const solutions = event.publication_set.find((p) => p.publication_type === PublicationTypes.SOLUTIONS.id)
           const problems = event.publication_set.find((p) => p.publication_type === PublicationTypes.PROBLEMS.id)
-          const firstGallery = event.galleries.length > 0 ? event.galleries[0] : null
+
           return (
-            <Fragment key={event.id}>
-              <Grid size={4}>
-                <Typography variant="h2" component="span">
-                  {name} {event.school_year}
-                  {event.additional_name ? ` (${event.additional_name})` : ''}
+            <Stack key={event.id} gap={1} sx={{px: 1, py: 0.5}}>
+              <Stack
+                direction={{xs: 'column', sm: 'row'}}
+                justifyContent="space-between"
+                alignItems={{xs: 'stretch', sm: 'flex-end'}}
+                gap={1}
+              >
+                <Typography variant="h2" component="span" sx={{flexGrow: 1, minWidth: 0}}>
+                  {getHistoryTitle(event)}
                 </Typography>
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {firstGallery ? (
-                  <Link variant="button2" href={firstGallery.gallery_link}>
-                    {firstGallery.name}
+                <Stack
+                  direction="row"
+                  flexWrap="nowrap"
+                  justifyContent="flex-end"
+                  alignItems="flex-end"
+                  gap={0.5}
+                  sx={{display: {xs: 'none', sm: 'flex'}}}
+                >
+                  <HistoryPublicationButtons problems={problems} solutions={solutions} results={results} />
+                </Stack>
+              </Stack>
+              <Stack
+                direction="row-reverse"
+                flexWrap="wrap"
+                justifyContent="flex-start"
+                alignItems="flex-end"
+                gap={0.5}
+                sx={{display: {xs: 'flex', sm: 'none'}}}
+              >
+                <Stack
+                  direction="row"
+                  flexWrap="nowrap"
+                  justifyContent="flex-end"
+                  alignItems="flex-end"
+                  gap={0.5}
+                  sx={{flexShrink: 0}}
+                >
+                  <HistoryPublicationButtons problems={problems} solutions={solutions} results={results} />
+                </Stack>
+                {event.galleries.map((gallery) => (
+                  <Link variant="button2" key={gallery.id} href={gallery.gallery_link}>
+                    {gallery.name}
                   </Link>
-                ) : null}
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {results && (
-                  <Link variant="button2" key={results.id} href={results.file}>
-                    {PublicationTypes.RESULTS.display_name}
+                ))}
+              </Stack>
+              <Stack
+                direction="row"
+                flexWrap="wrap"
+                justifyContent="flex-end"
+                alignItems="flex-end"
+                gap={0.5}
+                sx={{display: {xs: 'none', sm: 'flex'}, minHeight: '2rem'}}
+              >
+                {event.galleries.map((gallery) => (
+                  <Link variant="button2" key={gallery.id} href={gallery.gallery_link}>
+                    {gallery.name}
                   </Link>
-                )}
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {problems ? (
-                  <Link variant="button2" key={problems.id} href={problems.file} target="_blank">
-                    {PublicationTypes.PROBLEMS.display_name}
-                  </Link>
-                ) : null}
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {solutions ? (
-                  <Link variant="button2" key={solutions.id} href={solutions.file}>
-                    {PublicationTypes.SOLUTIONS.display_name}
-                  </Link>
-                ) : null}
-              </Grid>
-            </Fragment>
+                ))}
+              </Stack>
+            </Stack>
           )
         })}
-      </Grid>
+      </Stack>
     </Stack>
   )
 }
