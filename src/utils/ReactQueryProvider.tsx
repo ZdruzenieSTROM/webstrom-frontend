@@ -54,6 +54,20 @@ export const ReactQueryProvider: FC<PropsWithChildren> = ({children}) => {
                     return
                   }
 
+                  // ak je to pole objektov majucich 'status', ukazeme ho z prvej polozky
+                  if (Array.isArray(data) && data.length > 0) {
+                    const firstError = data[0]
+                    if (
+                      typeof firstError === 'object' &&
+                      firstError &&
+                      'status' in firstError &&
+                      typeof firstError.status === 'string'
+                    ) {
+                      alert(firstError.status)
+                      return
+                    }
+                  }
+
                   // TODO: handle field errors (napr. na password) - nealertovat usera, ale zobrazit v UI? alebo alert s prvym field errorom
 
                   // ak nie, ukazeme kludne original anglicku hlasku z `error`u

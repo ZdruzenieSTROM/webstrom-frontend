@@ -14,6 +14,7 @@ import {colors} from '@/theme/colors'
 import {SolutionAdministration} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
 import {getCorrectedSolutionUrl, getSolutionUrl} from '@/utils/getSolutionUrl'
+import {useAlert} from '@/utils/useAlert'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useNavigationTrap} from '@/utils/useNavigationTrap'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
@@ -73,6 +74,7 @@ const getSolutionName = (solution: SolutionAdministration) =>
   `${solution.semester_registration?.profile.first_name ?? ''} ${solution.semester_registration?.profile.last_name ?? ''}`.trim()
 
 export const ProblemAdministration: FC = () => {
+  const {alert} = useAlert()
   const router = useRouter()
   const {seminar} = useSeminarInfo()
   const {params} = router.query
@@ -122,7 +124,10 @@ export const ProblemAdministration: FC = () => {
       apiAxios.post(`/competition/problem-administration/${id}/upload-points`, {
         solution_set: solutions,
       }),
-    onSuccess: () => refetchProblem(),
+    onSuccess: () => {
+      refetchProblem()
+      alert('Body boli úspešne uložené.')
+    },
   })
 
   const updatePoints = (index: number, newPointsInput: string) => {
@@ -153,7 +158,11 @@ export const ProblemAdministration: FC = () => {
     setSolutions(data)
   }
 
-  const {mutate: uploadZipFile, error: uploadZipFileError} = useMutation({
+  const {
+    mutate: uploadZipFile,
+    error: uploadZipFileError,
+    isPending: uploadZipFileIsPending,
+  } = useMutation({
     mutationFn: ({data, problemId}: {data: FormData; problemId?: string}) =>
       apiAxios.post(`/competition/problem/${problemId}/upload-corrected`, data),
     onSuccess: () => refetchProblem(),
@@ -311,11 +320,15 @@ export const ProblemAdministration: FC = () => {
           </Link>
         </Stack>
 
-        <FileDropZone
-          getRootProps={getRootProps}
-          getInputProps={getInputProps}
-          text="Vlož opravené riešenia vo formáte zip"
-        />
+        {uploadZipFileIsPending ? (
+          <Loading />
+        ) : (
+          <FileDropZone
+            getRootProps={getRootProps}
+            getInputProps={getInputProps}
+            text="Vlož opravené riešenia vo formáte zip"
+          />
+        )}
         {uploadZipFileError && (
           <>
             <Typography>Chyby pri nahrávaní ZIPka:</Typography>

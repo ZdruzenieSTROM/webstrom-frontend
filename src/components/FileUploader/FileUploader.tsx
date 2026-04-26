@@ -5,6 +5,8 @@ import {Accept, DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiAxios} from '@/api/apiAxios'
 
+import {Loading} from '../Loading/Loading'
+
 interface FileUploaderProps {
   uploadLink: string
   acceptedFormats?: Accept
@@ -52,12 +54,18 @@ export const FileUploader: FC<FileUploaderProps> = ({
     accept: acceptedFormats ?? {},
   })
 
+  const isUploading = postMutation.isPending || patchMutation.isPending
+
   return (
     <>
-      <div {...getRootProps({style: {cursor: 'pointer'}})}>
-        <input {...getInputProps()} />
-        <Upload />
-      </div>
+      {isUploading ? (
+        <Loading />
+      ) : (
+        <div {...getRootProps({style: {cursor: 'pointer'}})}>
+          <input {...getInputProps()} />
+          <Upload />
+        </div>
+      )}
     </>
   )
 }
