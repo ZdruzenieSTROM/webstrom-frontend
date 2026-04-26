@@ -2,7 +2,15 @@ import {deepmerge} from '@mui/utils'
 import {QueryClient} from '@tanstack/react-query'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useMemo} from 'react'
-import {Admin as ReactAdmin, defaultDarkTheme, defaultLightTheme, RaThemeOptions, Resource} from 'react-admin'
+import {
+  Admin as ReactAdmin,
+  CustomRoutes,
+  defaultDarkTheme,
+  defaultLightTheme,
+  RaThemeOptions,
+  Resource,
+} from 'react-admin'
+import {Route} from 'react-router-dom'
 
 import {useAlert} from '@/utils/useAlert'
 import {useHasPermissions} from '@/utils/useHasPermissions'
@@ -43,6 +51,7 @@ import {PublicationEdit} from './resources/competition/publication/PublicationEd
 import {PublicationList} from './resources/competition/publication/PublicationList'
 import {PublicationShow} from './resources/competition/publication/PublicationShow'
 import {SemesterCreate} from './resources/competition/semester/SemesterCreate'
+import {SemesterCreateWithSeries} from './resources/competition/semester/SemesterCreateWithSeries'
 import {SemesterEdit} from './resources/competition/semester/SemesterEdit'
 import {SemesterList} from './resources/competition/semester/SemesterList'
 import {SemesterShow} from './resources/competition/semester/SemesterShow'
@@ -226,6 +235,9 @@ export const Admin: FC = () => {
         edit={GalleryEdit}
         create={GalleryCreate}
       />
+      <CustomRoutes>
+        <Route path="/competition/semester/create-with-series" element={<SemesterCreateWithSeries />} />
+      </CustomRoutes>
     </ReactAdmin>
   )
 }
