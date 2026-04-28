@@ -1,11 +1,12 @@
 import {ExpandMore} from '@mui/icons-material'
-import {Accordion, AccordionDetails, AccordionSummary, Stack, SxProps, Typography} from '@mui/material'
+import {Accordion, AccordionDetails, AccordionSummary, Stack, SxProps, Theme, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
 import {FC} from 'react'
 
 import {apiAxios} from '@/api/apiAxios'
+import {colors} from '@/theme/colors'
 import {Gallery} from '@/types/api/cms'
-import {Event, Publication} from '@/types/api/competition'
+import {Event, Publication, PublicationTypes} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Link} from '../Clickable/Link'
@@ -15,6 +16,7 @@ import {Loading} from '../Loading/Loading'
 type MyPublication = Publication & {
   name: string
 }
+
 type MyEvent = Omit<Event, 'publication_set'> & {
   year: number
   school_year: string
@@ -22,59 +24,133 @@ type MyEvent = Omit<Event, 'publication_set'> & {
   galleries: Gallery[]
 }
 
-const GalleryButton: FC<{
-  gallery: Gallery
-}> = ({gallery}) => {
+type YearGroup = {
+  year: number
+  schoolYear: string | null
+  events: MyEvent[]
+}
+
+const getSeasonSlug = (eventSeason: number) => {
+  return eventSeason === 0 ? 'zima' : 'leto'
+}
+
+const getSeasonLabel = (eventSeason: number) => {
+  return eventSeason === 0 ? 'zimný semester' : 'letný semester'
+}
+
+const getResultsUrl = (eventYear: number, eventSeason: number) => {
+  return `../poradie/${eventYear}/${getSeasonSlug(eventSeason)}`
+}
+
+const getProblemsUrl = (eventYear: number, eventSeason: number, seriesOrder: 1 | 2) => {
+  return `../zadania/${eventYear}/${getSeasonSlug(eventSeason)}/${seriesOrder}`
+}
+
+const getArchiveButtonSx = (disabled = false): SxProps<Theme> => {
+  return {
+    '.archive-row:hover &': {
+      '--bgcolor': colors.black,
+      '--color': disabled ? colors.gray : colors.white,
+      bgcolor: colors.black,
+      color: disabled ? colors.gray : colors.white,
+    },
+    '.archive-row:hover &:hover': {
+      '--bgcolor': disabled ? colors.gray : colors.white,
+      '--color': disabled ? colors.white : colors.black,
+      bgcolor: disabled ? colors.gray : colors.white,
+      color: disabled ? colors.white : colors.black,
+    },
+  }
+}
+
+const ArchiveActionButton: FC<{
+  href: string
+  label: string
+}> = ({href, label}) => {
   return (
-    <Link variant="button2" href={gallery.gallery_link}>
-      {gallery.name}
+    <Link variant="button2" href={href} sx={getArchiveButtonSx()}>
+      {label}
     </Link>
   )
 }
 
 const PublicationButton: FC<{
-  publication: Publication
-}> = ({publication}) => {
+  publication?: Publication
+  label?: string
+}> = ({publication, label}) => {
   return (
-    <Link variant="button2" href={publication.file}>
-      {publication.name}
+    <Link
+      variant="button2"
+      disabled={!publication}
+      href={publication?.file || '#'}
+      sx={getArchiveButtonSx(!publication)}
+    >
+      {label ?? publication?.name}
     </Link>
   )
 }
 
-const ResultsButton: FC<{
-  eventYear: number
-  eventSeason: number
-  sx?: SxProps
-}> = ({eventYear, eventSeason, sx}) => {
-  const season = eventSeason === 0 ? 'zima' : 'leto'
-  const url = `../poradie/${eventYear}/${season}`
-  return (
-    <Link variant="button2" href={url} sx={sx}>
-      Poradie
-    </Link>
+const getLeafletPublication = (event: MyEvent, order: number) => {
+  return event.publication_set.find(
+    (publication) => publication.publication_type === PublicationTypes.LEAFLET.id && publication.order === order,
   )
 }
 
-const ProblemsButton: FC<{
-  eventYear: number
-  eventSeason: number
-  sx?: SxProps
-}> = ({eventYear, eventSeason, sx}) => {
-  const season = eventSeason === 0 ? 'zima' : 'leto'
-  const url = `../zadania/${eventYear}/${season}/1`
-  return (
-    <Link variant="button2" href={url} sx={sx}>
-      Zadania
-    </Link>
-  )
+const getYearGroups = (eventList: MyEvent[]): YearGroup[] => {
+  const groups = new Map<number, YearGroup>()
+
+  for (const event of eventList) {
+    const existingGroup = groups.get(event.year)
+
+    if (existingGroup) {
+      existingGroup.events.push(event)
+      continue
+    }
+
+    groups.set(event.year, {
+      year: event.year,
+      schoolYear: event.school_year,
+      events: [event],
+    })
+  }
+
+  return [...groups.values()]
+    .toSorted((leftGroup, rightGroup) => rightGroup.year - leftGroup.year)
+    .map((group) => ({
+      ...group,
+      events: group.events.toSorted((leftEvent, rightEvent) => leftEvent.season_code - rightEvent.season_code),
+    }))
 }
 
-const showInSummary = {display: {xs: 'none', sm: 'flex', md: 'none', lg: 'flex'}}
-const showInDetails = {display: {xs: 'flex', sm: 'none', md: 'flex', lg: 'none'}}
-const alignEndInDetails = {
-  justifyContent: {sm: 'end', md: 'unset', lg: 'end'},
-  pr: {sm: '35px', md: 'unset', lg: '35px'},
+const ArchiveRow: FC<{
+  label: string
+  children: React.ReactNode
+  indented?: boolean
+  gap?: number | string
+}> = ({label, children, indented = false, gap = 0.5}) => {
+  return (
+    <Stack
+      className="archive-row"
+      direction="row"
+      justifyContent="space-between"
+      alignItems="flex-start"
+      gap={1}
+      sx={{
+        pl: indented ? 3 : 1,
+        pr: 1,
+        py: 0.5,
+        '&:hover': {
+          bgcolor: colors.black,
+          color: colors.white,
+        },
+      }}
+    >
+      <Typography variant="h3">{label}</Typography>
+      <Stack direction="row" flexWrap="wrap" justifyContent="flex-end" gap={gap}>
+        {children}
+      </Stack>
+    </Stack>
+  )
 }
 
 export const Archive: FC = () => {
@@ -85,32 +161,57 @@ export const Archive: FC = () => {
     queryFn: () => apiAxios.get<MyEvent[]>(`/competition/event/?competition=${seminarId}`),
   })
   const eventList = eventListData?.data ?? []
+  const yearGroups = getYearGroups(eventList)
 
   return (
     <Stack gap={1}>
       {eventListIsLoading && <Loading />}
 
-      {eventList.map((event) => (
-        <Accordion key={event.id} disableGutters square={false} sx={{boxShadow: 'none', '&:before': {display: 'none'}}}>
+      {yearGroups.map((group, index) => (
+        <Accordion
+          key={group.year}
+          defaultExpanded={index === 0}
+          disableGutters
+          square={false}
+          sx={{boxShadow: 'none', '&:before': {display: 'none'}}}
+        >
           <AccordionSummary expandIcon={<ExpandMore color="primary" fontSize="large" />} sx={{p: 0}}>
             <Stack direction="row" sx={{flexGrow: 1}}>
               <Typography variant="h2" sx={{flexGrow: 1}}>
-                {event.year + '. ročník ' + (event.season_code === 0 ? 'zimný' : 'letný') + ' semester'}
+                {group.year + '. ročník' + (group.schoolYear ? ` \u2013 ${group.schoolYear}` : '')}
               </Typography>
-              <ResultsButton eventYear={event.year} eventSeason={event.season_code} sx={showInSummary} />
-              <ProblemsButton eventYear={event.year} eventSeason={event.season_code} sx={showInSummary} />
             </Stack>
           </AccordionSummary>
           <AccordionDetails sx={{p: 0}}>
-            <Stack direction="row" sx={{flexWrap: 'wrap', rowGap: 0.5, ...alignEndInDetails}}>
-              <ResultsButton eventYear={event.year} eventSeason={event.season_code} sx={showInDetails} />
-              <ProblemsButton eventYear={event.year} eventSeason={event.season_code} sx={showInDetails} />
-              {event.publication_set.map((publication) => (
-                <PublicationButton key={publication.id} publication={publication} />
-              ))}
-              {event.galleries.map((gallery) => (
-                <GalleryButton key={gallery.id} gallery={gallery} />
-              ))}
+            <Stack gap={1}>
+              {group.events.map((event) => {
+                const seasonLeaflet = getLeafletPublication(event, 1)
+                const firstSeriesLeaflet = getLeafletPublication(event, 2)
+                const secondSeriesLeaflet = getLeafletPublication(event, 3)
+                const firstGallery = event.galleries[0]
+
+                return (
+                  <Stack key={event.id} gap={0}>
+                    <ArchiveRow label={getSeasonLabel(event.season_code)} gap={'7px'}>
+                      {seasonLeaflet && <PublicationButton publication={seasonLeaflet} label="Časopis" />}
+                      <ArchiveActionButton href={getResultsUrl(event.year, event.season_code)} label="Poradie" />
+                    </ArchiveRow>
+                    <ArchiveRow label="1. séria" indented>
+                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 1)} label="Zadania" />
+                      <PublicationButton publication={firstSeriesLeaflet} label="Riešenia" />
+                    </ArchiveRow>
+                    <ArchiveRow label="2. séria" indented>
+                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 2)} label="Zadania" />
+                      <PublicationButton publication={secondSeriesLeaflet} label="Riešenia" />
+                    </ArchiveRow>
+                    {firstGallery && (
+                      <ArchiveRow label="Sústredenie" indented>
+                        <ArchiveActionButton href={firstGallery.gallery_link} label="Fotky" />
+                      </ArchiveRow>
+                    )}
+                  </Stack>
+                )
+              })}
             </Stack>
           </AccordionDetails>
         </Accordion>
