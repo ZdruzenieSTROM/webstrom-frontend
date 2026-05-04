@@ -20,6 +20,8 @@ export const Logo: FC<ILogo> = ({name, image, url}) => {
       alt={name}
       sx={{
         maxHeight: '4rem',
+        maxWidth: '100%',
+        objectFit: 'contain',
       }}
     />
   )
