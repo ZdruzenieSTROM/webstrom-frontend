@@ -5,7 +5,7 @@ import {useMutation, useQuery} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
 import Image from 'next/image'
 import {useRouter} from 'next/router'
-import {FC, startTransition, useCallback, useEffect, useMemo, useState} from 'react'
+import {FC, useCallback, useMemo, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiOptions} from '@/api/api'
@@ -81,16 +81,6 @@ export const ProblemAdministration: FC = () => {
 
   const problemId = params && params[0]
 
-  const [isDirty, setIsDirty] = useState(false)
-
-  const [exitDialogOpen, setExitDialogOpen] = useState(false)
-  const {continueNavigation} = useNavigationTrap({
-    shouldBlockNavigation: isDirty,
-    onNavigate: () => {
-      setExitDialogOpen(true)
-    },
-  })
-
   const {
     data: problem,
     refetch: refetchProblem,
@@ -104,58 +94,61 @@ export const ProblemAdministration: FC = () => {
 
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
-  const [solutions, setSolutions] = useState<SolutionAdministration[]>()
+  const baseline = problem?.solution_set
+  const [draftScores, setDraftScores] = useState<Map<number, number | null>>(new Map())
   const [sortKey, setSortKey] = useState<SortKey>('name')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
-  useEffect(() => {
-    // TODO: asi to nechceme updatovat vzdy pri zmene dat zo serveru, moze nam to prepisovat lokalny stav...
-    // netreba robit novy array, podstatne je spravne ohandlit zmeny
-    // startTransition marks the update as non-urgent, defers it and silences the react-hooks/set-state-in-effect warning
-    if (problem) {
-      startTransition(() => {
-        setSolutions(problem.solution_set)
-      })
-    }
-  }, [problem])
+  const baselineById = useMemo(() => new Map((baseline ?? []).map((row) => [row.id, row])), [baseline])
 
-  const {mutate: uploadPoints} = useMutation({
-    mutationFn: (id: string) =>
-      apiAxios.post(`/competition/problem-administration/${id}/upload-points`, {
-        solution_set: solutions,
-      }),
-    onSuccess: () => {
-      refetchProblem()
-      alert('Body boli úspešne uložené.')
+  const dirtyIds = useMemo(() => {
+    const ids = new Set<number>()
+    for (const [id, draftScore] of draftScores) {
+      // Skip orphan drafts for solutions removed server-side; otherwise they'd keep
+      // isDirty true forever with no row in the UI to explain it.
+      if (!baselineById.has(id)) continue
+      const baselineScore = baselineById.get(id)?.score ?? null
+      if (draftScore !== baselineScore) ids.add(id)
+    }
+    return ids
+  }, [draftScores, baselineById])
+
+  const isDirty = dirtyIds.size > 0
+
+  const displayScore = (row: SolutionAdministration): number | null =>
+    draftScores.has(row.id) ? (draftScores.get(row.id) ?? null) : (row.score ?? null)
+
+  const [exitDialogOpen, setExitDialogOpen] = useState(false)
+  const {continueNavigation} = useNavigationTrap({
+    shouldBlockNavigation: isDirty,
+    onNavigate: () => {
+      setExitDialogOpen(true)
     },
   })
 
-  const updatePoints = (index: number, newPointsInput: string) => {
+  const {mutate: uploadPoints, isPending: uploadPointsIsPending} = useMutation({
+    mutationFn: (id: string) => {
+      const merged = (baseline ?? []).map((row) =>
+        draftScores.has(row.id) ? {...row, score: draftScores.get(row.id) ?? null} : row,
+      )
+      return apiAxios.post(`/competition/problem-administration/${id}/upload-points`, {
+        solution_set: merged,
+      })
+    },
+    onSuccess: () => {
+      alert('Body boli úspešne uložené.')
+      return refetchProblem()
+    },
+  })
+
+  const updateScore = (id: number, newPointsInput: string) => {
     const newPoints = Number.parseInt(newPointsInput)
-    // nevalidny input spravi NaN
     const newScore = Number.isNaN(newPoints) ? null : newPoints
-    // array v javascripte je objekt s referenciou, pre skopirovanie odpojene od originalneho objektu treba vytvorit novy array
-    const data = [...(solutions ?? [])]
-    // nie je to ale "deep copy" - data[index] je tiez referencia na povodny objekt, treba ho skopirovat
-    data[index] = {...data[index], score: newScore}
-    setSolutions(data)
-    setIsDirty(true)
-  }
-
-  const updateSolution = (index: number) => {
-    // array v javascripte je objekt s referenciou, pre skopirovanie odpojene od originalneho objektu treba vytvorit novy array
-    const data = [...(solutions ?? [])]
-    // nie je to ale "deep copy" - data[index] je tiez referencia na povodny objekt, treba ho skopirovat
-    data[index] = {...data[index], solution: 'uploaded'}
-    setSolutions(data)
-  }
-
-  const updateCorrectedSolution = (index: number) => {
-    // array v javascripte je objekt s referenciou, pre skopirovanie odpojene od originalneho objektu treba vytvorit novy array
-    const data = [...(solutions ?? [])]
-    // nie je to ale "deep copy" - data[index] je tiez referencia na povodny objekt, treba ho skopirovat
-    data[index] = {...data[index], corrected_solution: 'uploaded'}
-    setSolutions(data)
+    setDraftScores((current) => {
+      const next = new Map(current)
+      next.set(id, newScore)
+      return next
+    })
   }
 
   const {
@@ -200,24 +193,19 @@ export const ProblemAdministration: FC = () => {
 
   const sortedSolutions = useMemo(
     () =>
-      (solutions ?? [])
-        .map((solution, originalIndex) => ({solution, originalIndex}))
-        .toSorted((left, right) => {
-          if (sortKey === 'name') {
-            const leftName = getSolutionName(left.solution)
-            const rightName = getSolutionName(right.solution)
-
-            return sortDirection === 'asc'
-              ? leftName.localeCompare(rightName, 'sk')
-              : rightName.localeCompare(leftName, 'sk')
-          }
-
-          const leftPoints = left.solution.score ?? Number.NEGATIVE_INFINITY
-          const rightPoints = right.solution.score ?? Number.NEGATIVE_INFINITY
-
-          return sortDirection === 'asc' ? leftPoints - rightPoints : rightPoints - leftPoints
-        }),
-    [solutions, sortKey, sortDirection],
+      (baseline ?? []).toSorted((left, right) => {
+        if (sortKey === 'name') {
+          const leftName = getSolutionName(left)
+          const rightName = getSolutionName(right)
+          return sortDirection === 'asc'
+            ? leftName.localeCompare(rightName, 'sk')
+            : rightName.localeCompare(leftName, 'sk')
+        }
+        const leftPoints = left.score ?? Number.NEGATIVE_INFINITY
+        const rightPoints = right.score ?? Number.NEGATIVE_INFINITY
+        return sortDirection === 'asc' ? leftPoints - rightPoints : rightPoints - leftPoints
+      }),
+    [baseline, sortKey, sortDirection],
   )
 
   if (permissionsIsLoading || problemIsLoading || semesterIsLoading) return <Loading />
@@ -225,10 +213,7 @@ export const ProblemAdministration: FC = () => {
   if (problemId === undefined || !problem)
     return <Typography>Nevalidné číslo úlohy (problemId) v URL alebo ju proste nevieme fetchnúť z BE.</Typography>
 
-  const handleSavePoints = () => {
-    setIsDirty(false)
-    uploadPoints(problemId)
-  }
+  const handleSavePoints = () => uploadPoints(problemId)
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -357,7 +342,7 @@ export const ProblemAdministration: FC = () => {
             <Box sx={styles.centerCell}>Riešenie</Box>
             <Box sx={styles.centerCell}>Opravené</Box>
           </Box>
-          {sortedSolutions.map(({solution, originalIndex}) => (
+          {sortedSolutions.map((solution) => (
             <Box key={solution.id} sx={styles.tableRow}>
               <div>
                 {solution.semester_registration?.profile.first_name} {solution.semester_registration?.profile.last_name}
@@ -377,9 +362,12 @@ export const ProblemAdministration: FC = () => {
                   component="input"
                   type="text"
                   pattern="[0-9]"
-                  value={solution.score ?? ''}
-                  onChange={(event) => updatePoints(originalIndex, event.target.value)}
-                  sx={styles.input}
+                  value={displayScore(solution) ?? ''}
+                  onChange={(event) => updateScore(solution.id, event.target.value)}
+                  sx={{
+                    ...styles.input,
+                    fontWeight: dirtyIds.has(solution.id) ? 'normal' : 'bold',
+                  }}
                 />
               </Box>
               <Box sx={styles.centerCell}>
@@ -400,7 +388,8 @@ export const ProblemAdministration: FC = () => {
                 )}
                 <FileUploader
                   uploadLink={`/competition/solution/${solution.id}/upload-solution-file`}
-                  refetch={() => updateSolution(originalIndex)}
+                  refetch={refetchProblem}
+                  testId={`upload-solution-${solution.id}`}
                 />
               </Box>
               <Box sx={styles.centerCell}>
@@ -421,7 +410,8 @@ export const ProblemAdministration: FC = () => {
                 )}
                 <FileUploader
                   uploadLink={`/competition/solution/${solution.id}/upload-corrected-solution-file`}
-                  refetch={() => updateCorrectedSolution(originalIndex)}
+                  refetch={refetchProblem}
+                  testId={`upload-corrected-${solution.id}`}
                 />
               </Box>
             </Box>
@@ -429,8 +419,8 @@ export const ProblemAdministration: FC = () => {
         </Box>
 
         <Stack alignItems="end" mt={1.5}>
-          <Button variant="button2" onClick={handleSavePoints}>
-            Uložiť body
+          <Button variant="button2" onClick={handleSavePoints} disabled={uploadPointsIsPending || !isDirty}>
+            {uploadPointsIsPending ? 'Ukladám…' : 'Uložiť body'}
           </Button>
         </Stack>
       </Stack>

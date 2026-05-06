@@ -1,11 +1,10 @@
 import {Upload} from '@mui/icons-material'
+import {CircularProgress} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import {FC, useCallback} from 'react'
 import {Accept, DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiAxios} from '@/api/apiAxios'
-
-import {Loading} from '../Loading/Loading'
 
 interface FileUploaderProps {
   uploadLink: string
@@ -13,6 +12,7 @@ interface FileUploaderProps {
   adjustFormData?: (formData: FormData) => void
   refetch: () => void
   alreadyUploaded?: boolean
+  testId?: string
 }
 
 export const FileUploader: FC<FileUploaderProps> = ({
@@ -21,6 +21,7 @@ export const FileUploader: FC<FileUploaderProps> = ({
   adjustFormData,
   refetch,
   alreadyUploaded,
+  testId,
 }) => {
   const postMutation = useMutation({
     mutationFn: (formData: FormData) => apiAxios.post(uploadLink, formData),
@@ -57,15 +58,9 @@ export const FileUploader: FC<FileUploaderProps> = ({
   const isUploading = postMutation.isPending || patchMutation.isPending
 
   return (
-    <>
-      {isUploading ? (
-        <Loading />
-      ) : (
-        <div {...getRootProps({style: {cursor: 'pointer'}})}>
-          <input {...getInputProps()} />
-          <Upload />
-        </div>
-      )}
-    </>
+    <div {...getRootProps({style: {cursor: isUploading ? 'wait' : 'pointer'}})} data-testid={testId}>
+      <input {...getInputProps()} />
+      {isUploading ? <CircularProgress size={24} color="inherit" /> : <Upload />}
+    </div>
   )
 }

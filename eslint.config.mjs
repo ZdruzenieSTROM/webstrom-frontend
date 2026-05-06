@@ -208,7 +208,7 @@ export default tseslint.config(
     extends: fixupConfigRules(compat.extends('plugin:node/recommended-script')),
   },
   {
-    files: ['**/*.test.ts', '**/*.test.tsx'],
+    files: ['**/*.test.ts', '**/*.test.tsx', '**/testUtils.{ts,tsx}', 'vitest.setup.ts'],
     plugins: {
       vitest,
     },
@@ -219,13 +219,27 @@ export default tseslint.config(
     },
     rules: {
       ...vitest.configs.all.rules,
-      'vitest/prefer-expect-assertions': [
-        'warn',
-        {
-          onlyFunctionsWithExpectInCallback: true,
-          onlyFunctionsWithAsyncKeyword: true,
-        },
-      ],
+
+      // Opinionated vitest rules we don't enforce
+      'vitest/prefer-expect-assertions': 'off',
+      'vitest/no-hooks': 'off',
+      'vitest/prefer-describe-function-title': 'off',
+      'vitest/prefer-lowercase-title': 'off',
+      'vitest/padding-around-all': 'off',
+      'vitest/padding-around-expect-groups': 'off',
+      'vitest/prefer-expect-resolves': 'off',
+      'vitest/require-mock-type-parameters': 'off',
+      // The vi.mock(import(...)) syntax forces complete mock shapes against real module
+      // types — too painful for hooks with rich return types. String form is fine.
+      'vitest/prefer-import-in-mock': 'off',
+      'vitest/require-import-vi-mock': 'off',
+      // Allow comprehensive scenario tests with more assertions.
+      'vitest/max-expects': ['warn', {max: 15}],
+      // setupFiles register hooks at module level; that's by design.
+      'vitest/require-top-level-describe': 'off',
+
+      // Mocks make method references look unbound; safe in test context.
+      '@typescript-eslint/unbound-method': 'off',
 
       'node/no-unpublished-import': 'off',
     },
