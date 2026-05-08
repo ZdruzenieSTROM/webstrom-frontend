@@ -69,7 +69,7 @@ const getArchiveButtonSx = (disabled = false): SxProps<Theme> => {
 
 type ButtonKind = 'magazine' | 'results' | 'problems' | 'solutions' | 'photos'
 
-const buttonConfig: Record<ButtonKind, {label: string; Icon?: ComponentType<SvgIconProps>}> = {
+const buttonConfig: Record<ButtonKind, {label: string; Icon: ComponentType<SvgIconProps>}> = {
   magazine: {label: 'Časopis', Icon: MenuBookOutlined},
   results: {label: 'Poradie', Icon: EmojiEventsOutlined},
   problems: {label: 'Zadania', Icon: AssignmentOutlined},
@@ -81,7 +81,7 @@ const ButtonContent: FC<{kind: ButtonKind}> = ({kind}) => {
   const {label, Icon} = buttonConfig[kind]
   return (
     <Box component="span" sx={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
-      {Icon && <Icon aria-hidden sx={{fontSize: '1em'}} />}
+      <Icon aria-hidden sx={{fontSize: '1em'}} />
       {label}
     </Box>
   )
@@ -201,15 +201,12 @@ export const Archive: FC = () => {
           key={group.year}
           defaultExpanded={index === 0}
           disableGutters
-          square={false}
           sx={{boxShadow: 'none', '&:before': {display: 'none'}}}
         >
           <AccordionSummary expandIcon={<ExpandMore color="primary" fontSize="large" />} sx={{p: 0}}>
-            <Stack direction="row" sx={{flexGrow: 1}}>
-              <Typography variant="h2" sx={{flexGrow: 1}}>
-                {group.year + '. ročník' + (group.schoolYear ? ` \u2013 ${group.schoolYear}` : '')}
-              </Typography>
-            </Stack>
+            <Typography variant="h2" sx={{flexGrow: 1}}>
+              {group.year + '. ročník' + (group.schoolYear ? ` \u2013 ${group.schoolYear}` : '')}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails sx={{p: 0}}>
             <Stack gap={1}>
