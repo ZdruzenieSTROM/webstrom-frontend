@@ -6,15 +6,17 @@ import {IPost} from '@/components/Posts/Post'
 import {FlatPage} from '@/types/api/base'
 import {MenuItemShort} from '@/types/api/cms'
 import {
+  Comment,
   Competition,
   Event,
+  Grade,
   ProblemWithSolutions,
   Result,
   Semester,
   SemesterWithProblems,
   SeriesWithProblems,
 } from '@/types/api/competition'
-import {Profile} from '@/types/api/personal'
+import {ISchool, MyPermissions, Profile} from '@/types/api/personal'
 import {SeminarId} from '@/utils/useSeminarInfo'
 
 import {apiAxios, newApiAxios} from './apiAxios'
@@ -76,6 +78,21 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
         queryFn: () => unwrap(axiosInstance.get<OurCompetition>(`/competition/competition/slug/${slug}`)),
       }),
     },
+    event: (seminarId: SeminarId) => ({
+      queryKey: ['competition', 'event', {competition: seminarId}],
+      queryFn: () => unwrap(axiosInstance.get<Event[]>(`/competition/event/?competition=${seminarId}`)),
+    }),
+    grade: () => ({
+      queryKey: ['competition', 'grade'],
+      queryFn: () => unwrap(axiosInstance.get<Grade[]>('/competition/grade')),
+    }),
+    problem: {
+      comments: (problemId: number | undefined) => ({
+        queryKey: ['competition', 'problem', problemId, 'comments'],
+        queryFn: () => unwrap(axiosInstance.get<Comment[]>(`/competition/problem/${problemId}/comments`)),
+        enabled: problemId != null,
+      }),
+    },
     semesterList: (seminarId: SeminarId) => ({
       queryKey: ['competition', 'semester-list', {competition: seminarId}],
       queryFn: () => unwrap(axiosInstance.get<Semester[]>(`/competition/semester-list?competition=${seminarId}`)),
@@ -123,7 +140,15 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
         queryKey: ['personal', 'profiles', 'myprofile'],
         queryFn: () => unwrap(axiosInstance.get<Profile>('/personal/profiles/myprofile')),
       }),
+      mypermissions: () => ({
+        queryKey: ['personal', 'profiles', 'mypermissions'],
+        queryFn: () => unwrap(axiosInstance.get<MyPermissions>('/personal/profiles/mypermissions')),
+      }),
     },
+    schools: () => ({
+      queryKey: ['personal', 'schools'],
+      queryFn: () => unwrap(axiosInstance.get<ISchool[]>('/personal/schools')),
+    }),
   },
 })
 

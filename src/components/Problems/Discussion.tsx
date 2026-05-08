@@ -2,8 +2,9 @@ import {Stack, Typography} from '@mui/material'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {FC, useState} from 'react'
 
+import {apiOptions} from '@/api/api'
 import {apiAxios} from '@/api/apiAxios'
-import {Comment, CommentState} from '@/types/api/competition'
+import {CommentState} from '@/types/api/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {formatDateTime} from '@/utils/formatDate'
 import {useHasPermissions} from '@/utils/useHasPermissions'
@@ -25,13 +26,8 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   const [deleteDialogId, setDeleteDialogId] = useState<number | undefined>()
   const [publishDialogId, setPublishDialogId] = useState<number | undefined>()
 
-  const queryKey = ['competition', 'problem', problemId, 'comments']
-  const {data: commentsData, isLoading: commentsIsLoading} = useQuery({
-    queryKey,
-    queryFn: () => apiAxios.get<Comment[]>(`/competition/problem/${problemId}/comments`),
-    enabled: problemId !== undefined,
-  })
-  const comments = commentsData?.data
+  const commentsQuery = apiOptions.competition.problem.comments(problemId)
+  const {data: comments, isLoading: commentsIsLoading} = useQuery(commentsQuery)
 
   const {hasPermissions} = useHasPermissions()
 
@@ -44,7 +40,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
 
   const invalidateCommentsAndCount = async () => {
     await Promise.all([
-      queryClient.invalidateQueries({queryKey}),
+      queryClient.invalidateQueries({queryKey: commentsQuery.queryKey}),
       // comment count comes from problem from series
       invalidateSeriesQuery(),
     ])
