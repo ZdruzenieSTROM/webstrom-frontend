@@ -43,7 +43,7 @@ export const LoginForm: FC<LoginFormProps> = ({closeDialog}) => {
   }
 
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
-    login({data, onSuccess: redirectClose})
+    login(data, {onSuccess: redirectClose})
   }
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}

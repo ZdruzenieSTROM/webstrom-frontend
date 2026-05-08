@@ -11,12 +11,11 @@ import {ResultsRow} from './ResultsRow'
 export const Results: FC = () => {
   const {id, displayWholeSemesterOnResults} = useDataFromURL()
 
-  const competitionEndpoint = displayWholeSemesterOnResults ? 'semester' : 'series'
-  const idForEndpoint = displayWholeSemesterOnResults ? id.semesterId : id.seriesId
+  const resultsQuery = displayWholeSemesterOnResults
+    ? apiOptions.competition.semester.results(id.semesterId)
+    : apiOptions.competition.series.results.list(id.seriesId)
 
-  const {data: resultsData, isLoading: resultsIsLoading} = useQuery(
-    apiOptions.competition[competitionEndpoint].results(idForEndpoint),
-  )
+  const {data: resultsData, isLoading: resultsIsLoading} = useQuery(resultsQuery)
   const results = resultsData ?? []
 
   return (
