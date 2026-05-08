@@ -6,7 +6,6 @@ import {SubmitHandler, useForm} from 'react-hook-form'
 
 import {apiAxios} from '@/api/apiAxios'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
-import {SelectOption} from '@/components/FormItems/FormSelect/FormSelect'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {useProfile} from '@/utils/useProfile'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
@@ -52,9 +51,9 @@ export const ProfileForm: FC = () => {
     parent_phone: profile?.parent_phone ?? '',
     new_school_description: profile?.other_school_info ?? '',
     without_school: profile?.school_id === 1,
-    school: profile ? ({id: profile.school.code, label: profile.school.verbose_name} as SelectOption) : null,
+    school: profile ? {id: profile.school.code, label: profile.school.verbose_name} : null,
     school_not_found: profile?.school_id === 0,
-    grade: profile ? ({id: profile.grade, label: profile.grade_name} as SelectOption) : null,
+    grade: profile ? {id: profile.grade, label: profile.grade_name} : null,
   }
 
   const {handleSubmit, control, watch, setValue} = useForm<ProfileFormValues>({

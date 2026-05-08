@@ -117,7 +117,7 @@ describe('ProblemAdministration', () => {
 
   it('saves merged scores, clears dirty state on success, and refetches', async () => {
     const user = userEvent.setup()
-    vi.mocked(apiAxios.post).mockResolvedValue({data: {}} as never)
+    vi.mocked(apiAxios.post).mockResolvedValue({data: {}})
 
     renderWithProviders(<ProblemAdministration />)
 
@@ -156,7 +156,7 @@ describe('ProblemAdministration', () => {
       () =>
         new Promise<{data: unknown}>((resolve) => {
           resolvePost = resolve
-        }) as never,
+        }),
     )
 
     renderWithProviders(<ProblemAdministration />)
