@@ -1,7 +1,24 @@
-import {ExpandMore} from '@mui/icons-material'
-import {Accordion, AccordionDetails, AccordionSummary, Stack, SxProps, Theme, Typography} from '@mui/material'
+import {
+  AssignmentOutlined,
+  AssignmentTurnedInOutlined,
+  EmojiEventsOutlined,
+  ExpandMore,
+  MenuBookOutlined,
+  PhotoLibraryOutlined,
+} from '@mui/icons-material'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Stack,
+  SvgIconProps,
+  SxProps,
+  Theme,
+  Typography,
+} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import {FC} from 'react'
+import {ComponentType, FC} from 'react'
 
 import {apiAxios} from '@/api/apiAxios'
 import {colors} from '@/theme/colors'
@@ -63,21 +80,41 @@ const getArchiveButtonSx = (disabled = false): SxProps<Theme> => {
   }
 }
 
+type ButtonKind = 'magazine' | 'results' | 'problems' | 'solutions' | 'photos'
+
+const buttonConfig: Record<ButtonKind, {label: string; Icon?: ComponentType<SvgIconProps>}> = {
+  magazine: {label: 'Časopis', Icon: MenuBookOutlined},
+  results: {label: 'Poradie', Icon: EmojiEventsOutlined},
+  problems: {label: 'Zadania', Icon: AssignmentOutlined},
+  solutions: {label: 'Riešenia', Icon: AssignmentTurnedInOutlined},
+  photos: {label: 'Fotky', Icon: PhotoLibraryOutlined},
+}
+
+const ButtonContent: FC<{kind: ButtonKind}> = ({kind}) => {
+  const {label, Icon} = buttonConfig[kind]
+  return (
+    <Box component="span" sx={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
+      {Icon && <Icon aria-hidden sx={{fontSize: '1em'}} />}
+      {label}
+    </Box>
+  )
+}
+
 const ArchiveActionButton: FC<{
   href: string
-  label: string
-}> = ({href, label}) => {
+  kind: ButtonKind
+}> = ({href, kind}) => {
   return (
     <Link variant="button2" href={href} sx={getArchiveButtonSx()}>
-      {label}
+      <ButtonContent kind={kind} />
     </Link>
   )
 }
 
 const PublicationButton: FC<{
   publication?: Publication
-  label?: string
-}> = ({publication, label}) => {
+  kind: ButtonKind
+}> = ({publication, kind}) => {
   return (
     <Link
       variant="button2"
@@ -85,7 +122,7 @@ const PublicationButton: FC<{
       href={publication?.file || '#'}
       sx={getArchiveButtonSx(!publication)}
     >
-      {label ?? publication?.name}
+      <ButtonContent kind={kind} />
     </Link>
   )
 }
@@ -193,20 +230,20 @@ export const Archive: FC = () => {
                 return (
                   <Stack key={event.id} gap={0}>
                     <ArchiveRow label={getSeasonLabel(event.season_code)} gap={'7px'}>
-                      {seasonLeaflet && <PublicationButton publication={seasonLeaflet} label="Časopis" />}
-                      <ArchiveActionButton href={getResultsUrl(event.year, event.season_code)} label="Poradie" />
+                      {seasonLeaflet && <PublicationButton publication={seasonLeaflet} kind="magazine" />}
+                      <ArchiveActionButton href={getResultsUrl(event.year, event.season_code)} kind="results" />
                     </ArchiveRow>
                     <ArchiveRow label="1. séria" indented>
-                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 1)} label="Zadania" />
-                      <PublicationButton publication={firstSeriesLeaflet} label="Riešenia" />
+                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 1)} kind="problems" />
+                      <PublicationButton publication={firstSeriesLeaflet} kind="solutions" />
                     </ArchiveRow>
                     <ArchiveRow label="2. séria" indented>
-                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 2)} label="Zadania" />
-                      <PublicationButton publication={secondSeriesLeaflet} label="Riešenia" />
+                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 2)} kind="problems" />
+                      <PublicationButton publication={secondSeriesLeaflet} kind="solutions" />
                     </ArchiveRow>
                     {firstGallery && (
                       <ArchiveRow label="Sústredenie" indented>
-                        <ArchiveActionButton href={firstGallery.gallery_link} label="Fotky" />
+                        <ArchiveActionButton href={firstGallery.gallery_link} kind="photos" />
                       </ArchiveRow>
                     )}
                   </Stack>
