@@ -20,6 +20,7 @@ import {
 } from '@/types/api/competition'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {ISchool, MyPermissions, Profile} from '@/types/api/personal'
+import {Login, Token} from '@/types/api/user'
 import {Seminar, SeminarId} from '@/utils/useSeminarInfo'
 
 import {apiAxios, newApiAxios} from './apiAxios'
@@ -214,6 +215,10 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
     }),
   },
   user: {
+    login: () =>
+      mutationOptions({
+        mutationFn: (data: Login) => unwrap(axiosInstance.post<Token>('/user/login', data)),
+      }),
     logout: () =>
       mutationOptions({
         mutationFn: () => unwrap(axiosInstance.post('/user/logout')),
