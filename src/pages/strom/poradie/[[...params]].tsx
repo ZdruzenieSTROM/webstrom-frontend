@@ -64,11 +64,10 @@ export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query
     params,
   })
 
-  const competitionEndpoint = displayWholeSemesterOnResults ? 'semester' : 'series'
-  const idForEndpoint = displayWholeSemesterOnResults ? id.semesterId : id.seriesId
-
   const seriesResultsQuery = ssrApiOptions.cms.infoBanner.seriesResults(id.seriesId)
-  const competitionResultsQuery = ssrApiOptions.competition[competitionEndpoint].results(idForEndpoint)
+  const competitionResultsQuery = displayWholeSemesterOnResults
+    ? ssrApiOptions.competition.semester.results(id.semesterId)
+    : ssrApiOptions.competition.series.results.list(id.seriesId)
 
   if (seriesResultsQuery.enabled && competitionResultsQuery.enabled) {
     await Promise.all([

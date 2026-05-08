@@ -1,3 +1,4 @@
+import {mutationOptions} from '@tanstack/react-query'
 import {AxiosInstance, AxiosResponse} from 'axios'
 import {GetServerSidePropsContext} from 'next'
 
@@ -15,9 +16,11 @@ import {
   Semester,
   SemesterWithProblems,
   SeriesWithProblems,
+  SolutionAdministration,
 } from '@/types/api/competition'
+import {IGeneralPostResponse} from '@/types/api/general'
 import {ISchool, MyPermissions, Profile} from '@/types/api/personal'
-import {SeminarId} from '@/utils/useSeminarInfo'
+import {Seminar, SeminarId} from '@/utils/useSeminarInfo'
 
 import {apiAxios, newApiAxios} from './apiAxios'
 
@@ -78,10 +81,17 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
         queryFn: () => unwrap(axiosInstance.get<OurCompetition>(`/competition/competition/slug/${slug}`)),
       }),
     },
-    event: (seminarId: SeminarId) => ({
-      queryKey: ['competition', 'event', {competition: seminarId}],
-      queryFn: () => unwrap(axiosInstance.get<Event[]>(`/competition/event/?competition=${seminarId}`)),
-    }),
+    event: {
+      // .list is the bare /event/ endpoint; named like this because `event` is also a namespace for /event/{id}/register
+      list: (seminarId: SeminarId) => ({
+        queryKey: ['competition', 'event', {competition: seminarId}],
+        queryFn: () => unwrap(axiosInstance.get<Event[]>(`/competition/event/?competition=${seminarId}`)),
+      }),
+      register: () =>
+        mutationOptions({
+          mutationFn: (eventId: number) => unwrap(axiosInstance.post(`/competition/event/${eventId}/register`)),
+        }),
+    },
     grade: () => ({
       queryKey: ['competition', 'grade'],
       queryFn: () => unwrap(axiosInstance.get<Grade[]>('/competition/grade')),
@@ -92,6 +102,37 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
         queryFn: () => unwrap(axiosInstance.get<Comment[]>(`/competition/problem/${problemId}/comments`)),
         enabled: problemId != null,
       }),
+      addComment: () =>
+        mutationOptions({
+          mutationFn: ({problemId, text}: {problemId: number; text: string}) =>
+            unwrap(axiosInstance.post(`/competition/problem/${problemId}/add-comment`, {text})),
+        }),
+      uploadCorrected: () =>
+        mutationOptions({
+          mutationFn: ({problemId, data}: {problemId: string; data: FormData}) =>
+            unwrap(axiosInstance.post(`/competition/problem/${problemId}/upload-corrected`, data)),
+        }),
+      // intentionally NOT unwrapped — consumer differentiates 200/201 in onSuccess via response.status
+      uploadSolution: () =>
+        mutationOptions({
+          mutationFn: ({problemId, data}: {problemId: number; data: FormData}) =>
+            axiosInstance.post(`/competition/problem/${problemId}/upload-solution`, data),
+        }),
+    },
+    comment: {
+      publish: () =>
+        mutationOptions({
+          mutationFn: (commentId: number) => unwrap(axiosInstance.post(`/competition/comment/${commentId}/publish`)),
+        }),
+      hide: () =>
+        mutationOptions({
+          mutationFn: ({commentId, hiddenResponse}: {commentId: number; hiddenResponse: string}) =>
+            unwrap(axiosInstance.post(`/competition/comment/${commentId}/hide`, {hidden_response: hiddenResponse})),
+        }),
+      delete: () =>
+        mutationOptions({
+          mutationFn: (commentId: number) => unwrap(axiosInstance.delete(`/competition/comment/${commentId}`)),
+        }),
     },
     semesterList: (seminarId: SeminarId) => ({
       queryKey: ['competition', 'semester-list', {competition: seminarId}],
@@ -107,11 +148,24 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
         queryKey: ['competition', 'series', 'current', seminarId],
         queryFn: () => unwrap(axiosInstance.get<SeriesWithProblems>(`/competition/series/current/${seminarId}`)),
       }),
-      results: (seriesId: number | undefined | null) => ({
-        queryKey: ['competition', 'series', seriesId, 'results'],
-        queryFn: () => unwrap(axiosInstance.get<Result[]>(`/competition/series/${seriesId}/results`)),
-        enabled: seriesId != null,
-      }),
+      results: {
+        // .list is the bare /series/{id}/results GET; `results` is also a namespace for /freeze and /unfreeze
+        list: (seriesId: number | undefined | null) => ({
+          queryKey: ['competition', 'series', seriesId, 'results'],
+          queryFn: () => unwrap(axiosInstance.get<Result[]>(`/competition/series/${seriesId}/results`)),
+          enabled: seriesId != null,
+        }),
+        freeze: () =>
+          mutationOptions({
+            mutationFn: (seriesId: number) =>
+              unwrap(axiosInstance.post(`/competition/series/${seriesId}/results/freeze`)),
+          }),
+        unfreeze: () =>
+          mutationOptions({
+            mutationFn: (seriesId: number) =>
+              unwrap(axiosInstance.post(`/competition/series/${seriesId}/results/unfreeze`)),
+          }),
+      },
     },
     semester: {
       byId: (semesterId: number | undefined | null) => ({
@@ -132,6 +186,15 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
           unwrap(axiosInstance.get<ProblemWithSolutions>(`/competition/problem-administration/${problemId}`)),
         enabled: problemId != null,
       }),
+      uploadPoints: () =>
+        mutationOptions({
+          mutationFn: ({problemId, solutionSet}: {problemId: string; solutionSet: SolutionAdministration[]}) =>
+            unwrap(
+              axiosInstance.post(`/competition/problem-administration/${problemId}/upload-points`, {
+                solution_set: solutionSet,
+              }),
+            ),
+        }),
     },
   },
   personal: {
@@ -149,6 +212,48 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
       queryKey: ['personal', 'schools'],
       queryFn: () => unwrap(axiosInstance.get<ISchool[]>('/personal/schools')),
     }),
+  },
+  user: {
+    logout: () =>
+      mutationOptions({
+        mutationFn: () => unwrap(axiosInstance.post('/user/logout')),
+      }),
+    registration: {
+      // .create is the bare /user/registration POST; `registration` is also a namespace for /verify-email
+      create: () =>
+        mutationOptions({
+          mutationFn: ({seminar, data}: {seminar: Seminar; data: unknown}) =>
+            unwrap(axiosInstance.post<IGeneralPostResponse>(`/user/registration?seminar=${seminar}`, data)),
+        }),
+      verifyEmail: () =>
+        mutationOptions({
+          mutationFn: ({key}: {key: string}) => unwrap(axiosInstance.post('/user/registration/verify-email', {key})),
+        }),
+    },
+    user: () =>
+      mutationOptions({
+        mutationFn: (data: unknown) => unwrap(axiosInstance.patch<IGeneralPostResponse>('/user/user', data)),
+      }),
+    password: {
+      change: () =>
+        mutationOptions({
+          mutationFn: (data: {old_password: string; new_password1: string; new_password2: string}) =>
+            unwrap(axiosInstance.post<IGeneralPostResponse>('/user/password/change', data)),
+        }),
+      reset: {
+        // .request is the bare /user/password/reset POST; `reset` is also a namespace for /confirm
+        request: () =>
+          mutationOptions({
+            mutationFn: (data: {email: string}) =>
+              unwrap(axiosInstance.post<IGeneralPostResponse>('/user/password/reset', data)),
+          }),
+        confirm: () =>
+          mutationOptions({
+            mutationFn: (data: {new_password1?: string; new_password2?: string; uid: string; token: string}) =>
+              unwrap(axiosInstance.post<IGeneralPostResponse>('/user/password/reset/confirm', data)),
+          }),
+      },
+    },
   },
 })
 

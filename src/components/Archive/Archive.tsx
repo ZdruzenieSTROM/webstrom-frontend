@@ -185,7 +185,7 @@ const ArchiveRow: FC<{
 export const Archive: FC = () => {
   const {seminarId} = useSeminarInfo()
 
-  const {data: eventListData, isLoading: eventListIsLoading} = useQuery(apiOptions.competition.event(seminarId))
+  const {data: eventListData, isLoading: eventListIsLoading} = useQuery(apiOptions.competition.event.list(seminarId))
   const eventList = eventListData ?? []
   const yearGroups = getYearGroups(eventList)
 

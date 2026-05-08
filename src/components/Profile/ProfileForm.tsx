@@ -4,9 +4,8 @@ import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
-import {IGeneralPostResponse} from '@/types/api/general'
 import {useProfile} from '@/utils/useProfile'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -78,9 +77,7 @@ export const ProfileForm: FC = () => {
   const queryClient = useQueryClient()
 
   const {mutate: submitFormData, isPending: isSubmitting} = useMutation({
-    mutationFn: (data: ProfileFormValues) => {
-      return apiAxios.patch<IGeneralPostResponse>(`/user/user`, transformFormData(data))
-    },
+    ...apiOptions.user.user(),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['personal', 'profiles', 'myprofile']})
       router.push(`/${seminar}/profil`)
@@ -88,7 +85,7 @@ export const ProfileForm: FC = () => {
   })
 
   const onSubmit: SubmitHandler<ProfileFormValues> = (data) => {
-    submitFormData(data)
+    submitFormData(transformFormData(data))
   }
 
   const returnBack = () => {

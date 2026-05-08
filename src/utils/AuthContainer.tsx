@@ -3,6 +3,7 @@ import {AxiosError} from 'axios'
 import {useEffect, useState} from 'react'
 import {createContainer} from 'unstated-next'
 
+import {apiOptions} from '@/api/api'
 import {apiAxios, newApiAxios} from '@/api/apiAxios'
 import {MyPermissions} from '@/types/api/personal'
 import {Login, Token} from '@/types/api/user'
@@ -85,7 +86,7 @@ const useAuth = () => {
 
   // zavoláme logout API point, ktorý zmaže token na BE a odstráni sessionid cookie.
   const {mutate: logout, mutateAsync: logoutAsync} = useMutation({
-    mutationFn: () => apiAxios.post('/user/logout'),
+    ...apiOptions.user.logout(),
     onSettled: () => {
       setIsAuthed(false)
       // sessionid cookie odstrani server sam

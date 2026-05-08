@@ -3,7 +3,6 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {FC, useState} from 'react'
 
 import {apiOptions} from '@/api/api'
-import {apiAxios} from '@/api/apiAxios'
 import {CommentState} from '@/types/api/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {formatDateTime} from '@/utils/formatDate'
@@ -47,7 +46,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   }
 
   const {mutate: addComment, isPending} = useMutation({
-    mutationFn: () => apiAxios.post(`/competition/problem/${problemId}/add-comment`, {text: commentText}),
+    ...apiOptions.competition.problem.addComment(),
     onSuccess: () => {
       setCommentText('')
       invalidateCommentsAndCount()
@@ -55,15 +54,14 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   })
 
   const {mutate: publishComment} = useMutation({
-    mutationFn: (id: number) => apiAxios.post(`/competition/comment/${id}/publish`),
+    ...apiOptions.competition.comment.publish(),
     onSuccess: () => {
       invalidateCommentsAndCount()
     },
   })
 
   const {mutate: hideComment, isPending: isHideCommentPending} = useMutation({
-    mutationFn: ({id, hiddenResponseText}: {id: number; hiddenResponseText: string}) =>
-      apiAxios.post(`/competition/comment/${id}/hide`, {hidden_response: hiddenResponseText}),
+    ...apiOptions.competition.comment.hide(),
     onSuccess: () => {
       invalidateCommentsAndCount()
       sethiddenResponseDialogId(undefined)
@@ -72,7 +70,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
   })
 
   const {mutate: confirmDeleteComment} = useMutation({
-    mutationFn: (id: number) => apiAxios.delete(`/competition/comment/${id}`),
+    ...apiOptions.competition.comment.delete(),
     onSuccess: () => {
       invalidateCommentsAndCount()
     },
@@ -179,7 +177,7 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                       />
                       <Stack alignSelf="end">
                         <Button
-                          onClick={() => hideComment({id: comment.id, hiddenResponseText})}
+                          onClick={() => hideComment({commentId: comment.id, hiddenResponse: hiddenResponseText})}
                           variant="button3"
                           disabled={!hiddenResponseText || isHideCommentPending}
                         >
@@ -226,7 +224,11 @@ export const Discussion: FC<DiscussionProps> = ({problemId, invalidateSeriesQuer
                 onChange={handleCommentChange}
               />
               <Stack alignSelf="end">
-                <Button variant="button2" onClick={() => addComment()} disabled={isPending || !commentText}>
+                <Button
+                  variant="button2"
+                  onClick={() => problemId !== undefined && addComment({problemId, text: commentText})}
+                  disabled={isPending || !commentText || problemId === undefined}
+                >
                   Odoslať
                 </Button>
               </Stack>

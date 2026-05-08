@@ -5,8 +5,7 @@ import {AxiosError} from 'axios'
 import {FC, useState} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import {apiAxios} from '@/api/apiAxios'
-import {IGeneralPostResponse} from '@/types/api/general'
+import {apiOptions} from '@/api/api'
 import {useAlert} from '@/utils/useAlert'
 
 import {Button} from '../Clickable/Button'
@@ -51,9 +50,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = ({open, close
   }
 
   const {mutate: submitFormData} = useMutation({
-    mutationFn: (data: PasswordChangeDialogValues) => {
-      return apiAxios.post<IGeneralPostResponse>(`/user/password/change`, data)
-    },
+    ...apiOptions.user.password.change(),
     onSuccess: onSuccess,
     onError: onError,
   })
