@@ -114,6 +114,9 @@ const PublicationButton: FC<{
   )
 }
 
+// BE convention: LEAFLET (id=4) is overloaded — order=1 is the season magazine ("Časopis"),
+// order=2 is solutions of series 1 and order=3 is solutions of series 2. PublicationTypes.SOLUTIONS
+// exists in the schema but is intentionally unused here.
 const getLeafletPublication = (event: Event, order: number) => {
   return event.publication_set.find(
     (publication) => publication.publication_type === PublicationTypes.LEAFLET.id && publication.order === order,
@@ -217,7 +220,8 @@ export const Archive: FC = () => {
                 const firstGallery = event.galleries[0]
 
                 return (
-                  <Stack key={event.id} gap={0}>
+                  <Stack key={event.id}>
+                    {/* 7px keeps season-row buttons aligned with the series rows below */}
                     <ArchiveRow label={getSeasonLabel(event.season_code)} gap={'7px'}>
                       {seasonLeaflet && <PublicationButton publication={seasonLeaflet} kind="magazine" />}
                       <ArchiveActionButton href={getResultsUrl(group.year, event.season_code)} kind="results" />
