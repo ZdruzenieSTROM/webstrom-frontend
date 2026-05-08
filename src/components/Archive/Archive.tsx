@@ -22,29 +22,16 @@ import {ComponentType, FC} from 'react'
 
 import {apiAxios} from '@/api/apiAxios'
 import {colors} from '@/theme/colors'
-import {Gallery} from '@/types/api/cms'
 import {Event, Publication, PublicationTypes} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Link} from '../Clickable/Link'
 import {Loading} from '../Loading/Loading'
 
-// TODO: check whether we can safely assume presence of these and either update it on BE so it gets generated that way, or update it in our `types/api/competition`
-type MyPublication = Publication & {
-  name: string
-}
-
-type MyEvent = Omit<Event, 'publication_set'> & {
-  year: number
-  school_year: string
-  publication_set: MyPublication[]
-  galleries: Gallery[]
-}
-
 type YearGroup = {
   year: number
   schoolYear: string | null
-  events: MyEvent[]
+  events: Event[]
 }
 
 const getSeasonSlug = (eventSeason: number) => {
@@ -127,16 +114,18 @@ const PublicationButton: FC<{
   )
 }
 
-const getLeafletPublication = (event: MyEvent, order: number) => {
+const getLeafletPublication = (event: Event, order: number) => {
   return event.publication_set.find(
     (publication) => publication.publication_type === PublicationTypes.LEAFLET.id && publication.order === order,
   )
 }
 
-const getYearGroups = (eventList: MyEvent[]): YearGroup[] => {
+const getYearGroups = (eventList: Event[]): YearGroup[] => {
   const groups = new Map<number, YearGroup>()
 
   for (const event of eventList) {
+    if (event.year === null) continue
+
     const existingGroup = groups.get(event.year)
 
     if (existingGroup) {
@@ -195,7 +184,7 @@ export const Archive: FC = () => {
 
   const {data: eventListData, isLoading: eventListIsLoading} = useQuery({
     queryKey: ['competition', 'event', `competition=${seminarId}`],
-    queryFn: () => apiAxios.get<MyEvent[]>(`/competition/event/?competition=${seminarId}`),
+    queryFn: () => apiAxios.get<Event[]>(`/competition/event/?competition=${seminarId}`),
   })
   const eventList = eventListData?.data ?? []
   const yearGroups = getYearGroups(eventList)
@@ -231,14 +220,14 @@ export const Archive: FC = () => {
                   <Stack key={event.id} gap={0}>
                     <ArchiveRow label={getSeasonLabel(event.season_code)} gap={'7px'}>
                       {seasonLeaflet && <PublicationButton publication={seasonLeaflet} kind="magazine" />}
-                      <ArchiveActionButton href={getResultsUrl(event.year, event.season_code)} kind="results" />
+                      <ArchiveActionButton href={getResultsUrl(group.year, event.season_code)} kind="results" />
                     </ArchiveRow>
                     <ArchiveRow label="1. séria" indented>
-                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 1)} kind="problems" />
+                      <ArchiveActionButton href={getProblemsUrl(group.year, event.season_code, 1)} kind="problems" />
                       <PublicationButton publication={firstSeriesLeaflet} kind="solutions" />
                     </ArchiveRow>
                     <ArchiveRow label="2. séria" indented>
-                      <ArchiveActionButton href={getProblemsUrl(event.year, event.season_code, 2)} kind="problems" />
+                      <ArchiveActionButton href={getProblemsUrl(group.year, event.season_code, 2)} kind="problems" />
                       <PublicationButton publication={secondSeriesLeaflet} kind="solutions" />
                     </ArchiveRow>
                     {firstGallery && (
