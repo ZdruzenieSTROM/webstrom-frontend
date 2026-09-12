@@ -69,6 +69,14 @@ export const UploadProblemForm: FC<{
     setDisplayActions(true)
   }
 
+  const [displayAiPolicyDialog, setDisplayAiPolicyDialog] = useState<boolean>(true)
+  const cancelSubmission = () => {
+    setDisplayAiPolicyDialog(false)
+    setDisplayProblemUploadForm(false)
+    setDisplayActions(true)
+  }
+  const confirmAiPolicy = () => setDisplayAiPolicyDialog(false)
+
   const [displayAlertDialog, setDisplayAlertDialog] = useState<boolean>(problemSubmitted)
   const closeAlertDialog = () => setDisplayAlertDialog(false)
   const cancel = () => {
@@ -102,8 +110,26 @@ export const UploadProblemForm: FC<{
           Pozor, nahraním nového riešenia prepíšeš svoje predošlé odovzdanie.
         </Box>
       )}
+
       <Dialog
-        open={displayAlertDialog}
+        open={displayAiPolicyDialog}
+        close={cancelSubmission}
+        title="Čestné prehlásenie"
+        contentText="Prehlasujem, že som pri riešení úlohy nepoužil/a umelú inteligenciu spôsobom, ktorý by bol v rozpore s pravidlami súťaže."
+        actions={
+          <>
+            <Button variant="button2" onClick={confirmAiPolicy}>
+              Potvrdiť
+            </Button>
+            <Button variant="button2" onClick={cancelSubmission}>
+              Zrušiť
+            </Button>
+          </>
+        }
+      />
+
+      <Dialog
+        open={displayAlertDialog && !displayAiPolicyDialog}
         close={closeAlertDialog}
         title="Pozor"
         contentText={alertMessage}
