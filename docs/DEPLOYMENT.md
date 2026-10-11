@@ -44,15 +44,18 @@ Where:
 
 The frontend container receives these environment variables:
 
-| Variable             | Description              | Test Example    | Production Example | Required |
-| -------------------- | ------------------------ | --------------- | ------------------ | -------- |
-| `PORT`               | Frontend server port     | `8922`          | `8932`             | Yes      |
-| `BE_PROTOCOL`        | Backend protocol         | `http`          | `http`             | Yes      |
-| `BE_HOSTNAME`        | Backend hostname         | `localhost`     | `localhost`        | Yes      |
-| `BE_PORT`            | Backend port             | `8920`          | `8930`             | Yes      |
-| `BE_FORWARDED_HOST`  | X-Forwarded-Host header  | `test.strom.sk` | `strom.sk`         | Yes      |
-| `BE_FORWARDED_PROTO` | X-Forwarded-Proto header | `https`         | `https`            | Yes      |
-| `DEBUG_SERVER`       | Enable debug logging     | `false`         | `false`            | No       |
+| Variable             | Description                                                           | Test Example    | Production Example | Required |
+| -------------------- | --------------------------------------------------------------------- | --------------- | ------------------ | -------- |
+| `PORT`               | Frontend server port                                                  | `8922`          | `8932`             | Yes      |
+| `BE_PROTOCOL`        | Backend protocol                                                      | `http`          | `http`             | Yes      |
+| `BE_HOSTNAME`        | Backend hostname                                                      | `localhost`     | `localhost`        | Yes      |
+| `BE_PORT`            | Backend port                                                          | `8920`          | `8930`             | Yes      |
+| `BE_FORWARDED_HOST`  | X-Forwarded-Host header                                               | `test.strom.sk` | `strom.sk`         | Yes      |
+| `BE_FORWARDED_PROTO` | X-Forwarded-Proto header                                              | `https`         | `https`            | Yes      |
+| `DEBUG_SERVER`       | Enable debug logging                                                  | `false`         | `false`            | No       |
+| `ROBOTS_NOINDEX`     | Send `X-Robots-Tag: noindex, nofollow` on every response from Next.js | `true`          | `false`            | No       |
+
+`ROBOTS_NOINDEX` only covers responses served by Next.js. `/media`, `/api`, `/django-admin` and `/static` are answered by nginx on the server, so uploaded files (PDFs) need the same header in the nginx config of the environment.
 
 ## Deployment Workflow
 
@@ -142,6 +145,7 @@ docker run -d \
   -e BE_FORWARDED_HOST=test.strom.sk \
   -e BE_FORWARDED_PROTO=https \
   -e DEBUG_SERVER=false \
+  -e ROBOTS_NOINDEX=true \
   ghcr.io/zdrueniestrom/webstrom-frontend:test-{previous-sha}
 ```
 
@@ -169,7 +173,7 @@ docker inspect webstrom-test_webstrom-frontend_1 | grep NetworkMode
 Check current environment variables:
 
 ```bash
-docker exec webstrom-test_webstrom-frontend_1 env | grep -E '^(PORT|BE_|DEBUG_)'
+docker exec webstrom-test_webstrom-frontend_1 env | grep -E '^(PORT|BE_|DEBUG_|ROBOTS_)'
 ```
 
 ### GitHub Actions issues

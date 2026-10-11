@@ -3,7 +3,7 @@ import {NextRequest, NextResponse} from 'next/server'
 import {backendRewriteMiddleware} from './middleware/backendRewriteMiddleware'
 import {removeTrailingSlash} from './utils/trailingSlash'
 
-export function proxy(req: NextRequest) {
+const route = (req: NextRequest) => {
   const url = req.nextUrl
 
   // - na deployed serveri tieto lokalne routy chyti nginx proxy a posle ich na BE,
@@ -41,4 +41,15 @@ export function proxy(req: NextRequest) {
   }
 
   return NextResponse.next()
+}
+
+export function proxy(req: NextRequest) {
+  const res = route(req)
+
+  // hlavicka a nie `Disallow` v robots.txt: crawler musi URL smiet stiahnut, aby `noindex` uvidel,
+  // a len `noindex` vyhodi z vyhladavaca aj URL, ktore uz pozna. plati len pre to, co ide cez next.js -
+  // `/media` a `/api` na deployed serveri obsluhuje nginx.
+  if (process.env.ROBOTS_NOINDEX === 'true') res.headers.set('X-Robots-Tag', 'noindex, nofollow')
+
+  return res
 }

@@ -41,6 +41,11 @@ on:
         type: string
         default: 'false'
         description: 'Enable debug logging'
+      robots_noindex:
+        required: false
+        type: string
+        default: 'false'
+        description: 'Send X-Robots-Tag: noindex on every response (keeps the environment out of search engines)'
     # reusable workflowy vraj musia deklarovat secrets explicitne, nemaju pristup k repo secretom
     secrets:
       ssh_private_key:
@@ -131,6 +136,7 @@ jobs:
               -e BE_FORWARDED_HOST=${{ inputs.be_forwarded_host }} \
               -e BE_FORWARDED_PROTO=${{ inputs.be_forwarded_proto }} \
               -e DEBUG_SERVER=${{ inputs.debug_server }} \
+              -e ROBOTS_NOINDEX=${{ inputs.robots_noindex }} \
               ${{ steps.meta.outputs.full_image }}
 
             # Cleanup

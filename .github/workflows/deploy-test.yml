@@ -16,5 +16,6 @@ jobs:
       be_port: '8920'
       be_forwarded_proto: 'https'
       be_forwarded_host: 'test.strom.sk'
+      robots_noindex: 'true'
     secrets:
       ssh_private_key: ${{ secrets.WEBSTROM_DEPLOY_SSH_PRIVATE_KEY }}
