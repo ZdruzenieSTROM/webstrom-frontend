@@ -3,6 +3,7 @@
 - [Spustenie backendu](#spustenie-backendu)
   - [Lokálny BE](#lokálny-be)
 - [Spustenie frontendu](#spustenie-frontendu)
+- [Testy](#testy)
 - [IDE setup](#ide-setup)
 
 ## Spustenie backendu
@@ -61,6 +62,19 @@ yarn dev
 ```
 
 Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo frontendovom kóde a automaticky sa reloaduje.
+
+## Testy
+
+```sh
+yarn test
+```
+
+Testy bežia vo [Vitest](https://vitest.dev/) + jsdom, nepotrebujú BE ani browser. Sieť mockujeme až na úrovni HTTP cez [MSW](https://mswjs.io/), takže v testoch beží reálny `apiAxios`, `AuthContainer` aj ostatné providery.
+
+- Testuj flow tak, ako ho vidí user (role, texty, dialógy) - nie interné volania.
+- Odpovede BE zaregistruj cez `server.use(...)` s URL z `apiUrl('/…/')`. Request na endpoint, ktorý test nenamockoval, test zhodí.
+- Spoločné veci sú v [src/test-utils](src/test-utils): `renderApp` (providery ako v `_app.tsx`), `createSession` (prihlásený/neprihlásený user) a typované fixtures.
+- Vzor: [solutionSubmission.test.tsx](src/components/Problems/solutionSubmission.test.tsx).
 
 ## IDE setup
 
