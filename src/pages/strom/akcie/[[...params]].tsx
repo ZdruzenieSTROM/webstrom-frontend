@@ -53,6 +53,9 @@ const StaticPage: NextPage = () => {
 export default StaticPage
 
 export const getServerSideProps: GetServerSideProps = async ({query, resolvedUrl, req}) => {
+  // `/akcie` bez slugu: optional catch-all vtedy `params` vobec neposle a zoznam akcii nemame
+  if (!query[PARAM]) return {notFound: true}
+
   const {requestedUrl} = getParams(query)
 
   const ssrApiOptions = createSSRApiOptions(req)

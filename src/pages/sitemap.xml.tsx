@@ -92,7 +92,6 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
     addPath(internalPaths, `/${slug}/zadania`)
     addPath(internalPaths, `/${slug}/archiv`)
     addPath(internalPaths, `/${slug}/poradie`)
-    addPath(internalPaths, `/${slug}/akcie`)
   }
 
   await Promise.all(
