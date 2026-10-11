@@ -1,34 +1,47 @@
 import {screen, waitFor, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import mockRouter from 'next-router-mock'
-import {beforeEach, describe, expect, it, vi} from 'vitest'
+import {http, HttpResponse} from 'msw/http'
+import {beforeEach, describe, expect, it} from 'vitest'
 
-import {apiAxios} from '@/api/apiAxios'
-import {makeProblem, makeSolution, mockProblemFetch, renderWithProviders} from '@/utils/testUtils'
+import {apiUrl, createSession, makeAccount} from '@/test-utils/api'
+import {makeProblemWithSolutions, makeSemesterWithProblems, makeSolutionAdministration} from '@/test-utils/fixtures'
+import {renderApp} from '@/test-utils/render'
+import {server} from '@/test-utils/server'
+import {ProblemWithSolutions, SolutionAdministration} from '@/types/api/competition'
 
 import {ProblemAdministration} from './ProblemAdministration'
 
-const aliceFixture = makeSolution({
+const aliceFixture = makeSolutionAdministration({
   id: 1,
   score: 5,
   semester_registration: {profile: {first_name: 'Alice', last_name: 'A'}} as never,
 })
 
-const bobFixture = makeSolution({
+const bobFixture = makeSolutionAdministration({
   id: 2,
   score: 3,
   semester_registration: {profile: {first_name: 'Bob', last_name: 'B'}} as never,
 })
 
-const baselineProblem = makeProblem({solution_set: [aliceFixture, bobFixture]})
+// What the backend currently stores for problem 1; handlers below read and update it.
+let storedProblem: ProblemWithSolutions
+
+const renderWithProviders = (ui: Parameters<typeof renderApp>[0]) =>
+  renderApp(ui, {route: {pathname: '/matik/admin/opravit-ulohu/[[...params]]', query: {params: ['1']}}})
 
 describe('ProblemAdministration', () => {
   beforeEach(() => {
-    mockRouter.setCurrentUrl({
-      pathname: '/matik/admin/opravovanie/[[...params]]',
-      query: {params: ['1']},
+    storedProblem = makeProblemWithSolutions({solution_set: [aliceFixture, bobFixture]})
+
+    const matikGrader = makeAccount({
+      permissions: {is_staff: true, is_superuser: false, competition_permissions: [1]},
     })
-    mockProblemFetch({problem: baselineProblem})
+
+    server.use(
+      ...createSession({account: matikGrader, signedIn: true}).handlers,
+      http.get(apiUrl('/competition/problem-administration/1/'), () => HttpResponse.json(storedProblem)),
+      http.get(apiUrl('/competition/semester/20/'), () => HttpResponse.json(makeSemesterWithProblems())),
+    )
   })
 
   it('renders solution rows', async () => {
@@ -117,7 +130,13 @@ describe('ProblemAdministration', () => {
 
   it('saves merged scores, clears dirty state on success, and refetches', async () => {
     const user = userEvent.setup()
-    vi.mocked(apiAxios.post).mockResolvedValue({data: {}} as never)
+    server.use(
+      http.post(apiUrl('/competition/problem-administration/1/upload-points/'), async ({request}) => {
+        const {solution_set: solutionSet} = (await request.json()) as {solution_set: SolutionAdministration[]}
+        storedProblem = {...storedProblem, solution_set: solutionSet}
+        return HttpResponse.json({})
+      }),
+    )
 
     renderWithProviders(<ProblemAdministration />)
 
@@ -126,37 +145,36 @@ describe('ProblemAdministration', () => {
     await user.type(inputs[0], '7')
     expect(inputs[0]).toHaveStyle({fontWeight: 'normal'})
 
-    // Server-confirmed state after save: Alice's score is now 7. Set this BEFORE the
-    // save click so the refetch (fired from onSuccess) returns the updated baseline.
-    mockProblemFetch({
-      problem: makeProblem({solution_set: [{...aliceFixture, score: 7}, bobFixture]}),
-    })
-
     await user.click(screen.getByRole('button', {name: /Uložiť body/}))
 
-    await waitFor(() => {
-      expect(apiAxios.post).toHaveBeenCalledWith(
-        '/competition/problem-administration/1/upload-points',
-        expect.objectContaining({
-          solution_set: expect.arrayContaining([expect.objectContaining({id: 1, score: 7})]),
-        }),
-      )
-    })
-
+    expect(await screen.findByText('Body boli úspešne uložené.')).toBeInTheDocument()
+    // The row turns clean again only when the refetched baseline equals the draft,
+    // i.e. the backend stored the edited score for Alice and kept Bob's.
     await waitFor(() => {
       expect(inputs[0]).toHaveStyle({fontWeight: '700'})
     })
+    expect(storedProblem.solution_set.map(({id, score}) => ({id, score}))).toStrictEqual([
+      {id: 1, score: 7},
+      {id: 2, score: 3},
+    ])
   })
 
   it('preserves dirty edits and spinner-feedback through file upload and refetch', async () => {
     const user = userEvent.setup()
 
-    let resolvePost!: (value: {data: unknown}) => void
-    vi.mocked(apiAxios.post).mockImplementation(
-      () =>
-        new Promise<{data: unknown}>((resolve) => {
-          resolvePost = resolve
-        }) as never,
+    let finishUpload!: () => void
+    const uploadFinished = new Promise<void>((resolve) => {
+      finishUpload = resolve
+    })
+    server.use(
+      http.post(apiUrl('/competition/solution/2/upload-solution-file/'), async () => {
+        await uploadFinished
+        storedProblem = {
+          ...storedProblem,
+          solution_set: [aliceFixture, {...bobFixture, solution: '/files/bob.pdf'}],
+        }
+        return HttpResponse.json({})
+      }),
     )
 
     renderWithProviders(<ProblemAdministration />)
@@ -183,12 +201,7 @@ describe('ProblemAdministration', () => {
     expect(inputs[0]).toHaveValue('9')
     expect(inputs[0]).toHaveStyle({fontWeight: 'normal'})
 
-    // Server now has Bob's solution populated. Update GET mock before resolving POST.
-    mockProblemFetch({
-      problem: makeProblem({solution_set: [aliceFixture, {...bobFixture, solution: '/files/bob.pdf'}]}),
-    })
-
-    resolvePost({data: {}})
+    finishUpload()
 
     // After refetch: spinner gone, Alice's draft still preserved.
     await waitFor(() => {
