@@ -1,8 +1,10 @@
 import {dehydrate, QueryClient} from '@tanstack/react-query'
 import {GetServerSideProps, NextPage} from 'next'
 
+import {createSSRApiOptions} from '@/api/api'
 import {commonQueries} from '@/api/commonQueries'
 import {PageLayout} from '@/components/PageLayout/PageLayout'
+import {getSeminarInfoFromPathname} from '@/utils/useSeminarInfo'
 
 import {Archive} from '../../../components/Archive/Archive'
 
@@ -17,9 +19,16 @@ const Archiv: NextPage = () => {
 export default Archiv
 
 export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, req}) => {
+  const {seminarId} = getSeminarInfoFromPathname(resolvedUrl)
+
+  const ssrApiOptions = createSSRApiOptions(req)
+
   const queryClient = new QueryClient()
 
-  await Promise.all(commonQueries(queryClient, resolvedUrl, req))
+  await Promise.all([
+    queryClient.prefetchQuery(ssrApiOptions.competition.event.list(seminarId)),
+    ...commonQueries(queryClient, resolvedUrl, req),
+  ])
 
   return {
     props: {
