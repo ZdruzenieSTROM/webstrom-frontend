@@ -3,9 +3,7 @@ import {useQuery} from '@tanstack/react-query'
 import {useEffect, useMemo} from 'react'
 import {Control, UseFormSetValue, UseFormWatch} from 'react-hook-form'
 
-import {apiAxios} from '@/api/apiAxios'
-import {Grade} from '@/types/api/competition'
-import {ISchool} from '@/types/api/personal'
+import {apiOptions} from '@/api/api'
 
 import {FormAutocomplete} from '../FormItems/FormAutocomplete/FormAutocomplete'
 import {FormCheckbox} from '../FormItems/FormCheckbox/FormCheckbox'
@@ -31,23 +29,14 @@ export const SchoolSubForm = ({control, watch, setValue, gap}: SchoolSubFormProp
   const [school_not_found, without_school] = watch(['school_not_found', 'without_school'])
 
   // načítanie ročníkov z BE, ktorými vyplníme FormSelect s ročníkmi
-  const {data: gradesData, isLoading: isGradesLoading} = useQuery({
-    queryKey: ['competition', 'grade'],
-    queryFn: () => apiAxios.get<Grade[]>(`/competition/grade`),
-  })
-  const grades = useMemo(() => gradesData?.data ?? [], [gradesData])
+  const {data: gradesData, isLoading: isGradesLoading} = useQuery(apiOptions.competition.grade())
+  const grades = useMemo(() => gradesData ?? [], [gradesData])
   const gradeItems: SelectOption[] = useMemo(() => grades.map(({id, name}) => ({id, label: name})), [grades])
   const noGradeItem = useMemo(() => gradeItems.find(({id}) => id === 13), [gradeItems])
 
   // načítanie škôl z BE, ktorými vyplníme FormAutocomplete so školami
-  const {data: schoolsData, isLoading: isSchoolsLoading} = useQuery({
-    queryKey: ['personal', 'schools'],
-    queryFn: () => apiAxios.get<ISchool[]>(`/personal/schools`),
-  })
-  const schools = useMemo(
-    () => (schoolsData?.data ?? []).toSorted((a, b) => a.name.localeCompare(b.name)),
-    [schoolsData],
-  )
+  const {data: schoolsData, isLoading: isSchoolsLoading} = useQuery(apiOptions.personal.schools())
+  const schools = useMemo(() => (schoolsData ?? []).toSorted((a, b) => a.name.localeCompare(b.name)), [schoolsData])
   const allSchoolItems: SelectOption[] = useMemo(
     () =>
       schools.map(({code, city, name, street}) => ({

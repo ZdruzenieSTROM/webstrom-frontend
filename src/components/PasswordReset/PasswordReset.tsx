@@ -4,9 +4,8 @@ import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 import {Button} from '@/components/Clickable/Button'
-import {IGeneralPostResponse} from '@/types/api/general'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {NewPasswordSubForm, NewPasswordSubFormValues as FormValues} from '../NewPasswordSubForm/NewPasswordSubForm'
@@ -37,14 +36,10 @@ export const PasswordResetForm: FC<PasswordResetFormProps> = ({uid, token}) => {
     }
   }
 
-  const {mutate: submitFormData, isSuccess: isReset} = useMutation({
-    mutationFn: (data: FormValues) => {
-      return apiAxios.post<IGeneralPostResponse>('/user/password/reset/confirm', transformFormData(data))
-    },
-  })
+  const {mutate: submitFormData, isSuccess: isReset} = useMutation(apiOptions.user.password.reset.confirm())
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    submitFormData(data)
+    submitFormData(transformFormData(data))
   }
 
   if (isReset)

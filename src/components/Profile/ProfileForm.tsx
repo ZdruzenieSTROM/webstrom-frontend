@@ -4,10 +4,8 @@ import {useRouter} from 'next/router'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
-import {SelectOption} from '@/components/FormItems/FormSelect/FormSelect'
-import {IGeneralPostResponse} from '@/types/api/general'
 import {useProfile} from '@/utils/useProfile'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -52,9 +50,9 @@ export const ProfileForm: FC = () => {
     parent_phone: profile?.parent_phone ?? '',
     new_school_description: profile?.other_school_info ?? '',
     without_school: profile?.school_id === 1,
-    school: profile ? ({id: profile.school.code, label: profile.school.verbose_name} as SelectOption) : null,
+    school: profile ? {id: profile.school.code, label: profile.school.verbose_name} : null,
     school_not_found: profile?.school_id === 0,
-    grade: profile ? ({id: profile.grade, label: profile.grade_name} as SelectOption) : null,
+    grade: profile ? {id: profile.grade, label: profile.grade_name} : null,
   }
 
   const {handleSubmit, control, watch, setValue} = useForm<ProfileFormValues>({
@@ -79,9 +77,7 @@ export const ProfileForm: FC = () => {
   const queryClient = useQueryClient()
 
   const {mutate: submitFormData, isPending: isSubmitting} = useMutation({
-    mutationFn: (data: ProfileFormValues) => {
-      return apiAxios.patch<IGeneralPostResponse>(`/user/user`, transformFormData(data))
-    },
+    ...apiOptions.user.user(),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['personal', 'profiles', 'myprofile']})
       router.push(`/${seminar}/profil`)
@@ -89,7 +85,7 @@ export const ProfileForm: FC = () => {
   })
 
   const onSubmit: SubmitHandler<ProfileFormValues> = (data) => {
-    submitFormData(data)
+    submitFormData(transformFormData(data))
   }
 
   const returnBack = () => {

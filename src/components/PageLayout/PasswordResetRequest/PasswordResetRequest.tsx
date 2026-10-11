@@ -3,10 +3,9 @@ import {useMutation} from '@tanstack/react-query'
 import {FC} from 'react'
 import {SubmitHandler, useForm} from 'react-hook-form'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 import {Button} from '@/components/Clickable/Button'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
-import {IGeneralPostResponse} from '@/types/api/general'
 
 type PasswordResetRequestFormValues = {
   email: string
@@ -26,10 +25,7 @@ export const PasswordResetRequestForm: FC<PasswordResetRequestFormmProps> = ({cl
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}
 
   const {mutate: submitFormData} = useMutation({
-    mutationFn: (data: PasswordResetRequestFormValues) => {
-      return apiAxios.post<IGeneralPostResponse>('/user/password/reset', data)
-    },
-
+    ...apiOptions.user.password.reset.request(),
     onSuccess: () => {
       closeDialog()
     },

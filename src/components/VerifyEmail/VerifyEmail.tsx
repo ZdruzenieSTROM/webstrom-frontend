@@ -3,7 +3,7 @@ import {useMutation} from '@tanstack/react-query'
 import {useRouter} from 'next/router'
 import {FC, useEffect, useState} from 'react'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 
 import {Button} from '../Clickable/Button'
 import {Dialog} from '../Dialog/Dialog'
@@ -23,12 +23,10 @@ export const VerifyEmail: FC = () => {
     mutate: verifyEmailMutate,
     isError,
     isSuccess: isVerified,
-  } = useMutation({
-    mutationFn: (verificationKey: string) => apiAxios.post('/user/registration/verify-email', {key: verificationKey}),
-  })
+  } = useMutation(apiOptions.user.registration.verifyEmail())
 
   useEffect(() => {
-    if (typeof verificationKey === 'string') verifyEmailMutate(verificationKey)
+    if (typeof verificationKey === 'string') verifyEmailMutate({key: verificationKey})
   }, [verificationKey, verifyEmailMutate])
 
   if (!isError && !isVerified) return <Loading />

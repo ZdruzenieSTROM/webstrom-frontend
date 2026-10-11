@@ -5,9 +5,8 @@ import {useRouter} from 'next/router'
 import {FC, useState} from 'react'
 import {SubmitHandler, useForm, useFormState} from 'react-hook-form'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
-import {IGeneralPostResponse} from '@/types/api/general'
 import {useAlert} from '@/utils/useAlert'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
@@ -81,9 +80,7 @@ export const RegisterForm: FC = () => {
   })
 
   const {mutate: submitFormData, isPending} = useMutation({
-    mutationFn: (data: RegisterFormValues) => {
-      return apiAxios.post<IGeneralPostResponse>(`/user/registration?seminar=${seminar}`, transformFormData(data))
-    },
+    ...apiOptions.user.registration.create(),
     onSuccess: () =>
       alert(
         'Verifikačný e-mail bol odoslaný na zadanú e-mailovú adresu. Ak ho do pár minút neuvidíš, skontroluj, či ti náhodou neprišiel do priečinku spam.',
@@ -108,7 +105,7 @@ export const RegisterForm: FC = () => {
   })
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
-    submitFormData(data)
+    submitFormData({seminar, data: transformFormData(data)})
   }
 
   const requiredRule = {required: '* Toto pole nemôže byť prázdne.'}

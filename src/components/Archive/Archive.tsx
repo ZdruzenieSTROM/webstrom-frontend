@@ -20,7 +20,7 @@ import {
 import {useQuery} from '@tanstack/react-query'
 import {ComponentType, FC} from 'react'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 import {colors} from '@/theme/colors'
 import {Event, Publication, PublicationTypes} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
@@ -185,11 +185,8 @@ const ArchiveRow: FC<{
 export const Archive: FC = () => {
   const {seminarId} = useSeminarInfo()
 
-  const {data: eventListData, isLoading: eventListIsLoading} = useQuery({
-    queryKey: ['competition', 'event', `competition=${seminarId}`],
-    queryFn: () => apiAxios.get<Event[]>(`/competition/event/?competition=${seminarId}`),
-  })
-  const eventList = eventListData?.data ?? []
+  const {data: eventListData, isLoading: eventListIsLoading} = useQuery(apiOptions.competition.event.list(seminarId))
+  const eventList = eventListData ?? []
   const yearGroups = getYearGroups(eventList)
 
   return (

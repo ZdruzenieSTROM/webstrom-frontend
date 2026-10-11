@@ -164,31 +164,31 @@ export const SemesterAdministration: FC = () => {
   const [seriesToUnfreeze, setSeriesToUnfreeze] = useState<SeriesWithProblems | null>(null)
 
   const {mutate: freezeSeries} = useMutation({
-    mutationFn: (series: SeriesWithProblems) => apiAxios.post(`/competition/series/${series.id}/results/freeze`),
-    onSuccess: (_, variables: SeriesWithProblems) => {
-      setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, ''))
+    ...apiOptions.competition.series.results.freeze(),
+    onSuccess: (_, seriesId) => {
+      setSeriesFreezeErrors((prev) => new Map(prev).set(seriesId, ''))
       refetch()
     },
-    onError: (error: unknown, variables: SeriesWithProblems) => {
+    onError: (error, seriesId) => {
       if (error instanceof AxiosError) {
-        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, error.response?.data.detail))
+        setSeriesFreezeErrors((prev) => new Map(prev).set(seriesId, error.response?.data.detail))
       } else {
-        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, 'Nastala neznáma chyba.'))
+        setSeriesFreezeErrors((prev) => new Map(prev).set(seriesId, 'Nastala neznáma chyba.'))
       }
     },
   })
 
   const {mutate: unfreezeSeries} = useMutation({
-    mutationFn: (series: SeriesWithProblems) => apiAxios.post(`/competition/series/${series.id}/results/unfreeze`),
-    onSuccess: (_, variables: SeriesWithProblems) => {
-      setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, ''))
+    ...apiOptions.competition.series.results.unfreeze(),
+    onSuccess: (_, seriesId) => {
+      setSeriesFreezeErrors((prev) => new Map(prev).set(seriesId, ''))
       refetch()
     },
-    onError: (error: unknown, variables: SeriesWithProblems) => {
+    onError: (error, seriesId) => {
       if (error instanceof AxiosError) {
-        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, error.response?.data.detail))
+        setSeriesFreezeErrors((prev) => new Map(prev).set(seriesId, error.response?.data.detail))
       } else {
-        setSeriesFreezeErrors((prev) => new Map(prev).set(variables.id, 'Nastala neznáma chyba.'))
+        setSeriesFreezeErrors((prev) => new Map(prev).set(seriesId, 'Nastala neznáma chyba.'))
       }
     },
   })
@@ -238,7 +238,7 @@ export const SemesterAdministration: FC = () => {
             <Button
               variant="button2"
               onClick={() => {
-                if (seriesToFreeze) freezeSeries(seriesToFreeze)
+                if (seriesToFreeze) freezeSeries(seriesToFreeze.id)
                 setSeriesToFreeze(null)
               }}
             >
@@ -260,7 +260,7 @@ export const SemesterAdministration: FC = () => {
             <Button
               variant="button2"
               onClick={() => {
-                if (seriesToUnfreeze) unfreezeSeries(seriesToUnfreeze)
+                if (seriesToUnfreeze) unfreezeSeries(seriesToUnfreeze.id)
                 setSeriesToUnfreeze(null)
               }}
             >

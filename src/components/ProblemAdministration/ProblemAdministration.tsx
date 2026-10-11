@@ -9,7 +9,6 @@ import {FC, useCallback, useMemo, useState} from 'react'
 import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiOptions} from '@/api/api'
-import {apiAxios} from '@/api/apiAxios'
 import {colors} from '@/theme/colors'
 import {SolutionAdministration} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
@@ -127,14 +126,7 @@ export const ProblemAdministration: FC = () => {
   })
 
   const {mutate: uploadPoints, isPending: uploadPointsIsPending} = useMutation({
-    mutationFn: (id: string) => {
-      const merged = (baseline ?? []).map((row) =>
-        draftScores.has(row.id) ? {...row, score: draftScores.get(row.id) ?? null} : row,
-      )
-      return apiAxios.post(`/competition/problem-administration/${id}/upload-points`, {
-        solution_set: merged,
-      })
-    },
+    ...apiOptions.competition.problemAdministration.uploadPoints(),
     onSuccess: () => {
       alert('Body boli úspešne uložené.')
       return refetchProblem()
@@ -156,8 +148,7 @@ export const ProblemAdministration: FC = () => {
     error: uploadZipFileError,
     isPending: uploadZipFileIsPending,
   } = useMutation({
-    mutationFn: ({data, problemId}: {data: FormData; problemId?: string}) =>
-      apiAxios.post(`/competition/problem/${problemId}/upload-corrected`, data),
+    ...apiOptions.competition.problem.uploadCorrected(),
     onSuccess: () => refetchProblem(),
   })
 
@@ -175,12 +166,12 @@ export const ProblemAdministration: FC = () => {
 
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
     (acceptedFiles, fileRejections) => {
-      if (fileRejections.length > 0) {
+      if (fileRejections.length > 0 || problemId === undefined) {
         return
       }
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
-      uploadZipFile({data: formData, problemId: problemId})
+      uploadZipFile({data: formData, problemId})
     },
     [problemId, uploadZipFile],
   )
@@ -213,7 +204,12 @@ export const ProblemAdministration: FC = () => {
   if (problemId === undefined || !problem)
     return <Typography>Nevalidné číslo úlohy (problemId) v URL alebo ju proste nevieme fetchnúť z BE.</Typography>
 
-  const handleSavePoints = () => uploadPoints(problemId)
+  const handleSavePoints = () => {
+    const solutionSet = (baseline ?? []).map((row) =>
+      draftScores.has(row.id) ? {...row, score: draftScores.get(row.id) ?? null} : row,
+    )
+    uploadPoints({problemId, solutionSet})
+  }
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {

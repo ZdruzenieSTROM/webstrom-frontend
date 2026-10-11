@@ -5,7 +5,6 @@ import {FC, useState} from 'react'
 import {useInterval} from 'usehooks-ts'
 
 import {apiOptions} from '@/api/api'
-import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {useDataFromURL} from '@/utils/useDataFromURL'
@@ -64,7 +63,7 @@ export const Problems: FC = () => {
   }
 
   const {mutate: registerToSemester} = useMutation({
-    mutationFn: (id: number) => apiAxios.post(`/competition/event/${id}/register`),
+    ...apiOptions.competition.event.register(),
     onSuccess: () => {
       // refetch semestra, nech sa aktualizuje is_registered
       invalidateSeriesQuery()
