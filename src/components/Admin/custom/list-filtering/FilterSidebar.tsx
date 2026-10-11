@@ -15,7 +15,19 @@ export const FilterSidebar: FC<PropsWithChildren> = ({children}) => {
         overflow: 'visible',
       }}
     >
-      <Button onClick={toggleFilter} sx={{mt: 0.5, position: 'absolute', width: 'max-content', gap: 1}}>
+      <Button
+        onClick={toggleFilter}
+        sx={{
+          mt: 0.5,
+          position: 'absolute',
+          width: 'max-content',
+          gap: 1,
+          // with the sidebar collapsed to zero width, the button overflows onto the list toolbar. the toolbar is
+          // positioned and `order: -1` puts this sidebar before it in paint order, so without a z-index
+          // the toolbar covers the button and swallows its clicks (Firefox follows the order-modified paint order)
+          zIndex: 1,
+        }}
+      >
         <FilterListIcon />
         Filters
       </Button>
