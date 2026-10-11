@@ -80,6 +80,16 @@ const themeOverrides: RaThemeOptions = {
         size: 'medium',
       },
     },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          // the site-wide CSS reset puts `max-width: 100%` on every svg. inside a shrink-to-fit parent
+          // (e.g. a datagrid checkbox cell) Firefox resolves that percentage against a collapsed width
+          // and squashes the icon. MUI icons are sized by their font-size and never need the cap
+          maxWidth: 'none',
+        },
+      },
+    },
   },
 }
 
