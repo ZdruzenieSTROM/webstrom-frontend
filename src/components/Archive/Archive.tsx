@@ -26,7 +26,6 @@ import {Event, Publication, PublicationTypes} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
 import {Link} from '../Clickable/Link'
-import {Loading} from '../Loading/Loading'
 
 type YearGroup = {
   year: number
@@ -185,14 +184,11 @@ const ArchiveRow: FC<{
 export const Archive: FC = () => {
   const {seminarId} = useSeminarInfo()
 
-  const {data: eventListData, isLoading: eventListIsLoading} = useQuery(apiOptions.competition.event.list(seminarId))
-  const eventList = eventListData ?? []
+  const {data: eventList = []} = useQuery(apiOptions.competition.event.list(seminarId))
   const yearGroups = getYearGroups(eventList)
 
   return (
     <Stack gap={1}>
-      {eventListIsLoading && <Loading />}
-
       {yearGroups.map((group, index) => (
         <Accordion
           key={group.year}
