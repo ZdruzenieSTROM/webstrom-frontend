@@ -11,11 +11,11 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* .yarnrc.yml* ./
-COPY .yarn .yarn
+# bun is only needed to install; the musl build matches the alpine base, and it stays out of the runner image
+COPY --from=oven/bun:1.4.4-alpine /usr/local/bin/bun /usr/local/bin/bun
+COPY package.json bun.lock ./
 
-RUN yarn --immutable;
+RUN bun install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -28,7 +28,7 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN yarn build:docker;
+RUN npm run build:docker
 
 # Production image, copy all the files and run next
 FROM base AS runner
