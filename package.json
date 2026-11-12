@@ -86,7 +86,7 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.15"
   },
-  "packageManager": "yarn@4.9.1",
+  "packageManager": "bun@1.4.4",
   "resolutions": {
     "@tanstack/react-query": "npm:@tanstack/react-query@5.100.9",
     "react-hook-form": "npm:react-hook-form@7.56.4",
