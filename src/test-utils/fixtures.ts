@@ -1,4 +1,5 @@
 import {
+  Grade,
   Problem,
   ProblemWithSolutions,
   Semester,
@@ -8,7 +9,7 @@ import {
   Solution,
   SolutionAdministration,
 } from '@/types/api/competition'
-import {Profile} from '@/types/api/personal'
+import {ISchool, Profile} from '@/types/api/personal'
 
 export const makeProfile = (overrides: Partial<Profile> = {}): Profile => ({
   id: 1,
@@ -31,6 +32,26 @@ export const makeProfile = (overrides: Partial<Profile> = {}): Profile => ({
   is_student: true,
   has_school: true,
   school_id: 100,
+  ...overrides,
+})
+
+export const makeSchool = (overrides: Partial<ISchool> = {}): ISchool => ({
+  code: 100,
+  name: 'Gymnázium',
+  abbreviation: 'GPoš',
+  street: 'Poštová 9',
+  city: 'Košice',
+  zip_code: '04001',
+  email: 'gposta@example.com',
+  district: 802,
+  ...overrides,
+})
+
+export const makeGrade = (overrides: Partial<Grade> = {}): Grade => ({
+  id: 4,
+  name: '9. ročník ZŠ',
+  tag: 'Z9',
+  years_until_graduation: 4,
   ...overrides,
 })
 
