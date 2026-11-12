@@ -1,4 +1,4 @@
-import {screen, waitFor, within} from '@testing-library/react'
+import {screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {http, HttpResponse} from 'msw/http'
 import {describe, expect, it} from 'vitest'
@@ -11,7 +11,7 @@ import {
   makeSeriesWithProblems,
   makeSubmittedSolution,
 } from '@/test-utils/fixtures'
-import {renderApp} from '@/test-utils/render'
+import {findDialog, renderApp} from '@/test-utils/render'
 import {server} from '@/test-utils/server'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
 
@@ -79,11 +79,6 @@ const renderProblems = async () => {
   await waitFor(() => {
     expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
   })
-}
-
-const findDialog = async (title: string) => {
-  const heading = await screen.findByRole('heading', {name: title})
-  return within(heading.closest<HTMLElement>('[role="dialog"]')!)
 }
 
 const submitButton = () => screen.getByRole('button', {name: 'odovzdať'})

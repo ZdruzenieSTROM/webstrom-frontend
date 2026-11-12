@@ -1,5 +1,5 @@
 import {ThemeProvider} from '@mui/material/styles'
-import {render} from '@testing-library/react'
+import {render, screen, within} from '@testing-library/react'
 import mockRouter from 'next-router-mock'
 import {ReactElement} from 'react'
 
@@ -31,4 +31,9 @@ export const renderApp = (ui: ReactElement, {route}: {route: Route}) => {
       </ReactQueryProvider>
     </AlertContainer.Provider>,
   )
+}
+
+export const findDialog = async (title: string) => {
+  const heading = await screen.findByRole('heading', {name: title})
+  return within(heading.closest<HTMLElement>('[role="dialog"]')!)
 }
