@@ -30,7 +30,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "eslint.config.mjs",
     "svgo.config.js",
     "vitest.config.mts"
   ],
