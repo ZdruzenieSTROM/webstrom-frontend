@@ -2,7 +2,7 @@ import {http, HttpResponse} from 'msw/http'
 
 import {MyPermissions, Profile} from '@/types/api/personal'
 
-import {makeProfile} from './fixtures'
+import {makeGrade, makeProfile, makeSchool} from './fixtures'
 
 // Handler paths are written the way the backend routes them (with the trailing slash),
 // and with a wildcard origin because MSW in Node has no base URL for relative paths.
@@ -55,3 +55,22 @@ export const createSession = ({account = makeAccount(), signedIn}: {account?: Ac
 
   return {account, handlers, isSignedIn: () => active}
 }
+
+/** The school and grade lists the school picker of the registration and profile forms offers. */
+export const schoolPickerHandlers = () => [
+  http.get(apiUrl('/personal/schools/'), () =>
+    HttpResponse.json([
+      makeSchool({code: 0, name: 'Iná škola', abbreviation: '', street: '', city: ''}),
+      makeSchool({code: 1, name: 'Bez školy', abbreviation: '', street: '', city: ''}),
+      makeSchool(),
+      makeSchool({code: 200, name: 'Gymnázium', street: 'Grösslingová 18', city: 'Bratislava'}),
+    ]),
+  ),
+  http.get(apiUrl('/competition/grade/'), () =>
+    HttpResponse.json([
+      makeGrade({id: 3, name: '8. ročník ZŠ', tag: 'Z8', years_until_graduation: 5}),
+      makeGrade(),
+      makeGrade({id: 13, name: 'Nie som študent', tag: 'NS', years_until_graduation: 0}),
+    ]),
+  ),
+]
