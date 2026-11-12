@@ -1,6 +1,8 @@
 import {
   Problem,
   ProblemWithSolutions,
+  Publication,
+  Result,
   Semester,
   SemesterWithProblems,
   Series,
@@ -142,5 +144,40 @@ export const makeProblemWithSolutions = (overrides: Partial<ProblemWithSolutions
   solution_pdf: null,
   series: makeSeries(),
   solution_set: [],
+  ...overrides,
+})
+
+export const makeResult = (overrides: Partial<Result> = {}): Result => ({
+  rank_start: 1,
+  rank_end: 1,
+  rank_changed: true,
+  registration: {
+    id: 700,
+    school: {
+      code: 100,
+      name: 'Gymnázium',
+      abbreviation: 'GPoš',
+      street: 'Poštová 9',
+      city: 'Košice',
+      zip_code: '04001',
+    },
+    grade: {id: 4, name: '9. ročník ZŠ', tag: 'Z9', years_until_graduation: 4},
+    profile: {id: 1, first_name: 'Jana', last_name: 'Riešiteľová'},
+    verbose_name: 'Jana Riešiteľová',
+    event: 20,
+  },
+  subtotal: [0],
+  total: 0,
+  solutions: [[]],
+  ...overrides,
+})
+
+export const makePublication = (overrides: Partial<Publication> = {}): Publication => ({
+  id: 900,
+  name: 'casopis-1.pdf',
+  file: '/media/publications/casopis-1.pdf',
+  publication_type: 4,
+  event: 20,
+  order: 1,
   ...overrides,
 })
