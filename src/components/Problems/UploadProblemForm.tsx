@@ -3,7 +3,7 @@ import {useMutation} from '@tanstack/react-query'
 import {Dispatch, FC, SetStateAction, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 
-import {apiAxios} from '@/api/apiAxios'
+import {apiOptions} from '@/api/api'
 import {CloseButton} from '@/components/CloseButton/CloseButton'
 import {Accept} from '@/utils/dropzoneAccept'
 import {useAlert} from '@/utils/useAlert'
@@ -32,7 +32,7 @@ export const UploadProblemForm: FC<{
   const {alert} = useAlert()
 
   const {mutate: uploadSolution, isPending: isUploading} = useMutation({
-    mutationFn: (formData: FormData) => apiAxios.post(`/competition/problem/${problemId}/upload-solution`, formData),
+    ...apiOptions.competition.problem.uploadSolution(),
     onSuccess: (response) => {
       if (response.status === 201) {
         // refetch serie, nech sa aktualizuje problem.submitted
@@ -59,7 +59,7 @@ export const UploadProblemForm: FC<{
         const formData = new FormData()
         formData.append('file', acceptedFiles[0])
 
-        uploadSolution(formData)
+        uploadSolution({problemId, data: formData})
       }
     },
   })

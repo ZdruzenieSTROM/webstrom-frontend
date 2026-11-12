@@ -3,9 +3,9 @@ import {AxiosError} from 'axios'
 import {useEffect, useState} from 'react'
 import {createContainer} from 'unstated-next'
 
+import {apiOptions} from '@/api/api'
 import {apiAxios, newApiAxios} from '@/api/apiAxios'
 import {MyPermissions} from '@/types/api/personal'
-import {Login, Token} from '@/types/api/user'
 
 // specialna axios instancia bez error handlingu pridaneho do `apiAxios` nizsie
 const specialApiAxios = newApiAxios()
@@ -73,10 +73,8 @@ const useAuth = () => {
   }, [isAuthed])
 
   const {mutate: login, mutateAsync: loginAsync} = useMutation({
-    mutationFn: ({data}: {data: Login; onSuccess?: () => void}) => apiAxios.post<Token>('/user/login', data),
-    onSuccess: async (_, {onSuccess}) => {
-      onSuccess?.()
-
+    ...apiOptions.user.login(),
+    onSuccess: async () => {
       // testAuth ma vlastny error handling, necrashne
       const success = await testAuth()
       if (success) setIsAuthed(true)
@@ -85,7 +83,7 @@ const useAuth = () => {
 
   // zavoláme logout API point, ktorý zmaže token na BE a odstráni sessionid cookie.
   const {mutate: logout, mutateAsync: logoutAsync} = useMutation({
-    mutationFn: () => apiAxios.post('/user/logout'),
+    ...apiOptions.user.logout(),
     onSettled: () => {
       setIsAuthed(false)
       // sessionid cookie odstrani server sam

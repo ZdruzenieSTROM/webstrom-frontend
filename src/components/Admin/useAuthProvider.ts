@@ -10,7 +10,7 @@ export const useAuthProvider = () => {
 
   const authProvider: AuthProvider = useMemo(
     () => ({
-      login: async ({username, password}) => loginAsync({data: {email: username, password}}),
+      login: async ({username, password}) => loginAsync({email: username, password}),
       logout: async () => {
         await logoutAsync()
         router.push('/strom')
