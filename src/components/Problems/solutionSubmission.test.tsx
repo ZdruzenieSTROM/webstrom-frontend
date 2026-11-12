@@ -27,10 +27,12 @@ const startBackend = ({
   signedIn,
   series = {},
   participant = {registered: false, submitted: null},
+  uploadStatus = 201,
 }: {
   signedIn: boolean
   series?: Partial<SeriesWithProblems>
   participant?: Participant
+  uploadStatus?: number
 }) => {
   const session = createSession({signedIn})
   const state = {...participant}
@@ -62,7 +64,7 @@ const startBackend = ({
       if (file === null || typeof file === 'string') return HttpResponse.json({detail: 'Chýba súbor.'}, {status: 400})
       uploadedFiles.push(file.name)
       state.submitted = makeSubmittedSolution()
-      return new HttpResponse(null, {status: 201})
+      return new HttpResponse(null, {status: uploadStatus})
     }),
   )
 
@@ -145,6 +147,24 @@ describe('submitting a solution', () => {
         '/api/competition/problem/101/my-solution',
       )
     })
+  })
+
+  it('tells the user to check the upload when the backend answers with a success other than 201', async () => {
+    const user = userEvent.setup()
+    startBackend({signedIn: true, participant: {registered: true, submitted: null}, uploadStatus: 200})
+    await renderProblems()
+
+    await user.click(submitButton())
+    const declaration = await findDialog('Čestné prehlásenie')
+    await user.click(declaration.getByRole('button', {name: 'Potvrdiť'}))
+    await dropFile(user, pdf())
+
+    expect(
+      await screen.findByText(
+        'Niečo sa ASI pokazilo, skontroluj, či bolo riešenie nahrané, a ak si technický typ, môžeš pozrieť chybu v konzole.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.queryByText('Riešenie úspešne nahrané.')).not.toBeInTheDocument()
   })
 
   it('uploads nothing when the honesty declaration is declined', async () => {
