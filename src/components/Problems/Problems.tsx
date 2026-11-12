@@ -43,7 +43,7 @@ export const Problems: FC = () => {
   const problems = series?.problems ?? []
   const canSubmit = series?.can_submit ?? false
   const canResubmit = series?.can_resubmit ?? false
-  const [isAfterDeadline, setIsAfterDeadline] = useState<boolean>(new Date(series?.deadline ?? '') < new Date())
+  const [isAfterDeadline, setIsAfterDeadline] = useState<boolean>(() => new Date(series?.deadline ?? '') < new Date())
 
   useInterval(() => {
     const isAfterDeadlineNew = new Date(series?.deadline ?? '') < new Date()

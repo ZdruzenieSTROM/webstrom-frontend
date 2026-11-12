@@ -136,11 +136,7 @@ export const ProblemAdministration: FC = () => {
   const updateScore = (id: number, newPointsInput: string) => {
     const newPoints = Number.parseInt(newPointsInput)
     const newScore = Number.isNaN(newPoints) ? null : newPoints
-    setDraftScores((current) => {
-      const next = new Map(current)
-      next.set(id, newScore)
-      return next
-    })
+    setDraftScores((current) => new Map([...current, [id, newScore]]))
   }
 
   const {

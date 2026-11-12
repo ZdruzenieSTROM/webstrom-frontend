@@ -20,8 +20,10 @@ jobs:
         run: yarn
       - name: Run typecheck
         run: yarn tsc
-      - name: Run ESLint
-        run: yarn lint
+      - name: Run oxlint
+        run: yarn lint --format github
+      - name: Check formatting
+        run: yarn format:check
       - name: Run tests
         run: yarn test
       - name: Run build
