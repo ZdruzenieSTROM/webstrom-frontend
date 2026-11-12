@@ -4,6 +4,8 @@
 
 import * as Sentry from '@sentry/nextjs'
 
+import {SENTRY_APPLICATION_KEY} from '../sentry.shared'
+
 Sentry.init({
   dsn: 'https://428ff2792107c70d35d5eca360f4617a@o4510493471932416.ingest.de.sentry.io/4511236823449680',
 
@@ -11,7 +13,15 @@ Sentry.init({
   enabled: process.env.NODE_ENV !== 'development',
 
   // Add optional integrations for additional features
-  integrations: [Sentry.replayIntegration()],
+  integrations: [
+    Sentry.replayIntegration(),
+    // Drops errors raised entirely in code we didn't ship: browser extensions and scripts injected by the browser
+    // itself (e.g. Chrome on iOS), which Sentry attributes to the page URL and splits into one issue per page.
+    Sentry.thirdPartyErrorFilterIntegration({
+      filterKeys: [SENTRY_APPLICATION_KEY],
+      behaviour: 'drop-error-if-exclusively-contains-third-party-frames',
+    }),
+  ],
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 0.1,

@@ -3,6 +3,8 @@ import type {NextConfig} from 'next'
 // eslint-disable-next-line node/no-extraneous-import
 import type {Configuration} from 'webpack'
 
+import {SENTRY_APPLICATION_KEY} from './sentry.shared'
+
 const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
@@ -56,11 +58,21 @@ export default withSentryConfig(nextConfig, {
   // side errors will fail.
   tunnelRoute: '/monitoring',
 
+  // Marks our modules for `thirdPartyErrorFilterIntegration` in instrumentation-client.ts; the key must match its
+  // `filterKeys`. If the marking goes missing, that filter treats every error as third-party and drops it.
+  _experimental: {
+    turbopackApplicationKey: SENTRY_APPLICATION_KEY,
+  },
+
   webpack: {
     // Tree-shaking options for reducing bundle size
     treeshake: {
       // Automatically tree-shake Sentry logger statements to reduce bundle size
       removeDebugLogging: true,
+    },
+    // `next build --webpack` marks modules through the webpack plugin instead of the Turbopack loader
+    unstable_sentryWebpackPluginOptions: {
+      applicationKey: SENTRY_APPLICATION_KEY,
     },
   },
 })
