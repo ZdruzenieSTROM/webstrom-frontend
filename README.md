@@ -64,10 +64,13 @@ Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo fro
 
 ## IDE setup
 
-Používame VSCode, nainštaluj si doň [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) rozšírenie (formátuje kód). V repe máme `.vscode` config, v ktorom zapíname "fix-on-save" - kód sa teda formátuje pri uložení súboru.
+Používame VSCode, nainštaluj si doň rozšírenia [Oxc](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode) (linter) a [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) (formátovanie). V repe máme `.vscode` config, v ktorom zapíname formátovanie a "fix-on-save" - kód sa teda formátuje a opravuje pri uložení súboru. VSCode ti ich ponúkne aj sám podľa `.vscode/extensions.json`.
 
-Rozšírenie je takisto možné doinštalovať pomocou `Ctrl+P` a spustením:
+Rozšírenia je takisto možné doinštalovať pomocou `Ctrl+P` a spustením:
 
 ```sh
-ext install dbaeumer.vscode-eslint
+ext install oxc.oxc-vscode
+ext install esbenp.prettier-vscode
 ```
+
+Z príkazového riadku: `yarn lint` (oxlint), `yarn format:check` (Prettier), opravy cez `yarn lint:fix` a `yarn format`.
