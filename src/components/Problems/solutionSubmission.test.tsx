@@ -4,18 +4,11 @@ import {http, HttpResponse} from 'msw/http'
 import {describe, expect, it} from 'vitest'
 
 import {apiUrl, createSession} from '@/test-utils/api'
-import {
-  makeProblem,
-  makeSemester,
-  makeSemesterWithProblems,
-  makeSeriesWithProblems,
-  makeSubmittedSolution,
-} from '@/test-utils/fixtures'
-import {findDialog, renderApp} from '@/test-utils/render'
+import {makeProblem, makeSeriesWithProblems, makeSubmittedSolution} from '@/test-utils/fixtures'
+import {problemsPageHandlers, renderProblemsPage} from '@/test-utils/problemsPage'
+import {findDialog} from '@/test-utils/render'
 import {server} from '@/test-utils/server'
 import {Problem, SeriesWithProblems} from '@/types/api/competition'
-
-import {Problems} from './Problems'
 
 type Participant = {registered: boolean; submitted: Problem['submitted']}
 
@@ -38,21 +31,15 @@ const startBackend = ({
   const state = {...participant}
   const uploadedFiles: string[] = []
 
-  const currentSeries = () =>
-    HttpResponse.json(
+  server.use(
+    ...session.handlers,
+    ...problemsPageHandlers(() =>
       makeSeriesWithProblems({
         is_registered: session.isSignedIn() && state.registered,
         problems: [makeProblem({submitted: session.isSignedIn() ? state.submitted : null})],
         ...series,
       }),
-    )
-
-  server.use(
-    ...session.handlers,
-    http.get(apiUrl('/competition/semester-list/'), () => HttpResponse.json([makeSemester()])),
-    http.get(apiUrl('/competition/series/current/0/'), currentSeries),
-    http.get(apiUrl('/competition/series/30/'), currentSeries),
-    http.get(apiUrl('/competition/semester/20/'), () => HttpResponse.json(makeSemesterWithProblems())),
+    ),
     http.post(apiUrl('/competition/event/20/register/'), () => {
       state.registered = true
       return new HttpResponse(null, {status: 201})
@@ -71,16 +58,6 @@ const startBackend = ({
   return {account: session.account, uploadedFiles}
 }
 
-const renderProblems = async () => {
-  renderApp(<Problems />, {route: {pathname: '/strom/zadania/[[...params]]', query: {}}})
-
-  await screen.findByRole('heading', {name: '1. ÚLOHA'})
-  // The spinner covers both the data and the "is the visitor signed in" probe.
-  await waitFor(() => {
-    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
-  })
-}
-
 const submitButton = () => screen.getByRole('button', {name: 'odovzdať'})
 
 const dropFile = async (user: ReturnType<typeof userEvent.setup>, file: File) => {
@@ -94,7 +71,7 @@ describe('submitting a solution', () => {
   it('asks an anonymous visitor to sign in and continues as that user', async () => {
     const user = userEvent.setup()
     const {account} = startBackend({signedIn: false, participant: {registered: true, submitted: null}})
-    await renderProblems()
+    await renderProblemsPage()
 
     await user.click(submitButton())
 
@@ -111,7 +88,7 @@ describe('submitting a solution', () => {
   it('has a signed-in user confirm school and grade, then registers them to the semester', async () => {
     const user = userEvent.setup()
     startBackend({signedIn: true})
-    await renderProblems()
+    await renderProblemsPage()
 
     await user.click(submitButton())
 
@@ -126,7 +103,7 @@ describe('submitting a solution', () => {
   it('uploads the PDF after the honesty declaration and then offers the submitted solution', async () => {
     const user = userEvent.setup()
     const {uploadedFiles} = startBackend({signedIn: true, participant: {registered: true, submitted: null}})
-    await renderProblems()
+    await renderProblemsPage()
     expect(screen.getByRole('link', {name: 'moje riešenie'})).toHaveAttribute('aria-disabled', 'true')
 
     await user.click(submitButton())
@@ -147,7 +124,7 @@ describe('submitting a solution', () => {
   it('tells the user to check the upload when the backend answers with a success other than 201', async () => {
     const user = userEvent.setup()
     startBackend({signedIn: true, participant: {registered: true, submitted: null}, uploadStatus: 200})
-    await renderProblems()
+    await renderProblemsPage()
 
     await user.click(submitButton())
     const declaration = await findDialog('Čestné prehlásenie')
@@ -165,7 +142,7 @@ describe('submitting a solution', () => {
   it('uploads nothing when the honesty declaration is declined', async () => {
     const user = userEvent.setup()
     const {uploadedFiles} = startBackend({signedIn: true, participant: {registered: true, submitted: null}})
-    await renderProblems()
+    await renderProblemsPage()
 
     await user.click(submitButton())
     const declaration = await findDialog('Čestné prehlásenie')
@@ -185,7 +162,7 @@ describe('submitting a solution', () => {
       series: {can_submit: false, can_resubmit: true},
       participant: {registered: true, submitted: makeSubmittedSolution()},
     })
-    await renderProblems()
+    await renderProblemsPage()
 
     await user.click(submitButton())
     const declaration = await findDialog('Čestné prehlásenie')
@@ -203,7 +180,7 @@ describe('submitting a solution', () => {
     // user-event would otherwise drop the file itself because of the input's `accept` attribute.
     const user = userEvent.setup({applyAccept: false})
     const {uploadedFiles} = startBackend({signedIn: true, participant: {registered: true, submitted: null}})
-    await renderProblems()
+    await renderProblemsPage()
 
     await user.click(submitButton())
     const declaration = await findDialog('Čestné prehlásenie')
@@ -216,7 +193,7 @@ describe('submitting a solution', () => {
 
   it('disables submitting for a user who cannot participate in the competition', async () => {
     startBackend({signedIn: true, series: {can_participate: false}})
-    await renderProblems()
+    await renderProblemsPage()
 
     // The tooltip explaining why is the disabled button's accessible name.
     expect(
@@ -228,7 +205,7 @@ describe('submitting a solution', () => {
 
   it('does not offer submitting once the series no longer accepts solutions', async () => {
     startBackend({signedIn: true, series: {can_submit: false}, participant: {registered: true, submitted: null}})
-    await renderProblems()
+    await renderProblemsPage()
 
     expect(screen.queryByRole('button', {name: 'odovzdať'})).not.toBeInTheDocument()
   })

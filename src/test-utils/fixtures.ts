@@ -1,4 +1,6 @@
 import {
+  Comment,
+  CommentState,
   Problem,
   ProblemWithSolutions,
   Semester,
@@ -142,5 +144,19 @@ export const makeProblemWithSolutions = (overrides: Partial<ProblemWithSolutions
   solution_pdf: null,
   series: makeSeries(),
   solution_set: [],
+  ...overrides,
+})
+
+export const makeComment = (overrides: Partial<Comment> = {}): Comment => ({
+  id: 900,
+  posted_by_name: 'Jana Riešiteľová',
+  edit_allowed: false,
+  text: 'Môžeme v úlohe počítať aj jednotku?',
+  posted_at: '2025-10-01T12:00:00+02:00',
+  state: CommentState.Published,
+  hidden_response: null,
+  problem: 101,
+  posted_by: 1,
+  from_staff: false,
   ...overrides,
 })
