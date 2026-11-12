@@ -1,6 +1,8 @@
 import {DateTime, Settings} from 'luxon'
 
 Settings.defaultLocale = 'sk'
+// server (UTC) and browser must format in the same zone, otherwise SSR and hydration render different times
+Settings.defaultZone = 'Europe/Bratislava'
 
 export enum DateFormat {
   TIME = 'HH:mm',
