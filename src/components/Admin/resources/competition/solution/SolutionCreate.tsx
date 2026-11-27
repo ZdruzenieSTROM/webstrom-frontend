@@ -37,7 +37,7 @@ export const SolutionCreate: FC = () => {
         <ReferenceInput source="late_tag" reference="competition/late-tag">
           <AutocompleteInput optionText="name" />
         </ReferenceInput>
-        <BooleanInput source="is_online" label="content.labels.is_online" defaultValue={true} />
+        <BooleanInput source="is_online" defaultValue={true} />
       </MySimpleForm>
     </MyCreate>
   )
