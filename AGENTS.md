@@ -98,4 +98,6 @@ on every PR; run the same four before pushing.
 - Commits and PR titles: short imperative English sentence ("Prefetch archive events during SSR"); prefix
   with the issue number when there is one (`852: Fix tiny checkboxes in RA on Firefox`).
 - A PR that fixes an issue links it with `Closes #N`.
+- Show in the PR how the change was tested: before/after screenshots for UI changes, and what you ran or
+  clicked through (commands, URLs, which backend) for the rest.
 - `master` needs a green `branch-test` and one approving review.
