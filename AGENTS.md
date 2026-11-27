@@ -7,6 +7,9 @@ The Django backend lives in [webstrom-backend](https://github.com/ZdruzenieSTROM
 Stack: Next.js (Pages Router) + React + TypeScript, MUI, TanStack Query + axios, react-admin, vitest +
 Testing Library, yarn 4 (`.yarn/releases`), Node ≥ 22.
 
+Longer docs in `docs/`: `DEPLOYMENT.md` (deploy pipeline), `trailing-slash.md` (why backend URLs keep a
+trailing slash and page URLs don't), `screeny.md` (what each participant-facing page shows).
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know
@@ -89,6 +92,12 @@ on every PR; run the same four before pushing.
   are `vi.fn()`; stub per test with `vi.mocked(apiAxios.get).mockImplementation(...)`).
 - Render with `renderWithProviders` from `src/utils/testUtils.tsx` (QueryClient with no retries, alert
   provider, MUI theme); fixtures such as `makeSolution` live there too.
+
+## Deploys
+
+- Merging to `master` deploys nothing. Test (test.strom.sk) and prod (strom.sk) are deployed manually by
+  maintainers through the `deploy-test.yml` / `deploy-prod.yml` workflows; see `docs/DEPLOYMENT.md`.
+- Check a merged change on test before it goes to prod.
 
 ## Conventions
 
