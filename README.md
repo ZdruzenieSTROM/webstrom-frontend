@@ -41,6 +41,8 @@ Potrebuješ:
   - check, či ho máš: `node -v`
   - dá sa nainštalovať priamo zo stránky, ale ideálne je použiť [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm) (neboj sa inštalačných inštrukcií)
 - [Bun](https://bun.com/docs/installation) - správca JS balíkov (aplikácia samotná beží na Node.js)
+  - keď už máš Node.js, nainštaluješ ho pomocou `npm install -g bun`
+  - check, či ho máš: `bun -v`
 
 Potrebné balíky pre projekt sa nainštalujú pomocou:
 
