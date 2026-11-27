@@ -1,8 +1,9 @@
 import {Stack, SxProps, Theme, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
-import {FC} from 'react'
+import {FC, useState} from 'react'
 
 import {ArchiveButton, ArchiveRow} from '@/components/Archive/ArchiveRow'
+import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {Competition, Event, PublicationTypes} from '@/types/api/competition'
 
@@ -13,6 +14,8 @@ type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Eve
 type CompetitionPageProps = {
   competition: OurCompetition
 }
+
+const VISIBLE_HISTORY_EVENTS = 15
 
 const getPublication = (event: Event, publicationType: number) => {
   return event.publication_set.find((publication) => publication.publication_type === publicationType)
@@ -47,6 +50,9 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
   const router = useRouter()
   const detailsLink = long_description && `${router.asPath}/podrobnosti`
   const rulesLink = rules && `${router.asPath}/pravidla`
+  const [showAllHistory, setShowAllHistory] = useState<boolean>(false)
+  // history_events come from BE ordered from the newest
+  const visibleHistoryEvents = showAllHistory ? history_events : history_events.slice(0, VISIBLE_HISTORY_EVENTS)
 
   return (
     <Stack gap={5}>
@@ -100,7 +106,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
       </Stack>
 
       <Stack gap={1}>
-        {history_events.map((event) => (
+        {visibleHistoryEvents.map((event) => (
           <ArchiveRow
             key={event.id}
             label={getHistoryTitle(event, name)}
@@ -135,6 +141,13 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
             </Stack>
           </ArchiveRow>
         ))}
+        {!showAllHistory && history_events.length > VISIBLE_HISTORY_EVENTS && (
+          <Stack direction="row" justifyContent="flex-end">
+            <Button type="button" variant="button2" onClick={() => setShowAllHistory(true)}>
+              Zobraziť staršie
+            </Button>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   )
