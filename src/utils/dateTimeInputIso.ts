@@ -3,7 +3,7 @@ import {DateTime} from 'luxon'
 const TIMEZONE = 'Europe/Bratislava'
 
 // BE format: 2002-05-31T22:59:00Z
-// HTML datetime-local input format: 2002-06-01T00:59
+// HTML datetime-local input format: 2002-06-01T00:59:00 (seconds are optional when parsing)
 
 // RA calls `format` with the BE value (UTC, ending 'Z'), then re-calls it with the current internal value,
 // so `format` must handle both shapes and return the same result.
@@ -14,7 +14,7 @@ export const dateTimeInputFormat = (value?: string) => {
 
   return DateTime.fromISO(value, {zone: isUTC ? 'utc' : TIMEZONE})
     .setZone(TIMEZONE)
-    .toFormat("yyyy-MM-dd'T'HH:mm")
+    .toFormat("yyyy-MM-dd'T'HH:mm:ss")
 }
 
 export const dateTimeInputParse = (value?: string) => {

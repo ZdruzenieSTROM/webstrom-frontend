@@ -14,6 +14,8 @@ export const MyDateTimeInput: FC<DateTimeInputProps> = ({source, ...rest}) => (
     // preto `format` musi podporovat oba formaty a vzdy vratit to iste.
     format={dateTimeInputFormat}
     parse={dateTimeInputParse}
+    // step=1 makes the browser show and accept seconds
+    slotProps={{htmlInput: {step: 1}}}
     {...rest}
   />
 )
