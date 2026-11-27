@@ -1,9 +1,10 @@
 import {Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@mui/material'
 import {FC, useMemo, useState} from 'react'
 import {Labeled, useTranslate} from 'react-admin'
-import {useFormContext} from 'react-hook-form'
+import {useFormContext, useWatch} from 'react-hook-form'
 
-import {Markdown} from '@/components/Markdown/Markdown'
+import {SitePreview} from '@/components/Admin/custom/SitePreview'
+import {ProblemContent} from '@/components/Problems/ProblemContent'
 
 import {latexToMarkdown} from './latexToMarkdown'
 
@@ -14,6 +15,7 @@ type LatexImportProps = {
 export const LatexImport: FC<LatexImportProps> = ({source}) => {
   const translate = useTranslate()
   const {setValue} = useFormContext()
+  const order = useWatch<{order?: number | string}, 'order'>({name: 'order'})
   const [open, setOpen] = useState(false)
   const [latex, setLatex] = useState('')
 
@@ -65,7 +67,9 @@ export const LatexImport: FC<LatexImportProps> = ({source}) => {
                 slotProps={{input: {readOnly: true}}}
               />
               <Labeled label="content.labels.preview">
-                <Markdown content={result.markdown} />
+                <SitePreview>
+                  <ProblemContent order={order ?? ''} text={result.markdown} />
+                </SitePreview>
               </Labeled>
             </>
           )}
