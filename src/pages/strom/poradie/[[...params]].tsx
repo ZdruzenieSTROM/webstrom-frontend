@@ -69,15 +69,10 @@ export const getServerSideProps: GetServerSideProps = async ({resolvedUrl, query
     ? ssrApiOptions.competition.semester.results(id.semesterId)
     : ssrApiOptions.competition.series.results.list(id.seriesId)
 
-  // Results of an open semester are computed per request and take ~2 s on BE. On client-side
-  // navigation (`x-nextjs-data`), awaiting them here leaves the clicked link without any response,
-  // so `<Results />` fetches them on the client with a loader instead. Full page loads keep SSR.
-  const isClientNavigation = req.headers['x-nextjs-data'] === '1'
-
   if (seriesResultsQuery.enabled && competitionResultsQuery.enabled) {
     await Promise.all([
       queryClient.prefetchQuery(seriesResultsQuery),
-      isClientNavigation ? undefined : queryClient.prefetchQuery(competitionResultsQuery),
+      queryClient.prefetchQuery(competitionResultsQuery),
     ])
   }
 
