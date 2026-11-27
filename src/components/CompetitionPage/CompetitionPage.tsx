@@ -120,7 +120,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               flex: {xs: '1 1 100%', sm: '1 1 0'},
             }}
           >
-            <Stack direction="row" gap={0.5} sx={historyButtonGroupSx}>
+            <Stack direction="row" flexWrap={{xs: 'wrap', sm: 'nowrap'}} gap={0.5} sx={historyButtonGroupSx}>
               <ArchiveButton kind="problems" href={getPublication(event, PublicationTypes.PROBLEMS.id)?.file} />
               <ArchiveButton kind="solutions" href={getPublication(event, PublicationTypes.SOLUTIONS.id)?.file} />
               <ArchiveButton kind="results" href={getPublication(event, PublicationTypes.RESULTS.id)?.file} />
