@@ -104,6 +104,10 @@ on every PR; run the same four before pushing.
 - **Slovak copy written in the frontend uses tykanie** — 2nd person singular, informal: "Skontroluj",
   never "Skontrolujte". This includes `Admin/translations/sk_SK.ts`. Messages that come from the backend
   are shown as they are.
+- Before a decision that shapes more than one change — a new dependency, a pattern, an architecture or
+  testing approach — check the current official docs and how the community solves it (maintainers'
+  guidance, well-used projects, issue threads). Name what you found and the alternative you rejected in the
+  PR. Routine edits within an existing pattern don't need this.
 - Commits and PR titles: short imperative English sentence ("Prefetch archive events during SSR"); prefix
   with the issue number when there is one (`852: Fix tiny checkboxes in RA on Firefox`).
 - A PR that fixes an issue links it with `Closes #N`.
