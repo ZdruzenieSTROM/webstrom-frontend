@@ -1,4 +1,4 @@
-import {Stack, Typography} from '@mui/material'
+import {Stack, SxProps, Theme, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
 import {FC} from 'react'
 
@@ -28,6 +28,9 @@ const getHistoryTitle = (event: Event, competitionName: string) => {
 
   return event.additional_name ? `${yearLabel} (${event.additional_name})` : yearLabel
 }
+
+// On mobile every group gets its own right aligned line: title, publications, galleries
+const historyButtonGroupSx: SxProps<Theme> = {flexBasis: {xs: '100%', sm: 'auto'}, justifyContent: 'flex-end'}
 
 export const CompetitionPage: FC<CompetitionPageProps> = ({
   competition: {
@@ -97,9 +100,26 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
       </Stack>
 
       <Stack gap={1}>
-        {history_events.map((event) => {
-          return (
-            <ArchiveRow key={event.id} label={getHistoryTitle(event, name)} labelVariant="h2">
+        {history_events.map((event) => (
+          <ArchiveRow
+            key={event.id}
+            label={getHistoryTitle(event, name)}
+            labelVariant="h2"
+            sx={{flexWrap: {xs: 'wrap', sm: 'nowrap'}}}
+            labelSx={{flex: {xs: '1 1 100%', sm: '0 1 auto'}}}
+            // row-reverse: publications stay at the right edge, galleries wrap below them as a whole
+            buttonsSx={{
+              flexDirection: 'row-reverse',
+              justifyContent: 'flex-start',
+              flex: {xs: '1 1 100%', sm: '1 1 0'},
+            }}
+          >
+            <Stack direction="row" gap={0.5} sx={historyButtonGroupSx}>
+              <ArchiveButton kind="problems" href={getPublication(event, PublicationTypes.PROBLEMS.id)?.file} />
+              <ArchiveButton kind="solutions" href={getPublication(event, PublicationTypes.SOLUTIONS.id)?.file} />
+              <ArchiveButton kind="results" href={getPublication(event, PublicationTypes.RESULTS.id)?.file} />
+            </Stack>
+            <Stack direction="row" flexWrap="wrap" gap={0.5} sx={historyButtonGroupSx}>
               {event.galleries.length > 0 ? (
                 event.galleries.map((gallery) => (
                   <ArchiveButton
@@ -112,12 +132,9 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               ) : (
                 <ArchiveButton kind="photos" />
               )}
-              <ArchiveButton kind="problems" href={getPublication(event, PublicationTypes.PROBLEMS.id)?.file} />
-              <ArchiveButton kind="solutions" href={getPublication(event, PublicationTypes.SOLUTIONS.id)?.file} />
-              <ArchiveButton kind="results" href={getPublication(event, PublicationTypes.RESULTS.id)?.file} />
-            </ArchiveRow>
-          )
-        })}
+            </Stack>
+          </ArchiveRow>
+        ))}
       </Stack>
     </Stack>
   )

@@ -68,7 +68,10 @@ export const ArchiveRow: FC<{
   indented?: boolean
   gap?: number | string
   labelVariant?: TypographyProps['variant']
-}> = ({label, children, indented = false, gap = 0.5, labelVariant = 'h3'}) => {
+  sx?: SxProps<Theme>
+  labelSx?: SxProps<Theme>
+  buttonsSx?: SxProps<Theme>
+}> = ({label, children, indented = false, gap = 0.5, labelVariant = 'h3', sx, labelSx, buttonsSx}) => {
   return (
     <Stack
       className="archive-row"
@@ -76,18 +79,23 @@ export const ArchiveRow: FC<{
       justifyContent="space-between"
       alignItems="flex-start"
       gap={1}
-      sx={{
-        pl: indented ? 3 : 1,
-        pr: 1,
-        py: 0.5,
-        '&:hover': {
-          bgcolor: colors.black,
-          color: colors.white,
+      sx={[
+        {
+          pl: indented ? 3 : 1,
+          pr: 1,
+          py: 0.5,
+          '&:hover': {
+            bgcolor: colors.black,
+            color: colors.white,
+          },
         },
-      }}
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
     >
-      <Typography variant={labelVariant}>{label}</Typography>
-      <Stack direction="row" flexWrap="wrap" justifyContent="flex-end" gap={gap}>
+      <Typography variant={labelVariant} sx={labelSx}>
+        {label}
+      </Typography>
+      <Stack direction="row" flexWrap="wrap" justifyContent="flex-end" gap={gap} sx={buttonsSx}>
         {children}
       </Stack>
     </Stack>
