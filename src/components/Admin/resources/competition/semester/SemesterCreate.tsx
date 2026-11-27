@@ -13,6 +13,7 @@ import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
+import {validateDateAfter} from '@/utils/validateDateAfter'
 
 import {seasonCodeStrings} from '../../../seasonCodeStrings'
 
@@ -26,7 +27,7 @@ export const SemesterCreate: FC = () => (
       <SelectInput source="season_code" choices={seasonCodeStrings} validate={required()} />
       <TextInput source="school_year" helperText="content.helpers.school_year" />
       <MyDateTimeInput source="start" validate={required()} />
-      <MyDateTimeInput source="end" validate={required()} />
+      <MyDateTimeInput source="end" validate={[required(), validateDateAfter('start')]} />
       <ReferenceArrayInput source="late_tags" reference="competition/late-tag">
         <CheckboxGroupInput
           label="resources.competition/semester.fields.late_tags"

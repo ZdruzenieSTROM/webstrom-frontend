@@ -7,6 +7,7 @@ import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyTabbedForm} from '@/components/Admin/custom/MyTabbedForm'
 import {PostPreview} from '@/components/Admin/custom/PostPreview'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
+import {validateDateAfter} from '@/utils/validateDateAfter'
 
 export const PostCreate: FC = () => {
   return (
@@ -18,7 +19,7 @@ export const PostCreate: FC = () => {
           <TextInput source="details" multiline helperText="content.helpers.markdown" />
           {/* <MyDateTimeInput source="added_at" disabled /> */}
           <MyDateTimeInput source="visible_after" validate={required()} />
-          <MyDateTimeInput source="visible_until" validate={required()} />
+          <MyDateTimeInput source="visible_until" validate={[required(), validateDateAfter('visible_after')]} />
           <SitesCheckboxInput source="sites" validate={required()} />
         </FormTab>
         <FormTab label="content.labels.links">
