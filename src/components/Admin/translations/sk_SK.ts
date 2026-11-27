@@ -208,6 +208,8 @@ export const sk_SK = {
       competition_type: 'Typ súťaže',
       history_events_count: 'HE count',
       name: 'Meno a priezvisko',
+      email: 'Email',
+      event_registrations: 'Registrácie do súťaží',
       reg_link: 'Odkaz na registráciu',
       reg_link_add: 'Pridať odkaz na registráciu',
       problem_count: 'Počet úloh',
