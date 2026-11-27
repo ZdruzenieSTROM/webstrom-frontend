@@ -310,7 +310,7 @@ export const sk_SK = {
         saved: 'Uložené úlohy: %{count} z %{total}',
         error: 'Úloha %{order}: %{message}',
       },
-      logged_out: 'Si odhlásený.',
+      logged_out: 'Odhlásenie prebehlo úspešne.',
       semester_with_series: {
         prefill_no_semesters: 'Žiadne predchádzajúce semestre pre túto aktivitu. Vyplň manuálne.',
         prefill_fetch_error: 'Chyba pri načítaní predchádzajúcich semestrov.',
