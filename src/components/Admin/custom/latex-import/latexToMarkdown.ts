@@ -73,6 +73,7 @@ const SYMBOLS: Record<string, string> = {
   _: String.raw`\_`,
 }
 
+const NBSP = '\u00A0'
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz'
 const ROMAN = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x']
 
@@ -135,7 +136,7 @@ class Converter {
       }
       if (c === '~') {
         this.pos++
-        out += ' '
+        out += NBSP
         continue
       }
       if (this.startsWith('``')) {
