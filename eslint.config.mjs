@@ -208,7 +208,7 @@ export default tseslint.config(
     extends: fixupConfigRules(compat.extends('plugin:node/recommended-script')),
   },
   {
-    files: ['**/*.test.ts', '**/*.test.tsx', '**/testUtils.{ts,tsx}', 'vitest.setup.ts'],
+    files: ['**/*.test.ts', '**/*.test.tsx', 'src/test-utils/**', 'vitest.setup.ts'],
     plugins: {
       vitest,
     },
