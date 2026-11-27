@@ -5,6 +5,7 @@
 import * as Sentry from '@sentry/nextjs'
 
 import {SENTRY_ALLOW_URLS} from './utils/sentryAllowUrls'
+import {sentryBeforeSend} from './utils/sentryBeforeSend'
 
 Sentry.init({
   dsn: 'https://428ff2792107c70d35d5eca360f4617a@o4510493471932416.ingest.de.sentry.io/4511236823449680',
@@ -16,6 +17,8 @@ Sentry.init({
   integrations: [Sentry.replayIntegration()],
 
   allowUrls: SENTRY_ALLOW_URLS,
+
+  beforeSend: sentryBeforeSend,
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 0.1,
