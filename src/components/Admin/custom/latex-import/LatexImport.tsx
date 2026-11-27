@@ -1,6 +1,6 @@
 import {Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField} from '@mui/material'
 import {ChangeEvent, FC, useMemo, useState} from 'react'
-import {Labeled} from 'react-admin'
+import {Labeled, useTranslate} from 'react-admin'
 import {useFormContext} from 'react-hook-form'
 
 import {Markdown} from '@/components/Markdown/Markdown'
@@ -13,6 +13,7 @@ type LatexImportProps = {
 }
 
 export const LatexImport: FC<LatexImportProps> = ({source}) => {
+  const translate = useTranslate()
   const {getValues, setValue} = useFormContext()
   const [open, setOpen] = useState(false)
   const [latex, setLatex] = useState('')
@@ -45,14 +46,14 @@ export const LatexImport: FC<LatexImportProps> = ({source}) => {
   return (
     <>
       <Button variant="outlined" onClick={() => setOpen(true)} sx={{alignSelf: 'flex-start', mb: 1}}>
-        Vložiť z LaTeXu
+        {translate('content.latex_import.open')}
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
-        <DialogTitle>Vložiť zadanie z LaTeXu</DialogTitle>
+        <DialogTitle>{translate('content.latex_import.title')}</DialogTitle>
         <DialogContent sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
           <TextField
-            label="LaTeX"
-            helperText="Vlož jednu úlohu alebo celý súbor zadania1.tex / zadania2.tex z Overleafu."
+            label={translate('content.latex_import.latex')}
+            helperText={translate('content.latex_import.latex_helper')}
             value={latex}
             onChange={handleLatexChange}
             multiline
@@ -65,13 +66,13 @@ export const LatexImport: FC<LatexImportProps> = ({source}) => {
           {problems.length > 0 && (
             <TextField
               select
-              label="Úloha"
+              label={translate('content.latex_import.problem')}
               value={selected}
               onChange={(event) => setSelected(Number(event.target.value))}
             >
               {problems.map((problem, index) => (
                 <MenuItem key={`${problem.series}-${problem.order}`} value={index}>
-                  {problem.series}. séria, {problem.order}. úloha
+                  {translate('content.latex_import.problem_option', {series: problem.series, order: problem.order})}
                 </MenuItem>
               ))}
             </TextField>
@@ -88,7 +89,7 @@ export const LatexImport: FC<LatexImportProps> = ({source}) => {
           {result.markdown && (
             <>
               <TextField
-                label="Markdown"
+                label={translate('content.latex_import.markdown')}
                 value={result.markdown}
                 multiline
                 fullWidth
@@ -101,9 +102,9 @@ export const LatexImport: FC<LatexImportProps> = ({source}) => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Zrušiť</Button>
+          <Button onClick={handleClose}>{translate('ra.action.cancel')}</Button>
           <Button variant="contained" onClick={handleApply} disabled={!result.markdown}>
-            Nahradiť text úlohy
+            {translate('content.latex_import.apply')}
           </Button>
         </DialogActions>
       </Dialog>
