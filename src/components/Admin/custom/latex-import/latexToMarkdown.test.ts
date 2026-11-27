@@ -1,26 +1,46 @@
-import {readFileSync} from 'node:fs'
-import path from 'node:path'
-
 import {describe, expect, it} from 'vitest'
 
 import {latexToMarkdown} from './latexToMarkdown'
-import {splitZadania} from './splitZadania'
 
-// STROM 51, winter semester, series 1 – as written in Overleaf
-const series1 = splitZadania(
-  readFileSync(path.join(import.meta.dirname, '__fixtures__/STROM-51-Z-zadania1.tex'), 'utf8'),
-)
+// STROM 51, winter semester, series 1 – problem bodies as written in Overleaf
+const problem1 = String.raw`
+V trojuholníku \(ABC\) os uhla \(ABC\) pretína \(AC\) v bode \(D\). Rovnobežka s \(BC\) vedená bodom \(D\) pretína \(AB\) v bode \(E\). Platí, že strany \(AB\) a \(BC\) sú v pomere \(2:1\). V akom pomere delí \(E\) úsečku \(AB\)?
+`
+const problem3 = String.raw`
+\textit{Obec} je súvislý útvar zložený zo štvorcov rovnakej veľkosti, ktoré navzájom susedia hranou. Na obrázku pod úlohou je uvedené, ako by napríklad mohla vyzerať \textit{obec} zložená z ôsmich štvorcov.
+
+\textit{Mestom} nazveme takú \textit{obec}, ktorá sa skladá z aspoň \(2026\) štvorcov. \textit{Nedeliteľné mesto} je také, ktoré sa nedá rozdeliť na dve alebo viacero \textit{miest}. Aký je maximálny počet štvorcov, z ktorých sa môže skladať \textit{nedeliteľné mesto}?
+
+\begin{center}
+    \includegraphics[scale=0.6]{obr/4-3.PNG}
+\end{center}
+
+`
+const problem5 = String.raw`
+Na tabuli je napísaných \(n\) núl v jednom riadku. Hráme hru. V každom ťahu zotrieme jednu z cifier na tabuli a nahradíme ju inou cifrou na tom istom mieste. Dodržiavame pritom tieto obmedzenia:
+\begin{itemize}
+    \item Píšeme iba cifry \(0\), \(1\) a \(2\).
+    \item Rozdiel napísanej a zotretej cifry musí byť \(1\).
+    \item Cifru nemožno zotrieť, ak sa niekde napravo od nej nachádza rovnaká cifra.
+    \item Nemožno napísať takú cifru, ktorá sa už nachádza niekde napravo od práve zotretej cifry.
+\end{itemize}
+Určte, na koľko najmenej ťahov môžeme dosiahnuť stav, že na tabuli budú napísané samé jednotky.
+`
+const problem6 = String.raw`
+Nájdite všetky funkcie \(f: \mathbb{Z}\rightarrow\mathbb{Z}\) také, že pre všetky \(a,b\in\mathbb{Z}\) platí:
+\[f(a+b)+f(ab-1)=f(a)f(b)+2.\]
+`
 
 describe(latexToMarkdown, () => {
   it('should keep inline math as written and convert nothing in plain text', () => {
-    expect(latexToMarkdown(series1[0].tex)).toStrictEqual({
+    expect(latexToMarkdown(problem1)).toStrictEqual({
       markdown: String.raw`V trojuholníku \(ABC\) os uhla \(ABC\) pretína \(AC\) v bode \(D\). Rovnobežka s \(BC\) vedená bodom \(D\) pretína \(AB\) v bode \(E\). Platí, že strany \(AB\) a \(BC\) sú v pomere \(2:1\). V akom pomere delí \(E\) úsečku \(AB\)?`,
       warnings: [],
     })
   })
 
   it(String.raw`should turn \textit into emphasis, keep paragraphs and drop the figure with a warning`, () => {
-    const {markdown, warnings} = latexToMarkdown(series1[2].tex)
+    const {markdown, warnings} = latexToMarkdown(problem3)
 
     expect(markdown)
       .toBe(String.raw`*Obec* je súvislý útvar zložený zo štvorcov rovnakej veľkosti, ktoré navzájom susedia hranou. Na obrázku pod úlohou je uvedené, ako by napríklad mohla vyzerať *obec* zložená z ôsmich štvorcov.
@@ -30,7 +50,7 @@ describe(latexToMarkdown, () => {
   })
 
   it('should turn itemize into a Markdown list without the source indentation', () => {
-    expect(latexToMarkdown(series1[4].tex).markdown)
+    expect(latexToMarkdown(problem5).markdown)
       .toBe(String.raw`Na tabuli je napísaných \(n\) núl v jednom riadku. Hráme hru. V každom ťahu zotrieme jednu z cifier na tabuli a nahradíme ju inou cifrou na tom istom mieste. Dodržiavame pritom tieto obmedzenia:
 
 - Píšeme iba cifry \(0\), \(1\) a \(2\).
@@ -42,7 +62,7 @@ Určte, na koľko najmenej ťahov môžeme dosiahnuť stav, že na tabuli budú 
   })
 
   it('should put display math on its own lines between $$', () => {
-    expect(latexToMarkdown(series1[5].tex).markdown)
+    expect(latexToMarkdown(problem6).markdown)
       .toBe(String.raw`Nájdite všetky funkcie \(f: \mathbb{Z}\rightarrow\mathbb{Z}\) také, že pre všetky \(a,b\in\mathbb{Z}\) platí:
 
 $$
