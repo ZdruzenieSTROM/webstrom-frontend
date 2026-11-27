@@ -226,6 +226,16 @@ export const sk_SK = {
       latex_helper: String.raw`Vlož text jednej úlohy z Overleafu – obsah jej \zad… makra.`,
       markdown: 'Markdown',
       apply: 'Nahradiť text úlohy',
+      series_open: 'Vložiť úlohy z LaTeXu',
+      series_title: 'Vložiť úlohy %{series}. série z LaTeXu',
+      series_latex_helper: 'Vlož celý súbor zadania1.tex alebo zadania2.tex z Overleafu.',
+      other_series: 'Súbor obsahuje úlohy série %{series} – tie sa do tejto série nevložia.',
+      no_problems: String.raw`Nenašiel som žiadnu úlohu %{series}. série – úlohy musia byť v makrách \zad…s….`,
+      row_title: '%{order}. úloha',
+      action_create: 'Vytvoriť',
+      action_overwrite: 'Prepísať text',
+      action_skip: 'Preskočiť',
+      series_apply: 'Uložiť úlohy (%{count})',
     },
     footer: {
       timezone_message: 'Všetky časy sú uvedené v časovom pásme Europe/Bratislava',
@@ -238,6 +248,10 @@ export const sk_SK = {
     notifications: {
       record_created: 'Záznam vytvorený',
       record_saved: 'Záznam uložený',
+      series_latex_import: {
+        saved: 'Uložené úlohy: %{count} z %{total}',
+        error: 'Úloha %{order}: %{message}',
+      },
       semester_with_series: {
         prefill_no_semesters: 'Žiadne predchádzajúce semestre pre túto súťaž. Vyplň manuálne.',
         prefill_fetch_error: 'Chyba pri načítaní predchádzajúcich semestrov.',
