@@ -50,10 +50,18 @@ export const UploadProblemForm: FC<{
     },
   })
 
-  const {fileRejections, getRootProps, getInputProps} = useDropzone({
+  const {getRootProps, getInputProps} = useDropzone({
     multiple: false,
     accept: Accept.Pdf,
     maxSize: 20 * 1024 * 1024, // 20MB in bytes
+    onDropRejected: (fileRejections) => {
+      const errorCode = fileRejections[0]?.errors[0]?.code
+      alert(
+        errorCode === 'file-too-large'
+          ? ' Súbor je príliš veľký. Maximálna povolená veľkosť je 20MB.'
+          : ' Nahraný súbor musí byť vo formáte pdf.',
+      )
+    },
     onDrop: (acceptedFiles) => {
       if (acceptedFiles[0]) {
         const formData = new FormData()
@@ -167,13 +175,6 @@ export const UploadProblemForm: FC<{
               <InlineLink href="https://www.ilovepdf.com/">ilovepdf.com</InlineLink>.
             </Typography>
           </>
-        )}
-        {fileRejections.length > 0 && (
-          <span>
-            {fileRejections[0]?.errors[0]?.code === 'file-too-large'
-              ? ' Súbor je príliš veľký. Maximálna povolená veľkosť je 20MB.'
-              : ' Nahraný súbor musí byť vo formáte pdf.'}
-          </span>
         )}
       </Box>
     </Stack>
