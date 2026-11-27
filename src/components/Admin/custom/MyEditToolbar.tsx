@@ -8,7 +8,7 @@ export const MyEditToolbar = () => {
       <Stack direction="row" gap={1}>
         <SaveButton />
         <SaveButton
-          label="ra.action.save_and_stay"
+          label="content.actions.save_and_stay"
           mutationOptions={{
             onSuccess: () => {
               notify('content.notifications.record_saved')

@@ -1,28 +1,7 @@
-import slovakMessages from 'ra-language-slovak'
+import {raSk} from './ra_sk'
 
 export const sk_SK = {
-  ra: {
-    ...slovakMessages.ra,
-    page: {
-      ...slovakMessages.ra.page,
-      list: '%{name}',
-    },
-    action: {
-      ...slovakMessages.ra.action,
-      save_and_stay: 'Uložiť a zostať na stránke',
-      save_and_create_another: 'Uložiť a vytvoriť ďalší',
-      publication: {
-        create: 'Pridať novú publikáciu',
-      },
-    },
-    sort: {
-      ASC: 'Vzostupne',
-      DESC: 'Zostupne',
-    },
-    configurable: {
-      customize: 'Upraviť',
-    },
-  },
+  ...raSk,
   resources: {
     'cms/post': {
       name: 'Novinky',
@@ -195,6 +174,11 @@ export const sk_SK = {
   },
 
   content: {
+    actions: {
+      create_publication: 'Pridať publikáciu',
+      save_and_stay: 'Uložiť a zostať na stránke',
+      save_and_create_another: 'Uložiť a pridať ďalší',
+    },
     labels: {
       general: 'Všeobecné',
       preview: 'Náhľad',

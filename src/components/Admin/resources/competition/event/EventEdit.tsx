@@ -50,7 +50,7 @@ export const EventEdit: FC = () => {
             <TextInput source="registration_link.additional_info" />
           </>
         )}
-        <MyCreateButton label="ra.action.publication.create" resource="competition/publication" />
+        <MyCreateButton label="content.actions.create_publication" resource="competition/publication" />
       </MySimpleForm>
     </MyEdit>
   )
