@@ -28,7 +28,7 @@ export const PostList: FC = () => (
 
 const PostListFilters: FC = () => (
   <FilterSidebar>
-    <FilterList label="Seminár" icon={null}>
+    <FilterList label="content.filters.seminar" icon={null}>
       {seminarIds.map((seminarId) => (
         <FilterListItem key={seminarId} label={seminarIdToName[seminarId]} value={{sites: seminarId}} />
       ))}

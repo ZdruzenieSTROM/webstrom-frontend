@@ -26,14 +26,9 @@ export const ProblemCreate: FC = () => (
         </ReferenceInput>
         <TextInput source="order" validate={required()} />
         <LatexImport source="text" />
-        <TextInput
-          source="text"
-          multiline
-          validate={required()}
-          helperText="Úlohy môžu obsahovať iba TeX (iba matický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
-        />
+        <TextInput source="text" multiline validate={required()} helperText="content.helpers.markdown" />
         <ProblemPreview />
-        <ImageInput source="image" accept={Accept.Image} helperText="Povolené iba obrázkové formáty .jpeg, .jpg a .png">
+        <ImageInput source="image" accept={Accept.Image} helperText="content.helpers.image_formats">
           <MyImageField />
         </ImageInput>
         <MyCreateFileInput source="solution_pdf" accept={Accept.Pdf} />

@@ -43,7 +43,7 @@ const ProblemListFilters: FC = () => (
 
     <SeriesFilterSection />
 
-    <FilterList label="Číslo úlohy" icon={null}>
+    <FilterList label="content.filters.problem_number" icon={null}>
       {[1, 2, 3, 4, 5, 6].map((problemNumber) => (
         <FilterListItem key={problemNumber} label={problemNumber.toString()} value={{order: problemNumber}} />
       ))}

@@ -14,12 +14,8 @@ export const PostCreate: FC = () => {
       <MyTabbedForm toolbar={<MyCreateToolbar />}>
         <FormTab label="content.labels.general">
           <TextInput source="caption" validate={required()} />
-          <TextInput source="short_text" validate={maxLength(200, 'Text musí mať najviac 200 znakov.')} />
-          <TextInput
-            source="details"
-            multiline
-            helperText="Text môže obsahovať iba TeX (iba matický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
-          />
+          <TextInput source="short_text" validate={maxLength(200)} />
+          <TextInput source="details" multiline helperText="content.helpers.markdown" />
           {/* <MyDateTimeInput source="added_at" disabled /> */}
           <MyDateTimeInput source="visible_after" validate={required()} />
           <MyDateTimeInput source="visible_until" validate={required()} />

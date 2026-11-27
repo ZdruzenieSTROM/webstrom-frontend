@@ -1,6 +1,6 @@
 import {Box, FormHelperText, FormLabel, Stack, TextField as MuiTextField} from '@mui/material'
 import {FC, useEffect, useState} from 'react'
-import {useInput, Validator} from 'react-admin'
+import {useInput, useTranslate, ValidationError, Validator} from 'react-admin'
 
 import {dateTimeInputFormat, dateTimeInputParse} from '@/utils/dateTimeInputIso'
 
@@ -29,6 +29,7 @@ const localToIso = (date: string, time: string) => {
 }
 
 export const MyDateTimeSplitInput: FC<Props> = ({source, validate, label, defaultTime = '', helperText, disabled}) => {
+  const translate = useTranslate()
   const {field, fieldState, isRequired} = useInput({source, validate})
 
   const initial = isoToLocal(field.value)
@@ -51,7 +52,7 @@ export const MyDateTimeSplitInput: FC<Props> = ({source, validate, label, defaul
     <Box sx={{mb: 2}}>
       {label && (
         <FormLabel required={isRequired} sx={{display: 'block', mb: 1}}>
-          {label}
+          {translate(label, {_: label})}
         </FormLabel>
       )}
       <Stack direction="row" gap={2}>
@@ -63,7 +64,7 @@ export const MyDateTimeSplitInput: FC<Props> = ({source, validate, label, defaul
             commit(e.target.value, time)
           }}
           slotProps={{inputLabel: {shrink: true}}}
-          label="Dátum"
+          label={translate('content.labels.date')}
           error={!!fieldState.error}
           size="small"
           disabled={disabled}
@@ -76,14 +77,18 @@ export const MyDateTimeSplitInput: FC<Props> = ({source, validate, label, defaul
             commit(date, e.target.value)
           }}
           slotProps={{inputLabel: {shrink: true}, htmlInput: {step: 1}}}
-          label="Čas"
+          label={translate('content.labels.time')}
           error={!!fieldState.error}
           size="small"
           disabled={disabled}
         />
       </Stack>
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {fieldState.error?.message && <FormHelperText error>{fieldState.error.message}</FormHelperText>}
+      {helperText && <FormHelperText>{translate(helperText, {_: helperText})}</FormHelperText>}
+      {fieldState.error?.message && (
+        <FormHelperText error>
+          <ValidationError error={fieldState.error.message} />
+        </FormHelperText>
+      )}
     </Box>
   )
 }

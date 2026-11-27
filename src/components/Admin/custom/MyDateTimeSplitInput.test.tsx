@@ -2,11 +2,12 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import {AdminContext, Form, FormDataConsumer} from 'react-admin'
 import {describe, expect, it} from 'vitest'
 
+import {myI18nProvider} from '../i18nProvider'
 import {MyDateTimeSplitInput} from './MyDateTimeSplitInput'
 
 const renderInput = (record?: {deadline: string}) =>
   render(
-    <AdminContext>
+    <AdminContext i18nProvider={myI18nProvider}>
       <Form record={record}>
         <MyDateTimeSplitInput source="deadline" defaultTime="23:59:59" />
         <FormDataConsumer>{({formData}) => <div data-testid="value">{formData.deadline ?? ''}</div>}</FormDataConsumer>

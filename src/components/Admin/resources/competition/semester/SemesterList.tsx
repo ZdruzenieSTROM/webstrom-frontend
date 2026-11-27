@@ -24,7 +24,7 @@ import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
 const SemesterListActions: FC = () => (
   <TopToolbar>
-    <Button component={Link} to="/competition/semester/create-with-series" label="Vytvoriť so sériami">
+    <Button component={Link} to="/competition/semester/create-with-series" label="content.actions.create_with_series">
       <PlaylistAddIcon />
     </Button>
     <CreateButton />

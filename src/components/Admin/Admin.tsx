@@ -116,7 +116,7 @@ const Unauthorized: FC = () => {
   const {alert} = useAlert()
 
   useEffect(() => {
-    alert('Si odhlásený.')
+    alert(myI18nProvider.translate('content.notifications.logged_out'))
     router.push('/strom')
   }, [alert, router])
 

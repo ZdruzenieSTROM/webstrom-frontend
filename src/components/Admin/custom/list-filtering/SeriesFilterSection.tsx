@@ -5,7 +5,7 @@ export const SeriesFilterSection: FC = () => {
   const {filterValues} = useListContext()
 
   return (
-    <FilterListSection label="Séria" icon={null}>
+    <FilterListSection label="content.filters.series" icon={null}>
       <FilterLiveForm>
         <ReferenceInput
           source="series"

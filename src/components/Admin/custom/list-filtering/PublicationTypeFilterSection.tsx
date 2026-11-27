@@ -3,7 +3,7 @@ import {AutocompleteInput, FilterListSection, FilterLiveForm, ReferenceInput} fr
 
 export const PublicationTypeFilterSection: FC = () => {
   return (
-    <FilterListSection label="Typ" icon={null}>
+    <FilterListSection label="content.filters.publication_type" icon={null}>
       <FilterLiveForm>
         <ReferenceInput source="publication_type" reference="competition/publication-type">
           <AutocompleteInput helperText={false} />

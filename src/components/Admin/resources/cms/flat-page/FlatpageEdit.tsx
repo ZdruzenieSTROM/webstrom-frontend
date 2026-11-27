@@ -11,12 +11,7 @@ export const FlatpageEdit: FC = () => (
       <FormTab label="content.labels.general">
         <TextInput source="url" validate={required()} />
         <TextInput source="title" validate={required()} />
-        <TextInput
-          source="content"
-          multiline
-          validate={required()}
-          helperText="Úlohy môžu obsahovať iba TeX (iba matický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
-        />
+        <TextInput source="content" multiline validate={required()} helperText="content.helpers.markdown" />
       </FormTab>
       <FormTab label="content.labels.preview">
         <FlatpagePreview />

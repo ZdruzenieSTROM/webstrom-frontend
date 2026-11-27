@@ -15,7 +15,7 @@ export const SemesterRegistrationReferenceInput: FC = () => {
       <AutocompleteInput
         optionText="verbose_name"
         validate={required()}
-        helperText={problem ? 'Filtrované podľa úlohy. Zmaž pole Úloha pre vyhľadávanie vo všetkých.' : undefined}
+        helperText={problem ? 'content.helpers.registration_filtered' : undefined}
       />
     </ReferenceInput>
   )

@@ -22,16 +22,12 @@ export const SemesterCreate: FC = () => (
       <ReferenceInput source="competition" reference="competition/competition" filter={{competition_type: 0}}>
         <SelectInput validate={required()} />
       </ReferenceInput>
-      <NumberInput source="year" helperText="ročník súťaže, napr. 48" validate={required()} />
+      <NumberInput source="year" helperText="content.helpers.event_year" validate={required()} />
       <SelectInput source="season_code" choices={seasonCodeStrings} validate={required()} />
-      <TextInput source="school_year" helperText="napr. 2023/2024" />
+      <TextInput source="school_year" helperText="content.helpers.school_year" />
       <MyDateTimeInput source="start" validate={required()} />
       <MyDateTimeInput source="end" validate={required()} />
-      <ReferenceArrayInput
-        source="late_tags"
-        reference="competition/late-tag"
-        helperText="Ako neskoro po termíne môže riešiteľ odovzdávať?"
-      >
+      <ReferenceArrayInput source="late_tags" reference="competition/late-tag" helperText="content.helpers.late_tags">
         <CheckboxGroupInput />
       </ReferenceArrayInput>
     </MySimpleForm>
