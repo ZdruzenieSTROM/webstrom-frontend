@@ -45,7 +45,7 @@ const StaticPage: NextPage = () => {
     <PageLayout title={data.name} bannerMessages={bannerMessages}>
       {subsite === 'podrobnosti' && <Markdown content={data.long_description ?? ''} />}
       {subsite === 'pravidla' && <Markdown content={data.rules ?? ''} />}
-      {!subsite && <CompetitionPage competition={data} />}
+      {!subsite && <CompetitionPage key={data.id} competition={data} />}
     </PageLayout>
   )
 }
