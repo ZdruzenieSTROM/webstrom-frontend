@@ -1,9 +1,10 @@
 import {FC} from 'react'
-import {AutocompleteInput, ReferenceInput, required, SimpleForm, TextInput} from 'react-admin'
+import {AutocompleteInput, ReferenceInput, required, TextInput} from 'react-admin'
 import {useSearchParams} from 'react-router-dom'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 
 export const GalleryCreate: FC = () => {
   const [searchParams] = useSearchParams()
@@ -17,7 +18,7 @@ export const GalleryCreate: FC = () => {
         return record
       }}
     >
-      <SimpleForm toolbar={<MyCreateToolbar />}>
+      <MySimpleForm toolbar={<MyCreateToolbar />}>
         <TextInput source="name" validate={required()} />
         <TextInput source="gallery_link" validate={required()} />
         <ReferenceInput source="event" reference="competition/event">
@@ -27,7 +28,7 @@ export const GalleryCreate: FC = () => {
             validate={required()}
           />
         </ReferenceInput>
-      </SimpleForm>
+      </MySimpleForm>
     </MyCreate>
   )
 }

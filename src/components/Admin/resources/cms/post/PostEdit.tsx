@@ -1,9 +1,10 @@
 import {FC} from 'react'
-import {ArrayInput, FormTab, maxLength, required, SimpleFormIterator, TabbedForm, TextInput} from 'react-admin'
+import {ArrayInput, FormTab, maxLength, required, SimpleFormIterator, TextInput} from 'react-admin'
 
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
+import {MyTabbedForm} from '@/components/Admin/custom/MyTabbedForm'
 import {PostPreview} from '@/components/Admin/custom/PostPreview'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
@@ -14,7 +15,7 @@ export const PostEdit: FC = () => (
       details: record.details ?? '',
     })}
   >
-    <TabbedForm toolbar={<MyEditToolbar />}>
+    <MyTabbedForm toolbar={<MyEditToolbar />}>
       <FormTab label="content.labels.general">
         <TextInput source="caption" validate={required()} />
         <TextInput source="short_text" validate={maxLength(200, 'Text musí mať najviac 200 znakov.')} />
@@ -39,6 +40,6 @@ export const PostEdit: FC = () => (
       <FormTab label="content.labels.preview">
         <PostPreview />
       </FormTab>
-    </TabbedForm>
+    </MyTabbedForm>
   </MyEdit>
 )

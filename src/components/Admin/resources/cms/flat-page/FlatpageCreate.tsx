@@ -1,12 +1,13 @@
 import {FC} from 'react'
-import {FormTab, required, TabbedForm, TextInput} from 'react-admin'
+import {FormTab, required, TextInput} from 'react-admin'
 
 import {FlatpagePreview} from '@/components/Admin/custom/FlatpagePreview'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
+import {MyTabbedForm} from '@/components/Admin/custom/MyTabbedForm'
 
 export const FlatpageCreate: FC = () => (
   <MyCreate>
-    <TabbedForm>
+    <MyTabbedForm>
       <FormTab label="content.labels.general">
         <TextInput source="url" validate={required()} />
         <TextInput source="title" validate={required()} />
@@ -20,6 +21,6 @@ export const FlatpageCreate: FC = () => (
       <FormTab label="content.labels.preview">
         <FlatpagePreview />
       </FormTab>
-    </TabbedForm>
+    </MyTabbedForm>
   </MyCreate>
 )

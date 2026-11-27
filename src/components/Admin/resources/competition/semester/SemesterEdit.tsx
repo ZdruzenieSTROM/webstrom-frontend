@@ -7,13 +7,13 @@ import {
   ReferenceInput,
   required,
   SelectInput,
-  TabbedForm,
   TextInput,
 } from 'react-admin'
 
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
+import {MyTabbedForm} from '@/components/Admin/custom/MyTabbedForm'
 
 import {seasonCodeStrings} from '../../../seasonCodeStrings'
 
@@ -27,7 +27,7 @@ export const SemesterEdit: FC = () => (
       return record
     }}
   >
-    <TabbedForm toolbar={<MyEditToolbar />}>
+    <MyTabbedForm toolbar={<MyEditToolbar />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="competition" reference="competition/competition" filter={{competition_type: 0}}>
           <SelectInput validate={required()} />
@@ -45,6 +45,6 @@ export const SemesterEdit: FC = () => (
           <CheckboxGroupInput />
         </ReferenceArrayInput>
       </FormTab>
-    </TabbedForm>
+    </MyTabbedForm>
   </MyEdit>
 )

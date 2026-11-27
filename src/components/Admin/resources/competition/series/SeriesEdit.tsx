@@ -1,9 +1,10 @@
 import {FC} from 'react'
-import {AutocompleteInput, FormTab, NumberInput, ReferenceInput, required, TabbedForm} from 'react-admin'
+import {AutocompleteInput, FormTab, NumberInput, ReferenceInput, required} from 'react-admin'
 
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
+import {MyTabbedForm} from '@/components/Admin/custom/MyTabbedForm'
 
 export const SeriesEdit: FC = () => (
   <MyEdit
@@ -14,7 +15,7 @@ export const SeriesEdit: FC = () => (
       return record
     }}
   >
-    <TabbedForm toolbar={<MyEditToolbar />}>
+    <MyTabbedForm toolbar={<MyEditToolbar />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
@@ -22,6 +23,6 @@ export const SeriesEdit: FC = () => (
         <MyDateTimeInput source="deadline" validate={required()} />
         <NumberInput source="order" validate={required()} />
       </FormTab>
-    </TabbedForm>
+    </MyTabbedForm>
   </MyEdit>
 )

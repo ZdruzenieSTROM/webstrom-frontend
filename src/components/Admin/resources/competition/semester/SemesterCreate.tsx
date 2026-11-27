@@ -6,19 +6,19 @@ import {
   ReferenceInput,
   required,
   SelectInput,
-  SimpleForm,
   TextInput,
 } from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 
 import {seasonCodeStrings} from '../../../seasonCodeStrings'
 
 export const SemesterCreate: FC = () => (
   <MyCreate>
-    <SimpleForm toolbar={<MyCreateToolbar />}>
+    <MySimpleForm toolbar={<MyCreateToolbar />}>
       <ReferenceInput source="competition" reference="competition/competition" filter={{competition_type: 0}}>
         <SelectInput validate={required()} />
       </ReferenceInput>
@@ -34,6 +34,6 @@ export const SemesterCreate: FC = () => (
       >
         <CheckboxGroupInput />
       </ReferenceArrayInput>
-    </SimpleForm>
+    </MySimpleForm>
   </MyCreate>
 )

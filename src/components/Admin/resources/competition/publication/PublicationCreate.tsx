@@ -1,10 +1,11 @@
 import {FC} from 'react'
-import {AutocompleteInput, NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput} from 'react-admin'
+import {AutocompleteInput, NumberInput, ReferenceInput, required, SelectInput, TextInput} from 'react-admin'
 import {useSearchParams} from 'react-router-dom'
 
 import {MyCreateFileInput} from '@/components/Admin/custom/file-handling/MyCreateFileInput'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createPublicationFormData} from './createPublicationFormData'
@@ -19,7 +20,7 @@ export const PublicationCreate: FC = () => {
         return record
       }}
     >
-      <SimpleForm toolbar={<MyCreateToolbar />}>
+      <MySimpleForm toolbar={<MyCreateToolbar />}>
         <TextInput source="name" validate={required()} />
         <ReferenceInput source="event" reference="competition/event">
           <AutocompleteInput
@@ -33,7 +34,7 @@ export const PublicationCreate: FC = () => {
         </ReferenceInput>
         <NumberInput source="order" />
         <MyCreateFileInput source="file" maxSize={10_485_760} accept={Accept.Pdf} isRequired={true} />
-      </SimpleForm>
+      </MySimpleForm>
     </MyCreate>
   )
 }

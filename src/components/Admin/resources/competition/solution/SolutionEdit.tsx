@@ -1,9 +1,10 @@
 import {FC} from 'react'
-import {AutocompleteInput, BooleanInput, NumberInput, ReferenceInput, SimpleForm, useRecordContext} from 'react-admin'
+import {AutocompleteInput, BooleanInput, NumberInput, ReferenceInput, useRecordContext} from 'react-admin'
 
 import {MyEditFileInput} from '@/components/Admin/custom/file-handling/MyEditFileInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 import {Accept} from '@/utils/dropzoneAccept'
 import {getCorrectedSolutionUrl, getSolutionUrl} from '@/utils/getSolutionUrl'
 
@@ -18,16 +19,16 @@ export const SolutionEdit: FC = () => (
       return record
     }}
   >
-    <MySimpleForm />
+    <SolutionEditForm />
   </MyEdit>
 )
 
 // kvoli tomu, ze `late_tag` pride z BE ako objekt, ale pri update posielame len IDcko
-const MySimpleForm: FC = () => {
+const SolutionEditForm: FC = () => {
   const record = useRecordContext()
 
   return (
-    <SimpleForm record={{...record, late_tag: record?.late_tag?.id}} toolbar={<MyEditToolbar />}>
+    <MySimpleForm record={{...record, late_tag: record?.late_tag?.id}} toolbar={<MyEditToolbar />}>
       <SemesterRegistrationReferenceInput />
       <ProblemReferenceInput />
       <MyEditFileInput source="solution" accept={Accept.Pdf} reformatUrlFromId={getSolutionUrl} />
@@ -37,6 +38,6 @@ const MySimpleForm: FC = () => {
         <AutocompleteInput optionText="name" />
       </ReferenceInput>
       <BooleanInput source="is_online" label="content.labels.is_online" />
-    </SimpleForm>
+    </MySimpleForm>
   )
 }
