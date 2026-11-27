@@ -31,14 +31,14 @@
     "katex": "^0.16.22",
     "luxon": "^3.6.1",
     "next": "16.0.7",
-    "ra-i18n-polyglot": "^5.8.2",
+    "ra-i18n-polyglot": "^5.15.7",
     "ra-language-slovak": "^3.6.2",
     "react": "19.2.1",
-    "react-admin": "^5.8.2",
+    "react-admin": "^5.15.7",
     "react-cookie": "^4.1.1",
     "react-dom": "19.2.1",
     "react-dropzone": "^14.3.8",
-    "react-hook-form": "^7.56.4",
+    "react-hook-form": "^7.92.0",
     "react-markdown": "^9.1.0",
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
@@ -89,7 +89,11 @@
   "packageManager": "yarn@4.9.1",
   "resolutions": {
     "@tanstack/react-query": "npm:@tanstack/react-query@5.100.9",
-    "react-hook-form": "npm:react-hook-form@7.56.4",
-    "import-in-the-middle": "^3.0.1"
+    "react-hook-form": "npm:react-hook-form@7.92.0",
+    "import-in-the-middle": "^3.0.1",
+    "@mui/material": "^7.1.1",
+    "@mui/icons-material": "^7.1.1",
+    "@mui/system": "^7.1.1",
+    "@mui/utils": "^7.1.1"
   }
 }
