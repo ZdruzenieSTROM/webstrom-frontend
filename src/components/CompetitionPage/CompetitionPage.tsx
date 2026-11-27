@@ -1,7 +1,8 @@
-import {Grid, Stack, Typography} from '@mui/material'
+import {Stack, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
-import {FC, Fragment} from 'react'
+import {FC} from 'react'
 
+import {ArchiveButton, ArchiveRow} from '@/components/Archive/ArchiveRow'
 import {Link} from '@/components/Clickable/Link'
 import {Competition, Event, PublicationTypes} from '@/types/api/competition'
 
@@ -11,6 +12,21 @@ type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Eve
 
 type CompetitionPageProps = {
   competition: OurCompetition
+}
+
+const getPublication = (event: Event, publicationType: number) => {
+  return event.publication_set.find((publication) => publication.publication_type === publicationType)
+}
+
+// e.g. "22. ročník \u2013 2023/2024 (Prešovský)", same separator as /archiv year headings
+const getHistoryTitle = (event: Event, competitionName: string) => {
+  const yearLabel = [event.year === null ? null : `${event.year}. ročník`, event.school_year]
+    .filter(Boolean)
+    .join(' \u2013 ')
+
+  if (!yearLabel) return event.additional_name || competitionName
+
+  return event.additional_name ? `${yearLabel} (${event.additional_name})` : yearLabel
 }
 
 export const CompetitionPage: FC<CompetitionPageProps> = ({
@@ -80,52 +96,22 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         )}
       </Stack>
 
-      <Grid container spacing={2}>
+      <Stack gap={1}>
         {history_events.map((event) => {
-          const results = event.publication_set.find((p) => p.publication_type === PublicationTypes.RESULTS.id)
-          const solutions = event.publication_set.find((p) => p.publication_type === PublicationTypes.SOLUTIONS.id)
-          const problems = event.publication_set.find((p) => p.publication_type === PublicationTypes.PROBLEMS.id)
-          const firstGallery = event.galleries.length > 0 ? event.galleries[0] : null
+          const firstGallery = event.galleries[0]
+
           return (
-            <Fragment key={event.id}>
-              <Grid size={4}>
-                <Typography variant="h2" component="span">
-                  {name} {event.school_year}
-                  {event.additional_name ? ` (${event.additional_name})` : ''}
-                </Typography>
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {firstGallery ? (
-                  <Link variant="button2" href={firstGallery.gallery_link}>
-                    {firstGallery.name}
-                  </Link>
-                ) : null}
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {results && (
-                  <Link variant="button2" key={results.id} href={results.file}>
-                    {PublicationTypes.RESULTS.display_name}
-                  </Link>
-                )}
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {problems ? (
-                  <Link variant="button2" key={problems.id} href={problems.file} target="_blank">
-                    {PublicationTypes.PROBLEMS.display_name}
-                  </Link>
-                ) : null}
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {solutions ? (
-                  <Link variant="button2" key={solutions.id} href={solutions.file}>
-                    {PublicationTypes.SOLUTIONS.display_name}
-                  </Link>
-                ) : null}
-              </Grid>
-            </Fragment>
+            <ArchiveRow key={event.id} label={getHistoryTitle(event, name)} labelVariant="h2">
+              {firstGallery && (
+                <ArchiveButton kind="photos" href={firstGallery.gallery_link} label={firstGallery.name} />
+              )}
+              <ArchiveButton kind="problems" href={getPublication(event, PublicationTypes.PROBLEMS.id)?.file} />
+              <ArchiveButton kind="solutions" href={getPublication(event, PublicationTypes.SOLUTIONS.id)?.file} />
+              <ArchiveButton kind="results" href={getPublication(event, PublicationTypes.RESULTS.id)?.file} />
+            </ArchiveRow>
           )
         })}
-      </Grid>
+      </Stack>
     </Stack>
   )
 }

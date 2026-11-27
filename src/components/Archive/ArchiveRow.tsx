@@ -5,7 +5,7 @@ import {
   MenuBookOutlined,
   PhotoLibraryOutlined,
 } from '@mui/icons-material'
-import {Box, Stack, SvgIconProps, SxProps, Theme, Typography} from '@mui/material'
+import {Box, Stack, SvgIconProps, SxProps, Theme, Typography, TypographyProps} from '@mui/material'
 import {ComponentType, FC, ReactNode} from 'react'
 
 import {colors} from '@/theme/colors'
@@ -67,7 +67,8 @@ export const ArchiveRow: FC<{
   children: ReactNode
   indented?: boolean
   gap?: number | string
-}> = ({label, children, indented = false, gap = 0.5}) => {
+  labelVariant?: TypographyProps['variant']
+}> = ({label, children, indented = false, gap = 0.5, labelVariant = 'h3'}) => {
   return (
     <Stack
       className="archive-row"
@@ -85,7 +86,7 @@ export const ArchiveRow: FC<{
         },
       }}
     >
-      <Typography variant="h3">{label}</Typography>
+      <Typography variant={labelVariant}>{label}</Typography>
       <Stack direction="row" flexWrap="wrap" justifyContent="flex-end" gap={gap}>
         {children}
       </Stack>
