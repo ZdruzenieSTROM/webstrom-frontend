@@ -2,6 +2,7 @@ import {FC} from 'react'
 import {AutocompleteInput, FormTab, ImageInput, ReferenceInput, required, TextInput} from 'react-admin'
 
 import {MyCreateFileInput} from '@/components/Admin/custom/file-handling/MyCreateFileInput'
+import {LatexImport} from '@/components/Admin/custom/latex-import/LatexImport'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
@@ -24,6 +25,7 @@ export const ProblemCreate: FC = () => (
           <AutocompleteInput optionText="verbose_name" validate={required()} />
         </ReferenceInput>
         <TextInput source="order" validate={required()} />
+        <LatexImport source="text" />
         <TextInput
           source="text"
           multiline

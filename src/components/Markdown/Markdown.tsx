@@ -9,6 +9,7 @@ import remarkMath from 'remark-math'
 
 import {firaMath} from '@/theme/font'
 
+import {katexMacros} from './katexMacros'
 import {H1, H2, H3, MarkdownLink, Ol, P, Table, Td, Th, Ul} from './Texts'
 
 type MarkdownProps = {
@@ -38,7 +39,7 @@ export const Markdown: FC<MarkdownProps> = ({content}) => {
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[[rehypeKatex, {output: 'html'}]]}
+        rehypePlugins={[[rehypeKatex, {output: 'html', macros: katexMacros}]]}
         components={{
           a: MarkdownLink,
           table: Table,
