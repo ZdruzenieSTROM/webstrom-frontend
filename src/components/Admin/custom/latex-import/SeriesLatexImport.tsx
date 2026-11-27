@@ -14,7 +14,8 @@ import {
 import {FC, useMemo, useState} from 'react'
 import {useDataProvider, useNotify, useRefresh, useTranslate} from 'react-admin'
 
-import {Markdown} from '@/components/Markdown/Markdown'
+import {SitePreview} from '@/components/Admin/custom/SitePreview'
+import {ProblemContent} from '@/components/Problems/ProblemContent'
 
 import {ExistingProblem, ImportRow, planSeriesImport} from './planSeriesImport'
 
@@ -140,7 +141,9 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
                 </Alert>
               )}
               <Box sx={{opacity: skipped.has(row.order) ? 0.4 : 1}}>
-                <Markdown content={row.markdown} />
+                <SitePreview>
+                  <ProblemContent order={row.order} text={row.markdown} />
+                </SitePreview>
               </Box>
             </Box>
           ))}
