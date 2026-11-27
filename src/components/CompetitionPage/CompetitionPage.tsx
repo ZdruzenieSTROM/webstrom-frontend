@@ -98,12 +98,19 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
 
       <Stack gap={1}>
         {history_events.map((event) => {
-          const firstGallery = event.galleries[0]
-
           return (
             <ArchiveRow key={event.id} label={getHistoryTitle(event, name)} labelVariant="h2">
-              {firstGallery && (
-                <ArchiveButton kind="photos" href={firstGallery.gallery_link} label={firstGallery.name} />
+              {event.galleries.length > 0 ? (
+                event.galleries.map((gallery) => (
+                  <ArchiveButton
+                    key={gallery.id}
+                    kind="photos"
+                    href={gallery.gallery_link}
+                    label={gallery.name || 'Fotky'}
+                  />
+                ))
+              ) : (
+                <ArchiveButton kind="photos" />
               )}
               <ArchiveButton kind="problems" href={getPublication(event, PublicationTypes.PROBLEMS.id)?.file} />
               <ArchiveButton kind="solutions" href={getPublication(event, PublicationTypes.SOLUTIONS.id)?.file} />
