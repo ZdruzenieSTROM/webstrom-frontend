@@ -27,8 +27,8 @@ export const SemesterCreate: FC = () => (
       <TextInput source="school_year" helperText="content.helpers.school_year" />
       <MyDateTimeInput source="start" validate={required()} />
       <MyDateTimeInput source="end" validate={required()} />
-      <ReferenceArrayInput source="late_tags" reference="competition/late-tag" helperText="content.helpers.late_tags">
-        <CheckboxGroupInput />
+      <ReferenceArrayInput source="late_tags" reference="competition/late-tag">
+        <CheckboxGroupInput helperText="content.helpers.late_tags" />
       </ReferenceArrayInput>
     </MySimpleForm>
   </MyCreate>

@@ -23,8 +23,8 @@ export const PostShow: FC = () => (
         <SimpleShowLayout>
           <ArrayField source="links">
             <Datagrid rowClick={false}>
-              <TextField source="caption" />
-              <TextField source="url" />
+              <TextField source="caption" label="resources.cms/post.fields.links.caption" />
+              <TextField source="url" label="resources.cms/post.fields.links.url" />
             </Datagrid>
           </ArrayField>
         </SimpleShowLayout>

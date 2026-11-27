@@ -22,7 +22,7 @@ export const raSk: TranslationMessages = {
       export: 'Exportovať',
       list: 'Zoznam',
       refresh: 'Obnoviť',
-      remove_filter: 'Odstrániť filter',
+      remove_filter: 'Odstrániť tento filter',
       remove_all_filters: 'Odstrániť všetky filtre',
       remove: 'Odstrániť',
       save: 'Uložiť',
@@ -141,7 +141,7 @@ export const raSk: TranslationMessages = {
       DESC: 'zostupne',
     },
     auth: {
-      auth_check_error: 'Pre pokračovanie sa prihlás',
+      auth_check_error: 'Ak chceš pokračovať, prihlás sa.',
       user_menu: 'Profil',
       username: 'Používateľské meno',
       password: 'Heslo',
@@ -152,9 +152,10 @@ export const raSk: TranslationMessages = {
     },
     notification: {
       updated:
-        'Záznam aktualizovaný |||| %{smart_count} záznamy aktualizované |||| %{smart_count} záznamov aktualizovaných',
-      created: 'Záznam vytvorený',
-      deleted: 'Záznam zmazaný |||| %{smart_count} záznamy zmazané |||| %{smart_count} záznamov zmazaných',
+        'Záznam bol aktualizovaný |||| %{smart_count} záznamy boli aktualizované |||| %{smart_count} záznamov bolo aktualizovaných',
+      created: 'Záznam bol vytvorený',
+      deleted:
+        'Záznam bol zmazaný |||| %{smart_count} záznamy boli zmazané |||| %{smart_count} záznamov bolo zmazaných',
       bad_item: 'Nesprávny záznam',
       item_doesnt_exist: 'Záznam neexistuje',
       http_error: 'Chyba komunikácie so serverom',
@@ -168,8 +169,8 @@ export const raSk: TranslationMessages = {
     },
     validation: {
       required: 'Povinné',
-      minLength: 'Musí mať aspoň %{min} znakov',
-      maxLength: 'Môže mať najviac %{max} znakov',
+      minLength: 'Minimálny počet znakov: %{min}',
+      maxLength: 'Maximálny počet znakov: %{max}',
       minValue: 'Musí byť aspoň %{min}',
       maxValue: 'Môže byť najviac %{max}',
       number: 'Musí byť číslo',

@@ -37,8 +37,8 @@ export const SemesterEdit: FC = () => (
         <TextInput source="school_year" helperText="content.helpers.school_year" />
         <MyDateTimeInput source="start" />
         <MyDateTimeInput source="end" />
-        <ReferenceArrayInput source="late_tags" reference="competition/late-tag" helperText="content.helpers.late_tags">
-          <CheckboxGroupInput />
+        <ReferenceArrayInput source="late_tags" reference="competition/late-tag">
+          <CheckboxGroupInput helperText="content.helpers.late_tags" />
         </ReferenceArrayInput>
       </FormTab>
     </MyTabbedForm>
