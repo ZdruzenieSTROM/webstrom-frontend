@@ -5,6 +5,7 @@
 import * as Sentry from '@sentry/nextjs'
 
 import {SENTRY_APPLICATION_KEY} from '../sentry.shared'
+import {isThrownInThirdPartyCode} from './utils/sentryThirdPartyFilter'
 
 Sentry.init({
   dsn: 'https://428ff2792107c70d35d5eca360f4617a@o4510493471932416.ingest.de.sentry.io/4511236823449680',
@@ -22,6 +23,8 @@ Sentry.init({
       behaviour: 'drop-error-if-exclusively-contains-third-party-frames',
     }),
   ],
+
+  beforeSend: (event) => (isThrownInThirdPartyCode(event) ? null : event),
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 0.1,
