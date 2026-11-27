@@ -97,6 +97,5 @@ on every PR; run the same four before pushing.
   are shown as they are.
 - Commits and PR titles: short imperative English sentence ("Prefetch archive events during SSR"); prefix
   with the issue number when there is one (`852: Fix tiny checkboxes in RA on Firefox`).
-- PR body: the problem in one line, then the diff as bullets, then evidence (before/after) where it applies.
-  `Closes #N` when it fixes an issue.
+- A PR that fixes an issue links it with `Closes #N`.
 - `master` needs a green `branch-test` and one approving review.
