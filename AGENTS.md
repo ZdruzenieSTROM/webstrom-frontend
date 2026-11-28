@@ -29,7 +29,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 | Dev server (`localhost:3000`) | `bun run dev`                                             |
 | Typecheck                     | `bun run typecheck` (`bun check`, TypeScript 7's checker) |
 | Lint (oxlint)                 | `bun run lint` (autofix: `bun run lint:fix`)              |
-| Format check (Prettier)       | `bun run format:check` (fix: `bun run format`)            |
+| Format check (oxfmt)          | `bun run format:check` (fix: `bun run format`)            |
 | Tests                         | `bun run test --run` (`bun run test` stays in watch mode) |
 | Production build              | `bun run build`                                           |
 
