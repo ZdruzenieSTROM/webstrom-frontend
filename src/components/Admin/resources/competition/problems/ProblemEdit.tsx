@@ -23,18 +23,18 @@ export const ProblemEdit: FC = () => (
         <ReferenceInput source="series" reference="competition/series">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
         </ReferenceInput>
+        <TextInput source="order" validate={required()} />
         <TextInput
           source="text"
           multiline
           validate={required()}
           helperText="Úlohy môžu obsahovať iba TeX (iba matický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
         />
-        <ProblemPreview />
-        <TextInput source="order" validate={required()} />
         <ImageInput source="image" accept={Accept.Image}>
           <MyImageField />
         </ImageInput>
         <MyEditFileInput source="solution_pdf" accept={Accept.Pdf} />
+        <ProblemPreview />
       </FormTab>
     </MyTabbedForm>
   </MyEdit>
