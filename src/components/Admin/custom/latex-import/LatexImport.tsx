@@ -68,7 +68,7 @@ export const LatexImport: FC<LatexImportProps> = ({source}) => {
               />
               <Labeled label="content.labels.preview">
                 <SitePreview>
-                  <ProblemContent order={order ?? ''} text={result.markdown} />
+                  <ProblemContent order={order || '?'} text={result.markdown} />
                 </SitePreview>
               </Labeled>
             </>
