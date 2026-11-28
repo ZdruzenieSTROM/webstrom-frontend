@@ -24,7 +24,7 @@ export const Dialog: FC<DialogProps> = ({open, close, title, contentText, childr
       {title && <DialogTitle variant="h2">{title}</DialogTitle>}
       {(contentText || children) && (
         <DialogContent>
-          {contentText && <DialogContentText>{contentText}</DialogContentText>}
+          {contentText && <DialogContentText sx={{whiteSpace: 'pre-line'}}>{contentText}</DialogContentText>}
           {children}
         </DialogContent>
       )}

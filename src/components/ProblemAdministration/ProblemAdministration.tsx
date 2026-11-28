@@ -2,7 +2,6 @@ import {FormatAlignJustify, Grading} from '@mui/icons-material'
 import {Box, Stack, Typography} from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
 import {useMutation, useQuery} from '@tanstack/react-query'
-import {isAxiosError} from 'axios'
 import Image from 'next/image'
 import {useRouter} from 'next/router'
 import {FC, useCallback, useMemo, useState} from 'react'
@@ -10,7 +9,7 @@ import {DropzoneOptions, useDropzone} from 'react-dropzone'
 
 import {apiOptions} from '@/api/api'
 import {colors} from '@/theme/colors'
-import {SolutionAdministration} from '@/types/api/competition'
+import {SolutionAdministration, UploadCorrectedFileIssue} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
 import {getCorrectedSolutionUrl, getSolutionUrl} from '@/utils/getSolutionUrl'
 import {useAlert} from '@/utils/useAlert'
@@ -25,6 +24,7 @@ import {FileDropZone} from '../FileDropZone/FileDropZone'
 import {FileUploader} from '../FileUploader/FileUploader'
 import {Loading} from '../Loading/Loading'
 import {Markdown} from '../Markdown/Markdown'
+import {getUploadSummary, parseUploadCorrectedError} from './uploadCorrected'
 
 const styles = {
   icon: {
@@ -65,6 +65,29 @@ const styles = {
     justifyContent: 'space-around',
     gap: '8px',
   },
+}
+
+const FileIssueList: FC<{title: string; issues: UploadCorrectedFileIssue[]}> = ({title, issues}) => {
+  if (issues.length === 0) return null
+  return (
+    <Box>
+      <Typography variant="body2" fontWeight={800}>
+        {title}
+      </Typography>
+      <Box component="ul" sx={{m: 0}}>
+        {issues.map(({filename, reason}, index) => (
+          <li key={`${filename}-${index}`}>
+            <Typography variant="body2">
+              <Box component="span" sx={{fontWeight: 'bold'}}>
+                {filename}
+              </Box>
+              : {reason}
+            </Typography>
+          </li>
+        ))}
+      </Box>
+    </Box>
+  )
 }
 
 type SortKey = 'name' | 'points'
@@ -149,35 +172,40 @@ export const ProblemAdministration: FC = () => {
 
   const {
     mutate: uploadZipFile,
+    data: uploadZipFileResult,
     error: uploadZipFileError,
     isPending: uploadZipFileIsPending,
+    reset: resetUploadZipFile,
   } = useMutation({
     ...apiOptions.competition.problem.uploadCorrected(),
-    onSuccess: () => refetchProblem(),
+    onSuccess: (result) => {
+      alert(getUploadSummary(result))
+      return refetchProblem()
+    },
   })
 
-  const uploadZipFileErrorData =
-    isAxiosError(uploadZipFileError) && uploadZipFileError.response && (uploadZipFileError.response.data as unknown)
-  const uploadZipFileErrorArray = Array.isArray(uploadZipFileErrorData) ? uploadZipFileErrorData : []
-  const uploadZipFileErrors = uploadZipFileErrorArray
-    .map((errorObj: unknown) => {
-      const error = typeof errorObj === 'object' && errorObj
-      const filename = error && 'filename' in error && typeof error.filename === 'string' ? `${error.filename}: ` : ''
-      const status = error && 'status' in error && typeof error.status === 'number' ? `${error.status}` : ''
-      return `${filename}${status}`
-    })
-    .join('\n')
+  const uploadZipFileErrorData = parseUploadCorrectedError(uploadZipFileError)
+
+  const [zipRejectedMessage, setZipRejectedMessage] = useState<string | null>(null)
 
   const onDrop = useCallback<NonNullable<DropzoneOptions['onDrop']>>(
     (acceptedFiles, fileRejections) => {
-      if (fileRejections.length > 0 || problemId === undefined) {
+      if (fileRejections.length > 0) {
+        resetUploadZipFile()
+        setZipRejectedMessage(
+          `Súbor ${fileRejections.map(({file}) => file.name).join(', ')} sa nedá nahrať. Nahraj jeden súbor vo formáte .zip.`,
+        )
         return
       }
+      if (problemId === undefined || acceptedFiles.length === 0) {
+        return
+      }
+      setZipRejectedMessage(null)
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
       uploadZipFile({data: formData, problemId})
     },
-    [problemId, uploadZipFile],
+    [problemId, uploadZipFile, resetUploadZipFile],
   )
 
   const {getRootProps, getInputProps} = useDropzone({
@@ -309,17 +337,34 @@ export const ProblemAdministration: FC = () => {
         {uploadZipFileIsPending ? (
           <Loading />
         ) : (
-          <FileDropZone
-            getRootProps={getRootProps}
-            getInputProps={getInputProps}
-            text="Vlož opravené riešenia vo formáte zip"
-          />
+          <Tooltip title="Názov PDF s riešením má byť vo formáte: BODY-Meno-IDúlohy-IDregistrácie.pdf" placement="top">
+            <Box>
+              <FileDropZone
+                getRootProps={getRootProps}
+                getInputProps={getInputProps}
+                text="Vlož opravené riešenia vo formáte zip"
+              />
+            </Box>
+          </Tooltip>
         )}
-        {uploadZipFileError && (
-          <>
-            <Typography>Chyby pri nahrávaní ZIPka:</Typography>
-            <Typography sx={{whiteSpace: 'pre-line'}}>{uploadZipFileErrors}</Typography>
-          </>
+        {zipRejectedMessage && (
+          <Typography variant="body2" fontWeight={800}>
+            {zipRejectedMessage}
+          </Typography>
+        )}
+        {uploadZipFileResult && (
+          <Stack gap={0.5} data-testid="upload-zip-result">
+            <Typography>Nahraných opravených riešení: {uploadZipFileResult.uploaded.length}.</Typography>
+            <FileIssueList title="Neuložené pre chybu:" issues={uploadZipFileResult.errors} />
+            <FileIssueList title="Preskočené súbory (nie sú PDF):" issues={uploadZipFileResult.skipped} />
+          </Stack>
+        )}
+        {uploadZipFileErrorData && (
+          <Stack gap={0.5} data-testid="upload-zip-errors">
+            <Typography fontWeight={800}>{uploadZipFileErrorData.detail}</Typography>
+            <FileIssueList title="Neuložené pre chybu:" issues={uploadZipFileErrorData.errors} />
+            <FileIssueList title="Preskočené súbory (nie sú PDF):" issues={uploadZipFileErrorData.skipped} />
+          </Stack>
         )}
 
         <Box sx={styles.table}>
