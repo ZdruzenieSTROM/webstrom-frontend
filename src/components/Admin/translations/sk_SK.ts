@@ -238,6 +238,7 @@ export const sk_SK = {
     helpers: {
       markdown:
         'Text môže obsahovať iba TeX (iba matematický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/',
+      contains_link: 'Text obsahuje odkaz. Odkazy prosím pridávaj radšej do záložky Odkazy.',
       event_year: 'Číslo ročníka aktivity, napr. 48',
       school_year: 'napr. 2023/2024',
       late_tags: 'Ako neskoro po termíne môže riešiteľ odovzdávať?',
