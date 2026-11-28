@@ -316,8 +316,8 @@ export const sk_SK = {
       aria_label: 'Stránkovanie',
     },
     notifications: {
-      record_created: 'Záznam vytvorený',
-      record_saved: 'Záznam uložený',
+      record_created: 'Záznam bol vytvorený',
+      record_saved: 'Záznam bol uložený',
       series_latex_import: {
         saved: 'Uložené úlohy: %{count} z %{total}',
         error: 'Úloha %{order}: %{message}',
@@ -328,7 +328,7 @@ export const sk_SK = {
         prefill_fetch_error: 'Chyba pri načítaní predchádzajúcich semestrov.',
         prefill_no_same_season:
           'Žiadny predchádzajúci %{season} semester pre túto aktivitu - dátumy a omeškania vyplň manuálne.',
-        semester_created: 'Semester vytvorený.',
+        semester_created: 'Semester bol vytvorený.',
         all_series_created: 'Obe série vytvorené.',
         semester_error: 'Semester: %{message}',
         series_error: 'Séria %{order}: %{message}',
@@ -338,7 +338,7 @@ export const sk_SK = {
     semester_with_series: {
       title: 'Vytvoriť semester so sériami',
       semester_locked:
-        'Semester vytvorený (ID %{id}). Polia semestra sú uzamknuté - prípadne doplň chýbajúce série nižšie a odošli znova.',
+        'Semester bol vytvorený (ID %{id}). Polia semestra sú uzamknuté - prípadne doplň chýbajúce série nižšie a odošli znova.',
       semester_heading: 'Semester',
       prefilling: 'Predvypĺňam podľa posledného semestra…',
       prefill_button: 'Vyplniť podľa zvolenej aktivity',

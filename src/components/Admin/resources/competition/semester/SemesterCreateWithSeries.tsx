@@ -268,7 +268,11 @@ const FormBody: FC = () => {
           disabled={semesterLocked}
         />
         <ReferenceArrayInput source="late_tags" reference="competition/late-tag">
-          <CheckboxGroupInput helperText="content.helpers.late_tags" disabled={semesterLocked} />
+          <CheckboxGroupInput
+            label="resources.competition/semester.fields.late_tags"
+            helperText="content.helpers.late_tags"
+            disabled={semesterLocked}
+          />
         </ReferenceArrayInput>
         <MyDateTimeInput source="start" validate={required()} disabled={semesterLocked} />
       </Box>

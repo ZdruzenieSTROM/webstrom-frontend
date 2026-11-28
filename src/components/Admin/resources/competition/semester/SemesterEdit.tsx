@@ -38,7 +38,10 @@ export const SemesterEdit: FC = () => (
         <MyDateTimeInput source="start" />
         <MyDateTimeInput source="end" />
         <ReferenceArrayInput source="late_tags" reference="competition/late-tag">
-          <CheckboxGroupInput helperText="content.helpers.late_tags" />
+          <CheckboxGroupInput
+            label="resources.competition/semester.fields.late_tags"
+            helperText="content.helpers.late_tags"
+          />
         </ReferenceArrayInput>
       </FormTab>
     </MyTabbedForm>

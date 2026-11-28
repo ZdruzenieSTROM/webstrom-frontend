@@ -108,7 +108,7 @@ export const raSk: TranslationMessages = {
       invalid_form: 'Formulár nie je platný. Skontroluj chyby.',
       loading: 'Čakaj, prosím',
       no: 'Nie',
-      not_found: 'Adresa je nesprávna alebo odkaz nefunguje.',
+      not_found: 'Adresa je nesprávna alebo odkaz nefunguje',
       select_all_limit_reached:
         'Záznamov je príliš veľa na to, aby sa dali označiť všetky. Označilo sa len prvých %{max}.',
       unsaved_changes: 'Niektoré zmeny sa neuložili. Naozaj ich chceš zahodiť?',
