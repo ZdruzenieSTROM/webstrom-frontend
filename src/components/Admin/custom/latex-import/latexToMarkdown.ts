@@ -480,7 +480,8 @@ class Converter {
 const isSpace = (c: string | undefined) => c === ' ' || c === '\t' || c === '\n' || c === '\r'
 
 const emphasis = (inner: string, mark: string) => {
-  const trimmed = inner.trim()
+  // a break left before the closing mark would escape it and the site would show the marks literally
+  const trimmed = inner.replaceAll(TRAILING_BREAK, '').trim()
   if (!trimmed) return inner
   const lead = inner.startsWith(' ') ? ' ' : ''
   const trail = inner.endsWith(' ') ? ' ' : ''

@@ -193,4 +193,8 @@ Nový odsek.\\`
     expect(markdown.split('\n')[0]).toBe('1. p1')
     expect(markdown.split('\n')[26]).toBe('27. p27')
   })
+
+  it('should drop a line break that ends an emphasis group', () => {
+    expect(latexToMarkdown(String.raw`\textit{a\\} b {\it c\\} d`).markdown).toBe('*a* b *c* d')
+  })
 })
