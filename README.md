@@ -58,6 +58,16 @@ bun dev
 
 Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo frontendovom kóde a automaticky sa reloaduje.
 
+Typy, lint a testy (to isté spúšťa CI) si overíš pomocou:
+
+```sh
+bun run typecheck
+bun run lint
+bun run test
+```
+
+Pozor, `bun test` (bez `run`) spustí Bun test runner namiesto nášho vitestu.
+
 ## IDE setup
 
 Používame VSCode, nainštaluj si doň [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) rozšírenie (formátuje kód). V repe máme `.vscode` config, v ktorom zapíname "fix-on-save" - kód sa teda formátuje pri uložení súboru.

@@ -12,6 +12,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # bun is only needed to install; the musl build matches the alpine base, and it stays out of the runner image
+# keep the tag in sync with packageManager in package.json, which pins bun for CI
 COPY --from=oven/bun:1.4.5-alpine /usr/local/bin/bun /usr/local/bin/bun
 COPY package.json bun.lock ./
 

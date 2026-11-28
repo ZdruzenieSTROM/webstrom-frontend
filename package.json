@@ -13,6 +13,7 @@
     "start": "node .next/standalone/server.js",
     "build": "next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
     "build:docker": "next build",
+    "typecheck": "bun check",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "vitest"
