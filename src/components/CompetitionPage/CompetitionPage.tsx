@@ -138,7 +138,7 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
                     key={gallery.id}
                     kind="photos"
                     href={gallery.gallery_link}
-                    label={gallery.name || 'Fotky'}
+                    label={gallery.name}
                   />
                 ))}
               </Stack>
