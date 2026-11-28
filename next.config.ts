@@ -3,6 +3,8 @@ import type {NextConfig} from 'next'
 // eslint-disable-next-line node/no-extraneous-import
 import type {Configuration} from 'webpack'
 
+// Sentry keeps client errors only if thrown from `/_next/static/` (src/utils/sentryAllowUrls.ts): adding assetPrefix
+// or moving assets to a CDN without updating it drops every client error.
 const nextConfig: NextConfig = {
   images: {
     unoptimized: true,

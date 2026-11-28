@@ -49,6 +49,13 @@ describe('SENTRY_ALLOW_URLS', () => {
     )
   })
 
+  it('should keep an error thrown in native code called from our code', () => {
+    const ourCaller = frame('https://strom.sk/_next/static/chunks/51bfb301aabcd6e5.js', 'f')
+
+    expect(isKept([ourCaller, frame('<anonymous>', 'JSON.parse')])).toBe(true)
+    expect(isKept([ourCaller, frame('[native code]', 'parse')])).toBe(true)
+  })
+
   it('should keep an error without a stack trace', () => {
     expect(isKept()).toBe(true)
   })
