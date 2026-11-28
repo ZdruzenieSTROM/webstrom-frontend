@@ -38,8 +38,21 @@ paths; don't commit that change (`git checkout next-env.d.ts`).
 ### Which backend the dev server talks to
 
 - The committed `.env` sets `BE_PROTOCOL` / `BE_HOSTNAME` / `BE_PORT`; later uncommented lines win, and by
-  default that is the deployed test backend, `https://test.strom.sk`. No local backend is needed for FE work.
+  default that is the deployed test backend, `https://test.strom.sk`. Reading pages and the admin needs no
+  local backend.
 - Shortcuts that override `.env`: `yarn dev:local` (`localhost:8000`), `yarn dev:test`, `yarn dev:prod`.
+- To try a change that writes data (creating a semester, saving problems) or to take screenshots for a PR,
+  use a local backend rather than test.strom.sk, whose data other people use. In
+  [webstrom-backend](https://github.com/ZdruzenieSTROM/webstrom-backend), `python manage.py restoredb` builds
+  a SQLite database from the repo fixtures, then `python manage.py runserver 8000`; here run `yarn dev:local`.
+  - Keep the dev server on port 3000: the backend's `CSRF_TRUSTED_ORIGINS` lists only `localhost:3000`, and
+    any other port fails every write with "CSRF Failed: Origin checking failed".
+  - The fixture users have no known password, and `createsuperuser` fails on this user model. In
+    `python manage.py shell`, save a `User(email=..., is_staff=True, is_superuser=True)` with `set_password`
+    and a verified, primary allauth `EmailAddress` for it (logging in without one is a server error).
+  - Add that user to the competitions' permission groups: creating a semester, series or problem checks
+    group membership, so a superuser outside the groups gets 403 "Nedostatočné práva na vytvorenie tohoto
+    objektu".
 - Don't commit `.env` changes. For other values use the shortcuts or a gitignored `.env.local`, which Next
   loads with higher priority than `.env`.
 - `DEBUG_SERVER=true` logs every server-side API call.
