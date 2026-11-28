@@ -49,13 +49,19 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
     })
 
   const saveRow = (row: ImportRow) =>
-    row.existingId === undefined
+    row.existing === undefined
       ? dataProvider.create('competition/problem', {data: {series: seriesId, order: row.order, text: row.markdown}})
       : dataProvider.update('competition/problem', {
-          id: row.existingId,
-          data: {id: row.existingId, text: row.markdown},
-          previousData: {id: row.existingId},
+          id: row.existing.id,
+          data: {id: row.existing.id, text: row.markdown},
+          previousData: {id: row.existing.id},
         })
+
+  const handleLatexChange = (value: string) => {
+    setLatex(value)
+    // skips are keyed by order, so they would otherwise carry over to the problems of another file
+    setSkipped(new Set())
+  }
 
   const handleSave = async () => {
     setSaving(true)
@@ -78,7 +84,10 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
       messageArgs: {count: saved, total: toSave.length},
     })
     refresh()
-    if (saved === toSave.length) setOpen(false)
+    if (saved === toSave.length) {
+      handleLatexChange('')
+      setOpen(false)
+    }
   }
 
   return (
@@ -93,7 +102,7 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
             label={translate('content.latex_import.latex')}
             helperText={translate('content.latex_import.series_latex_helper')}
             value={latex}
-            onChange={(event) => setLatex(event.target.value)}
+            onChange={(event) => handleLatexChange(event.target.value)}
             multiline
             minRows={6}
             maxRows={12}
@@ -109,6 +118,16 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
           {latex.trim() && plan.rows.length === 0 && plan.otherSeries.length === 0 && (
             <Alert severity="warning">{translate('content.latex_import.no_problems', {series: seriesOrder})}</Alert>
           )}
+          {plan.duplicates.length > 0 && (
+            <Alert severity="warning">
+              {translate('content.latex_import.duplicates', {orders: plan.duplicates.join(', ')})}
+            </Alert>
+          )}
+          {plan.unclosed.length > 0 && (
+            <Alert severity="warning">
+              {translate('content.latex_import.unclosed', {orders: plan.unclosed.join(', ')})}
+            </Alert>
+          )}
           {plan.rows.map((row) => (
             <Box key={row.order} sx={{border: 1, borderColor: 'divider', borderRadius: 1, p: 2}}>
               <Stack direction="row" alignItems="center" gap={2} sx={{mb: 1}}>
@@ -123,7 +142,7 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
                 >
                   <MenuItem value="write">
                     {translate(
-                      row.existingId === undefined
+                      row.existing === undefined
                         ? 'content.latex_import.action_create'
                         : 'content.latex_import.action_overwrite',
                     )}
@@ -142,7 +161,7 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
               )}
               <Box sx={{opacity: skipped.has(row.order) ? 0.4 : 1}}>
                 <SitePreview>
-                  <ProblemContent order={row.order} text={row.markdown} />
+                  <ProblemContent order={row.order} text={row.markdown} image={row.existing?.image} />
                 </SitePreview>
               </Box>
             </Box>

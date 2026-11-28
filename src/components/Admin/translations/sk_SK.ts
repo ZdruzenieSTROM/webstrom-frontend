@@ -232,6 +232,8 @@ export const sk_SK = {
       other_series: 'Súbor obsahuje úlohy série %{series} – tie sa do tejto série nevložia.',
       no_problems: String.raw`Nenašiel som žiadnu úlohu %{series}. série – úlohy musia byť v makrách \zad…s….`,
       row_title: '%{order}. úloha',
+      duplicates: 'Úlohy %{orders} sú v súbore viackrát – použil som poslednú verziu každej.',
+      unclosed: 'Úlohy %{orders} sa nepodarilo načítať – v súbore im chýba uzatváracia zátvorka }.',
       action_create: 'Vytvoriť',
       action_overwrite: 'Prepísať text',
       action_skip: 'Preskočiť',

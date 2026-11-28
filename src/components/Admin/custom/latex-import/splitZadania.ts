@@ -41,18 +41,26 @@ const findGroupEnd = (src: string, start: number): number | undefined => {
   return undefined
 }
 
-export const splitZadania = (src: string): ZadanieTex[] => {
-  const definition = /^[^\n%]*?\\newcommand\s*{?\s*\\zad([CILVX]+)s([CILVX]+)\s*}?\s*{/gm
+export type SplitResult = {
+  problems: ZadanieTex[]
+  // problems whose body never closes; such a file would not compile in Overleaf either
+  unclosed: Omit<ZadanieTex, 'tex'>[]
+}
+
+export const splitZadania = (src: string): SplitResult => {
+  const definition = /^[^\n%]*?\\(?:(?:re)?newcommand\*?|def)\s*{?\s*\\zad([CILVX]+)s([CILVX]+)\s*}?\s*(?:\[\d])?\s*{/gm
   const problems: ZadanieTex[] = []
+  const unclosed: Omit<ZadanieTex, 'tex'>[] = []
   for (const match of src.matchAll(definition)) {
+    const order = fromRoman(match[1])
+    const series = fromRoman(match[2])
     const bodyStart = match.index + match[0].length
     const bodyEnd = findGroupEnd(src, bodyStart)
-    if (bodyEnd === undefined) continue
-    problems.push({
-      order: fromRoman(match[1]),
-      series: fromRoman(match[2]),
-      tex: src.slice(bodyStart, bodyEnd).trim(),
-    })
+    if (bodyEnd === undefined) {
+      unclosed.push({series, order})
+      continue
+    }
+    problems.push({order, series, tex: src.slice(bodyStart, bodyEnd).trim()})
   }
-  return problems
+  return {problems, unclosed}
 }

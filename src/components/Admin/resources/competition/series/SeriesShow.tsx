@@ -53,5 +53,9 @@ const SeriesProblemsImport: FC = () => {
   const record = useRecordContext<{id: number; order: number; problems: ExistingProblem[]}>()
   if (!record) return null
 
-  return <SeriesLatexImport seriesId={record.id} seriesOrder={record.order} existing={record.problems} />
+  // react-admin keeps this page mounted when only the id changes; the key keeps a file pasted for one series
+  // from being saved into the next one
+  return (
+    <SeriesLatexImport key={record.id} seriesId={record.id} seriesOrder={record.order} existing={record.problems} />
+  )
 }
