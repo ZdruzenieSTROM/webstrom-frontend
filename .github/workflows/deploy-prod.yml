@@ -7,10 +7,11 @@ jobs:
     uses: ./.github/workflows/reusable-deploy.yml
     with:
       project_name: webstrom-prod
+      docker_network: 'webstrom-prod-network'
       port: '8932'
       be_protocol: 'http'
-      be_hostname: 'localhost'
-      be_port: '8930'
+      be_hostname: 'backend'
+      be_port: '8000'
       be_forwarded_proto: 'https'
       be_forwarded_host: 'strom.sk'
     secrets:
