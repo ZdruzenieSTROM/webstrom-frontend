@@ -1,7 +1,8 @@
 import {FC} from 'react'
-import {FormDataConsumer, Labeled} from 'react-admin'
+import {FieldProps, FormDataConsumer, Labeled, useRecordContext} from 'react-admin'
 
 import {ProblemContent} from '@/components/Problems/ProblemContent'
+import {Problem} from '@/types/api/competition'
 
 import {SitePreview} from './SitePreview'
 
@@ -29,3 +30,15 @@ export const ProblemPreview: FC = () => (
     }
   </FormDataConsumer>
 )
+
+// SimpleShowLayout reads `label` off its children to label the row; the component itself ignores it.
+export const ProblemRecordPreview: FC<Pick<FieldProps, 'label'>> = () => {
+  const record = useRecordContext<Problem>()
+  if (!record) return null
+
+  return (
+    <SitePreview>
+      <ProblemContent order={record.order} text={record.text} image={record.image} />
+    </SitePreview>
+  )
+}
