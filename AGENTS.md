@@ -59,11 +59,13 @@ CI (`branch-test` in `.github/workflows/test.yml`) runs `bun run typecheck`, `bu
   (`apiOptions.competition.semester.byId(id)` → `/competition/semester/{id}`).
 - A query returns `{queryKey, queryFn, enabled?}`; the key mirrors the path segments plus params. Guard
   optional ids with `enabled: id != null` (the backend sometimes sends `null` where types say `undefined`).
-- A mutation is wrapped in `mutationOptions({mutationFn})`.
+- A mutation is wrapped in `mutationOptions({mutationFn})`. Ids usually travel in the mutation variables; an
+  upload target for `FileUploader` takes its id as a factory argument, because the component sends only the
+  `FormData` (`uploadOptions={apiOptions.competition.solution.uploadSolutionFile(id)}`).
 - Components consume them directly: `useQuery(apiOptions.x.y(...))`, `useMutation(apiOptions.x.y())`, or
-  spread to add callbacks: `useMutation({...apiOptions.x.y(), onSuccess})`. Don't call axios from components.
-  Exceptions: react-admin's `Admin/dataProvider.ts` uses `apiAxios` directly by design; the direct calls in
-  `FileUploader` and `SemesterAdministration` are leftovers — don't copy them.
+  spread to add callbacks: `useMutation({...apiOptions.x.y(), onSuccess})`. A fetch triggered by a click goes
+  through `queryClient.fetchQuery(apiOptions.x.y(...))`. Don't call axios from components; the one exception is
+  react-admin's `Admin/dataProvider.ts`, which uses `apiAxios` directly by design.
 - `apiOptions` uses the browser axios instance; `createSSRApiOptions(req)` builds the same tree on an
   instance that forwards the request's auth cookie and CSRF header. Auth is the Django `sessionid` cookie
   plus `X-CSRFToken`, set up in `src/api/apiAxios.ts`.

@@ -322,7 +322,7 @@ export const ProblemAdministration: FC = () => {
             </Box>
           )}
           <FileUploader
-            uploadLink={`/competition/problem/${problemId}/upload-model-solution`}
+            uploadOptions={apiOptions.competition.problem.uploadModelSolution(problemId)}
             refetch={refetchProblem}
             acceptedFormats={Accept.Pdf}
           />
@@ -433,7 +433,7 @@ export const ProblemAdministration: FC = () => {
                   </Box>
                 )}
                 <FileUploader
-                  uploadLink={`/competition/solution/${solution.id}/upload-solution-file`}
+                  uploadOptions={apiOptions.competition.solution.uploadSolutionFile(solution.id)}
                   refetch={refetchProblem}
                   testId={`upload-solution-${solution.id}`}
                 />
@@ -455,7 +455,7 @@ export const ProblemAdministration: FC = () => {
                   </Box>
                 )}
                 <FileUploader
-                  uploadLink={`/competition/solution/${solution.id}/upload-corrected-solution-file`}
+                  uploadOptions={apiOptions.competition.solution.uploadCorrectedSolutionFile(solution.id)}
                   refetch={refetchProblem}
                   testId={`upload-corrected-${solution.id}`}
                 />
