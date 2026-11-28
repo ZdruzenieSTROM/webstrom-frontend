@@ -37,7 +37,7 @@ const SolutionEditForm: FC = () => {
       <ReferenceInput source="late_tag" reference="competition/late-tag">
         <AutocompleteInput optionText="name" />
       </ReferenceInput>
-      <BooleanInput source="is_online" label="content.labels.is_online" />
+      <BooleanInput source="is_online" />
     </MySimpleForm>
   )
 }

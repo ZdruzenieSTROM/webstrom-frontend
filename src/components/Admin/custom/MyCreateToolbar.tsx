@@ -12,7 +12,7 @@ export const MyCreateToolbar = ({dontResetFields}: MyCreateToolbarProps = {}) =>
     <Toolbar sx={{gap: 1}}>
       <SaveButton />
       <SaveButton
-        label="ra.action.save_and_create_another"
+        label="content.actions.save_and_create_another"
         mutationOptions={{
           onSuccess: () => {
             notify('content.notifications.record_created')

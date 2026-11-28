@@ -6,7 +6,7 @@ import {dateTimeInputFormat, dateTimeInputParse} from '@/utils/dateTimeInputIso'
 export const MyDateTimeInput: FC<DateTimeInputProps> = ({source, ...rest}) => (
   <DateTimeInput
     source={source}
-    helperText={'Časy uvádzaj v časovom pásme Europe/Bratislava'}
+    helperText="content.helpers.timezone"
     // ked user vojde napr. do editu competition/event, React Admin vola `format`,
     // aby naplnil interne hodnoty inputov.
     // 1. najprv to vola s BE hodnotou, ktora je v UTC (konci 'Z').

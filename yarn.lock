@@ -11836,13 +11836,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-language-slovak@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "ra-language-slovak@npm:3.6.2"
-  checksum: 10/e707ed6519349d56ec10005c72ab31e1ec98ff59894a64c44e2c82faab116eaaabe08188de0fd18fdfbf1057284aa239b19de5e29580da5caa241542d94484ba
-  languageName: node
-  linkType: hard
-
 "ra-ui-materialui@npm:^5.15.7":
   version: 5.15.7
   resolution: "ra-ui-materialui@npm:5.15.7"
@@ -14452,7 +14445,7 @@ __metadata:
     next-router-mock: "npm:^1.0.5"
     prettier: "npm:^3.7.4"
     ra-i18n-polyglot: "npm:^5.15.7"
-    ra-language-slovak: "npm:^3.6.2"
+    ra-language-english: "npm:^5.15.7"
     react: "npm:19.3.1"
     react-admin: "npm:^5.15.7"
     react-cookie: "npm:^4.1.1"

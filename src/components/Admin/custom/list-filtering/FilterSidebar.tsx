@@ -1,9 +1,10 @@
 import {FilterList as FilterListIcon} from '@mui/icons-material'
 import {Button, Card, CardContent, Stack} from '@mui/material'
 import {FC, PropsWithChildren, useState} from 'react'
-import {FilterLiveSearch} from 'react-admin'
+import {FilterLiveSearch, useTranslate} from 'react-admin'
 
 export const FilterSidebar: FC<PropsWithChildren> = ({children}) => {
+  const translate = useTranslate()
   const [filterOpen, setFilterOpen] = useState(true)
   const toggleFilter = () => setFilterOpen((prev) => !prev)
 
@@ -29,7 +30,7 @@ export const FilterSidebar: FC<PropsWithChildren> = ({children}) => {
         }}
       >
         <FilterListIcon />
-        Filters
+        {translate('content.filters.title')}
       </Button>
 
       <Card sx={{mt: 8, mr: filterOpen ? 2 : 0, width: filterOpen ? 200 : 0, transition: 'width 0.2s'}}>

@@ -22,8 +22,8 @@ export const EventCreate: FC = () => {
       }}
     >
       <MySimpleForm toolbar={<MyCreateToolbar />}>
-        <NumberInput source="year" helperText="ročník súťaže, napr. 48" validate={required()} />
-        <TextInput source="school_year" helperText="napr. 2023/2024" validate={required()} />
+        <NumberInput source="year" helperText="content.helpers.event_year" validate={required()} />
+        <TextInput source="school_year" helperText="content.helpers.school_year" validate={required()} />
         <MyDateTimeInput source="start" validate={required()} />
         <MyDateTimeInput source="end" validate={required()} />
         <ReferenceInput source="competition" reference="competition/competition" filter={{competition_type_exclude: 0}}>
@@ -40,7 +40,7 @@ export const EventCreate: FC = () => {
             <TextInput
               source="registration_link.url"
               validate={required()}
-              helperText="Zadávaj v tvare https://prihlasky.strom.sk/xxx"
+              helperText="content.helpers.registration_url"
             />
             <MyDateTimeInput source="registration_link.start" validate={required()} />
             <MyDateTimeInput source="registration_link.end" validate={required()} />

@@ -14,6 +14,7 @@ import {
   useDataProvider,
   useNotify,
   useRedirect,
+  useTranslate,
 } from 'react-admin'
 import {useFormContext, useWatch} from 'react-hook-form'
 
@@ -52,7 +53,7 @@ type FormValues = {
 
 export const SemesterCreateWithSeries: FC = () => (
   <ResourceContextProvider value="competition/semester">
-    <Title title="Vytvoriť semester so sériami" />
+    <Title title="content.semester_with_series.title" />
     <Card sx={{mt: 2}}>
       <CardContent>
         <Form>
@@ -67,6 +68,7 @@ const FormBody: FC = () => {
   const dataProvider = useDataProvider()
   const notify = useNotify()
   const redirect = useRedirect()
+  const translate = useTranslate()
   const {setValue, handleSubmit} = useFormContext<FormValues>()
 
   const [lastPrefilledCompetitionId, setLastPrefilledCompetitionId] = useState<number | null>(null)
@@ -122,7 +124,13 @@ const FormBody: FC = () => {
       } else {
         notify('content.notifications.semester_with_series.prefill_no_same_season', {
           type: 'info',
-          messageArgs: {season: targetSeason === SEASON_ZIMNY ? 'zimný' : 'letný'},
+          messageArgs: {
+            season: translate(
+              targetSeason === SEASON_ZIMNY
+                ? 'content.semester_with_series.season_winter'
+                : 'content.semester_with_series.season_summer',
+            ),
+          },
         })
       }
 
@@ -213,21 +221,20 @@ const FormBody: FC = () => {
     <Stack gap={2}>
       {semesterLocked && (
         <Alert severity="success">
-          Semester vytvorený (ID {createdSemesterId}). Polia semestra sú uzamknuté — prípadne doplň chýbajúce série
-          nižšie a odošli znova.
+          {translate('content.semester_with_series.semester_locked', {id: createdSemesterId})}
         </Alert>
       )}
 
       <Box>
         <Stack direction="row" alignItems="center" gap={1} sx={{mb: 1, mt: 1}}>
           <Typography variant="body1" component="h3" sx={{fontWeight: 700}}>
-            Semester
+            {translate('content.semester_with_series.semester_heading')}
           </Typography>
           {prefillLoading && (
             <>
               <CircularProgress size={14} />
               <Typography variant="body1" sx={{opacity: 0.7}}>
-                Predvypĺňam podľa posledného semestra…
+                {translate('content.semester_with_series.prefilling')}
               </Typography>
             </>
           )}
@@ -243,26 +250,35 @@ const FormBody: FC = () => {
               disabled={semesterLocked}
               onClick={() => competitionId !== undefined && runPrefill(competitionId)}
             >
-              Vyplniť podľa zvolenej súťaže
+              {translate('content.semester_with_series.prefill_button')}
             </Button>
           </Box>
         )}
         <NumberInput
           source="year"
-          helperText="ročník súťaže, napr. 48"
+          helperText="content.helpers.event_year"
           validate={required()}
           disabled={semesterLocked}
         />
         <SelectInput source="season_code" choices={seasonCodeStrings} validate={required()} disabled={semesterLocked} />
-        <TextInput source="school_year" helperText="napr. 2023/2024" validate={required()} disabled={semesterLocked} />
+        <TextInput
+          source="school_year"
+          helperText="content.helpers.school_year"
+          validate={required()}
+          disabled={semesterLocked}
+        />
         <ReferenceArrayInput source="late_tags" reference="competition/late-tag">
-          <CheckboxGroupInput helperText="Ako neskoro po termíne môže riešiteľ odovzdávať?" disabled={semesterLocked} />
+          <CheckboxGroupInput
+            label="resources.competition/semester.fields.late_tags"
+            helperText="content.helpers.late_tags"
+            disabled={semesterLocked}
+          />
         </ReferenceArrayInput>
         <MyDateTimeInput source="start" validate={required()} disabled={semesterLocked} />
       </Box>
 
       <Typography variant="body1" component="h3" sx={{mb: 1, mt: 2, fontWeight: 700}}>
-        Séria 1
+        {translate('content.semester_with_series.series_heading', {order: 1})}
       </Typography>
       <SeriesRow
         deadlineSource="series_1_deadline"
@@ -271,7 +287,7 @@ const FormBody: FC = () => {
       />
 
       <Typography variant="body1" component="h3" sx={{mb: 1, mt: 2, fontWeight: 700}}>
-        Séria 2
+        {translate('content.semester_with_series.series_heading', {order: 2})}
       </Typography>
       <SeriesRow
         deadlineSource="series_2_deadline"
@@ -281,15 +297,15 @@ const FormBody: FC = () => {
 
       <Box>
         <Typography variant="body1" component="h3" sx={{mb: 1, mt: 2, fontWeight: 700}}>
-          Koniec semestra
+          {translate('content.semester_with_series.end_heading')}
         </Typography>
-        <Box sx={{mb: 1, opacity: 0.7}}>Predvolene sa nastaví na deadline 2. série + 14 dní. Môžeš prepísať.</Box>
+        <Box sx={{mb: 1, opacity: 0.7}}>{translate('content.semester_with_series.end_hint')}</Box>
         <MyDateTimeInput source="end" validate={required()} />
       </Box>
 
       <Box>
         <Button variant="contained" onClick={handleSubmit(onSubmit)} disabled={submitting}>
-          {submitting ? 'Odosielam…' : 'Vytvoriť semester + série'}
+          {translate(submitting ? 'content.semester_with_series.submitting' : 'content.semester_with_series.submit')}
         </Button>
       </Box>
     </Stack>
@@ -300,15 +316,21 @@ const SeriesRow: FC<{
   deadlineSource: 'series_1_deadline' | 'series_2_deadline'
   createdId: number | null
   defaultTime: string
-}> = ({deadlineSource, createdId, defaultTime}) => (
-  <Box>
-    {createdId !== null && <Alert severity="success">Séria vytvorená (ID {createdId}).</Alert>}
-    <MyDateTimeSplitInput
-      source={deadlineSource}
-      label="Deadline"
-      defaultTime={defaultTime}
-      validate={required()}
-      disabled={createdId !== null}
-    />
-  </Box>
-)
+}> = ({deadlineSource, createdId, defaultTime}) => {
+  const translate = useTranslate()
+
+  return (
+    <Box>
+      {createdId !== null && (
+        <Alert severity="success">{translate('content.semester_with_series.series_created', {id: createdId})}</Alert>
+      )}
+      <MyDateTimeSplitInput
+        source={deadlineSource}
+        label="resources.competition/series.fields.deadline"
+        defaultTime={defaultTime}
+        validate={required()}
+        disabled={createdId !== null}
+      />
+    </Box>
+  )
+}

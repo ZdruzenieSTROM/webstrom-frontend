@@ -1,6 +1,8 @@
 import {isAxiosError} from 'axios'
 import {HttpError} from 'react-admin'
 
+import {myI18nProvider} from './i18nProvider'
+
 export interface ParsedError {
   /** Top-level message (DRF `detail` / `non_field_errors` / status-based fallback). Empty when only field errors were parsed. */
   message: string
@@ -59,8 +61,11 @@ export const parseError = (error: unknown): ParsedError => {
     if (Object.keys(errors).length > 0) return {message: '', errors}
   }
 
-  const suffix = status ? ` (HTTP ${status})` : ''
-  return {message: `Nastala neznáma chyba${suffix}`, errors}
+  // prekladame hned tu: sprava ide do toastu aj ako argument inych hlasok (napr. `semester_error`), kde sa uz nepreklada
+  const message = status
+    ? myI18nProvider.translate('content.errors.unknown_status', {status})
+    : myI18nProvider.translate('content.errors.unknown')
+  return {message, errors}
 }
 
 /** Compose a user-facing toast string from a parsed error. Top-level message first (unbulleted,
@@ -69,7 +74,7 @@ export const parseError = (error: unknown): ParsedError => {
  *  the field is hidden, renamed, or otherwise not visibly bound to an inline error. */
 export const composeToastMessage = ({message, errors}: ParsedError): string => {
   const bullets = Object.entries(errors).map(([path, m]) => `• ${path}: ${m}`)
-  return [message, ...bullets].filter(Boolean).join('\n') || 'Nastala neznáma chyba'
+  return [message, ...bullets].filter(Boolean).join('\n') || myI18nProvider.translate('content.errors.unknown')
 }
 
 export const toHttpError = (error: unknown): HttpError => {

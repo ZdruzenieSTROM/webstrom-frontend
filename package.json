@@ -32,7 +32,6 @@
     "luxon": "^3.6.1",
     "next": "16.4.6",
     "ra-i18n-polyglot": "^5.15.7",
-    "ra-language-slovak": "^3.6.2",
     "react": "19.3.1",
     "react-admin": "^5.15.7",
     "react-cookie": "^4.1.1",
@@ -82,6 +81,7 @@
     "jsdom": "^27.2.0",
     "next-router-mock": "^1.0.5",
     "prettier": "^3.7.4",
+    "ra-language-english": "^5.15.7",
     "typescript-eslint": "^8.48.1",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.15"

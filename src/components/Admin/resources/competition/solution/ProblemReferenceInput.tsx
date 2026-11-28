@@ -10,12 +10,7 @@ export const ProblemReferenceInput: FC = () => {
 
   return (
     <ReferenceInput source="problem" reference="competition/problem" filter={semester ? {semester} : undefined}>
-      <AutocompleteInput
-        validate={required()}
-        helperText={
-          semester ? 'Filtrované podľa semestra riešiteľa. Zmaž pole Riešiteľ pre vyhľadávanie vo všetkých.' : undefined
-        }
-      />
+      <AutocompleteInput validate={required()} helperText={semester ? 'content.helpers.problem_filtered' : undefined} />
     </ReferenceInput>
   )
 }

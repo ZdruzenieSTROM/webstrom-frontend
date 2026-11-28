@@ -7,7 +7,7 @@ type Props = {
 
 export const CompetitionFilterSection: FC<Props> = ({filter}) => {
   return (
-    <FilterListSection label="Competition" icon={null}>
+    <FilterListSection label="content.filters.competition" icon={null}>
       <FilterLiveForm>
         <ReferenceInput source="competition" reference="competition/competition" filter={filter}>
           <AutocompleteInput helperText={false} />

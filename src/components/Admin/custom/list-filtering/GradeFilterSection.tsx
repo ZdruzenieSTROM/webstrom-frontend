@@ -3,7 +3,7 @@ import {AutocompleteInput, FilterListSection, FilterLiveForm, ReferenceInput} fr
 
 export const GradeFilterSection: FC = () => {
   return (
-    <FilterListSection label="Grade" icon={null}>
+    <FilterListSection label="content.filters.grade" icon={null}>
       <FilterLiveForm>
         <ReferenceInput source="grade" reference="competition/grade">
           <AutocompleteInput helperText={false} />

@@ -38,7 +38,7 @@ const SeriesListFilters: FC = () => (
 
     <SemesterFilterSection />
 
-    <FilterList label="Číslo seŕie" icon={null}>
+    <FilterList label="content.filters.series_number" icon={null}>
       {[1, 2].map((seriesNumber) => (
         <FilterListItem key={seriesNumber} label={seriesNumber.toString()} value={{order: seriesNumber}} />
       ))}

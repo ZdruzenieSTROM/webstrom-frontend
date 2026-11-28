@@ -26,12 +26,7 @@ export const ProblemEdit: FC = () => (
         </ReferenceInput>
         <TextInput source="order" validate={required()} />
         <LatexImport source="text" />
-        <TextInput
-          source="text"
-          multiline
-          validate={required()}
-          helperText="Úlohy môžu obsahovať iba TeX (iba matický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
-        />
+        <TextInput source="text" multiline validate={required()} helperText="content.helpers.markdown" />
         <ProblemPreview />
         <ImageInput source="image" accept={Accept.Image}>
           <MyImageField />

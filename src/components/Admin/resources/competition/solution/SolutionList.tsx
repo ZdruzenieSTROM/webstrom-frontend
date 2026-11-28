@@ -49,18 +49,18 @@ const SolutionListFilters: FC = () => (
 
     <SeriesFilterSection />
 
-    <FilterList label="Číslo úlohy" icon={null}>
+    <FilterList label="content.filters.problem_number" icon={null}>
       {[1, 2, 3, 4, 5, 6].map((problemNumber) => (
         <FilterListItem key={problemNumber} label={problemNumber.toString()} value={{order: problemNumber}} />
       ))}
     </FilterList>
-    <FilterList label="Chýba riešenie?" icon={null}>
-      <FilterListItem label="Áno" value={{missing_file: true}} />
-      <FilterListItem label="Nie" value={{missing_file: false}} />
+    <FilterList label="content.filters.missing_solution" icon={null}>
+      <FilterListItem label="ra.boolean.true" value={{missing_file: true}} />
+      <FilterListItem label="ra.boolean.false" value={{missing_file: false}} />
     </FilterList>
-    <FilterList label="Chýba opravené riešenie?" icon={null}>
-      <FilterListItem label="Áno" value={{missing_corrected_file: true}} />
-      <FilterListItem label="Nie" value={{missing_corrected_file: false}} />
+    <FilterList label="content.filters.missing_corrected_solution" icon={null}>
+      <FilterListItem label="ra.boolean.true" value={{missing_corrected_file: true}} />
+      <FilterListItem label="ra.boolean.false" value={{missing_corrected_file: false}} />
     </FilterList>
   </FilterSidebar>
 )
