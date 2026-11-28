@@ -3,12 +3,15 @@ import {ArrayInput, FormTab, maxLength, required, SimpleFormIterator, TabbedForm
 
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
+import {MyEditActions} from '@/components/Admin/custom/MyEditActions'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
 import {PostPreview} from '@/components/Admin/custom/PostPreview'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
 export const PostEdit: FC = () => (
   <MyEdit
+    // the preview tab exists only on edit, PostShow has 2 tabs
+    actions={<MyEditActions showTabs={2} />}
     transform={(record) => ({
       ...record,
       details: record.details ?? '',
