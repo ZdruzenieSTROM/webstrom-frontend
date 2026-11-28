@@ -20,8 +20,9 @@ export const Results: FC = () => {
 
   return (
     <>
-      {resultsIsLoading && <Loading />}
-      {results.length > 0 ? (
+      {resultsIsLoading ? (
+        <Loading />
+      ) : results.length > 0 ? (
         <Box
           sx={{
             display: 'grid',

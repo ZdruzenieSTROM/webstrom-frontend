@@ -10,6 +10,7 @@ import {CookiesProvider} from 'react-cookie'
 
 import {AlertBox} from '@/components/Alert/AlertBox'
 import {ErrorBoundary} from '@/components/ErrorBoundary/ErrorBoundary'
+import {RouteChangeProgress} from '@/components/RouteChangeProgress/RouteChangeProgress'
 import {theme} from '@/theme/theme'
 import {AlertContainer} from '@/utils/AlertContainer'
 import {AuthContainer} from '@/utils/AuthContainer'
@@ -38,6 +39,7 @@ const MyApp: FC<AppProps<PageProps>> = ({Component, pageProps}) => {
                 <BannerAnimationContainer.Provider>
                   <ThemeProvider theme={theme}>
                     <CssBaseline />
+                    <RouteChangeProgress />
                     <ErrorBoundary>
                       <AlertBox />
                       <Component {...pageProps} />
