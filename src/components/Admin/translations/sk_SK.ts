@@ -332,6 +332,7 @@ export const sk_SK = {
         all_series_created: 'Obe série vytvorené.',
         semester_error: 'Semester: %{message}',
         series_error: 'Séria %{order}: %{message}',
+        problem_error: 'Séria %{series}, úloha %{order}: %{message}',
       },
     },
     // texty stranky "Vytvorit semester so seriami" (notifikacie tej istej stranky su v `notifications.semester_with_series`)
@@ -343,6 +344,9 @@ export const sk_SK = {
       prefilling: 'Predvypĺňam podľa posledného semestra…',
       prefill_button: 'Vyplniť podľa zvolenej aktivity',
       series_heading: 'Séria %{order}',
+      problems_latex: 'Úlohy (nepovinné)',
+      problems_latex_helper: 'Vlož súbor zadania%{series}.tex z Overleafu, úlohy sa vytvoria spolu so sériou.',
+      problems_created: 'Vytvorené úlohy: %{count} z %{total}.',
       end_heading: 'Koniec semestra',
       end_hint: 'Predvolene sa nastaví na termín 2. série + 14 dní. Môžeš ho prepísať.',
       submitting: 'Odosielam…',

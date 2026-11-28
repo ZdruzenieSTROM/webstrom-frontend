@@ -1,25 +1,9 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material'
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@mui/material'
 import {FC, useMemo, useState} from 'react'
 import {useDataProvider, useNotify, useRefresh, useTranslate} from 'react-admin'
 
-import {SitePreview} from '@/components/Admin/custom/SitePreview'
-import {ProblemContent} from '@/components/Problems/ProblemContent'
-
+import {ImportPlanPreview, RowAction} from './ImportPlanPreview'
 import {ExistingProblem, ImportRow, planSeriesImport} from './planSeriesImport'
-
-type Action = 'write' | 'skip'
 
 type SeriesLatexImportProps = {
   seriesId: number
@@ -40,7 +24,7 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
   const plan = useMemo(() => planSeriesImport(latex, seriesOrder, existing), [latex, seriesOrder, existing])
   const toSave = plan.rows.filter((row) => !skipped.has(row.order))
 
-  const setAction = (order: number, action: Action) =>
+  const setAction = (order: number, action: RowAction) =>
     setSkipped((current) => {
       const next = new Set(current)
       if (action === 'skip') next.add(order)
@@ -110,62 +94,13 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
             sx={{mt: 1}}
             slotProps={{htmlInput: {sx: {fontFamily: 'monospace'}}}}
           />
-          {plan.otherSeries.length > 0 && (
-            <Alert severity={plan.rows.length === 0 ? 'warning' : 'info'}>
-              {translate('content.latex_import.other_series', {series: plan.otherSeries.join(', ')})}
-            </Alert>
-          )}
-          {latex.trim() && plan.rows.length === 0 && plan.otherSeries.length === 0 && (
-            <Alert severity="warning">{translate('content.latex_import.no_problems', {series: seriesOrder})}</Alert>
-          )}
-          {plan.duplicates.length > 0 && (
-            <Alert severity="warning">
-              {translate('content.latex_import.duplicates', {orders: plan.duplicates.join(', ')})}
-            </Alert>
-          )}
-          {plan.unclosed.length > 0 && (
-            <Alert severity="warning">
-              {translate('content.latex_import.unclosed', {orders: plan.unclosed.join(', ')})}
-            </Alert>
-          )}
-          {plan.rows.map((row) => (
-            <Box key={row.order} sx={{border: 1, borderColor: 'divider', borderRadius: 1, p: 2}}>
-              <Stack direction="row" alignItems="center" gap={2} sx={{mb: 1}}>
-                <Typography variant="body1" component="h3" sx={{fontWeight: 700}}>
-                  {translate('content.latex_import.row_title', {order: row.order})}
-                </Typography>
-                <TextField
-                  select
-                  size="small"
-                  value={skipped.has(row.order) ? 'skip' : 'write'}
-                  onChange={(event) => setAction(row.order, event.target.value as Action)}
-                >
-                  <MenuItem value="write">
-                    {translate(
-                      row.existing === undefined
-                        ? 'content.latex_import.action_create'
-                        : 'content.latex_import.action_overwrite',
-                    )}
-                  </MenuItem>
-                  <MenuItem value="skip">{translate('content.latex_import.action_skip')}</MenuItem>
-                </TextField>
-              </Stack>
-              {row.warnings.length > 0 && (
-                <Alert severity="warning" sx={{mb: 1}}>
-                  <Box component="ul" sx={{m: 0, pl: 2}}>
-                    {row.warnings.map((warning) => (
-                      <li key={warning}>{warning}</li>
-                    ))}
-                  </Box>
-                </Alert>
-              )}
-              <Box sx={{opacity: skipped.has(row.order) ? 0.4 : 1}}>
-                <SitePreview>
-                  <ProblemContent order={row.order} text={row.markdown} image={row.existing?.image} />
-                </SitePreview>
-              </Box>
-            </Box>
-          ))}
+          <ImportPlanPreview
+            plan={plan}
+            seriesOrder={seriesOrder}
+            hasInput={!!latex.trim()}
+            skipped={skipped}
+            onAction={setAction}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>{translate('ra.action.cancel')}</Button>

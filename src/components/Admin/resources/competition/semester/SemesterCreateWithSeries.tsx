@@ -1,5 +1,5 @@
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Stack, Typography} from '@mui/material'
-import {FC, useEffect, useRef, useState} from 'react'
+import {FC, useEffect, useMemo, useRef, useState} from 'react'
 import {
   CheckboxGroupInput,
   Form,
@@ -18,6 +18,8 @@ import {
 } from 'react-admin'
 import {useFormContext, useWatch} from 'react-hook-form'
 
+import {ImportPlanPreview} from '@/components/Admin/custom/latex-import/ImportPlanPreview'
+import {planSeriesImport, SeriesImportPlan} from '@/components/Admin/custom/latex-import/planSeriesImport'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyDateTimeSplitInput} from '@/components/Admin/custom/MyDateTimeSplitInput'
 import {seasonCodeStrings} from '@/components/Admin/seasonCodeStrings'
@@ -49,6 +51,8 @@ type FormValues = {
   end?: string
   series_1_deadline?: string
   series_2_deadline?: string
+  series_1_latex?: string
+  series_2_latex?: string
 }
 
 export const SemesterCreateWithSeries: FC = () => (
@@ -74,6 +78,8 @@ const FormBody: FC = () => {
   const [lastPrefilledCompetitionId, setLastPrefilledCompetitionId] = useState<number | null>(null)
   const [createdSemesterId, setCreatedSemesterId] = useState<number | null>(null)
   const [createdSeriesIds, setCreatedSeriesIds] = useState<[number | null, number | null]>([null, null])
+  // orders already created per series, so a resubmit after a failure creates only the rest
+  const [createdProblems, setCreatedProblems] = useState<[Set<number>, Set<number>]>([new Set(), new Set()])
   const [submitting, setSubmitting] = useState(false)
   const [prefillLoading, setPrefillLoading] = useState(false)
   // Guard so auto-prefill fires only once in this form lifetime (the first competition pick).
@@ -81,6 +87,12 @@ const FormBody: FC = () => {
 
   const competitionId = useWatch<FormValues, 'competition'>({name: 'competition'})
   const series2Deadline = useWatch<FormValues, 'series_2_deadline'>({name: 'series_2_deadline'})
+  const series1Latex = useWatch<FormValues, 'series_1_latex'>({name: 'series_1_latex'}) ?? ''
+  const series2Latex = useWatch<FormValues, 'series_2_latex'>({name: 'series_2_latex'}) ?? ''
+  const plans: [SeriesImportPlan, SeriesImportPlan] = [
+    useMemo(() => planSeriesImport(series1Latex, 1, []), [series1Latex]),
+    useMemo(() => planSeriesImport(series2Latex, 2, []), [series2Latex]),
+  ]
 
   // Derived `end` = series_2_deadline + 14 days. Runs whenever series_2 changes.
   // The user can still manually override `end`; the next deadline change overwrites again (by design).
@@ -203,7 +215,31 @@ const FormBody: FC = () => {
         }
       }
 
-      if (newSeriesIds[0] !== null && newSeriesIds[1] !== null) {
+      const newCreatedProblems: [Set<number>, Set<number>] = [new Set(createdProblems[0]), new Set(createdProblems[1])]
+      for (const [i, plan] of plans.entries()) {
+        const seriesId = newSeriesIds[i]
+        if (seriesId === null) continue
+        for (const row of plan.rows) {
+          if (newCreatedProblems[i].has(row.order)) continue
+          try {
+            await dataProvider.create('competition/problem', {
+              data: {series: seriesId, order: row.order, text: row.markdown},
+            })
+            newCreatedProblems[i].add(row.order)
+          } catch (error) {
+            notify('content.notifications.semester_with_series.problem_error', {
+              type: 'error',
+              messageArgs: {series: i + 1, order: row.order, message: (error as Error).message},
+            })
+          }
+        }
+      }
+      setCreatedProblems(newCreatedProblems)
+
+      const allProblemsCreated = plans.every((plan, i) =>
+        plan.rows.every((row) => newCreatedProblems[i].has(row.order)),
+      )
+      if (newSeriesIds[0] !== null && newSeriesIds[1] !== null && allProblemsCreated) {
         notify('content.notifications.semester_with_series.all_series_created', {type: 'success'})
         redirect('show', 'competition/semester', semesterId)
       }
@@ -281,8 +317,12 @@ const FormBody: FC = () => {
         {translate('content.semester_with_series.series_heading', {order: 1})}
       </Typography>
       <SeriesRow
+        seriesOrder={1}
         deadlineSource="series_1_deadline"
+        latexSource="series_1_latex"
         createdId={createdSeriesIds[0]}
+        plan={plans[0]}
+        createdProblems={createdProblems[0]}
         defaultTime={DEFAULT_DEADLINE_TIME}
       />
 
@@ -290,8 +330,12 @@ const FormBody: FC = () => {
         {translate('content.semester_with_series.series_heading', {order: 2})}
       </Typography>
       <SeriesRow
+        seriesOrder={2}
         deadlineSource="series_2_deadline"
+        latexSource="series_2_latex"
         createdId={createdSeriesIds[1]}
+        plan={plans[1]}
+        createdProblems={createdProblems[1]}
         defaultTime={DEFAULT_DEADLINE_TIME}
       />
 
@@ -313,11 +357,16 @@ const FormBody: FC = () => {
 }
 
 const SeriesRow: FC<{
+  seriesOrder: 1 | 2
   deadlineSource: 'series_1_deadline' | 'series_2_deadline'
+  latexSource: 'series_1_latex' | 'series_2_latex'
   createdId: number | null
+  plan: SeriesImportPlan
+  createdProblems: Set<number>
   defaultTime: string
-}> = ({deadlineSource, createdId, defaultTime}) => {
+}> = ({seriesOrder, deadlineSource, latexSource, createdId, plan, createdProblems, defaultTime}) => {
   const translate = useTranslate()
+  const latex = useWatch<FormValues, typeof latexSource>({name: latexSource}) ?? ''
 
   return (
     <Box>
@@ -331,6 +380,28 @@ const SeriesRow: FC<{
         validate={required()}
         disabled={createdId !== null}
       />
+      {createdProblems.size > 0 && (
+        <Alert severity="success" sx={{mb: 1}}>
+          {translate('content.semester_with_series.problems_created', {
+            count: createdProblems.size,
+            total: plan.rows.length,
+          })}
+        </Alert>
+      )}
+      <TextInput
+        source={latexSource}
+        label="content.semester_with_series.problems_latex"
+        helperText={translate('content.semester_with_series.problems_latex_helper', {series: seriesOrder})}
+        multiline
+        minRows={3}
+        fullWidth
+        // the problems already created keep their orders; a changed file would no longer match them
+        disabled={createdProblems.size > 0}
+        sx={{'& textarea': {fontFamily: 'monospace'}}}
+      />
+      <Stack gap={2}>
+        <ImportPlanPreview plan={plan} seriesOrder={seriesOrder} hasInput={!!latex.trim()} />
+      </Stack>
     </Box>
   )
 }
