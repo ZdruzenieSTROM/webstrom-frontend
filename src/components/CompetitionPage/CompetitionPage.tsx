@@ -125,20 +125,19 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
               <ArchiveButton kind="solutions" href={getPublication(event, PublicationTypes.SOLUTIONS.id)?.file} />
               <ArchiveButton kind="results" href={getPublication(event, PublicationTypes.RESULTS.id)?.file} />
             </Stack>
-            <Stack direction="row" flexWrap="wrap" gap={0.5} sx={historyButtonGroupSx}>
-              {event.galleries.length > 0 ? (
-                event.galleries.map((gallery) => (
+            {/* no disabled Fotky: most past events have no gallery, a column of grey buttons is only noise */}
+            {event.galleries.length > 0 && (
+              <Stack direction="row" flexWrap="wrap" gap={0.5} sx={historyButtonGroupSx}>
+                {event.galleries.map((gallery) => (
                   <ArchiveButton
                     key={gallery.id}
                     kind="photos"
                     href={gallery.gallery_link}
                     label={gallery.name || 'Fotky'}
                   />
-                ))
-              ) : (
-                <ArchiveButton kind="photos" />
-              )}
-            </Stack>
+                ))}
+              </Stack>
+            )}
           </ArchiveRow>
         ))}
         {!showAllHistory && history_events.length > VISIBLE_HISTORY_EVENTS && (
