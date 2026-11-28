@@ -12,7 +12,7 @@ import {colors} from '@/theme/colors'
 
 import {Link} from '../Clickable/Link'
 
-const getArchiveButtonSx = (disabled = false): SxProps<Theme> => {
+const getArchiveButtonSx = (disabled = false) => {
   return {
     '.archive-row:hover &': {
       '--bgcolor': colors.black,
@@ -26,7 +26,7 @@ const getArchiveButtonSx = (disabled = false): SxProps<Theme> => {
       bgcolor: disabled ? colors.gray : colors.white,
       color: disabled ? colors.white : colors.black,
     },
-  }
+  } satisfies SxProps<Theme>
 }
 
 type ButtonKind = 'magazine' | 'results' | 'problems' | 'solutions' | 'photos'
@@ -50,13 +50,20 @@ const ButtonContent: FC<{kind: ButtonKind; label?: string}> = ({kind, label}) =>
 }
 
 // Disabled (grey, not clickable) when there is no href.
+// compact: narrower side padding on xs, so three buttons fit on one line of a 320px phone
 export const ArchiveButton: FC<{
   kind: ButtonKind
   href?: string
   label?: string
-}> = ({kind, href, label}) => {
+  compact?: boolean
+}> = ({kind, href, label, compact = false}) => {
   return (
-    <Link variant="button2" disabled={!href} href={href} sx={getArchiveButtonSx(!href)}>
+    <Link
+      variant="button2"
+      disabled={!href}
+      href={href}
+      sx={{...getArchiveButtonSx(!href), ...(compact ? {px: {xs: '6px', sm: '10px'}} : {})}}
+    >
       <ButtonContent kind={kind} label={label} />
     </Link>
   )
