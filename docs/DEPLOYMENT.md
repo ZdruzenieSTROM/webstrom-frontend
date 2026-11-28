@@ -24,16 +24,48 @@ The deployment uses a reusable workflow pattern:
 
 | Environment | Trigger                    | Domain        | Port | Container Name                    |
 | ----------- | -------------------------- | ------------- | ---- | --------------------------------- |
-| Test        | Manual (workflow_dispatch) | test.strom.sk | 8922 | webstrom-test_webstrom-frontend_1 |
-| Production  | Manual (workflow_dispatch) | strom.sk      | 8932 | webstrom-prod_webstrom-frontend_1 |
+| Test        | Manual (workflow_dispatch) | test.strom.sk | 8922 | webstrom-test_webstrom-frontend |
+| Production  | Manual (workflow_dispatch) | strom.sk      | 8932 | webstrom-prod_webstrom-frontend |
+
+## Test bridge network
+
+Test uses the shared Docker bridge network `webstrom-test-network`. Both the backend
+and frontend deployment workflows ensure it exists before replacing containers;
+whichever deploys first creates it. Creation tolerates the other workflow creating
+it concurrently. Neither workflow deletes the network. Docker retains it across
+container replacements and host restarts. Production keeps host networking.
+
+| Connection | Test address |
+| --- | --- |
+| Host nginx to frontend | `127.0.0.1:8922` → container port `3000` |
+| Host nginx to backend | `127.0.0.1:8920` → container port `8000` |
+| Frontend server to backend | `http://backend:8000` on `webstrom-test-network` |
+
+Next.js binds to `0.0.0.0:3000` inside its isolated container; the published host
+port is restricted to localhost. Browser API calls continue through nginx, and
+forwarded host/protocol headers remain `test.strom.sk` and `https`. No nginx
+or PostgreSQL configuration changes are needed.
+
+For the first migration, deploy the matching backend branch **before** the frontend
+branch. The old host-networked frontend can still use the published backend port,
+but the new frontend requires the backend's `backend` network alias. For rollback
+to host networking, roll back the frontend first, then the backend. Redeploying an
+older image alone does not restore the old network settings: use the corresponding
+older deployment workflow as well.
+
+The workflows retain independent releases using an explicitly shared network.
+This follows Docker's [user-defined bridge network guidance](https://docs.docker.com/engine/network/drivers/bridge/)
+and [localhost port publishing](https://docs.docker.com/engine/network/port-publishing/).
+Containerizing the shared nginx would require broader proxy and TLS changes, so nginx
+remains on the host.
 
 ## Docker Image Tags
 
 Images are tagged with the following pattern:
 
-- `ghcr.io/zdrueniestrom/webstrom-frontend:{env}-{sha}` - Specific version
-- `ghcr.io/zdrueniestrom/webstrom-frontend:{env}-latest` - Latest version
-- `ghcr.io/zdrueniestrom/webstrom-frontend:buildcache` - Build cache
+- `ghcr.io/zdruzeniestrom/webstrom-frontend:{env}-{sha}` - Specific version
+- `ghcr.io/zdruzeniestrom/webstrom-frontend:{env}-latest` - Latest version
+- `ghcr.io/zdruzeniestrom/webstrom-frontend:buildcache` - Build cache
 
 Where:
 
@@ -46,10 +78,11 @@ The frontend container receives these environment variables:
 
 | Variable             | Description              | Test Example    | Production Example | Required |
 | -------------------- | ------------------------ | --------------- | ------------------ | -------- |
-| `PORT`               | Frontend server port     | `8922`          | `8932`             | Yes      |
+| `PORT`               | Frontend server port     | `3000`          | `8932`             | Yes      |
+| `HOSTNAME`           | Container listen address | `0.0.0.0`       | `localhost`        | Yes      |
 | `BE_PROTOCOL`        | Backend protocol         | `http`          | `http`             | Yes      |
-| `BE_HOSTNAME`        | Backend hostname         | `localhost`     | `localhost`        | Yes      |
-| `BE_PORT`            | Backend port             | `8920`          | `8930`             | Yes      |
+| `BE_HOSTNAME`        | Backend hostname         | `backend`       | `localhost`        | Yes      |
+| `BE_PORT`            | Backend port             | `8000`          | `8930`             | Yes      |
 | `BE_FORWARDED_HOST`  | X-Forwarded-Host header  | `test.strom.sk` | `strom.sk`         | Yes      |
 | `BE_FORWARDED_PROTO` | X-Forwarded-Proto header | `https`         | `https`            | Yes      |
 | `DEBUG_SERVER`       | Enable debug logging     | `false`         | `false`            | No       |
@@ -98,16 +131,16 @@ Containers follow Docker Compose naming conventions for compatibility:
 docker ps | grep webstrom
 
 # View logs
-docker logs webstrom-test_webstrom-frontend_1  # Test
-docker logs webstrom-prod_webstrom-frontend_1  # Production
+docker logs webstrom-test_webstrom-frontend  # Test
+docker logs webstrom-prod_webstrom-frontend  # Production
 
 # Restart container
-docker restart webstrom-test_webstrom-frontend_1  # Test
-docker restart webstrom-prod_webstrom-frontend_1  # Production
+docker restart webstrom-test_webstrom-frontend  # Test
+docker restart webstrom-prod_webstrom-frontend  # Production
 
 # Stop container
-docker stop webstrom-test_webstrom-frontend_1  # Test
-docker stop webstrom-prod_webstrom-frontend_1  # Production
+docker stop webstrom-test_webstrom-frontend  # Test
+docker stop webstrom-prod_webstrom-frontend  # Production
 ```
 
 ## Container Labels
@@ -127,22 +160,24 @@ To rollback to a previous version:
 
 ```bash
 # Test environment example
-docker stop webstrom-test_webstrom-frontend_1
-docker rm webstrom-test_webstrom-frontend_1
+docker stop webstrom-test_webstrom-frontend
+docker rm webstrom-test_webstrom-frontend
 docker run -d \
-  --name webstrom-test_webstrom-frontend_1 \
+  --name webstrom-test_webstrom-frontend \
   --label "com.docker.compose.project=webstrom-test" \
   --label "com.docker.compose.service=webstrom-frontend" \
-  --network host \
+  --network webstrom-test-network \
+  --publish 127.0.0.1:8922:3000 \
   --restart always \
-  -e PORT=8922 \
+  -e PORT=3000 \
+  -e HOSTNAME=0.0.0.0 \
   -e BE_PROTOCOL=http \
-  -e BE_HOSTNAME=localhost \
-  -e BE_PORT=8920 \
+  -e BE_HOSTNAME=backend \
+  -e BE_PORT=8000 \
   -e BE_FORWARDED_HOST=test.strom.sk \
   -e BE_FORWARDED_PROTO=https \
   -e DEBUG_SERVER=false \
-  ghcr.io/zdrueniestrom/webstrom-frontend:test-{previous-sha}
+  ghcr.io/zdruzeniestrom/webstrom-frontend:test-{previous-sha}
 ```
 
 ## Troubleshooting
@@ -152,16 +187,16 @@ docker run -d \
 Check logs:
 
 ```bash
-docker logs webstrom-test_webstrom-frontend_1  # Test
-docker logs webstrom-prod_webstrom-frontend_1  # Production
+docker logs webstrom-test_webstrom-frontend  # Test
+docker logs webstrom-prod_webstrom-frontend  # Production
 ```
 
 ### Network issues
 
-Verify the container is using host network:
+Verify the test container is using `webstrom-test-network` (production still uses `host`):
 
 ```bash
-docker inspect webstrom-test_webstrom-frontend_1 | grep NetworkMode
+docker inspect webstrom-test_webstrom-frontend | grep NetworkMode
 ```
 
 ### Environment variables
@@ -169,7 +204,7 @@ docker inspect webstrom-test_webstrom-frontend_1 | grep NetworkMode
 Check current environment variables:
 
 ```bash
-docker exec webstrom-test_webstrom-frontend_1 env | grep -E '^(PORT|BE_|DEBUG_)'
+docker exec webstrom-test_webstrom-frontend env | grep -E '^(PORT|BE_|DEBUG_)'
 ```
 
 ### GitHub Actions issues

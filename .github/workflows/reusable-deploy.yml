@@ -12,6 +12,11 @@ on:
         type: string
         default: 'webstrom-frontend'
         description: 'Service name for container and labels'
+      docker_network:
+        required: false
+        type: string
+        default: ''
+        description: 'Shared bridge network; empty keeps host networking'
       port:
         required: true
         type: string
@@ -113,6 +118,27 @@ jobs:
             # Container name follows Docker Compose pattern: project_service
             CONTAINER_NAME="${{ inputs.project_name }}_${{ inputs.service_name }}"
 
+            # Shared by the independently deployed frontend and backend.
+            DOCKER_NETWORK="${{ inputs.docker_network }}"
+            set -- --network host
+            FRONTEND_PORT="${{ inputs.port }}"
+            FRONTEND_HOST=localhost
+            if [ -n "$DOCKER_NETWORK" ]; then
+              # Re-inspect after a failed create in case the other workflow created it.
+              if ! docker network inspect "$DOCKER_NETWORK" >/dev/null 2>&1; then
+                docker network create --driver bridge "$DOCKER_NETWORK" >/dev/null ||
+                  docker network inspect "$DOCKER_NETWORK" >/dev/null
+              fi
+              if [ "$(docker network inspect --format '{{.Driver}}' "$DOCKER_NETWORK")" != bridge ]; then
+                echo "Expected a bridge network: $DOCKER_NETWORK" >&2
+                exit 1
+              fi
+              FRONTEND_PORT=3000
+              FRONTEND_HOST=0.0.0.0
+              set -- --network "$DOCKER_NETWORK" \
+                --publish "127.0.0.1:${{ inputs.port }}:3000"
+            fi
+
             # Stop and remove old container (ignore errors if doesn't exist)
             docker stop "$CONTAINER_NAME" 2>/dev/null || true
             docker rm "$CONTAINER_NAME" 2>/dev/null || true
@@ -122,9 +148,10 @@ jobs:
               --name "$CONTAINER_NAME" \
               --label "com.docker.compose.project=${{ inputs.project_name }}" \
               --label "com.docker.compose.service=${{ inputs.service_name }}" \
-              --network host \
+              "$@" \
               --restart always \
-              -e PORT=${{ inputs.port }} \
+              -e PORT="$FRONTEND_PORT" \
+              -e HOSTNAME="$FRONTEND_HOST" \
               -e BE_PROTOCOL=${{ inputs.be_protocol }} \
               -e BE_HOSTNAME=${{ inputs.be_hostname }} \
               -e BE_PORT=${{ inputs.be_port }} \

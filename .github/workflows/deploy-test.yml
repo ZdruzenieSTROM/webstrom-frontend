@@ -10,10 +10,11 @@ jobs:
     uses: ./.github/workflows/reusable-deploy.yml
     with:
       project_name: webstrom-test
+      docker_network: 'webstrom-test-network'
       port: '8922'
       be_protocol: 'http'
-      be_hostname: 'localhost'
-      be_port: '8920'
+      be_hostname: 'backend'
+      be_port: '8000'
       be_forwarded_proto: 'https'
       be_forwarded_host: 'test.strom.sk'
     secrets:
