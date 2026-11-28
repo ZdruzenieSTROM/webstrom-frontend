@@ -3,7 +3,7 @@ import path from 'node:path'
 
 import {describe, expect, it} from 'vitest'
 
-import {planSeriesImport} from './planSeriesImport'
+import {planSeriesImport, rowsToSave} from './planSeriesImport'
 
 // STROM 51, winter semester – the series 1 file as written in Overleaf
 // (the path is built from this test file's directory, not from input)
@@ -67,5 +67,24 @@ describe(planSeriesImport, () => {
 \newcommand{\zadIIsI}{Chýba zátvorka.`
 
     expect(planSeriesImport(latex, 1, []).unclosed).toStrictEqual([2])
+  })
+})
+
+describe(rowsToSave, () => {
+  it('should leave out skipped rows and use the edited Markdown', () => {
+    const plan = planSeriesImport(
+      String.raw`\newcommand{\zadIsI}{Prvá.}
+\newcommand{\zadIIsI}{Druhá.}
+\newcommand{\zadIIIsI}{Tretia.}`,
+      1,
+      [],
+    )
+
+    const rows = rowsToSave(plan, {latex: '', skipped: new Set([2]), edits: new Map([[3, 'Tretia, opravená.']])})
+
+    expect(rows.map(({order, markdown}) => [order, markdown])).toStrictEqual([
+      [1, 'Prvá.'],
+      [3, 'Tretia, opravená.'],
+    ])
   })
 })

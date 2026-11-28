@@ -45,3 +45,19 @@ export const planSeriesImport = (latex: string, seriesOrder: number, existing: E
     unclosed: unclosed.filter(({series}) => series === seriesOrder).map(({order}) => order),
   }
 }
+
+// what the editor changed in the import dialog, kept apart from the plan so a re-planned file can drop it
+export type ImportDraft = {
+  latex: string
+  skipped: ReadonlySet<number>
+  // Markdown the editor rewrote, by order
+  edits: ReadonlyMap<number, string>
+}
+
+export const emptyDraft: ImportDraft = {latex: '', skipped: new Set(), edits: new Map()}
+
+// the rows to save: skipped ones left out, edited text in place of the converted one
+export const rowsToSave = (plan: SeriesImportPlan, draft: ImportDraft): ImportRow[] =>
+  plan.rows
+    .filter((row) => !draft.skipped.has(row.order))
+    .map((row) => ({...row, markdown: draft.edits.get(row.order) ?? row.markdown}))

@@ -1,3 +1,4 @@
+import {WarningAmber} from '@mui/icons-material'
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Stack, Typography} from '@mui/material'
 import {FC, useEffect, useMemo, useRef, useState} from 'react'
 import {
@@ -18,8 +19,14 @@ import {
 } from 'react-admin'
 import {useFormContext, useWatch} from 'react-hook-form'
 
-import {ImportPlanPreview} from '@/components/Admin/custom/latex-import/ImportPlanPreview'
-import {planSeriesImport, SeriesImportPlan} from '@/components/Admin/custom/latex-import/planSeriesImport'
+import {
+  emptyDraft,
+  ImportDraft,
+  planSeriesImport,
+  rowsToSave,
+  SeriesImportPlan,
+} from '@/components/Admin/custom/latex-import/planSeriesImport'
+import {ProblemsImportDialog} from '@/components/Admin/custom/latex-import/ProblemsImportDialog'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyDateTimeSplitInput} from '@/components/Admin/custom/MyDateTimeSplitInput'
 import {seasonCodeStrings} from '@/components/Admin/seasonCodeStrings'
@@ -51,8 +58,6 @@ type FormValues = {
   end?: string
   series_1_deadline?: string
   series_2_deadline?: string
-  series_1_latex?: string
-  series_2_latex?: string
 }
 
 export const SemesterCreateWithSeries: FC = () => (
@@ -87,12 +92,14 @@ const FormBody: FC = () => {
 
   const competitionId = useWatch<FormValues, 'competition'>({name: 'competition'})
   const series2Deadline = useWatch<FormValues, 'series_2_deadline'>({name: 'series_2_deadline'})
-  const series1Latex = useWatch<FormValues, 'series_1_latex'>({name: 'series_1_latex'}) ?? ''
-  const series2Latex = useWatch<FormValues, 'series_2_latex'>({name: 'series_2_latex'}) ?? ''
+  const [drafts, setDrafts] = useState<[ImportDraft, ImportDraft]>([emptyDraft, emptyDraft])
   const plans: [SeriesImportPlan, SeriesImportPlan] = [
-    useMemo(() => planSeriesImport(series1Latex, 1, []), [series1Latex]),
-    useMemo(() => planSeriesImport(series2Latex, 2, []), [series2Latex]),
+    useMemo(() => planSeriesImport(drafts[0].latex, 1, []), [drafts]),
+    useMemo(() => planSeriesImport(drafts[1].latex, 2, []), [drafts]),
   ]
+  const problemsToCreate = [rowsToSave(plans[0], drafts[0]), rowsToSave(plans[1], drafts[1])]
+  const setDraft = (index: 0 | 1, draft: ImportDraft) =>
+    setDrafts((current) => (index === 0 ? [draft, current[1]] : [current[0], draft]))
 
   // Derived `end` = series_2_deadline + 14 days. Runs whenever series_2 changes.
   // The user can still manually override `end`; the next deadline change overwrites again (by design).
@@ -216,10 +223,10 @@ const FormBody: FC = () => {
       }
 
       const newCreatedProblems: [Set<number>, Set<number>] = [new Set(createdProblems[0]), new Set(createdProblems[1])]
-      for (const [i, plan] of plans.entries()) {
+      for (const [i, rows] of problemsToCreate.entries()) {
         const seriesId = newSeriesIds[i]
         if (seriesId === null) continue
-        for (const row of plan.rows) {
+        for (const row of rows) {
           if (newCreatedProblems[i].has(row.order)) continue
           try {
             await dataProvider.create('competition/problem', {
@@ -236,8 +243,8 @@ const FormBody: FC = () => {
       }
       setCreatedProblems(newCreatedProblems)
 
-      const allProblemsCreated = plans.every((plan, i) =>
-        plan.rows.every((row) => newCreatedProblems[i].has(row.order)),
+      const allProblemsCreated = problemsToCreate.every((rows, i) =>
+        rows.every((row) => newCreatedProblems[i].has(row.order)),
       )
       if (newSeriesIds[0] !== null && newSeriesIds[1] !== null && allProblemsCreated) {
         notify('content.notifications.semester_with_series.all_series_created', {type: 'success'})
@@ -319,9 +326,10 @@ const FormBody: FC = () => {
       <SeriesRow
         seriesOrder={1}
         deadlineSource="series_1_deadline"
-        latexSource="series_1_latex"
         createdId={createdSeriesIds[0]}
         plan={plans[0]}
+        draft={drafts[0]}
+        onDraftChange={(draft) => setDraft(0, draft)}
         createdProblems={createdProblems[0]}
         defaultTime={DEFAULT_DEADLINE_TIME}
       />
@@ -332,9 +340,10 @@ const FormBody: FC = () => {
       <SeriesRow
         seriesOrder={2}
         deadlineSource="series_2_deadline"
-        latexSource="series_2_latex"
         createdId={createdSeriesIds[1]}
         plan={plans[1]}
+        draft={drafts[1]}
+        onDraftChange={(draft) => setDraft(1, draft)}
         createdProblems={createdProblems[1]}
         defaultTime={DEFAULT_DEADLINE_TIME}
       />
@@ -359,14 +368,17 @@ const FormBody: FC = () => {
 const SeriesRow: FC<{
   seriesOrder: 1 | 2
   deadlineSource: 'series_1_deadline' | 'series_2_deadline'
-  latexSource: 'series_1_latex' | 'series_2_latex'
   createdId: number | null
   plan: SeriesImportPlan
+  draft: ImportDraft
+  onDraftChange: (draft: ImportDraft) => void
   createdProblems: Set<number>
   defaultTime: string
-}> = ({seriesOrder, deadlineSource, latexSource, createdId, plan, createdProblems, defaultTime}) => {
+}> = ({seriesOrder, deadlineSource, createdId, plan, draft, onDraftChange, createdProblems, defaultTime}) => {
   const translate = useTranslate()
-  const latex = useWatch<FormValues, typeof latexSource>({name: latexSource}) ?? ''
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const rows = rowsToSave(plan, draft)
+  const withWarnings = rows.filter((row) => row.warnings.length > 0).length
 
   return (
     <Box>
@@ -384,24 +396,45 @@ const SeriesRow: FC<{
         <Alert severity="success" sx={{mb: 1}}>
           {translate('content.semester_with_series.problems_created', {
             count: createdProblems.size,
-            total: plan.rows.length,
+            total: rows.length,
           })}
         </Alert>
       )}
-      <TextInput
-        source={latexSource}
-        label="content.semester_with_series.problems_latex"
-        helperText={translate('content.semester_with_series.problems_latex_helper', {series: seriesOrder})}
-        multiline
-        minRows={3}
-        fullWidth
-        // the problems already created keep their orders; a changed file would no longer match them
-        disabled={createdProblems.size > 0}
-        sx={{'& textarea': {fontFamily: 'monospace'}}}
-      />
-      <Stack gap={2}>
-        <ImportPlanPreview plan={plan} seriesOrder={seriesOrder} hasInput={!!latex.trim()} />
+      <Stack direction="row" alignItems="center" gap={2}>
+        <Button
+          variant="outlined"
+          onClick={() => setDialogOpen(true)}
+          // the problems already created keep their orders; a changed file would no longer match them
+          disabled={createdProblems.size > 0}
+        >
+          {translate('content.latex_import.series_open')}
+        </Button>
+        {rows.length > 0 && (
+          <Box>
+            <Typography variant="body1">
+              {translate('content.semester_with_series.problems_ready', {count: rows.length})}
+            </Typography>
+            {withWarnings > 0 && (
+              <Stack direction="row" alignItems="center" gap={0.5}>
+                <WarningAmber color="warning" fontSize="small" />
+                <Typography variant="body1">
+                  {translate('content.semester_with_series.problems_warnings', {count: withWarnings})}
+                </Typography>
+              </Stack>
+            )}
+          </Box>
+        )}
       </Stack>
+      <ProblemsImportDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        seriesOrder={seriesOrder}
+        plan={plan}
+        draft={draft}
+        onDraftChange={onDraftChange}
+        confirmLabel={translate('content.latex_import.done')}
+        onConfirm={() => setDialogOpen(false)}
+      />
     </Box>
   )
 }
