@@ -23,7 +23,7 @@ import {seasonCodeStrings} from '@/components/Admin/seasonCodeStrings'
 
 import {bumpSchoolYear, shiftIso} from './semesterPrefillHelpers'
 
-const DEFAULT_DEADLINE_TIME = '20:00'
+const DEFAULT_DEADLINE_TIME = '20:00:00'
 const SEASON_ZIMNY = 0
 const SEASON_LETNY = 1
 

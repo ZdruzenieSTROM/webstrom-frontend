@@ -17,7 +17,7 @@ type Props = {
 // Renders date + time inputs side-by-side so time can be prefilled even before date is set.
 // Bratislava/UTC conversion is delegated to dateTimeInputFormat/Parse; we just split/join on 'T'.
 const isoToLocal = (iso?: string) => {
-  const local = dateTimeInputFormat(iso) // "yyyy-MM-dd'T'HH:mm" in Bratislava, or undefined
+  const local = dateTimeInputFormat(iso) // "yyyy-MM-dd'T'HH:mm:ss" in Bratislava, or undefined
   if (!local) return {date: '', time: ''}
   const [date, time] = local.split('T')
   return {date, time}
@@ -75,7 +75,7 @@ export const MyDateTimeSplitInput: FC<Props> = ({source, validate, label, defaul
             setTime(e.target.value)
             commit(date, e.target.value)
           }}
-          slotProps={{inputLabel: {shrink: true}}}
+          slotProps={{inputLabel: {shrink: true}, htmlInput: {step: 1}}}
           label="Čas"
           error={!!fieldState.error}
           size="small"
