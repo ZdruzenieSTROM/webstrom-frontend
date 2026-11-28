@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {FormDataConsumer, Labeled} from 'react-admin'
+import {FormDataConsumer, Labeled, useRecordContext} from 'react-admin'
 
 import {ProblemContent} from '@/components/Problems/ProblemContent'
 
@@ -29,3 +29,21 @@ export const ProblemPreview: FC = () => (
     }
   </FormDataConsumer>
 )
+
+type ProblemRecord = {
+  text: string
+  order: number
+  image: string | null
+}
+
+// SimpleShowLayout reads `label` off its children to label the row; the component itself ignores it.
+export const ProblemRecordPreview: FC<{label?: string}> = () => {
+  const record = useRecordContext<ProblemRecord>()
+  if (!record) return null
+
+  return (
+    <SitePreview>
+      <ProblemContent order={record.order} text={record.text} image={record.image} />
+    </SitePreview>
+  )
+}
