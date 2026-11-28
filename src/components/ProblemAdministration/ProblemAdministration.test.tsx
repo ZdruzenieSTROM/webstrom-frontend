@@ -148,6 +148,49 @@ describe('ProblemAdministration', () => {
     })
   })
 
+  it('lets a negative score be typed and saves it', async () => {
+    const user = userEvent.setup()
+    vi.mocked(apiAxios.post).mockResolvedValue({data: {}})
+
+    renderWithProviders(<ProblemAdministration />)
+
+    const inputs = await screen.findAllByRole('textbox')
+    await user.clear(inputs[0])
+    await user.type(inputs[0], '-')
+    // A lone minus stays in the field while the digit is still to come
+    expect(inputs[0]).toHaveValue('-')
+
+    await user.type(inputs[0], '3')
+    expect(inputs[0]).toHaveValue('-3')
+    expect(inputs[0]).toHaveStyle({fontWeight: 'normal'})
+
+    await user.click(screen.getByRole('button', {name: /Uložiť body/}))
+
+    await waitFor(() => {
+      expect(apiAxios.post).toHaveBeenCalledWith(
+        '/competition/problem-administration/1/upload-points',
+        expect.objectContaining({
+          solution_set: expect.arrayContaining([expect.objectContaining({id: 1, score: -3})]),
+        }),
+      )
+    })
+  })
+
+  it('shows a saved negative score and sorts it below positive ones', async () => {
+    const user = userEvent.setup()
+    mockProblemFetch({problem: makeProblem({solution_set: [{...aliceFixture, score: -2}, bobFixture]})})
+
+    renderWithProviders(<ProblemAdministration />)
+
+    await screen.findByText('Alice A')
+    await user.click(screen.getByRole('button', {name: /Body/}))
+
+    const inputs = screen.getAllByRole('textbox')
+    expect(inputs[0]).toHaveValue('3')
+    expect(inputs[1]).toHaveValue('-2')
+    expect(inputs[1]).toHaveStyle({fontWeight: '700'})
+  })
+
   it('preserves dirty edits and spinner-feedback through file upload and refetch', async () => {
     const user = userEvent.setup()
 

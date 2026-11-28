@@ -69,6 +69,12 @@ const styles = {
 
 type SortKey = 'name' | 'points'
 
+// Empty or incomplete input (e.g. a lone "-") counts as no score
+const parseScore = (input: string): number | null => {
+  const score = Number.parseInt(input)
+  return Number.isNaN(score) ? null : score
+}
+
 const getSolutionName = (solution: SolutionAdministration) =>
   `${solution.semester_registration?.profile.first_name ?? ''} ${solution.semester_registration?.profile.last_name ?? ''}`.trim()
 
@@ -94,7 +100,8 @@ export const ProblemAdministration: FC = () => {
   const {hasPermissions, permissionsIsLoading} = useHasPermissions()
 
   const baseline = problem?.solution_set
-  const [draftScores, setDraftScores] = useState<Map<number, number | null>>(new Map())
+  // Raw input text, so a "-" typed before the digit stays in the field
+  const [draftScores, setDraftScores] = useState<Map<number, string>>(new Map())
   const [sortKey, setSortKey] = useState<SortKey>('name')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
@@ -107,15 +114,14 @@ export const ProblemAdministration: FC = () => {
       // isDirty true forever with no row in the UI to explain it.
       if (!baselineById.has(id)) continue
       const baselineScore = baselineById.get(id)?.score ?? null
-      if (draftScore !== baselineScore) ids.add(id)
+      if (parseScore(draftScore) !== baselineScore) ids.add(id)
     }
     return ids
   }, [draftScores, baselineById])
 
   const isDirty = dirtyIds.size > 0
 
-  const displayScore = (row: SolutionAdministration): number | null =>
-    draftScores.has(row.id) ? (draftScores.get(row.id) ?? null) : (row.score ?? null)
+  const displayScore = (row: SolutionAdministration): string => draftScores.get(row.id) ?? row.score?.toString() ?? ''
 
   const [exitDialogOpen, setExitDialogOpen] = useState(false)
   const {continueNavigation} = useNavigationTrap({
@@ -134,11 +140,9 @@ export const ProblemAdministration: FC = () => {
   })
 
   const updateScore = (id: number, newPointsInput: string) => {
-    const newPoints = Number.parseInt(newPointsInput)
-    const newScore = Number.isNaN(newPoints) ? null : newPoints
     setDraftScores((current) => {
       const next = new Map(current)
-      next.set(id, newScore)
+      next.set(id, newPointsInput)
       return next
     })
   }
@@ -205,9 +209,10 @@ export const ProblemAdministration: FC = () => {
     return <Typography>Nevalidné číslo úlohy (problemId) v URL alebo ju proste nevieme fetchnúť z BE.</Typography>
 
   const handleSavePoints = () => {
-    const solutionSet = (baseline ?? []).map((row) =>
-      draftScores.has(row.id) ? {...row, score: draftScores.get(row.id) ?? null} : row,
-    )
+    const solutionSet = (baseline ?? []).map((row) => {
+      const draftScore = draftScores.get(row.id)
+      return draftScore === undefined ? row : {...row, score: parseScore(draftScore)}
+    })
     uploadPoints({problemId, solutionSet})
   }
 
@@ -357,8 +362,8 @@ export const ProblemAdministration: FC = () => {
                 <Box
                   component="input"
                   type="text"
-                  pattern="[0-9]"
-                  value={displayScore(solution) ?? ''}
+                  pattern="-?[0-9]"
+                  value={displayScore(solution)}
                   onChange={(event) => updateScore(solution.id, event.target.value)}
                   sx={{
                     ...styles.input,
