@@ -2,7 +2,15 @@ import {Button} from '@mui/material'
 import {FC, useMemo, useState} from 'react'
 import {useDataProvider, useNotify, useRefresh, useTranslate} from 'react-admin'
 
-import {emptyDraft, ExistingProblem, ImportDraft, ImportRow, planSeriesImport, rowsToSave} from './planSeriesImport'
+import {
+  emptyDraft,
+  ExistingProblem,
+  ImportDraft,
+  planSeriesImport,
+  problemData,
+  rowsToSave,
+  RowToSave,
+} from './planSeriesImport'
 import {ProblemsImportDialog} from './ProblemsImportDialog'
 
 type SeriesLatexImportProps = {
@@ -22,16 +30,16 @@ export const SeriesLatexImport: FC<SeriesLatexImportProps> = ({seriesId, seriesO
 
   const plan = useMemo(() => planSeriesImport(draft.latex, seriesOrder, existing), [draft.latex, seriesOrder, existing])
 
-  const saveRow = (row: ImportRow) =>
+  const saveRow = (row: RowToSave) =>
     row.existing === undefined
-      ? dataProvider.create('competition/problem', {data: {series: seriesId, order: row.order, text: row.markdown}})
+      ? dataProvider.create('competition/problem', {data: problemData(row, {series: seriesId, order: row.order})})
       : dataProvider.update('competition/problem', {
           id: row.existing.id,
-          data: {id: row.existing.id, text: row.markdown},
+          data: problemData(row, {id: row.existing.id}),
           previousData: {id: row.existing.id},
         })
 
-  const handleSave = async (rows: ImportRow[]) => {
+  const handleSave = async (rows: RowToSave[]) => {
     setSaving(true)
     let saved = 0
     // one by one, so a failed problem is reported by its order and the rest still get saved

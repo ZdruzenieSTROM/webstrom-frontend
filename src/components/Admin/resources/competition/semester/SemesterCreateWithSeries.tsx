@@ -23,6 +23,7 @@ import {
   emptyDraft,
   ImportDraft,
   planSeriesImport,
+  problemData,
   rowsToSave,
   SeriesImportPlan,
 } from '@/components/Admin/custom/latex-import/planSeriesImport'
@@ -230,7 +231,7 @@ const FormBody: FC = () => {
           if (newCreatedProblems[i].has(row.order)) continue
           try {
             await dataProvider.create('competition/problem', {
-              data: {series: seriesId, order: row.order, text: row.markdown},
+              data: problemData(row, {series: seriesId, order: row.order}),
             })
             newCreatedProblems[i].add(row.order)
           } catch (error) {
@@ -378,7 +379,8 @@ const SeriesRow: FC<{
   const translate = useTranslate()
   const [dialogOpen, setDialogOpen] = useState(false)
   const rows = rowsToSave(plan, draft)
-  const withWarnings = rows.filter((row) => row.warnings.length > 0).length
+  const withWarnings = rows.filter((row) => row.warnings.length > 0 || (row.images.length > 0 && !row.file)).length
+  const withImages = rows.filter((row) => row.file).length
 
   return (
     <Box>
@@ -413,6 +415,7 @@ const SeriesRow: FC<{
           <Box>
             <Typography variant="body1">
               {translate('content.semester_with_series.problems_ready', {count: rows.length})}
+              {withImages > 0 && ` ${translate('content.semester_with_series.problems_images', {count: withImages})}`}
             </Typography>
             {withWarnings > 0 && (
               <Stack direction="row" alignItems="center" gap={0.5}>

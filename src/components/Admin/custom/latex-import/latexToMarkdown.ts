@@ -7,7 +7,8 @@ import {katexMacros} from '@/components/Markdown/katexMacros'
 // renders it; only the text around it is translated. Anything the converter does not know is left
 // in place and reported, so the editor fixes it in the preview instead of it silently disappearing.
 
-export type ConversionResult = {markdown: string; warnings: string[]}
+// images are listed apart from the warnings, so each screen can offer its own way to attach them
+export type ConversionResult = {markdown: string; warnings: string[]; images: string[]}
 
 type Stop = {brace?: boolean; endEnv?: string; item?: boolean}
 
@@ -84,6 +85,7 @@ const ROMAN = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x']
 class Converter {
   private pos = 0
   readonly warnings: string[] = []
+  readonly images: string[] = []
 
   constructor(private readonly src: string) {}
 
@@ -323,6 +325,7 @@ class Converter {
     const inner = new Converter(raw)
     const out = inner.parse({})
     for (const w of inner.warnings) this.warn(w)
+    for (const image of inner.images) if (!this.images.includes(image)) this.images.push(image)
     return out
   }
 
@@ -379,7 +382,7 @@ class Converter {
     if (name === 'includegraphics') {
       this.readOptionalArg()
       const file = this.readRawArg() ?? ''
-      this.warn(`Obrázok ${file} sa do textu neprenáša – nahraj ho do poľa Obrázok.`)
+      if (!this.images.includes(file)) this.images.push(file)
       return ''
     }
     if (name === 'item') {
@@ -510,5 +513,5 @@ const letterLabel = (options: string | undefined): ((index: number) => string | 
 export const latexToMarkdown = (tex: string): ConversionResult => {
   const converter = new Converter(tex.replaceAll('\r\n', '\n'))
   const markdown = converter.convert()
-  return {markdown, warnings: converter.warnings}
+  return {markdown, warnings: converter.warnings, images: converter.images}
 }

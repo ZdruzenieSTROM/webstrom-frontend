@@ -48,9 +48,12 @@ export const LatexImport: FC<LatexImportProps> = ({source}) => {
             sx={{mt: 1}}
             slotProps={{htmlInput: {sx: {fontFamily: 'monospace'}}}}
           />
-          {result.warnings.length > 0 && (
+          {result.warnings.length + result.images.length > 0 && (
             <Alert severity="warning">
               <Box component="ul" sx={{m: 0, pl: 2}}>
+                {result.images.map((file) => (
+                  <li key={file}>{translate('content.latex_import.image_to_field', {file})}</li>
+                ))}
                 {result.warnings.map((warning) => (
                   <li key={warning}>{warning}</li>
                 ))}

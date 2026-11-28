@@ -3,7 +3,7 @@ import path from 'node:path'
 
 import {describe, expect, it} from 'vitest'
 
-import {planSeriesImport, rowsToSave} from './planSeriesImport'
+import {planSeriesImport, problemData, rowsToSave} from './planSeriesImport'
 
 // STROM 51, winter semester – the series 1 file as written in Overleaf
 // (the path is built from this test file's directory, not from input)
@@ -28,15 +28,16 @@ describe(planSeriesImport, () => {
       markdown:
         'Dokážte, že súčin troch po sebe idúcich kladných celých čísel nemôže byť treťou mocninou kladného celého čísla.',
       warnings: [],
+      images: [],
       existing,
     })
     expect({otherSeries, duplicates, unclosed}).toStrictEqual({otherSeries: [], duplicates: [], unclosed: []})
   })
 
-  it('should carry the converter warnings of each problem', () => {
+  it('should carry the images each problem references', () => {
     const {rows} = planSeriesImport(zadania1, 1, [])
 
-    expect(rows[2].warnings).toStrictEqual(['Obrázok obr/4-3.PNG sa do textu neprenáša – nahraj ho do poľa Obrázok.'])
+    expect(rows[2].images).toStrictEqual(['obr/4-3.PNG'])
   })
 
   it('should plan nothing and report the file series when it belongs to another series', () => {
@@ -49,8 +50,8 @@ describe(planSeriesImport, () => {
 \newcommand{\zadIIsII}{Druhá séria, druhá úloha.}`
 
     expect(planSeriesImport(latex, 2, []).rows).toStrictEqual([
-      {order: 1, markdown: 'Druhá séria, *prvá* úloha.', warnings: [], existing: undefined},
-      {order: 2, markdown: 'Druhá séria, druhá úloha.', warnings: [], existing: undefined},
+      {order: 1, markdown: 'Druhá séria, *prvá* úloha.', warnings: [], images: [], existing: undefined},
+      {order: 2, markdown: 'Druhá séria, druhá úloha.', warnings: [], images: [], existing: undefined},
     ])
   })
 
@@ -80,11 +81,36 @@ describe(rowsToSave, () => {
       [],
     )
 
-    const rows = rowsToSave(plan, {latex: '', skipped: new Set([2]), edits: new Map([[3, 'Tretia, opravená.']])})
+    const rows = rowsToSave(plan, {
+      latex: '',
+      skipped: new Set([2]),
+      edits: new Map([[3, 'Tretia, opravená.']]),
+      files: new Map(),
+    })
 
     expect(rows.map(({order, markdown}) => [order, markdown])).toStrictEqual([
       [1, 'Prvá.'],
       [3, 'Tretia, opravená.'],
     ])
+  })
+})
+
+describe(problemData, () => {
+  const row = planSeriesImport(String.raw`\newcommand{\zadIsI}{Text.}`, 1, []).rows[0]
+
+  it('should send plain fields without a file, so an overwrite keeps the stored image', () => {
+    expect(problemData({...row}, {id: 7})).toStrictEqual({id: 7, text: 'Text.'})
+  })
+
+  it('should send multipart data with the attached image', () => {
+    const file = new File(['png'], 'obrazok.png', {type: 'image/png'})
+
+    const data = problemData({...row, file}, {series: 3, order: 1})
+
+    expect('formData' in data).toBe(true)
+    const formData = (data as {formData: FormData}).formData
+    expect([...formData.keys()]).toStrictEqual(['series', 'order', 'text', 'image'])
+    expect(formData.get('text')).toBe('Text.')
+    expect((formData.get('image') as File).name).toBe('obrazok.png')
   })
 })
