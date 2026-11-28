@@ -92,8 +92,6 @@
     "react-hook-form": "npm:react-hook-form@7.92.0",
     "import-in-the-middle": "^3.0.1",
     "@mui/material": "^7.1.1",
-    "@mui/icons-material": "^7.1.1",
-    "@mui/system": "^7.1.1",
-    "@mui/utils": "^7.1.1"
+    "@mui/icons-material": "^7.1.1"
   }
 }
