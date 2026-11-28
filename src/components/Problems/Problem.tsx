@@ -1,6 +1,5 @@
 import {Warning} from '@mui/icons-material'
-import {Stack, Tooltip, Typography} from '@mui/material'
-import Image from 'next/image'
+import {Stack, Tooltip} from '@mui/material'
 import {FC, useState} from 'react'
 
 import {Button} from '@/components/Clickable/Button'
@@ -9,7 +8,7 @@ import {Problem as ProblemType} from '@/types/api/competition'
 import {AuthContainer} from '@/utils/AuthContainer'
 import {Seminar} from '@/utils/useSeminarInfo'
 
-import {Markdown} from '../Markdown/Markdown'
+import {ProblemContent} from './ProblemContent'
 import {UploadProblemForm} from './UploadProblemForm'
 
 export type DiscussionProblem = {
@@ -60,27 +59,7 @@ export const Problem: FC<{
 
   return (
     <div>
-      <Typography variant="h3">{problem.order}. ÚLOHA</Typography>
-      <Markdown content={problem.text} />
-      {problem.image && (
-        <Stack alignItems="center">
-          <Image
-            src={problem.image}
-            alt={`Obrázok - ${problem.order} úloha`}
-            style={{
-              width: 'auto',
-              height: 'auto',
-              minHeight: '3rem',
-              minWidth: '3rem',
-              maxHeight: '50vh',
-              marginTop: '1rem',
-            }}
-            // width/height dava len nieco vediet nextu, ale realne sa to styluje stylmi vyssie
-            width={800}
-            height={800}
-          />
-        </Stack>
-      )}
+      <ProblemContent order={problem.order} text={problem.text} image={problem.image} />
       {displayProblemUploadForm && (
         <UploadProblemForm
           problemId={problem.id}
