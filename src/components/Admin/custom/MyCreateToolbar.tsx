@@ -2,16 +2,18 @@ import {SaveButton, Toolbar, useNotify} from 'react-admin'
 import {useFormContext} from 'react-hook-form'
 
 interface MyCreateToolbarProps {
+  disableSave?: boolean
   dontResetFields?: string[]
 }
 
-export const MyCreateToolbar = ({dontResetFields}: MyCreateToolbarProps = {}) => {
+export const MyCreateToolbar = ({disableSave, dontResetFields}: MyCreateToolbarProps = {}) => {
   const {reset, getValues} = useFormContext()
   const notify = useNotify()
   return (
     <Toolbar sx={{gap: 1}}>
-      <SaveButton />
+      <SaveButton disabled={disableSave} />
       <SaveButton
+        disabled={disableSave}
         label="ra.action.save_and_create_another"
         mutationOptions={{
           onSuccess: () => {
