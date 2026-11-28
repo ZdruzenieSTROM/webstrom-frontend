@@ -30,10 +30,10 @@ export const ProblemEdit: FC = () => (
           validate={required()}
           helperText="Úlohy môžu obsahovať iba TeX (iba matický mód) a Markdown (nie HTML). Návod: https://www.markdownguide.org/basic-syntax/"
         />
+        <ProblemPreview />
         <ImageInput source="image" accept={Accept.Image}>
           <MyImageField />
         </ImageInput>
-        <ProblemPreview />
         <MyEditFileInput source="solution_pdf" accept={Accept.Pdf} />
       </FormTab>
     </MyTabbedForm>
