@@ -17,9 +17,7 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  // musime zatial nechat webpack (nie turbopack) pre build, napr. kvoli tejto issue:
-  // https://github.com/vercel/next.js/discussions/77721#discussioncomment-13468362
-  // ked to bude fixed, mozeme znovu vratit `--turbopack` do `build` scriptu v package.json
+  // build aj dev bezia na Turbopacku (pravidlo vyssie); toto plati len pre `next build --webpack`
   webpack(config: Configuration) {
     config.module?.rules?.push({
       test: /\.svg$/,
