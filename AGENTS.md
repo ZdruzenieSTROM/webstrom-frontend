@@ -32,13 +32,16 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 | Production build              | `yarn build`                                        |
 
 CI (`branch-test` in `.github/workflows/test.yml`) runs `yarn tsc`, `yarn lint`, `yarn test`, `yarn build`
-on every PR; run the same four before pushing.
+on every PR; run the same four before pushing. `yarn build` rewrites `next-env.d.ts` to `.next/types/...`
+paths; don't commit that change (`git checkout next-env.d.ts`).
 
 ### Which backend the dev server talks to
 
 - The committed `.env` sets `BE_PROTOCOL` / `BE_HOSTNAME` / `BE_PORT`; later uncommented lines win, and by
   default that is the deployed test backend, `https://test.strom.sk`. No local backend is needed for FE work.
 - Shortcuts that override `.env`: `yarn dev:local` (`localhost:8000`), `yarn dev:test`, `yarn dev:prod`.
+- Don't commit `.env` changes. For other values use the shortcuts or a gitignored `.env.local`, which Next
+  loads with higher priority than `.env`.
 - `DEBUG_SERVER=true` logs every server-side API call.
 - The browser calls relative `/api`, `/media`, `/django-admin` and `/static`. Locally `src/proxy.ts`
   rewrites them to the backend; on deployed servers nginx does it. The Next server calls the backend URL
@@ -55,6 +58,8 @@ on every PR; run the same four before pushing.
 - A mutation is wrapped in `mutationOptions({mutationFn})`.
 - Components consume them directly: `useQuery(apiOptions.x.y(...))`, `useMutation(apiOptions.x.y())`, or
   spread to add callbacks: `useMutation({...apiOptions.x.y(), onSuccess})`. Don't call axios from components.
+  Exceptions: react-admin's `Admin/dataProvider.ts` uses `apiAxios` directly by design; the direct calls in
+  `FileUploader` and `SemesterAdministration` are leftovers — don't copy them.
 - `apiOptions` uses the browser axios instance; `createSSRApiOptions(req)` builds the same tree on an
   instance that forwards the request's auth cookie and CSRF header. Auth is the Django `sessionid` cookie
   plus `X-CSRFToken`, set up in `src/api/apiAxios.ts`.
