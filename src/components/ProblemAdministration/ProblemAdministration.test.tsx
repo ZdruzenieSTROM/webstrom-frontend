@@ -232,6 +232,7 @@ describe('ProblemAdministration', () => {
     const bobFileInput = within(bobUploader).getByDisplayValue('')
     const file = new File(['x'], 'bob.pdf', {type: 'application/pdf'})
     await user.upload(bobFileInput, file)
+    expect(apiAxios.post).toHaveBeenCalledWith('/competition/solution/2/upload-solution-file', expect.any(FormData))
 
     // POST in-flight: spinner is present.
     await waitFor(() => {

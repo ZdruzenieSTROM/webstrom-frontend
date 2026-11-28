@@ -1,44 +1,21 @@
 import {Grid, Stack, Typography} from '@mui/material'
-import {useMutation, useQuery} from '@tanstack/react-query'
+import {QueryKey, useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {AxiosError} from 'axios'
 import {FC, Fragment, useState} from 'react'
 import {useForm} from 'react-hook-form'
 
 import {apiOptions} from '@/api/api'
-import {apiAxios} from '@/api/apiAxios'
 import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {FormInput} from '@/components/FormItems/FormInput/FormInput'
-import {Result, SeriesWithProblems} from '@/types/api/competition'
+import {Invitation, PostalCard, Result, SeriesWithProblems} from '@/types/api/competition'
 import {formatDateTime} from '@/utils/formatDate'
 import {useDataFromURL} from '@/utils/useDataFromURL'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 
-import {School} from '../../types/api/personal'
 import {Dialog} from '../Dialog/Dialog'
 import {Loading} from '../Loading/Loading'
 import {PublicationUploader} from '../PublicationUploader/PublicationUploader'
-
-interface PostalCard {
-  code: number
-  name: string
-  abbreviation: string
-  street: string
-  city: string
-  zip_code: string
-  email: string
-}
-
-interface Invitation {
-  first_name: string
-  last_name: string
-  is_participant: boolean
-}
-
-interface SchoolInvitation {
-  participants: Invitation[]
-  school_name: School
-}
 
 type InvitationFormValues = {
   num_participants: number
@@ -79,11 +56,18 @@ export const SemesterAdministration: FC = () => {
   }
   const {control, getValues} = useForm<InvitationFormValues>({defaultValues})
 
+  const queryClient = useQueryClient()
+  // each click generates text from the current grading, so skip the cache; one attempt, like a plain request
+  const fetchFresh = <T,>(options: {queryKey: QueryKey; queryFn: () => Promise<T>}) =>
+    queryClient.fetchQuery({...options, staleTime: 0, retry: false})
+
   const getResults = async (seriesId: number | null) => {
     const isSemester = seriesId === null
 
-    const {data} = await apiAxios.get<Result[]>(
-      isSemester ? `/competition/semester/${semesterId}/results` : `/competition/series/${seriesId}/results`,
+    const data = await fetchFresh(
+      isSemester
+        ? apiOptions.competition.semester.results(semesterId)
+        : apiOptions.competition.series.results.list(seriesId),
     )
     setTextareaContent(
       data
@@ -109,8 +93,10 @@ export const SemesterAdministration: FC = () => {
   }
 
   const getPostalCards = async (offline_only: boolean) => {
-    const {data} = await apiAxios.get<PostalCard[]>(
-      `/competition/semester/${semesterId}/${offline_only ? 'offline-schools' : 'schools'}`,
+    const data = await fetchFresh(
+      offline_only
+        ? apiOptions.competition.semester.offlineSchools(semesterId)
+        : apiOptions.competition.semester.schools(semesterId),
     )
     setTextareaContent(
       data
@@ -124,8 +110,8 @@ export const SemesterAdministration: FC = () => {
 
   const getInvites = async () => {
     const {num_participants, num_substitutes} = getValues()
-    const {data} = await apiAxios.get<Invitation[]>(
-      `/competition/semester/${semesterId}/invitations/${num_participants}/${num_substitutes}`,
+    const data = await fetchFresh(
+      apiOptions.competition.semester.invitations(semesterId, num_participants, num_substitutes),
     )
     toggleInvitationDialog()
     const result = []
@@ -145,8 +131,8 @@ export const SemesterAdministration: FC = () => {
 
   const getSchoolInvites = async () => {
     const {num_participants, num_substitutes} = getValues()
-    const {data} = await apiAxios.get<SchoolInvitation[]>(
-      `/competition/semester/${semesterId}/school-invitations/${num_participants}/${num_substitutes}`,
+    const data = await fetchFresh(
+      apiOptions.competition.semester.schoolInvitations(semesterId, num_participants, num_substitutes),
     )
     toggleInvitationDialog()
     setTextareaContent(

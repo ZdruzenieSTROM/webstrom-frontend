@@ -11,8 +11,11 @@ import {
   Competition,
   Event,
   Grade,
+  Invitation,
+  PostalCard,
   ProblemWithSolutions,
   Result,
+  SchoolInvitation,
   Semester,
   SemesterWithProblems,
   SeriesWithProblems,
@@ -116,11 +119,40 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
               axiosInstance.post<UploadCorrectedResponse>(`/competition/problem/${problemId}/upload-corrected`, data),
             ),
         }),
+      // upload targets of FileUploader take their id up front: the component only knows the FormData it sends
+      uploadModelSolution: (problemId: string | undefined) =>
+        mutationOptions({
+          mutationFn: (data: FormData) =>
+            unwrap(axiosInstance.post(`/competition/problem/${problemId}/upload-model-solution`, data)),
+        }),
       // intentionally NOT unwrapped — consumer differentiates 200/201 in onSuccess via response.status
       uploadSolution: () =>
         mutationOptions({
           mutationFn: ({problemId, data}: {problemId: number; data: FormData}) =>
             axiosInstance.post(`/competition/problem/${problemId}/upload-solution`, data),
+        }),
+    },
+    publication: {
+      create: () =>
+        mutationOptions({
+          mutationFn: (data: FormData) => unwrap(axiosInstance.post('/competition/publication/', data)),
+        }),
+      update: (publicationId: number) =>
+        mutationOptions({
+          mutationFn: (data: FormData) =>
+            unwrap(axiosInstance.patch(`/competition/publication/${publicationId}/`, data)),
+        }),
+    },
+    solution: {
+      uploadSolutionFile: (solutionId: number) =>
+        mutationOptions({
+          mutationFn: (data: FormData) =>
+            unwrap(axiosInstance.post(`/competition/solution/${solutionId}/upload-solution-file`, data)),
+        }),
+      uploadCorrectedSolutionFile: (solutionId: number) =>
+        mutationOptions({
+          mutationFn: (data: FormData) =>
+            unwrap(axiosInstance.post(`/competition/solution/${solutionId}/upload-corrected-solution-file`, data)),
         }),
     },
     comment: {
@@ -180,6 +212,36 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
       results: (semesterId: number | undefined | null) => ({
         queryKey: ['competition', 'semester', semesterId, 'results'],
         queryFn: () => unwrap(axiosInstance.get<Result[]>(`/competition/semester/${semesterId}/results`)),
+        enabled: semesterId != null,
+      }),
+      schools: (semesterId: number | undefined | null) => ({
+        queryKey: ['competition', 'semester', semesterId, 'schools'],
+        queryFn: () => unwrap(axiosInstance.get<PostalCard[]>(`/competition/semester/${semesterId}/schools`)),
+        enabled: semesterId != null,
+      }),
+      offlineSchools: (semesterId: number | undefined | null) => ({
+        queryKey: ['competition', 'semester', semesterId, 'offline-schools'],
+        queryFn: () => unwrap(axiosInstance.get<PostalCard[]>(`/competition/semester/${semesterId}/offline-schools`)),
+        enabled: semesterId != null,
+      }),
+      invitations: (semesterId: number | undefined | null, numParticipants: number, numSubstitutes: number) => ({
+        queryKey: ['competition', 'semester', semesterId, 'invitations', numParticipants, numSubstitutes],
+        queryFn: () =>
+          unwrap(
+            axiosInstance.get<Invitation[]>(
+              `/competition/semester/${semesterId}/invitations/${numParticipants}/${numSubstitutes}`,
+            ),
+          ),
+        enabled: semesterId != null,
+      }),
+      schoolInvitations: (semesterId: number | undefined | null, numParticipants: number, numSubstitutes: number) => ({
+        queryKey: ['competition', 'semester', semesterId, 'school-invitations', numParticipants, numSubstitutes],
+        queryFn: () =>
+          unwrap(
+            axiosInstance.get<SchoolInvitation[]>(
+              `/competition/semester/${semesterId}/school-invitations/${numParticipants}/${numSubstitutes}`,
+            ),
+          ),
         enabled: semesterId != null,
       }),
     },

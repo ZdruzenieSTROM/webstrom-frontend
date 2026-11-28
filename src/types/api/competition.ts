@@ -1,5 +1,5 @@
 import {Gallery} from './cms'
-import {ProfileShort, SchoolShort} from './personal'
+import {ProfileShort, School, SchoolShort} from './personal'
 
 export type Grade = {
   id: number
@@ -271,4 +271,25 @@ export interface SolutionShort {
   solution_pk: number | null
   problem_pk: number
   votes: number
+}
+
+export interface PostalCard {
+  code: number
+  name: string
+  abbreviation: string
+  street: string
+  city: string
+  zip_code: string
+  email: string
+}
+
+export interface Invitation {
+  first_name: string
+  last_name: string
+  is_participant: boolean
+}
+
+export interface SchoolInvitation {
+  participants: Invitation[]
+  school_name: School
 }

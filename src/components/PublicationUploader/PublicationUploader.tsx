@@ -2,6 +2,7 @@ import {Stack, Typography} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
 import {FC} from 'react'
 
+import {apiOptions} from '@/api/api'
 import {PublicationTypes, SemesterWithProblems} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
 
@@ -27,7 +28,9 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
 
   const publication = semesterData.publication_set.find((publication) => publication.order === order)
 
-  const uploadLink = publication ? `/competition/publication/${publication.id}/` : `/competition/publication/`
+  const uploadOptions = publication
+    ? apiOptions.competition.publication.update(publication.id)
+    : apiOptions.competition.publication.create()
 
   return (
     <Stack direction="row" gap={2} alignItems="center">
@@ -38,11 +41,10 @@ export const PublicationUploader: FC<PublicationUploaderProps> = ({semesterId, o
         </Link>
       )}
       <FileUploader
-        uploadLink={uploadLink}
+        uploadOptions={uploadOptions}
         acceptedFormats={Accept.Pdf}
         adjustFormData={appendFormData}
         refetch={refetch}
-        alreadyUploaded={!!publication}
       />
     </Stack>
   )

@@ -1,35 +1,26 @@
 import {Upload} from '@mui/icons-material'
 import {CircularProgress} from '@mui/material'
-import {useMutation} from '@tanstack/react-query'
+import {useMutation, UseMutationOptions} from '@tanstack/react-query'
 import {FC, useCallback} from 'react'
 import {Accept, DropzoneOptions, useDropzone} from 'react-dropzone'
 
-import {apiAxios} from '@/api/apiAxios'
-
 interface FileUploaderProps {
-  uploadLink: string
+  uploadOptions: UseMutationOptions<unknown, Error, FormData>
   acceptedFormats?: Accept
   adjustFormData?: (formData: FormData) => void
   refetch: () => void
-  alreadyUploaded?: boolean
   testId?: string
 }
 
 export const FileUploader: FC<FileUploaderProps> = ({
-  uploadLink,
+  uploadOptions,
   acceptedFormats,
   adjustFormData,
   refetch,
-  alreadyUploaded,
   testId,
 }) => {
-  const postMutation = useMutation({
-    mutationFn: (formData: FormData) => apiAxios.post(uploadLink, formData),
-    onSuccess: () => refetch(),
-  })
-
-  const patchMutation = useMutation({
-    mutationFn: (formData: FormData) => apiAxios.patch(uploadLink, formData),
+  const {mutate, isPending} = useMutation({
+    ...uploadOptions,
     onSuccess: () => refetch(),
   })
 
@@ -39,14 +30,9 @@ export const FileUploader: FC<FileUploaderProps> = ({
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
       adjustFormData?.(formData)
-
-      if (alreadyUploaded) {
-        patchMutation.mutate(formData)
-      } else {
-        postMutation.mutate(formData)
-      }
+      mutate(formData)
     },
-    [adjustFormData, alreadyUploaded, postMutation, patchMutation],
+    [adjustFormData, mutate],
   )
 
   const {getRootProps, getInputProps} = useDropzone({
@@ -55,12 +41,10 @@ export const FileUploader: FC<FileUploaderProps> = ({
     accept: acceptedFormats ?? {},
   })
 
-  const isUploading = postMutation.isPending || patchMutation.isPending
-
   return (
-    <div {...getRootProps({style: {cursor: isUploading ? 'wait' : 'pointer'}})} data-testid={testId}>
+    <div {...getRootProps({style: {cursor: isPending ? 'wait' : 'pointer'}})} data-testid={testId}>
       <input {...getInputProps()} />
-      {isUploading ? <CircularProgress size={24} color="inherit" /> : <Upload />}
+      {isPending ? <CircularProgress size={24} color="inherit" /> : <Upload />}
     </div>
   )
 }
