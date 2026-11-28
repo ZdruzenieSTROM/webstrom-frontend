@@ -130,8 +130,11 @@ export const ProblemsImportDialog: FC<ProblemsImportDialogProps> = ({
                       onChange={(event) => setSkipped(row.order, event.target.value === 'skip')}
                       // the select sits inside the summary, whose click would toggle the row
                       onClick={(event) => event.stopPropagation()}
+                      // outlined, because the admin's filled default keeps an empty label's height above the value
+                      variant="outlined"
                       fullWidth={false}
-                      sx={{flexShrink: 0, minWidth: 160}}
+                      // as wide as the longest option, so the excerpts start at the same place in every row
+                      sx={{flexShrink: 0, minWidth: 140}}
                     >
                       <MenuItem value="write">
                         {translate(
