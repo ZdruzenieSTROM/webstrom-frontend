@@ -17,6 +17,13 @@ type CompetitionPageProps = {
 
 const VISIBLE_HISTORY_EVENTS = 15
 
+// Labels are the publication type names, as on BE (type 2 is Brožúra: problems with solutions)
+const HISTORY_PUBLICATIONS = [
+  {type: PublicationTypes.PROBLEMS, kind: 'problems'},
+  {type: PublicationTypes.SOLUTIONS, kind: 'solutions'},
+  {type: PublicationTypes.RESULTS, kind: 'results'},
+] as const
+
 const getPublication = (event: Event, publicationType: number) => {
   return event.publication_set.find((publication) => publication.publication_type === publicationType)
 }
@@ -121,13 +128,15 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
             }}
           >
             <Stack direction="row" flexWrap={{xs: 'wrap', sm: 'nowrap'}} gap={0.5} sx={historyButtonGroupSx}>
-              <ArchiveButton compact kind="problems" href={getPublication(event, PublicationTypes.PROBLEMS.id)?.file} />
-              <ArchiveButton
-                compact
-                kind="solutions"
-                href={getPublication(event, PublicationTypes.SOLUTIONS.id)?.file}
-              />
-              <ArchiveButton compact kind="results" href={getPublication(event, PublicationTypes.RESULTS.id)?.file} />
+              {HISTORY_PUBLICATIONS.map(({type, kind}) => (
+                <ArchiveButton
+                  compact
+                  key={type.id}
+                  kind={kind}
+                  label={type.display_name}
+                  href={getPublication(event, type.id)?.file}
+                />
+              ))}
             </Stack>
             {/* no disabled Fotky: most past events have no gallery, a column of grey buttons is only noise */}
             {event.galleries.length > 0 && (
