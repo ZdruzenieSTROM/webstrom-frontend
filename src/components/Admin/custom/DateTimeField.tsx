@@ -5,6 +5,7 @@ export const DateTimeField: FC<FieldProps> = ({source}) => (
   <DateField
     source={source}
     showTime={true}
+    locales="sk-SK"
     options={{
       timeZone: 'Europe/Bratislava',
       hourCycle: 'h23',

@@ -11,6 +11,7 @@ import {
 } from 'react-admin'
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
+import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 
 export const UpcomingOrCurrentEvent: FC = () => {
   const record = useRecordContext()
@@ -26,7 +27,7 @@ export const UpcomingOrCurrentEvent: FC = () => {
     >
       <SimpleShowLayout record={record.upcoming_or_current_event}>
         <NumberField source="year" />
-        <NumberField source="season_code" />
+        <SeasonCodeField source="season_code" />
         <TextField source="school_year" />
         <DateTimeField source="start" />
         <DateTimeField source="end" />

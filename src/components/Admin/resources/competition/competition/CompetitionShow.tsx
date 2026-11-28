@@ -14,6 +14,7 @@ import {
 
 import {DateTimeField} from '@/components/Admin/custom/DateTimeField'
 import {MyShow} from '@/components/Admin/custom/MyShow'
+import {SeasonCodeField} from '@/components/Admin/custom/SeasonCodeField'
 import {SitesArrayField} from '@/components/Admin/custom/SitesArrayField'
 import {TruncatedTextField} from '@/components/Admin/custom/TruncatedTextField'
 
@@ -44,7 +45,7 @@ export const CompetitionShow: FC = () => (
           <ArrayField source="history_events">
             <Datagrid rowClick={(id) => `/competition/event/${id}/show`}>
               <NumberField source="year" />
-              <NumberField source="season_code" />
+              <SeasonCodeField source="season_code" />
               <TextField source="school_year" />
               <DateTimeField source="start" />
               <DateTimeField source="end" />

@@ -95,6 +95,13 @@ const themeOverrides: RaThemeOptions = {
         size: 'medium',
       },
     },
+    // react-admin `AutocompleteInput` tieto dva texty nepreklada, MUI by ukazal anglicke "No options" a "Loading…"
+    MuiAutocomplete: {
+      defaultProps: {
+        noOptionsText: myI18nProvider.translate('content.autocomplete.no_options'),
+        loadingText: myI18nProvider.translate('content.autocomplete.loading'),
+      },
+    },
     MuiSvgIcon: {
       styleOverrides: {
         root: {
@@ -116,7 +123,7 @@ const Unauthorized: FC = () => {
   const {alert} = useAlert()
 
   useEffect(() => {
-    alert(myI18nProvider.translate('content.notifications.logged_out'))
+    alert(myI18nProvider.translate('content.notifications.no_admin_access'))
     router.push('/strom')
   }, [alert, router])
 

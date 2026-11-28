@@ -77,6 +77,7 @@ describe(parseError, () => {
     })
   })
 
+  // fallback texty su z klucov `content.errors.unknown` / `content.errors.unknown_status` (sk_SK.ts)
   it('500 with no parseable body → fallback with status in message', () => {
     const err = axiosErrorWith(500, '<html>Internal Server Error</html>')
 

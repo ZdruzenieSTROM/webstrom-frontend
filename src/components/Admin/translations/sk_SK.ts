@@ -303,6 +303,15 @@ export const sk_SK = {
       summer: 'Letný',
       other: 'Iný',
     },
+    errors: {
+      unknown: 'Nastala neznáma chyba',
+      unknown_status: 'Nastala neznáma chyba (HTTP %{status})',
+    },
+    // texty MUI Autocomplete, ktore react-admin nepreklada (pouzite v teme admina v `Admin.tsx`)
+    autocomplete: {
+      no_options: 'Žiadne možnosti',
+      loading: 'Načítavam…',
+    },
     notifications: {
       record_created: 'Záznam vytvorený',
       record_saved: 'Záznam uložený',
@@ -310,7 +319,7 @@ export const sk_SK = {
         saved: 'Uložené úlohy: %{count} z %{total}',
         error: 'Úloha %{order}: %{message}',
       },
-      logged_out: 'Odhlásenie prebehlo úspešne.',
+      no_admin_access: 'Do administrácie nemáš prístup. Prihlás sa účtom s oprávnením.',
       semester_with_series: {
         prefill_no_semesters: 'Žiadne predchádzajúce semestre pre túto aktivitu. Vyplň manuálne.',
         prefill_fetch_error: 'Chyba pri načítaní predchádzajúcich semestrov.',
