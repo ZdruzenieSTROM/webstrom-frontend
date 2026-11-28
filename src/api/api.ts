@@ -17,6 +17,7 @@ import {
   SemesterWithProblems,
   SeriesWithProblems,
   SolutionAdministration,
+  UploadCorrectedResponse,
 } from '@/types/api/competition'
 import {IGeneralPostResponse} from '@/types/api/general'
 import {ISchool, MyPermissions, Profile} from '@/types/api/personal'
@@ -111,7 +112,9 @@ export const createApiOptions = (axiosInstance: AxiosInstance) => ({
       uploadCorrected: () =>
         mutationOptions({
           mutationFn: ({problemId, data}: {problemId: string; data: FormData}) =>
-            unwrap(axiosInstance.post(`/competition/problem/${problemId}/upload-corrected`, data)),
+            unwrap(
+              axiosInstance.post<UploadCorrectedResponse>(`/competition/problem/${problemId}/upload-corrected`, data),
+            ),
         }),
       // intentionally NOT unwrapped — consumer differentiates 200/201 in onSuccess via response.status
       uploadSolution: () =>

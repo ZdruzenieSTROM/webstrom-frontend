@@ -164,6 +164,23 @@ export interface SolutionAdministration {
   is_online: boolean
 }
 
+export interface UploadCorrectedFileIssue {
+  filename: string
+  reason: string
+}
+
+export interface UploadCorrectedResponse {
+  uploaded: {filename: string; solution_id: number; score: number}[]
+  errors: UploadCorrectedFileIssue[]
+  skipped: UploadCorrectedFileIssue[]
+}
+
+export interface UploadCorrectedErrorResponse {
+  detail: string
+  errors: UploadCorrectedFileIssue[]
+  skipped: UploadCorrectedFileIssue[]
+}
+
 export interface ProblemWithSolutions {
   solution_set: SolutionAdministration[]
   text?: string

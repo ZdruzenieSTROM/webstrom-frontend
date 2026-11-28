@@ -1,5 +1,6 @@
 import {screen, waitFor, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {AxiosError} from 'axios'
 import mockRouter from 'next-router-mock'
 import {beforeEach, describe, expect, it, vi} from 'vitest'
 
@@ -21,6 +22,21 @@ const bobFixture = makeSolution({
 })
 
 const baselineProblem = makeProblem({solution_set: [aliceFixture, bobFixture]})
+
+const getZipInput = async () => {
+  await screen.findByText(/Opravovanie 1\. úlohy/)
+  const input = document.querySelector<HTMLInputElement>('input[type="file"][accept*=".zip"]')
+  if (!input) throw new Error('ZIP dropzone input not found')
+  return input
+}
+
+const rejectWith = (data: unknown) =>
+  vi.mocked(apiAxios.post).mockRejectedValue(
+    new AxiosError('Request failed with status code 400', '400', undefined, undefined, {
+      status: 400,
+      data,
+    } as never),
+  )
 
 describe('ProblemAdministration', () => {
   beforeEach(() => {
@@ -196,5 +212,134 @@ describe('ProblemAdministration', () => {
     })
     expect(inputs[0]).toHaveValue('9')
     expect(inputs[0]).toHaveStyle({fontWeight: 'normal'})
+  })
+
+  describe('corrected solutions ZIP upload', () => {
+    const zipFile = new File(['zip'], 'opravene.zip', {type: 'application/zip'})
+
+    it('posts the ZIP and shows how many solutions were uploaded and which files were skipped', async () => {
+      const user = userEvent.setup()
+      vi.mocked(apiAxios.post).mockResolvedValue({
+        data: {
+          uploaded: [{filename: '5-AliceA-1-10.pdf', solution_id: 1, score: 5}],
+          errors: [],
+          skipped: [{filename: 'poznamky.txt', reason: 'Nie je PDF, preskočené.'}],
+        },
+      })
+      renderWithProviders(<ProblemAdministration />)
+
+      await user.upload(await getZipInput(), zipFile)
+
+      expect(apiAxios.post).toHaveBeenCalledWith('/competition/problem/1/upload-corrected', expect.any(FormData))
+      const result = await screen.findByTestId('upload-zip-result')
+      expect(within(result).getByText('Nahraných opravených riešení: 1.')).toBeInTheDocument()
+      expect(within(result).getByText('poznamky.txt')).toBeInTheDocument()
+      expect(within(result).getByText(/Nie je PDF, preskočené\./)).toBeInTheDocument()
+    })
+
+    it('lists files that were not saved after a partial upload', async () => {
+      const user = userEvent.setup()
+      vi.mocked(apiAxios.post).mockResolvedValue({
+        data: {
+          uploaded: [{filename: '5-AliceA-1-10.pdf', solution_id: 1, score: 5}],
+          errors: [{filename: '4-BobB-1-11.pdf', reason: 'Súbor má koncovku .pdf, ale jeho obsah nie je PDF.'}],
+          skipped: [],
+        },
+      })
+      renderWithProviders(<ProblemAdministration />)
+
+      await user.upload(await getZipInput(), zipFile)
+
+      const result = await screen.findByTestId('upload-zip-result')
+      expect(within(result).getByText('Nahraných opravených riešení: 1.')).toBeInTheDocument()
+      expect(within(result).getByText('Neuložené pre chybu:')).toBeInTheDocument()
+      expect(within(result).getByText('4-BobB-1-11.pdf')).toBeInTheDocument()
+      expect(within(result).getByText(/obsah nie je PDF/)).toBeInTheDocument()
+    })
+
+    it('lists every error even when two files have the same name', async () => {
+      const user = userEvent.setup()
+      const reason = 'Duplicitné riešenie - to isté riešenie je v súboroch "a.pdf", "a.pdf". Neuložil sa ani jeden.'
+      rejectWith({
+        detail: 'Nič sa neuložilo. Počet súborov s chybou: 2.',
+        errors: [
+          {filename: 'a.pdf', reason},
+          {filename: 'a.pdf', reason},
+        ],
+        skipped: [],
+      })
+      renderWithProviders(<ProblemAdministration />)
+
+      await user.upload(await getZipInput(), zipFile)
+
+      const errors = await screen.findByTestId('upload-zip-errors')
+      expect(within(errors).getAllByText('a.pdf')).toHaveLength(2)
+    })
+
+    it('shows every file error together with its reason', async () => {
+      const user = userEvent.setup()
+      rejectWith({
+        detail: 'Nič sa neuložilo. Počet súborov s chybou: 2.',
+        errors: [
+          {
+            filename: 'opravene/x-AliceA-1-10.pdf',
+            reason: 'Prvá časť názvu (body) "x" musí byť celé číslo v rozsahu -9 až 9.',
+          },
+          {
+            filename: '5-BobB-7-11.pdf',
+            reason: 'Súbor patrí k úlohe s id 7, ale nahrávaš opravené riešenia k úlohe s id 1.',
+          },
+        ],
+        skipped: [],
+      })
+      renderWithProviders(<ProblemAdministration />)
+
+      await user.upload(await getZipInput(), zipFile)
+
+      const errors = await screen.findByTestId('upload-zip-errors')
+      expect(within(errors).getByText('Nič sa neuložilo. Počet súborov s chybou: 2.')).toBeInTheDocument()
+      expect(within(errors).getByText('opravene/x-AliceA-1-10.pdf')).toBeInTheDocument()
+      expect(within(errors).getByText(/Prvá časť názvu \(body\) "x"/)).toBeInTheDocument()
+      expect(within(errors).getByText('5-BobB-7-11.pdf')).toBeInTheDocument()
+      expect(within(errors).getByText(/patrí k úlohe s id 7/)).toBeInTheDocument()
+    })
+
+    it('explains when the ZIP contained no corrected solution at all', async () => {
+      const user = userEvent.setup()
+      rejectWith({
+        detail: 'V ZIPe sa nenašlo žiadne opravené riešenie.',
+        errors: [],
+        skipped: [{filename: 'vnutorny.zip', reason: 'ZIP v ZIPe nie je podporovaný.'}],
+      })
+      renderWithProviders(<ProblemAdministration />)
+
+      await user.upload(await getZipInput(), zipFile)
+
+      const errors = await screen.findByTestId('upload-zip-errors')
+      expect(within(errors).getByText('V ZIPe sa nenašlo žiadne opravené riešenie.')).toBeInTheDocument()
+      expect(within(errors).getByText('vnutorny.zip')).toBeInTheDocument()
+      expect(within(errors).getByText(/ZIP v ZIPe nie je podporovaný/)).toBeInTheDocument()
+    })
+
+    it('shows a generic message for errors without the upload error shape', async () => {
+      const user = userEvent.setup()
+      vi.mocked(apiAxios.post).mockRejectedValue(new AxiosError('Network Error'))
+      renderWithProviders(<ProblemAdministration />)
+
+      await user.upload(await getZipInput(), zipFile)
+
+      expect(await screen.findByText('Nahranie ZIPu zlyhalo.')).toBeInTheDocument()
+    })
+
+    it('tells the user when the dropped file is not a ZIP and does not upload it', async () => {
+      const user = userEvent.setup({applyAccept: false})
+      renderWithProviders(<ProblemAdministration />)
+
+      const pdf = new File(['pdf'], 'riesenie.pdf', {type: 'application/pdf'})
+      await user.upload(await getZipInput(), pdf)
+
+      expect(await screen.findByText(/Súbor riesenie\.pdf sa nedá nahrať/)).toBeInTheDocument()
+      expect(apiAxios.post).not.toHaveBeenCalled()
+    })
   })
 })
