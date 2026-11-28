@@ -1,11 +1,12 @@
 import {Checkbox, FormControlLabel} from '@mui/material'
 import {FC, useState} from 'react'
-import {NumberInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput, useTranslate} from 'react-admin'
+import {NumberInput, ReferenceInput, required, SelectInput, TextInput, useTranslate} from 'react-admin'
 
 import {MyCreateButton} from '@/components/Admin/custom/MyCreateButton'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 
 export const EventEdit: FC = () => {
   const translate = useTranslate()
@@ -23,7 +24,7 @@ export const EventEdit: FC = () => {
         return record
       }}
     >
-      <SimpleForm toolbar={<MyEditToolbar />}>
+      <MySimpleForm toolbar={<MyEditToolbar />}>
         <NumberInput source="year" helperText="ročník súťaže, napr. 48" validate={required()} />
         <TextInput source="school_year" helperText="napr. 2023/2024" validate={required()} />
         <MyDateTimeInput source="start" validate={required()} />
@@ -50,7 +51,7 @@ export const EventEdit: FC = () => {
           </>
         )}
         <MyCreateButton label="ra.action.publication.create" resource="competition/publication" />
-      </SimpleForm>
+      </MySimpleForm>
     </MyEdit>
   )
 }

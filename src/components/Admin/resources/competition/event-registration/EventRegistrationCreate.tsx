@@ -1,9 +1,10 @@
 import {FC} from 'react'
-import {AutocompleteInput, RaRecord, ReferenceInput, required, SimpleForm} from 'react-admin'
+import {AutocompleteInput, RaRecord, ReferenceInput, required} from 'react-admin'
 import {useFormContext} from 'react-hook-form'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 
 const ProfileInput = () => {
   const {setValue} = useFormContext()
@@ -23,7 +24,7 @@ const ProfileInput = () => {
 export const EventRegistrationCreate: FC = () => {
   return (
     <MyCreate>
-      <SimpleForm toolbar={<MyCreateToolbar />}>
+      <MySimpleForm toolbar={<MyCreateToolbar />}>
         <ProfileInput />
         <ReferenceInput source="school" reference="personal/schools">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
@@ -32,7 +33,7 @@ export const EventRegistrationCreate: FC = () => {
           <AutocompleteInput optionText="name" validate={required()} />
         </ReferenceInput>
         <EventReferenceInput />
-      </SimpleForm>
+      </MySimpleForm>
     </MyCreate>
   )
 }

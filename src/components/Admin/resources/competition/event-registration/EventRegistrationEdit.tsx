@@ -1,8 +1,9 @@
 import {FC} from 'react'
-import {AutocompleteInput, ReferenceInput, required, SimpleForm} from 'react-admin'
+import {AutocompleteInput, ReferenceInput, required} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 
 export const EventRegistrationEdit: FC = () => (
   <MyEdit
@@ -13,7 +14,7 @@ export const EventRegistrationEdit: FC = () => (
       return record
     }}
   >
-    <SimpleForm toolbar={<MyEditToolbar />}>
+    <MySimpleForm toolbar={<MyEditToolbar />}>
       <ReferenceInput source="profile.id" reference="personal/profiles">
         <AutocompleteInput optionText="verbose_name" validate={required()} />
       </ReferenceInput>
@@ -26,6 +27,6 @@ export const EventRegistrationEdit: FC = () => (
       <ReferenceInput source="event" reference="competition/event">
         <AutocompleteInput optionText="verbose_name" validate={required()} />
       </ReferenceInput>
-    </SimpleForm>
+    </MySimpleForm>
   </MyEdit>
 )

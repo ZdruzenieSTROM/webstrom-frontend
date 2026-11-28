@@ -1,7 +1,6 @@
 import {Home, Logout} from '@mui/icons-material'
 import {Button, Stack, Typography} from '@mui/material'
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
-import Link from 'next/link'
 import {FC, PropsWithChildren} from 'react'
 import {AppBar, Layout, ToggleThemeButton, useLogout, useTranslate} from 'react-admin'
 
@@ -14,7 +13,7 @@ const AppMenuBar = () => {
       position="fixed"
       toolbar={
         <Stack gap={2} direction="row">
-          <Button component={Link} color="inherit" href="/strom">
+          <Button color="inherit" href="/strom">
             <Stack gap={1} direction="row">
               <Home />
               <Typography variant="body1">{translate('controls.back_home')}</Typography>

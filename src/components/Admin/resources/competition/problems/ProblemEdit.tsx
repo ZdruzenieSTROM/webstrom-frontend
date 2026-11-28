@@ -1,11 +1,12 @@
 import {FC} from 'react'
-import {AutocompleteInput, FormTab, ImageInput, ReferenceInput, required, TabbedForm, TextInput} from 'react-admin'
+import {AutocompleteInput, FormTab, ImageInput, ReferenceInput, required, TextInput} from 'react-admin'
 
 import {MyEditFileInput} from '@/components/Admin/custom/file-handling/MyEditFileInput'
 import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
+import {MyTabbedForm} from '@/components/Admin/custom/MyTabbedForm'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createProblemFormData} from './createProblemFormData'
@@ -17,7 +18,7 @@ export const ProblemEdit: FC = () => (
       return record
     }}
   >
-    <TabbedForm toolbar={<MyEditToolbar />}>
+    <MyTabbedForm toolbar={<MyEditToolbar />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="series" reference="competition/series">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
@@ -35,6 +36,6 @@ export const ProblemEdit: FC = () => (
         </ImageInput>
         <MyEditFileInput source="solution_pdf" accept={Accept.Pdf} />
       </FormTab>
-    </TabbedForm>
+    </MyTabbedForm>
   </MyEdit>
 )

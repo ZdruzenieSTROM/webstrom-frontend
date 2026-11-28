@@ -1,10 +1,11 @@
 import {FC} from 'react'
-import {AutocompleteInput, BooleanInput, NumberInput, ReferenceInput, SimpleForm} from 'react-admin'
+import {AutocompleteInput, BooleanInput, NumberInput, ReferenceInput} from 'react-admin'
 import {useSearchParams} from 'react-router-dom'
 
 import {MyCreateFileInput} from '@/components/Admin/custom/file-handling/MyCreateFileInput'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createSolutionFormData} from './createSolutionFormData'
@@ -21,7 +22,7 @@ export const SolutionCreate: FC = () => {
         return record
       }}
     >
-      <SimpleForm
+      <MySimpleForm
         toolbar={<MyCreateToolbar dontResetFields={['semester_registration']} />}
         defaultValues={{
           semester_registration: searchParams.get('semester_registration'),
@@ -37,7 +38,7 @@ export const SolutionCreate: FC = () => {
           <AutocompleteInput optionText="name" />
         </ReferenceInput>
         <BooleanInput source="is_online" label="content.labels.is_online" defaultValue={true} />
-      </SimpleForm>
+      </MySimpleForm>
     </MyCreate>
   )
 }

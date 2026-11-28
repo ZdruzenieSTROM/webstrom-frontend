@@ -1,11 +1,12 @@
 import {FC} from 'react'
-import {AutocompleteInput, FormTab, ImageInput, ReferenceInput, required, TabbedForm, TextInput} from 'react-admin'
+import {AutocompleteInput, FormTab, ImageInput, ReferenceInput, required, TextInput} from 'react-admin'
 
 import {MyCreateFileInput} from '@/components/Admin/custom/file-handling/MyCreateFileInput'
 import {LatexPreview} from '@/components/Admin/custom/LatexPreview'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
+import {MyTabbedForm} from '@/components/Admin/custom/MyTabbedForm'
 import {Accept} from '@/utils/dropzoneAccept'
 
 import {createProblemFormData} from './createProblemFormData'
@@ -17,7 +18,7 @@ export const ProblemCreate: FC = () => (
       return record
     }}
   >
-    <TabbedForm toolbar={<MyCreateToolbar dontResetFields={['series']} />}>
+    <MyTabbedForm toolbar={<MyCreateToolbar dontResetFields={['series']} />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="series" reference="competition/series">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
@@ -35,6 +36,6 @@ export const ProblemCreate: FC = () => (
         </ImageInput>
         <MyCreateFileInput source="solution_pdf" accept={Accept.Pdf} />
       </FormTab>
-    </TabbedForm>
+    </MyTabbedForm>
   </MyCreate>
 )

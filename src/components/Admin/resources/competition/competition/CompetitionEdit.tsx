@@ -1,12 +1,13 @@
 import {FC} from 'react'
-import {NumberInput, SimpleForm, TextInput} from 'react-admin'
+import {NumberInput, TextInput} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 import {SitesCheckboxInput} from '@/components/Admin/custom/SitesCheckboxInput'
 
 export const CompetitionEdit: FC = () => (
   <MyEdit>
-    <SimpleForm>
+    <MySimpleForm>
       <TextInput source="name" disabled />
       <TextInput source="slug" disabled />
       <NumberInput source="start_year" disabled />
@@ -17,6 +18,6 @@ export const CompetitionEdit: FC = () => (
       <SitesCheckboxInput source="sites" disabled />
       <TextInput source="who_can_participate" />
       <NumberInput source="min_years_until_graduation" disabled />
-    </SimpleForm>
+    </MySimpleForm>
   </MyEdit>
 )

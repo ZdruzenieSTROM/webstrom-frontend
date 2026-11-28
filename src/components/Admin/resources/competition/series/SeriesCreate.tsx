@@ -1,13 +1,14 @@
 import {FC} from 'react'
-import {AutocompleteInput, FormTab, NumberInput, ReferenceInput, required, TabbedForm} from 'react-admin'
+import {AutocompleteInput, FormTab, NumberInput, ReferenceInput, required} from 'react-admin'
 
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
+import {MyTabbedForm} from '@/components/Admin/custom/MyTabbedForm'
 
 export const SeriesCreate: FC = () => (
   <MyCreate>
-    <TabbedForm toolbar={<MyCreateToolbar dontResetFields={['semester']} />}>
+    <MyTabbedForm toolbar={<MyCreateToolbar dontResetFields={['semester']} />}>
       <FormTab label="content.labels.general">
         <ReferenceInput source="semester" reference="competition/semester">
           <AutocompleteInput optionText="verbose_name" validate={required()} />
@@ -15,6 +16,6 @@ export const SeriesCreate: FC = () => (
         <MyDateTimeInput source="deadline" validate={required()} />
         <NumberInput source="order" validate={required()} />
       </FormTab>
-    </TabbedForm>
+    </MyTabbedForm>
   </MyCreate>
 )

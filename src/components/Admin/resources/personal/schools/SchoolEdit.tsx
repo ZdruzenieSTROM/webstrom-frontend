@@ -1,12 +1,13 @@
 import {FC} from 'react'
-import {AutocompleteInput, email, ReferenceInput, required, SimpleForm, TextInput} from 'react-admin'
+import {AutocompleteInput, email, ReferenceInput, required, TextInput} from 'react-admin'
 
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
+import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
 
 export const SchoolEdit: FC = () => (
   <MyEdit>
-    <SimpleForm toolbar={<MyEditToolbar />}>
+    <MySimpleForm toolbar={<MyEditToolbar />}>
       <TextInput source="name" helperText="Oficiálny názov školy. Napr. Gymnázium Jura Hronca" validate={required()} />
       <TextInput source="street" validate={required()} />
       <TextInput source="city" validate={required()} />
@@ -24,6 +25,6 @@ export const SchoolEdit: FC = () => (
         helperText="Emailový kontakt na školu. Ak neexistuje všeobecný, tak napr. na riaditeľa/vyučujúceho"
         validate={email()}
       />
-    </SimpleForm>
+    </MySimpleForm>
   </MyEdit>
 )
