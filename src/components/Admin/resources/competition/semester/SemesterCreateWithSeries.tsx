@@ -379,7 +379,9 @@ const SeriesRow: FC<{
   const translate = useTranslate()
   const [dialogOpen, setDialogOpen] = useState(false)
   const rows = rowsToSave(plan, draft)
-  const withWarnings = rows.filter((row) => row.warnings.length > 0 || (row.images.length > 0 && !row.file)).length
+  const withWarnings = rows.filter(
+    (row) => row.warnings.length > 0 || (row.images.length > 0 && !row.file && !row.existing?.image),
+  ).length
   const withImages = rows.filter((row) => row.file).length
 
   return (

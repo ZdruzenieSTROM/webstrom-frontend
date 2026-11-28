@@ -188,8 +188,8 @@ const ImportRowCard: FC<ImportRowCardProps> = ({
 }) => {
   const translate = useTranslate()
   const fileUrl = useObjectUrl(file)
-  // the LaTeX names the picture it expects; once a file is attached the hint has served its purpose
-  const missingImages = file ? [] : row.images
+  // the LaTeX names the picture it expects; a picked file or one the problem already has makes the hint moot
+  const missingImages = file || row.existing?.image ? [] : row.images
 
   return (
     <Box sx={{border: 1, borderColor: 'divider', borderRadius: 1, p: 2}}>
