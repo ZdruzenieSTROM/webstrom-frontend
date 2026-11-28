@@ -5,7 +5,8 @@ Frontend of [strom.sk](https://strom.sk), the website of the STROM, Matik and Ma
 The Django backend lives in [webstrom-backend](https://github.com/ZdruzenieSTROM/webstrom-backend).
 
 Stack: Next.js (Pages Router) + React + TypeScript, MUI, TanStack Query + axios, react-admin, vitest +
-Testing Library, yarn 4 (`.yarn/releases`), Node ≥ 22.
+Testing Library, Bun for installs and typechecking (`packageManager` in `package.json`), Node ≥ 22 as the
+runtime for Next, ESLint and vitest.
 
 Longer docs in `docs/`: `DEPLOYMENT.md` (deploy pipeline), `trailing-slash.md` (why backend URLs keep a
 trailing slash and page URLs don't), `screeny.md` (what each participant-facing page shows).
@@ -22,24 +23,27 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Commands
 
-| Task                          | Command                                             |
-| ----------------------------- | --------------------------------------------------- |
-| Install                       | `yarn`                                              |
-| Dev server (`localhost:3000`) | `yarn dev`                                          |
-| Typecheck                     | `yarn tsc`                                          |
-| Lint (ESLint + Prettier)      | `yarn lint` (autofix: `yarn lint:fix`)              |
-| Tests                         | `yarn test --run` (`yarn test` stays in watch mode) |
-| Production build              | `yarn build`                                        |
+| Task                          | Command                                                   |
+| ----------------------------- | --------------------------------------------------------- |
+| Install                       | `bun install`                                             |
+| Dev server (`localhost:3000`) | `bun run dev`                                             |
+| Typecheck                     | `bun run typecheck` (`bun check`, TypeScript 7's checker) |
+| Lint (ESLint + Prettier)      | `bun run lint` (autofix: `bun run lint:fix`)              |
+| Tests                         | `bun run test --run` (`bun run test` stays in watch mode) |
+| Production build              | `bun run build`                                           |
 
-CI (`branch-test` in `.github/workflows/test.yml`) runs `yarn tsc`, `yarn lint`, `yarn test`, `yarn build`
-on every PR; run the same four before pushing. `yarn build` rewrites `next-env.d.ts` to `.next/types/...`
-paths; don't commit that change (`git checkout next-env.d.ts`).
+`bun test` (without `run`) starts Bun's own test runner instead of vitest; always use `bun run test`.
+
+CI (`branch-test` in `.github/workflows/test.yml`) runs `bun run typecheck`, `bun run lint`, `bun run test`,
+`bun run build` on every PR; run the same four before pushing. `bun run build` rewrites `next-env.d.ts` to
+`.next/types/...` paths; don't commit that change (`git checkout next-env.d.ts`).
 
 ### Which backend the dev server talks to
 
 - The committed `.env` sets `BE_PROTOCOL` / `BE_HOSTNAME` / `BE_PORT`; later uncommented lines win, and by
   default that is the deployed test backend, `https://test.strom.sk`. No local backend is needed for FE work.
-- Shortcuts that override `.env`: `yarn dev:local` (`localhost:8000`), `yarn dev:test`, `yarn dev:prod`.
+- Shortcuts that override `.env`: `bun run dev:local` (`localhost:8000`), `bun run dev:test`,
+  `bun run dev:prod`.
 - Don't commit `.env` changes. For other values use the shortcuts or a gitignored `.env.local`, which Next
   loads with higher priority than `.env`.
 - `DEBUG_SERVER=true` logs every server-side API call.
