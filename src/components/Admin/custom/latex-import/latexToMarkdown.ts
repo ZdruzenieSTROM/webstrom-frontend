@@ -55,7 +55,6 @@ const ITALIC_SWITCH = new Set(['it', 'em', 'sl', 'itshape', 'slshape'])
 const BOLD_SWITCH = new Set(['bf', 'bfseries'])
 
 const SYMBOLS: Record<string, string> = {
-  '\\': '\n',
   '-': '',
   ',': ' ',
   ' ': ' ',
@@ -74,6 +73,11 @@ const SYMBOLS: Record<string, string> = {
 }
 
 const NBSP = '\u00A0'
+// a backslash at the end of a line is a Markdown hard line break
+const HARD_BREAK = '\\\n'
+// …except at the end of a paragraph or of the text, where Markdown prints the backslash
+const TRAILING_BREAK = /\\\n(?=\n|\s*$)/g
+
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz'
 const ROMAN = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x']
 
@@ -88,6 +92,7 @@ class Converter {
     return (
       out
         .replaceAll(/[\t ]+\n/g, '\n')
+        .replaceAll(TRAILING_BREAK, '\n')
         // dropped layout commands leave doubled spaces; leading ones are list indentation
         .replaceAll(/(?<=\S) {2,}/g, ' ')
         .replaceAll(/\n{3,}/g, '\n\n')
@@ -338,7 +343,15 @@ class Converter {
       this.pos++
       return this.displayMath(this.readUntil(String.raw`\]`))
     }
-    if (next !== undefined && !/[A-Za-z]/.test(next)) {
+    if (next === undefined) {
+      this.warn(String.raw`Osamotené \ na konci textu som nechal bez zmeny.`)
+      return '\\'
+    }
+    if (next === '\\') {
+      this.pos++
+      return this.lineBreak()
+    }
+    if (!/[A-Za-z]/.test(next)) {
       this.pos++
       if (next in SYMBOLS) return SYMBOLS[next]
       this.warn(`Neznámy príkaz \\${next} som nechal bez zmeny.`)
@@ -356,7 +369,7 @@ class Converter {
     if (DOTS.has(name)) return '…'
     if (name === 'textdegree') return '°'
     if (name === 'par') return '\n\n'
-    if (name === 'newline') return '\n'
+    if (name === 'newline') return this.lineBreak()
     if (DROPPED.has(name)) return ''
     if (DROPPED_WITH_ARG.has(name)) {
       if (this.peek() === '*') this.pos++
@@ -379,6 +392,14 @@ class Converter {
     while (this.readRawArg() !== undefined);
     this.warn(`Neznámy príkaz \\${name} som nechal bez zmeny – uprav ho ručne.`)
     return this.src.slice(start, this.pos)
+  }
+
+  // `\\`, `\\[2mm]`, `\\*` and `\newline`
+  private lineBreak(): string {
+    if (this.peek() === '*') this.pos++
+    this.readOptionalArg()
+    const whitespace = isSpace(this.peek()) ? this.readWhitespace() : ''
+    return whitespace === '\n\n' ? whitespace : HARD_BREAK
   }
 
   private readEnvironment(): string {
@@ -425,28 +446,33 @@ class Converter {
   }
 
   private readList(env: 'itemize' | 'enumerate', options: string | undefined): string {
-    const labelFormat = env === 'enumerate' ? letterLabel(options) : undefined
-    const items: string[] = []
+    const entries: {label?: string; content: string}[] = []
 
     // anything before the first \item is not part of an item
     this.parse({endEnv: env, item: true})
     while (this.startsWith(String.raw`\item`)) {
       this.pos += String.raw`\item`.length
-      const customLabel = this.readOptionalArg()
-      const content = this.parse({endEnv: env, item: true}).trim()
-      const index = items.length
-      if (labelFormat) {
-        items.push(`${labelFormat(index)} ${content}`)
-        continue
-      }
-      const marker = env === 'itemize' || customLabel !== undefined ? '-' : `${index + 1}.`
-      // continuation lines must be indented past the marker to stay inside the item
-      const indent = ' '.repeat(marker.length + 1)
-      const text = customLabel === undefined ? content : `${customLabel} ${content}`
-      items.push(`${marker} ${text.replaceAll('\n', `\n${indent}`)}`)
+      const label = this.readOptionalArg()
+      const content = this.parse({endEnv: env, item: true}).replaceAll(TRAILING_BREAK, '').trim()
+      entries.push({label, content})
     }
+
+    const labelFormat = env === 'enumerate' ? letterLabel(options) : undefined
+    const letters = labelFormat && entries.map((_, index) => labelFormat(index))
     // Markdown has no lettered lists; such items become paragraphs starting with their label
-    return items.join(labelFormat ? '\n\n' : '\n')
+    if (letters?.every((letter) => letter !== undefined)) {
+      return entries.map(({content}, index) => `${letters[index]} ${content}`).join('\n\n')
+    }
+
+    return entries
+      .map(({label, content}, index) => {
+        const marker = env === 'itemize' || label !== undefined ? '-' : `${index + 1}.`
+        // continuation lines must be indented past the marker to stay inside the item
+        const indent = ' '.repeat(marker.length + 1)
+        const text = label === undefined ? content : `${label} ${content}`
+        return `${marker} ${text.replaceAll('\n', `\n${indent}`)}`
+      })
+      .join('\n')
   }
 }
 
@@ -461,19 +487,23 @@ const emphasis = (inner: string, mark: string) => {
   return `${lead}${mark}${trimmed}${mark}${trail}`
 }
 
-// enumitem labels like `\alph*.` or `(\roman*)`; plain numbering stays a Markdown ordered list
-const letterLabel = (options: string | undefined): ((index: number) => string) | undefined => {
+// enumitem labels like `\alph*.` or `(\roman*)`; plain numbering stays a Markdown ordered list.
+// An index past the counter's range gives undefined, and the list falls back to plain numbering.
+const letterLabel = (options: string | undefined): ((index: number) => string | undefined) | undefined => {
   const label = /label\s*=\s*{?([^,\]}]*)/.exec(options ?? '')?.[1]?.trim()
   if (!label) return undefined
-  const counters: Record<string, (i: number) => string> = {
+  const counters: Record<string, (i: number) => string | undefined> = {
     '\\alph*': (i) => ALPHA[i],
-    '\\Alph*': (i) => ALPHA[i].toUpperCase(),
+    '\\Alph*': (i) => ALPHA[i]?.toUpperCase(),
     '\\roman*': (i) => ROMAN[i],
-    '\\Roman*': (i) => ROMAN[i].toUpperCase(),
+    '\\Roman*': (i) => ROMAN[i]?.toUpperCase(),
   }
   const counter = Object.keys(counters).find((c) => label.includes(c))
   if (!counter) return undefined
-  return (index) => label.replace(counter, counters[counter](index))
+  return (index) => {
+    const value = counters[counter](index)
+    return value === undefined ? undefined : label.replace(counter, value)
+  }
 }
 
 export const latexToMarkdown = (tex: string): ConversionResult => {

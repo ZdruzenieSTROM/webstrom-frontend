@@ -39,7 +39,9 @@ export const Markdown: FC<MarkdownProps> = ({content}) => {
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[[rehypeKatex, {output: 'html', macros: katexMacros}]]}
+        // a copy per render: KaTeX writes `\gdef` definitions into `macros`, so a shared object would leak them
+        // into every later formula, on the server across requests too
+        rehypePlugins={[[rehypeKatex, {output: 'html', macros: {...katexMacros}}]]}
         components={{
           a: MarkdownLink,
           table: Table,

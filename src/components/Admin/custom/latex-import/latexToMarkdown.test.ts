@@ -166,4 +166,31 @@ Dokážte, že existuje konečná pos\-tup\-nosť seknutí, pomocou ktorých Her
   it('should convert bold, dashes and TeX quotes in text', () => {
     expect(latexToMarkdown("\\textbf{Pozor} -- platí ``vždy''.").markdown).toBe('**Pozor** – platí „vždy“.')
   })
+
+  it('should keep a lone backslash at the end with a warning instead of failing', () => {
+    // what the text looks like while someone is typing a command
+    expect(latexToMarkdown('Plocha je \\')).toStrictEqual({
+      markdown: 'Plocha je \\',
+      warnings: [String.raw`Osamotené \ na konci textu som nechal bez zmeny.`],
+    })
+  })
+
+  it(String.raw`should turn \\ into a Markdown hard line break, but not at the end of a paragraph`, () => {
+    const tex = String.raw`Prvý riadok\\
+druhý riadok\newline tretí.\\
+
+Nový odsek.\\`
+
+    expect(latexToMarkdown(tex).markdown).toBe('Prvý riadok\\\ndruhý riadok\\\ntretí.\n\nNový odsek.')
+  })
+
+  it('should fall back to a numbered list when a lettered list runs past z', () => {
+    const items = Array.from({length: 27}, (_, i) => String.raw`\item p${i + 1}`).join('\n')
+    const {markdown} = latexToMarkdown(
+      String.raw`\begin{enumerate}[label=\alph*)]` + `\n${items}\n` + String.raw`\end{enumerate}`,
+    )
+
+    expect(markdown.split('\n')[0]).toBe('1. p1')
+    expect(markdown.split('\n')[26]).toBe('27. p27')
+  })
 })
