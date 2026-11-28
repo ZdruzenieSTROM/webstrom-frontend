@@ -27,27 +27,29 @@ The deployment uses a reusable workflow pattern:
 | Test        | Manual (workflow_dispatch) | test.strom.sk | 8922 | webstrom-test_webstrom-frontend |
 | Production  | Manual (workflow_dispatch) | strom.sk      | 8932 | webstrom-prod_webstrom-frontend |
 
-## Test bridge network
+## Bridge networks
 
-Test uses the shared Docker bridge network `webstrom-test-network`. Both the backend
+Test uses `webstrom-test-network`; production uses `webstrom-prod-network`.
+Each environment has its own Docker bridge network. Both the backend
 and frontend deployment workflows ensure it exists before replacing containers;
 whichever deploys first creates it. Creation tolerates the other workflow creating
 it concurrently. Neither workflow deletes the network. Docker retains it across
-container replacements and host restarts. Production keeps host networking.
+container replacements and host restarts.
 
-| Connection | Test address |
-| --- | --- |
-| Host nginx to frontend | `127.0.0.1:8922` → container port `3000` |
-| Host nginx to backend | `127.0.0.1:8920` → container port `8000` |
-| Frontend server to backend | `http://backend:8000` on `webstrom-test-network` |
+| Connection | Test address | Production address |
+| --- | --- | --- |
+| Host nginx to frontend | `127.0.0.1:8922` → container port `3000` | `127.0.0.1:8932` → container port `3000` |
+| Host nginx to backend | `127.0.0.1:8920` → container port `8000` | `127.0.0.1:8930` → container port `8000` |
+| Frontend server to backend | `http://backend:8000` on `webstrom-test-network` | `http://backend:8000` on `webstrom-prod-network` |
 
 Next.js binds to `0.0.0.0:3000` inside its isolated container; the published host
 port is restricted to localhost. Browser API calls continue through nginx, and
-forwarded host/protocol headers remain `test.strom.sk` and `https`. No nginx
+forwarded host/protocol headers remain `test.strom.sk` / `strom.sk` and `https`. No nginx
 or PostgreSQL configuration changes are needed.
 
-For the first migration, deploy the matching backend branch **before** the frontend
-branch. The old host-networked frontend can still use the published backend port,
+For the first migration of each environment, deploy the matching backend branch
+**before** the frontend branch. The old host-networked frontend can still use the
+published backend port,
 but the new frontend requires the backend's `backend` network alias. For rollback
 to host networking, roll back the frontend first, then the backend. Redeploying an
 older image alone does not restore the old network settings: use the corresponding
@@ -78,11 +80,11 @@ The frontend container receives these environment variables:
 
 | Variable             | Description              | Test Example    | Production Example | Required |
 | -------------------- | ------------------------ | --------------- | ------------------ | -------- |
-| `PORT`               | Frontend server port     | `3000`          | `8932`             | Yes      |
-| `HOSTNAME`           | Container listen address | `0.0.0.0`       | `localhost`        | Yes      |
+| `PORT`               | Frontend server port     | `3000`          | `3000`             | Yes      |
+| `HOSTNAME`           | Container listen address | `0.0.0.0`       | `0.0.0.0`          | Yes      |
 | `BE_PROTOCOL`        | Backend protocol         | `http`          | `http`             | Yes      |
-| `BE_HOSTNAME`        | Backend hostname         | `backend`       | `localhost`        | Yes      |
-| `BE_PORT`            | Backend port             | `8000`          | `8930`             | Yes      |
+| `BE_HOSTNAME`        | Backend hostname         | `backend`       | `backend`          | Yes      |
+| `BE_PORT`            | Backend port             | `8000`          | `8000`             | Yes      |
 | `BE_FORWARDED_HOST`  | X-Forwarded-Host header  | `test.strom.sk` | `strom.sk`         | Yes      |
 | `BE_FORWARDED_PROTO` | X-Forwarded-Proto header | `https`         | `https`            | Yes      |
 | `DEBUG_SERVER`       | Enable debug logging     | `false`         | `false`            | No       |
@@ -193,7 +195,7 @@ docker logs webstrom-prod_webstrom-frontend  # Production
 
 ### Network issues
 
-Verify the test container is using `webstrom-test-network` (production still uses `host`):
+Verify the container uses `webstrom-test-network` or `webstrom-prod-network` for its environment:
 
 ```bash
 docker inspect webstrom-test_webstrom-frontend | grep NetworkMode
