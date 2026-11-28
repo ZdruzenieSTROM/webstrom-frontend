@@ -19,7 +19,7 @@ import {SitePreview} from '@/components/Admin/custom/SitePreview'
 import {ProblemContent} from '@/components/Problems/ProblemContent'
 import {Accept} from '@/utils/dropzoneAccept'
 
-import {emptyDraft, ImportDraft, ImportRow, rowsToSave, RowToSave, SeriesImportPlan} from './planSeriesImport'
+import {emptyDraft, ImportDraft, ImportRow, isBlank, rowsToSave, RowToSave, SeriesImportPlan} from './planSeriesImport'
 
 type ProblemsImportDialogProps = {
   open: boolean
@@ -31,6 +31,8 @@ type ProblemsImportDialogProps = {
   confirmLabel: string
   onConfirm: (rows: RowToSave[]) => void
   busy?: boolean
+  // problems already saved from this draft: their rows and the pasted file can no longer change, the rest can
+  createdOrders?: ReadonlySet<number>
 }
 
 export const ProblemsImportDialog: FC<ProblemsImportDialogProps> = ({
@@ -43,8 +45,10 @@ export const ProblemsImportDialog: FC<ProblemsImportDialogProps> = ({
   confirmLabel,
   onConfirm,
   busy,
+  createdOrders,
 }) => {
   const translate = useTranslate()
+  const latexLocked = (createdOrders?.size ?? 0) > 0
   // a new file while there are edits or attached images waits here until the editor confirms losing them
   const [pendingLatex, setPendingLatex] = useState<string>()
   // rows whose Markdown field is open; the preview is always shown, editing is the exception
@@ -97,8 +101,11 @@ export const ProblemsImportDialog: FC<ProblemsImportDialogProps> = ({
       <DialogContent sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
         <TextField
           label={translate('content.latex_import.latex')}
-          helperText={translate('content.latex_import.series_latex_helper')}
+          helperText={translate(
+            latexLocked ? 'content.latex_import.latex_locked' : 'content.latex_import.series_latex_helper',
+          )}
           value={draft.latex}
+          disabled={latexLocked}
           onChange={(event) => handleLatexChange(event.target.value)}
           multiline
           minRows={4}
@@ -134,6 +141,7 @@ export const ProblemsImportDialog: FC<ProblemsImportDialogProps> = ({
             skipped={draft.skipped.has(row.order)}
             file={draft.files.get(row.order)}
             editing={editingOrders.has(row.order)}
+            created={createdOrders?.has(row.order) ?? false}
             onSkippedChange={(skipped) => setSkipped(row.order, skipped)}
             onMarkdownChange={(markdown) => setEdit(row, markdown)}
             onFileChange={(file) => setFile(row.order, file)}
@@ -168,6 +176,7 @@ type ImportRowCardProps = {
   skipped: boolean
   file?: File
   editing: boolean
+  created: boolean
   onSkippedChange: (skipped: boolean) => void
   onMarkdownChange: (markdown: string) => void
   onFileChange: (file: File | undefined) => void
@@ -181,6 +190,7 @@ const ImportRowCard: FC<ImportRowCardProps> = ({
   skipped,
   file,
   editing,
+  created,
   onSkippedChange,
   onMarkdownChange,
   onFileChange,
@@ -190,6 +200,7 @@ const ImportRowCard: FC<ImportRowCardProps> = ({
   const fileUrl = useObjectUrl(file)
   // the LaTeX names the picture it expects; a picked file or one the problem already has makes the hint moot
   const missingImages = file || row.existing?.image ? [] : row.images
+  const blank = !created && isBlank({markdown})
 
   return (
     <Box sx={{border: 1, borderColor: 'divider', borderRadius: 1, p: 2}}>
@@ -202,6 +213,7 @@ const ImportRowCard: FC<ImportRowCardProps> = ({
           size="small"
           value={skipped ? 'skip' : 'write'}
           onChange={(event) => onSkippedChange(event.target.value === 'skip')}
+          disabled={created}
           // outlined, because the admin's filled default keeps an empty label's height above the value
           variant="outlined"
           fullWidth={false}
@@ -216,13 +228,13 @@ const ImportRowCard: FC<ImportRowCardProps> = ({
           </MenuItem>
           <MenuItem value="skip">{translate('content.latex_import.action_skip')}</MenuItem>
         </TextField>
-        {edited && (
+        {(edited || created) && (
           <Typography variant="body1" sx={{opacity: 0.7}}>
-            {translate('content.latex_import.edited')}
+            {translate(created ? 'content.latex_import.created' : 'content.latex_import.edited')}
           </Typography>
         )}
         <Stack direction="row" gap={1} sx={{ml: 'auto'}}>
-          <Button component="label" startIcon={<AddPhotoAlternate />} disabled={skipped}>
+          <Button component="label" startIcon={<AddPhotoAlternate />} disabled={skipped || created}>
             {translate(file ? 'content.latex_import.change_image' : 'content.latex_import.upload_image')}
             <input
               type="file"
@@ -237,18 +249,19 @@ const ImportRowCard: FC<ImportRowCardProps> = ({
             />
           </Button>
           {file && (
-            <Button onClick={() => onFileChange(undefined)} disabled={skipped}>
+            <Button onClick={() => onFileChange(undefined)} disabled={skipped || created}>
               {translate('content.latex_import.remove_image')}
             </Button>
           )}
-          <Button startIcon={<Edit />} onClick={onToggleEditing} disabled={skipped}>
+          <Button startIcon={<Edit />} onClick={onToggleEditing} disabled={skipped || created}>
             {translate(editing ? 'content.latex_import.hide_markdown' : 'content.latex_import.edit_markdown')}
           </Button>
         </Stack>
       </Stack>
-      {row.warnings.length + missingImages.length > 0 && (
+      {row.warnings.length + missingImages.length > 0 || blank ? (
         <Alert severity="warning" sx={{mb: 1}}>
           <Box component="ul" sx={{m: 0, pl: 2}}>
+            {blank && <li>{translate('content.latex_import.blank')}</li>}
             {missingImages.map((image) => (
               <li key={image}>{translate('content.latex_import.image_to_upload', {file: image})}</li>
             ))}
@@ -257,8 +270,8 @@ const ImportRowCard: FC<ImportRowCardProps> = ({
             ))}
           </Box>
         </Alert>
-      )}
-      {editing && !skipped && (
+      ) : null}
+      {editing && !skipped && !created && (
         <TextField
           label={translate('content.latex_import.markdown')}
           value={markdown}

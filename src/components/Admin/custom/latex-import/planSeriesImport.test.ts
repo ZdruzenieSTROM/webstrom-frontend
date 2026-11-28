@@ -3,7 +3,7 @@ import path from 'node:path'
 
 import {describe, expect, it} from 'vitest'
 
-import {planSeriesImport, problemData, rowsToSave} from './planSeriesImport'
+import {isBlank, needsAttention, planSeriesImport, problemData, rowsToSave} from './planSeriesImport'
 
 // STROM 51, winter semester – the series 1 file as written in Overleaf
 // (the path is built from this test file's directory, not from input)
@@ -112,5 +112,29 @@ describe(problemData, () => {
     expect([...formData.keys()]).toStrictEqual(['series', 'order', 'text', 'image'])
     expect(formData.get('text')).toBe('Text.')
     expect((formData.get('image') as File).name).toBe('obrazok.png')
+  })
+})
+
+describe(needsAttention, () => {
+  const [plain, withImage, empty] = planSeriesImport(
+    String.raw`\newcommand{\zadIsI}{Text.}
+\newcommand{\zadIIsI}{Obrázok: \includegraphics{obr/2.png}}
+\newcommand{\zadIIIsI}{}`,
+    1,
+    [],
+  ).rows
+
+  it('should flag a problem without text, which the backend would refuse', () => {
+    expect(isBlank(empty)).toBe(true)
+    expect(needsAttention(empty)).toBe(true)
+    expect(needsAttention(plain)).toBe(false)
+  })
+
+  it('should flag an included picture until a file is attached or the problem already has one', () => {
+    expect(needsAttention(withImage)).toBe(true)
+    expect(needsAttention({...withImage, file: new File(['png'], '2.png', {type: 'image/png'})})).toBe(false)
+    expect(
+      needsAttention({...withImage, existing: {id: 1, order: 2, image: 'https://test.strom.sk/media/2.png'}}),
+    ).toBe(false)
   })
 })

@@ -294,6 +294,10 @@ export const sk_SK = {
       action_overwrite: 'Prepísať text',
       action_skip: 'Preskočiť',
       edit_markdown: 'Upraviť',
+      created: 'vytvorená',
+      blank: 'Úloha nemá text, takto sa nedá uložiť. Uprav ju alebo ju preskoč.',
+      latex_locked:
+        'Niektoré úlohy už sú vytvorené, preto sa súbor nedá vymeniť. Ostatné môžeš upraviť alebo preskočiť.',
       upload_image: 'Nahrať obrázok',
       change_image: 'Zmeniť obrázok',
       remove_image: 'Odstrániť obrázok',

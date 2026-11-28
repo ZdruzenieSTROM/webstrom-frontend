@@ -22,6 +22,7 @@ import {useFormContext, useWatch} from 'react-hook-form'
 import {
   emptyDraft,
   ImportDraft,
+  needsAttention,
   planSeriesImport,
   problemData,
   rowsToSave,
@@ -94,9 +95,11 @@ const FormBody: FC = () => {
   const competitionId = useWatch<FormValues, 'competition'>({name: 'competition'})
   const series2Deadline = useWatch<FormValues, 'series_2_deadline'>({name: 'series_2_deadline'})
   const [drafts, setDrafts] = useState<[ImportDraft, ImportDraft]>([emptyDraft, emptyDraft])
+  // only a new file changes the plan; edits, skips and files are applied on top of it by rowsToSave
+  const [{latex: series1Latex}, {latex: series2Latex}] = drafts
   const plans: [SeriesImportPlan, SeriesImportPlan] = [
-    useMemo(() => planSeriesImport(drafts[0].latex, 1, []), [drafts]),
-    useMemo(() => planSeriesImport(drafts[1].latex, 2, []), [drafts]),
+    useMemo(() => planSeriesImport(series1Latex, 1, []), [series1Latex]),
+    useMemo(() => planSeriesImport(series2Latex, 2, []), [series2Latex]),
   ]
   const problemsToCreate = [rowsToSave(plans[0], drafts[0]), rowsToSave(plans[1], drafts[1])]
   const setDraft = (index: 0 | 1, draft: ImportDraft) =>
@@ -379,9 +382,7 @@ const SeriesRow: FC<{
   const translate = useTranslate()
   const [dialogOpen, setDialogOpen] = useState(false)
   const rows = rowsToSave(plan, draft)
-  const withWarnings = rows.filter(
-    (row) => row.warnings.length > 0 || (row.images.length > 0 && !row.file && !row.existing?.image),
-  ).length
+  const withWarnings = rows.filter((row) => !createdProblems.has(row.order) && needsAttention(row)).length
   const withImages = rows.filter((row) => row.file).length
 
   return (
@@ -405,12 +406,7 @@ const SeriesRow: FC<{
         </Alert>
       )}
       <Stack direction="row" alignItems="center" gap={2}>
-        <Button
-          variant="outlined"
-          onClick={() => setDialogOpen(true)}
-          // the problems already created keep their orders; a changed file would no longer match them
-          disabled={createdProblems.size > 0}
-        >
+        <Button variant="outlined" onClick={() => setDialogOpen(true)}>
           {translate('content.latex_import.series_open')}
         </Button>
         {rows.length > 0 && (
@@ -439,6 +435,8 @@ const SeriesRow: FC<{
         onDraftChange={onDraftChange}
         confirmLabel={translate('content.latex_import.done')}
         onConfirm={() => setDialogOpen(false)}
+        // after a partial create the rest stays fixable: a problem the backend refused can be edited or skipped
+        createdOrders={createdProblems}
       />
     </Box>
   )

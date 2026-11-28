@@ -68,6 +68,14 @@ export const rowsToSave = (plan: SeriesImportPlan, draft: ImportDraft): RowToSav
     .filter((row) => !draft.skipped.has(row.order))
     .map((row) => ({...row, markdown: draft.edits.get(row.order) ?? row.markdown, file: draft.files.get(row.order)}))
 
+// the backend refuses a problem without text, so a blank one must be fixed or skipped before saving
+export const isBlank = (row: Pick<ImportRow, 'markdown'>) => !row.markdown.trim()
+
+// whether the row has something the editor should look at: a converter warning, no text, or a picture the
+// LaTeX includes that neither a picked file nor the stored problem provides
+export const needsAttention = (row: RowToSave) =>
+  row.warnings.length > 0 || isBlank(row) || (row.images.length > 0 && !row.file && !row.existing?.image)
+
 // data for the data provider's create/update: multipart only with a file, so an overwrite without a new image
 // sends just the text and leaves the stored image alone
 export const problemData = (row: RowToSave, fields: Record<string, string | number>) => {
