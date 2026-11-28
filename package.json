@@ -13,6 +13,7 @@
     "start": "node .next/standalone/server.js",
     "build": "next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
     "build:docker": "next build",
+    "typecheck": "bun check",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "vitest"
@@ -86,7 +87,7 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.15"
   },
-  "packageManager": "yarn@4.9.1",
+  "packageManager": "bun@1.4.5",
   "resolutions": {
     "@tanstack/react-query": "npm:@tanstack/react-query@5.100.9",
     "react-hook-form": "npm:react-hook-form@7.92.0",

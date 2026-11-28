@@ -58,8 +58,6 @@ export default tseslint.config(
     'out/**',
     'build/**',
     'next-env.d.ts',
-    // our additions
-    '.yarn/**',
   ]),
   {
     rules: {

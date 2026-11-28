@@ -40,27 +40,33 @@ Potrebuješ:
 - [Node.js](https://nodejs.org/en/) - javascriptový engine
   - check, či ho máš: `node -v`
   - dá sa nainštalovať priamo zo stránky, ale ideálne je použiť [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm) (neboj sa inštalačných inštrukcií)
-- [Yarn](https://yarnpkg.com/getting-started/install) - správca JS balíkov
+- [Bun](https://bun.com/docs/installation) - správca JS balíkov (aplikácia samotná beží na Node.js)
+  - keď už máš Node.js, nainštaluješ ho pomocou `npm install -g bun`
+  - check, či ho máš: `bun -v`
 
 Potrebné balíky pre projekt sa nainštalujú pomocou:
 
 ```sh
-yarn install
-```
-
-alebo len
-
-```sh
-yarn
+bun install
 ```
 
 Development server sa spustí pomocou príkazu:
 
 ```sh
-yarn dev
+bun dev
 ```
 
 Tento príkaz spustí server na `localhost:3000`, ktorý reaguje na zmeny vo frontendovom kóde a automaticky sa reloaduje.
+
+Typy, lint a testy (to isté spúšťa CI) si overíš pomocou:
+
+```sh
+bun run typecheck
+bun run lint
+bun run test
+```
+
+Pozor, `bun test` (bez `run`) spustí Bun test runner namiesto nášho vitestu.
 
 ## IDE setup
 
