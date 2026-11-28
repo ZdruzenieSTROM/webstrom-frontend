@@ -2,6 +2,7 @@ import {FC} from 'react'
 import {AutocompleteInput, FormTab, ImageInput, ReferenceInput, required, TextInput} from 'react-admin'
 
 import {MyEditFileInput} from '@/components/Admin/custom/file-handling/MyEditFileInput'
+import {LatexImport} from '@/components/Admin/custom/latex-import/LatexImport'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
 import {MyImageField} from '@/components/Admin/custom/MyImageField'
@@ -24,6 +25,7 @@ export const ProblemEdit: FC = () => (
           <AutocompleteInput optionText="verbose_name" validate={required()} />
         </ReferenceInput>
         <TextInput source="order" validate={required()} />
+        <LatexImport source="text" />
         <TextInput
           source="text"
           multiline

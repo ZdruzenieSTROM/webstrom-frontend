@@ -219,6 +219,14 @@ export const sk_SK = {
       has_solution: 'Nahraté',
       has_corrected_solution: 'Nahraté opravené',
     },
+    latex_import: {
+      open: 'Vložiť z LaTeXu',
+      title: 'Vložiť zadanie z LaTeXu',
+      latex: 'LaTeX',
+      latex_helper: String.raw`Vlož text jednej úlohy z Overleafu – obsah jej \zad… makra.`,
+      markdown: 'Markdown',
+      apply: 'Nahradiť text úlohy',
+    },
     footer: {
       timezone_message: 'Všetky časy sú uvedené v časovom pásme Europe/Bratislava',
     },
