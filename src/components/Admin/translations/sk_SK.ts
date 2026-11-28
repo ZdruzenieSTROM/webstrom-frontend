@@ -312,6 +312,9 @@ export const sk_SK = {
       no_options: 'Žiadne možnosti',
       loading: 'Načítavam…',
     },
+    pagination: {
+      aria_label: 'Stránkovanie',
+    },
     notifications: {
       record_created: 'Záznam vytvorený',
       record_saved: 'Záznam uložený',

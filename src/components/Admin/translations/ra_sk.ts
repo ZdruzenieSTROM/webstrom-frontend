@@ -127,6 +127,9 @@ export const raSk: TranslationMessages = {
       partial_page_range_info: '%{offsetBegin}-%{offsetEnd} z viac ako %{offsetEnd}',
       current_page: 'Stránka %{page}',
       page: 'Prejsť na stránku %{page}',
+      // nie su v ra-language-english, ale PaginationActions v RA 5.15 ich prekladá (aria-label pri "...")
+      'start-ellipsis': 'Predchádzajúce stránky',
+      'end-ellipsis': 'Ďalšie stránky',
       first: 'Prejsť na prvú stránku',
       last: 'Prejsť na poslednú stránku',
       next: 'Prejsť na ďalšiu stránku',
@@ -135,7 +138,7 @@ export const raSk: TranslationMessages = {
       skip_nav: 'Preskočiť na obsah',
     },
     sort: {
-      sort_by: 'Zoradiť: %{field_lower_first} (%{order})',
+      sort_by: 'Zoradiť: %{field} (%{order})',
       // pouzivaju sa len vnutri `sort_by`, preto malym pismenom
       ASC: 'vzostupne',
       DESC: 'zostupne',

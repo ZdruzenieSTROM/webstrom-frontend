@@ -102,6 +102,12 @@ const themeOverrides: RaThemeOptions = {
         loadingText: myI18nProvider.translate('content.autocomplete.loading'),
       },
     },
+    // MUI `Pagination` ma natvrdo aria-label "pagination navigation" (pre citacky obrazovky)
+    MuiPagination: {
+      defaultProps: {
+        'aria-label': myI18nProvider.translate('content.pagination.aria_label'),
+      },
+    },
     MuiSvgIcon: {
       styleOverrides: {
         root: {
