@@ -19,7 +19,7 @@ export const ProblemPreview: FC = () => (
         <Labeled label="content.labels.preview">
           <SitePreview>
             <ProblemContent
-              order={order ?? ''}
+              order={order || '?'}
               text={text}
               image={typeof image === 'string' ? image : (image?.src ?? null)}
             />
