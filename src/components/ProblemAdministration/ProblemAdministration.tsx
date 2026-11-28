@@ -12,6 +12,7 @@ import {colors} from '@/theme/colors'
 import {SolutionAdministration, UploadCorrectedFileIssue} from '@/types/api/competition'
 import {Accept} from '@/utils/dropzoneAccept'
 import {getCorrectedSolutionUrl, getSolutionUrl} from '@/utils/getSolutionUrl'
+import {isValidSolutionScore, solutionScoreError} from '@/utils/solutionScore'
 import {useAlert} from '@/utils/useAlert'
 import {useHasPermissions} from '@/utils/useHasPermissions'
 import {useNavigationTrap} from '@/utils/useNavigationTrap'
@@ -36,6 +37,7 @@ const styles = {
   input: {
     width: '30px',
     textAlign: 'center',
+    '&[aria-invalid="true"]': {boxShadow: '0 0 0 1px currentColor'},
   },
   table: {
     display: 'grid',
@@ -94,8 +96,8 @@ type SortKey = 'name' | 'points'
 
 // Empty or incomplete input (e.g. a lone "-") counts as no score
 const parseScore = (input: string): number | null => {
-  const score = Number.parseInt(input)
-  return Number.isNaN(score) ? null : score
+  if (/^[+-]?$/.test(input)) return null
+  return /^[+-]?\d+$/.test(input) ? Number(input) : Number.NaN
 }
 
 const getSolutionName = (solution: SolutionAdministration) =>
@@ -128,21 +130,21 @@ export const ProblemAdministration: FC = () => {
   const [sortKey, setSortKey] = useState<SortKey>('name')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
-  const baselineById = useMemo(() => new Map((baseline ?? []).map((row) => [row.id, row])), [baseline])
-
-  const dirtyIds = useMemo(() => {
-    const ids = new Set<number>()
-    for (const [id, draftScore] of draftScores) {
-      // Skip orphan drafts for solutions removed server-side; otherwise they'd keep
-      // isDirty true forever with no row in the UI to explain it.
-      if (!baselineById.has(id)) continue
-      const baselineScore = baselineById.get(id)?.score ?? null
-      if (parseScore(draftScore) !== baselineScore) ids.add(id)
+  const {dirtyIds, invalidIds} = useMemo(() => {
+    const dirtyIds = new Set<number>()
+    const invalidIds = new Set<number>()
+    for (const row of baseline ?? []) {
+      const savedScore = row.score ?? null
+      const draft = draftScores.get(row.id)
+      const score = draft === undefined ? savedScore : parseScore(draft)
+      if (draft !== undefined && score !== savedScore) dirtyIds.add(row.id)
+      if (score !== null && !isValidSolutionScore(score)) invalidIds.add(row.id)
     }
-    return ids
-  }, [draftScores, baselineById])
+    return {dirtyIds, invalidIds}
+  }, [baseline, draftScores])
 
   const isDirty = dirtyIds.size > 0
+  const hasInvalidScores = invalidIds.size > 0
 
   const displayScore = (row: SolutionAdministration): string => draftScores.get(row.id) ?? row.score?.toString() ?? ''
 
@@ -237,6 +239,8 @@ export const ProblemAdministration: FC = () => {
     return <Typography>Nevalidné číslo úlohy (problemId) v URL alebo ju proste nevieme fetchnúť z BE.</Typography>
 
   const handleSavePoints = () => {
+    if (hasInvalidScores) return
+
     const solutionSet = (baseline ?? []).map((row) => {
       const draftScore = draftScores.get(row.id)
       return draftScore === undefined ? row : {...row, score: parseScore(draftScore)}
@@ -407,7 +411,8 @@ export const ProblemAdministration: FC = () => {
                 <Box
                   component="input"
                   type="text"
-                  pattern="-?[0-9]"
+                  aria-invalid={invalidIds.has(solution.id) || undefined}
+                  aria-describedby={invalidIds.has(solution.id) ? 'solution-score-error' : undefined}
                   value={displayScore(solution)}
                   onChange={(event) => updateScore(solution.id, event.target.value)}
                   sx={{
@@ -465,7 +470,16 @@ export const ProblemAdministration: FC = () => {
         </Box>
 
         <Stack alignItems="end" mt={1.5}>
-          <Button variant="button2" onClick={handleSavePoints} disabled={uploadPointsIsPending || !isDirty}>
+          {hasInvalidScores && (
+            <Typography id="solution-score-error" role="alert" variant="body2" fontWeight={800}>
+              {solutionScoreError}
+            </Typography>
+          )}
+          <Button
+            variant="button2"
+            onClick={handleSavePoints}
+            disabled={uploadPointsIsPending || !isDirty || hasInvalidScores}
+          >
             {uploadPointsIsPending ? 'Ukladám…' : 'Uložiť body'}
           </Button>
         </Stack>

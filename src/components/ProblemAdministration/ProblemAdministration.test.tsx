@@ -75,6 +75,50 @@ describe('ProblemAdministration', () => {
     expect(saveButton).toBeDisabled()
   })
 
+  it('blocks saving invalid scores and accepts a negative score and a cleared score', async () => {
+    const user = userEvent.setup()
+    vi.mocked(apiAxios.post).mockResolvedValue({data: {}})
+    renderWithProviders(<ProblemAdministration />)
+
+    const [aliceInput, bobInput] = await screen.findAllByRole('textbox')
+    const saveButton = screen.getByRole('button', {name: /Uložiť body/})
+    await user.clear(bobInput)
+    expect(saveButton).toBeEnabled()
+
+    for (const invalidScore of ['1.5', '10', '-10']) {
+      await user.clear(aliceInput)
+      await user.type(aliceInput, invalidScore)
+
+      expect(aliceInput).toHaveValue(invalidScore)
+      expect(aliceInput).toHaveAccessibleDescription('Zadaj celé číslo od -9 do 9.')
+      expect(saveButton).toBeDisabled()
+    }
+
+    await user.click(saveButton)
+    expect(apiAxios.post).not.toHaveBeenCalled()
+
+    await user.clear(aliceInput)
+    await user.type(aliceInput, '-')
+    expect(aliceInput).not.toHaveAttribute('aria-invalid')
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+
+    await user.clear(aliceInput)
+    await user.type(aliceInput, '-9')
+    expect(aliceInput).not.toHaveAttribute('aria-invalid')
+    expect(saveButton).toBeEnabled()
+
+    await user.click(saveButton)
+    expect(apiAxios.post).toHaveBeenCalledWith(
+      '/competition/problem-administration/1/upload-points',
+      expect.objectContaining({
+        solution_set: expect.arrayContaining([
+          expect.objectContaining({id: 1, score: -9}),
+          expect.objectContaining({id: 2, score: null}),
+        ]),
+      }),
+    )
+  })
+
   it('marks an edited row as dirty (non-bold) and leaves other rows bold', async () => {
     const user = userEvent.setup()
     renderWithProviders(<ProblemAdministration />)

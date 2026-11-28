@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {AutocompleteInput, BooleanInput, NumberInput, ReferenceInput, useRecordContext} from 'react-admin'
+import {AutocompleteInput, BooleanInput, ReferenceInput, useRecordContext} from 'react-admin'
 
 import {MyEditFileInput} from '@/components/Admin/custom/file-handling/MyEditFileInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
@@ -11,6 +11,7 @@ import {getCorrectedSolutionUrl, getSolutionUrl} from '@/utils/getSolutionUrl'
 import {createSolutionFormData} from './createSolutionFormData'
 import {ProblemReferenceInput} from './ProblemReferenceInput'
 import {SemesterRegistrationReferenceInput} from './SemesterRegistrationReferenceInput'
+import {SolutionScoreInput} from './SolutionScoreInput'
 
 export const SolutionEdit: FC = () => (
   <MyEdit
@@ -33,7 +34,7 @@ const SolutionEditForm: FC = () => {
       <ProblemReferenceInput />
       <MyEditFileInput source="solution" accept={Accept.Pdf} reformatUrlFromId={getSolutionUrl} />
       <MyEditFileInput source="corrected_solution" accept={Accept.Pdf} reformatUrlFromId={getCorrectedSolutionUrl} />
-      <NumberInput source="score" />
+      <SolutionScoreInput />
       <ReferenceInput source="late_tag" reference="competition/late-tag">
         <AutocompleteInput optionText="name" />
       </ReferenceInput>

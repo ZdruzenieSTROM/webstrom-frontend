@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {AutocompleteInput, BooleanInput, NumberInput, ReferenceInput} from 'react-admin'
+import {AutocompleteInput, BooleanInput, ReferenceInput} from 'react-admin'
 import {useSearchParams} from 'react-router-dom'
 
 import {MyCreateFileInput} from '@/components/Admin/custom/file-handling/MyCreateFileInput'
@@ -11,6 +11,7 @@ import {Accept} from '@/utils/dropzoneAccept'
 import {createSolutionFormData} from './createSolutionFormData'
 import {ProblemReferenceInput} from './ProblemReferenceInput'
 import {SemesterRegistrationReferenceInput} from './SemesterRegistrationReferenceInput'
+import {SolutionScoreInput} from './SolutionScoreInput'
 
 export const SolutionCreate: FC = () => {
   const [searchParams] = useSearchParams()
@@ -33,7 +34,7 @@ export const SolutionCreate: FC = () => {
         <ProblemReferenceInput />
         <MyCreateFileInput source="solution" accept={Accept.Pdf} />
         <MyCreateFileInput source="corrected_solution" accept={Accept.Pdf} />
-        <NumberInput source="score" />
+        <SolutionScoreInput />
         <ReferenceInput source="late_tag" reference="competition/late-tag">
           <AutocompleteInput optionText="name" />
         </ReferenceInput>
