@@ -8,5 +8,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     clearMocks: true,
+    server: {deps: {inline: ['react-admin', 'ra-ui-materialui', 'react-dropzone']}},
   },
 })
