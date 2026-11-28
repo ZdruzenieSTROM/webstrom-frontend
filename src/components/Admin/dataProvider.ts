@@ -16,37 +16,42 @@ const getPaginationQuery = ({page, perPage}: PaginationPayload) => ({
   limit: perPage,
 })
 
+const fetchList = async (
+  resource: string,
+  {filter, sort, pagination}: {filter?: FilterPayload; sort?: SortPayload; pagination?: PaginationPayload},
+) => {
+  const query = {
+    ...(filter ? getFilterQuery(filter) : {}),
+    ...(sort ? getOrderingQuery(sort) : {}),
+    ...(pagination ? getPaginationQuery(pagination) : {}),
+  }
+  const stringifiedQuery = stringify(query)
+
+  try {
+    // return type dat sa lisi podla toho, ci je pouzita pagination. aktualne predpokladame, ze pagination pouzita je.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const {data} = await apiAxios.get<{count: number; next: string | null; previous: string | null; results: any[]}>(
+      `/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`,
+    )
+
+    const {count, next, previous, results} = data
+
+    return {
+      data: results,
+      total: count,
+      pageInfo: {
+        hasNextPage: !!next,
+        hasPreviousPage: !!previous,
+      },
+    }
+  } catch (error) {
+    throw toHttpError(error)
+  }
+}
+
 // skopirovane a dost upravene z https://github.com/bmihelac/ra-data-django-rest-framework/blob/master/src/index.ts
 export const dataProvider: DataProvider = {
-  getList: async (resource, {filter, sort, pagination}) => {
-    const query = {
-      ...(filter ? getFilterQuery(filter) : {}),
-      ...(sort ? getOrderingQuery(sort) : {}),
-      ...(pagination ? getPaginationQuery(pagination) : {}),
-    }
-    const stringifiedQuery = stringify(query)
-
-    try {
-      // return type dat sa lisi podla toho, ci je pouzita pagination. aktualne predpokladame, ze pagination pouzita je.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const {data} = await apiAxios.get<{count: number; next: string | null; previous: string | null; results: any[]}>(
-        `/${resource}${stringifiedQuery ? `/?${stringifiedQuery}` : ''}`,
-      )
-
-      const {count, next, previous, results} = data
-
-      return {
-        data: results,
-        total: count,
-        pageInfo: {
-          hasNextPage: !!next,
-          hasPreviousPage: !!previous,
-        },
-      }
-    } catch (error) {
-      throw toHttpError(error)
-    }
-  },
+  getList: (resource, params) => fetchList(resource, params),
   getOne: async (resource, params) => {
     try {
       const {data} = await apiAxios.get(`/${resource}/${params.id}`)
@@ -63,22 +68,9 @@ export const dataProvider: DataProvider = {
       throw toHttpError(error)
     }
   },
-  // TODO: ak budeme pouzivat tuto funkciu, upravime podla getList (pagination, sort, filter). uprimne este neviem, pri com sa pouziva
-  getManyReference: async (resource, params) => {
-    const query = {
-      [params.target]: params.id,
-    }
-
-    try {
-      const {data} = await apiAxios.get(`/${resource}/?${stringify(query)}`)
-      return {
-        data: data,
-        total: data.length,
-      }
-    } catch (error) {
-      throw toHttpError(error)
-    }
-  },
+  // used by ReferenceManyField, e.g. registrations of a profile
+  getManyReference: (resource, {target, id, filter, sort, pagination}) =>
+    fetchList(resource, {filter: {...filter, [target]: id}, sort, pagination}),
   update: async (resource, params) => {
     const {id, formData, ...input} = params.data
 
