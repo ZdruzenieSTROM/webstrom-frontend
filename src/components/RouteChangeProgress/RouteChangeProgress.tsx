@@ -23,16 +23,27 @@ export const RouteChangeProgress: FC = () => {
       clearTimeout(timeout)
       setVisible(false)
     }
+    // A click during an in-flight navigation cancels it, and the new navigation's
+    // `routeChangeStart` follows within microtasks. Hiding at once would blink the bar off for
+    // SHOW_DELAY_MS on every repeated click, so the hide waits a macrotask and `start` clears it.
+    const fail = (err: {cancelled?: boolean} | string) => {
+      if (typeof err === 'object' && err?.cancelled) {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => setVisible(false))
+      } else {
+        done()
+      }
+    }
 
     router.events.on('routeChangeStart', start)
     router.events.on('routeChangeComplete', done)
-    router.events.on('routeChangeError', done)
+    router.events.on('routeChangeError', fail)
 
     return () => {
       clearTimeout(timeout)
       router.events.off('routeChangeStart', start)
       router.events.off('routeChangeComplete', done)
-      router.events.off('routeChangeError', done)
+      router.events.off('routeChangeError', fail)
     }
   }, [router.events])
 
