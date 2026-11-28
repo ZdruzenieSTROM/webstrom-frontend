@@ -1,17 +1,17 @@
 import {
-  Article,
-  Assignment,
-  DateRange,
-  Description,
-  EmojiEvents,
-  Event,
-  HowToReg,
-  LibraryBooks,
-  MenuBook,
-  People,
-  PhotoLibrary,
-  School,
-  TaskAlt,
+  Article as ArticleIcon,
+  Assignment as AssignmentIcon,
+  Description as DescriptionIcon,
+  EmojiEvents as EmojiEventsIcon,
+  Event as EventIcon,
+  HowToReg as HowToRegIcon,
+  Layers as LayersIcon,
+  MenuBook as MenuBookIcon,
+  People as PeopleIcon,
+  PhotoLibrary as PhotoLibraryIcon,
+  School as SchoolIcon,
+  TaskAlt as TaskAltIcon,
+  Timeline as TimelineIcon,
 } from '@mui/icons-material'
 import {deepmerge} from '@mui/utils'
 import {QueryClient} from '@tanstack/react-query'
@@ -157,10 +157,17 @@ export const Admin: FC = () => {
       requireAuth
       disableTelemetry
     >
-      <Resource name="cms/post" icon={Article} list={PostList} edit={PostEdit} show={PostShow} create={PostCreate} />
+      <Resource
+        name="cms/post"
+        icon={ArticleIcon}
+        list={PostList}
+        edit={PostEdit}
+        show={PostShow}
+        create={PostCreate}
+      />
       <Resource
         name="cms/flat-page"
-        icon={Description}
+        icon={DescriptionIcon}
         list={FlatpageList}
         edit={FlatpageEdit}
         show={FlatpageShow}
@@ -168,7 +175,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/competition"
-        icon={EmojiEvents}
+        icon={EmojiEventsIcon}
         recordRepresentation="name"
         list={CompetitionList}
         edit={CompetitionEdit}
@@ -177,7 +184,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/event"
-        icon={Event}
+        icon={EventIcon}
         recordRepresentation="verbose_name"
         list={EventList}
         edit={EventEdit}
@@ -186,7 +193,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/semester"
-        icon={DateRange}
+        icon={TimelineIcon}
         recordRepresentation="verbose_name"
         list={SemesterList}
         edit={SemesterEdit}
@@ -195,7 +202,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/series"
-        icon={LibraryBooks}
+        icon={LayersIcon}
         recordRepresentation="verbose_name"
         list={SeriesList}
         edit={SeriesEdit}
@@ -204,7 +211,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/problem"
-        icon={Assignment}
+        icon={AssignmentIcon}
         recordRepresentation="verbose_name"
         list={ProblemList}
         edit={ProblemEdit}
@@ -213,7 +220,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/solution"
-        icon={TaskAlt}
+        icon={TaskAltIcon}
         recordRepresentation="verbose_name"
         list={SolutionList}
         edit={SolutionEdit}
@@ -222,7 +229,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/event-registration"
-        icon={HowToReg}
+        icon={HowToRegIcon}
         recordRepresentation="verbose_name"
         list={EventRegistrationList}
         edit={EventRegistrationEdit}
@@ -231,7 +238,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="personal/schools"
-        icon={School}
+        icon={SchoolIcon}
         recordRepresentation="verbose_name"
         list={SchoolList}
         show={SchoolShow}
@@ -240,7 +247,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="personal/profiles"
-        icon={People}
+        icon={PeopleIcon}
         recordRepresentation="verbose_name"
         list={ProfileList}
         show={ProfileShow}
@@ -256,7 +263,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="competition/publication"
-        icon={MenuBook}
+        icon={MenuBookIcon}
         recordRepresentation="name"
         list={PublicationList}
         show={PublicationShow}
@@ -265,7 +272,7 @@ export const Admin: FC = () => {
       />
       <Resource
         name="cms/gallery"
-        icon={PhotoLibrary}
+        icon={PhotoLibraryIcon}
         recordRepresentation="verbose_name"
         list={GalleryList}
         show={GalleryShow}
