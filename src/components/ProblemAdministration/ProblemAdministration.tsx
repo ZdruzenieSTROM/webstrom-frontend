@@ -163,11 +163,7 @@ export const ProblemAdministration: FC = () => {
   })
 
   const updateScore = (id: number, newPointsInput: string) => {
-    setDraftScores((current) => {
-      const next = new Map(current)
-      next.set(id, newPointsInput)
-      return next
-    })
+    setDraftScores((current) => new Map([...current, [id, newPointsInput]]))
   }
 
   const {

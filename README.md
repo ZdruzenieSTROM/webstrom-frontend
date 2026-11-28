@@ -70,10 +70,12 @@ Pozor, `bun test` (bez `run`) spustí Bun test runner namiesto nášho vitestu.
 
 ## IDE setup
 
-Používame VSCode, nainštaluj si doň [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) rozšírenie (formátuje kód). V repe máme `.vscode` config, v ktorom zapíname "fix-on-save" - kód sa teda formátuje pri uložení súboru.
+Používame VSCode, nainštaluj si doň rozšírenie [Oxc](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode) - lintuje (oxlint) aj formátuje (oxfmt). V repe máme `.vscode` config, v ktorom zapíname formátovanie a "fix-on-save" - kód sa teda formátuje a opravuje pri uložení súboru. VSCode ti rozšírenie ponúkne aj sám podľa `.vscode/extensions.json`.
 
 Rozšírenie je takisto možné doinštalovať pomocou `Ctrl+P` a spustením:
 
 ```sh
-ext install dbaeumer.vscode-eslint
+ext install oxc.oxc-vscode
 ```
+
+Z príkazového riadku: `bun run lint` (oxlint), `bun run format:check` (oxfmt), opravy cez `bun run lint:fix` a `bun run format`.

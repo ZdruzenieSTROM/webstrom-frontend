@@ -22,8 +22,8 @@ The deployment uses a reusable workflow pattern:
 
 ## Environments
 
-| Environment | Trigger                    | Domain        | Port | Container Name                    |
-| ----------- | -------------------------- | ------------- | ---- | --------------------------------- |
+| Environment | Trigger                    | Domain        | Port | Container Name                  |
+| ----------- | -------------------------- | ------------- | ---- | ------------------------------- |
 | Test        | Manual (workflow_dispatch) | test.strom.sk | 8922 | webstrom-test_webstrom-frontend |
 | Production  | Manual (workflow_dispatch) | strom.sk      | 8932 | webstrom-prod_webstrom-frontend |
 
@@ -36,10 +36,10 @@ whichever deploys first creates it. Creation tolerates the other workflow creati
 it concurrently. Neither workflow deletes the network. Docker retains it across
 container replacements and host restarts.
 
-| Connection | Test address | Production address |
-| --- | --- | --- |
-| Host nginx to frontend | `127.0.0.1:8922` → container port `3000` | `127.0.0.1:8932` → container port `3000` |
-| Host nginx to backend | `127.0.0.1:8920` → container port `8000` | `127.0.0.1:8930` → container port `8000` |
+| Connection                 | Test address                                     | Production address                               |
+| -------------------------- | ------------------------------------------------ | ------------------------------------------------ |
+| Host nginx to frontend     | `127.0.0.1:8922` → container port `3000`         | `127.0.0.1:8932` → container port `3000`         |
+| Host nginx to backend      | `127.0.0.1:8920` → container port `8000`         | `127.0.0.1:8930` → container port `8000`         |
 | Frontend server to backend | `http://backend:8000` on `webstrom-test-network` | `http://backend:8000` on `webstrom-prod-network` |
 
 Next.js binds to `0.0.0.0:3000` inside its isolated container; the published host

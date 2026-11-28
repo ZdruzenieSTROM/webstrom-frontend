@@ -1,6 +1,5 @@
 import {withSentryConfig} from '@sentry/nextjs'
 import type {NextConfig} from 'next'
-// eslint-disable-next-line node/no-extraneous-import
 import type {Configuration} from 'webpack'
 
 // Sentry keeps client errors only if thrown from `/_next/static/` (src/utils/sentryAllowUrls.ts): adding assetPrefix
@@ -27,7 +26,7 @@ const nextConfig: NextConfig = {
   },
   output: 'standalone',
   reactStrictMode: true,
-  // typecheck aj eslint pustame v CI pred buildom osobitne, nemusi ich pustat aj next
+  // typecheck pustame v CI pred buildom osobitne, nemusi ho pustat aj next
   typescript: {ignoreBuildErrors: true},
   // https://nextjs.org/docs/app/building-your-application/routing/middleware#advanced-middleware-flags
   skipTrailingSlashRedirect: true,

@@ -1,0 +1,9 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "semi": false,
+  "singleQuote": true,
+  "bracketSpacing": false,
+  "trailingComma": "all",
+  "ignorePatterns": ["next-env.d.ts"]
+}

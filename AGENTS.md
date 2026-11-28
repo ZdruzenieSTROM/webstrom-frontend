@@ -6,7 +6,7 @@ The Django backend lives in [webstrom-backend](https://github.com/ZdruzenieSTROM
 
 Stack: Next.js (Pages Router) + React + TypeScript, MUI, TanStack Query + axios, react-admin, vitest +
 Testing Library, Bun for installs and typechecking (`packageManager` in `package.json`), Node ≥ 22 as the
-runtime for Next, ESLint and vitest.
+runtime for Next, oxlint's JS plugins and vitest.
 
 Longer docs in `docs/`: `DEPLOYMENT.md` (deploy pipeline), `trailing-slash.md` (why backend URLs keep a
 trailing slash and page URLs don't), `screeny.md` (what each participant-facing page shows).
@@ -28,14 +28,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 | Install                       | `bun install`                                             |
 | Dev server (`localhost:3000`) | `bun run dev`                                             |
 | Typecheck                     | `bun run typecheck` (`bun check`, TypeScript 7's checker) |
-| Lint (ESLint + Prettier)      | `bun run lint` (autofix: `bun run lint:fix`)              |
+| Lint (oxlint)                 | `bun run lint` (autofix: `bun run lint:fix`)              |
+| Format check (oxfmt)          | `bun run format:check` (fix: `bun run format`)            |
 | Tests                         | `bun run test --run` (`bun run test` stays in watch mode) |
 | Production build              | `bun run build`                                           |
 
 `bun test` (without `run`) starts Bun's own test runner instead of vitest; always use `bun run test`.
 
-CI (`branch-test` in `.github/workflows/test.yml`) runs `bun run typecheck`, `bun run lint`, `bun run test`,
-`bun run build` on every PR; run the same four before pushing. `bun run build` rewrites `next-env.d.ts` to
+CI (`branch-test` in `.github/workflows/test.yml`) runs `bun run typecheck`, `bun run lint`, `bun run format:check`,
+`bun run test`, `bun run build` on every PR; run the same five before pushing. `bun run build` rewrites `next-env.d.ts` to
 `.next/types/...` paths; don't commit that change (`git checkout next-env.d.ts`).
 
 ### Which backend the dev server talks to

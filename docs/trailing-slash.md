@@ -1,4 +1,5 @@
 Insight do toho, co sa deje v DevTools Network tabe a ako robime z FE requesty. Nejake fakty:
+
 - BE django server ocakava requesty s koncovym lomitkom (trailing slash)
 - next.js FE nerozlisuje medzi requestami kvoli tomu, ze navstivim nejaku stranku, a tym, ze nieco volam cez axios manualne
 - v browseri chceme vidiet URL bez koncoveho lomitka
