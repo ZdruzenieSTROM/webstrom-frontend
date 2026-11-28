@@ -1,6 +1,7 @@
 import {FC} from 'react'
 import {ArrayInput, FormTab, maxLength, required, SimpleFormIterator, TextInput} from 'react-admin'
 
+import {LinkWarningTextInput} from '@/components/Admin/custom/LinkWarningTextInput'
 import {MyCreate} from '@/components/Admin/custom/MyCreate'
 import {MyCreateToolbar} from '@/components/Admin/custom/MyCreateToolbar'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
@@ -14,8 +15,8 @@ export const PostCreate: FC = () => {
       <MyTabbedForm toolbar={<MyCreateToolbar />}>
         <FormTab label="content.labels.general">
           <TextInput source="caption" validate={required()} />
-          <TextInput source="short_text" validate={maxLength(200)} />
-          <TextInput source="details" multiline helperText="content.helpers.markdown" />
+          <LinkWarningTextInput source="short_text" validate={maxLength(200)} />
+          <LinkWarningTextInput source="details" multiline helperText="content.helpers.markdown" />
           {/* <MyDateTimeInput source="added_at" disabled /> */}
           <MyDateTimeInput source="visible_after" validate={required()} />
           <MyDateTimeInput source="visible_until" validate={required()} />

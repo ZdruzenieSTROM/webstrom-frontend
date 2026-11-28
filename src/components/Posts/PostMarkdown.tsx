@@ -6,13 +6,13 @@ import rehypeKatex from 'rehype-katex'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 
+import {cleanPostMarkdown} from '@/utils/postMarkdown'
+
 import {Header, MarkdownLink, Ol, Paragraph, Ul} from './PostMarkdownTexts'
 
 type PostMarkdownProps = {
   content: string
 }
-
-const clean = (value: string) => value.replaceAll(/\\\(|\\\)/g, '$').replaceAll(/\\\[|\\]/g, '$$')
 
 export const PostMarkdown: FC<PostMarkdownProps> = ({content}) => {
   return (
@@ -33,7 +33,7 @@ export const PostMarkdown: FC<PostMarkdownProps> = ({content}) => {
       }}
       disallowedElements={['table']}
     >
-      {clean(content)}
+      {cleanPostMarkdown(content)}
     </ReactMarkdown>
   )
 }
