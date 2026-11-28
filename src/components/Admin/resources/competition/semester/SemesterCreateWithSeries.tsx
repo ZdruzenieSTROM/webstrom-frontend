@@ -1,5 +1,6 @@
+import {WarningAmber} from '@mui/icons-material'
 import {Alert, Box, Button, Card, CardContent, CircularProgress, Stack, Typography} from '@mui/material'
-import {FC, useEffect, useRef, useState} from 'react'
+import {FC, useEffect, useMemo, useRef, useState} from 'react'
 import {
   CheckboxGroupInput,
   Form,
@@ -18,6 +19,16 @@ import {
 } from 'react-admin'
 import {useFormContext, useWatch} from 'react-hook-form'
 
+import {
+  emptyDraft,
+  ImportDraft,
+  needsAttention,
+  planSeriesImport,
+  problemData,
+  rowsToSave,
+  SeriesImportPlan,
+} from '@/components/Admin/custom/latex-import/planSeriesImport'
+import {ProblemsImportDialog} from '@/components/Admin/custom/latex-import/ProblemsImportDialog'
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyDateTimeSplitInput} from '@/components/Admin/custom/MyDateTimeSplitInput'
 import {seasonCodeStrings} from '@/components/Admin/seasonCodeStrings'
@@ -74,6 +85,8 @@ const FormBody: FC = () => {
   const [lastPrefilledCompetitionId, setLastPrefilledCompetitionId] = useState<number | null>(null)
   const [createdSemesterId, setCreatedSemesterId] = useState<number | null>(null)
   const [createdSeriesIds, setCreatedSeriesIds] = useState<[number | null, number | null]>([null, null])
+  // orders already created per series, so a resubmit after a failure creates only the rest
+  const [createdProblems, setCreatedProblems] = useState<[Set<number>, Set<number>]>([new Set(), new Set()])
   const [submitting, setSubmitting] = useState(false)
   const [prefillLoading, setPrefillLoading] = useState(false)
   // Guard so auto-prefill fires only once in this form lifetime (the first competition pick).
@@ -81,6 +94,16 @@ const FormBody: FC = () => {
 
   const competitionId = useWatch<FormValues, 'competition'>({name: 'competition'})
   const series2Deadline = useWatch<FormValues, 'series_2_deadline'>({name: 'series_2_deadline'})
+  const [drafts, setDrafts] = useState<[ImportDraft, ImportDraft]>([emptyDraft, emptyDraft])
+  // only a new file changes the plan; edits, skips and files are applied on top of it by rowsToSave
+  const [{latex: series1Latex}, {latex: series2Latex}] = drafts
+  const plans: [SeriesImportPlan, SeriesImportPlan] = [
+    useMemo(() => planSeriesImport(series1Latex, 1, []), [series1Latex]),
+    useMemo(() => planSeriesImport(series2Latex, 2, []), [series2Latex]),
+  ]
+  const problemsToCreate = [rowsToSave(plans[0], drafts[0]), rowsToSave(plans[1], drafts[1])]
+  const setDraft = (index: 0 | 1, draft: ImportDraft) =>
+    setDrafts((current) => (index === 0 ? [draft, current[1]] : [current[0], draft]))
 
   // Derived `end` = series_2_deadline + 14 days. Runs whenever series_2 changes.
   // The user can still manually override `end`; the next deadline change overwrites again (by design).
@@ -203,7 +226,31 @@ const FormBody: FC = () => {
         }
       }
 
-      if (newSeriesIds[0] !== null && newSeriesIds[1] !== null) {
+      const newCreatedProblems: [Set<number>, Set<number>] = [new Set(createdProblems[0]), new Set(createdProblems[1])]
+      for (const [i, rows] of problemsToCreate.entries()) {
+        const seriesId = newSeriesIds[i]
+        if (seriesId === null) continue
+        for (const row of rows) {
+          if (newCreatedProblems[i].has(row.order)) continue
+          try {
+            await dataProvider.create('competition/problem', {
+              data: problemData(row, {series: seriesId, order: row.order}),
+            })
+            newCreatedProblems[i].add(row.order)
+          } catch (error) {
+            notify('content.notifications.semester_with_series.problem_error', {
+              type: 'error',
+              messageArgs: {series: i + 1, order: row.order, message: (error as Error).message},
+            })
+          }
+        }
+      }
+      setCreatedProblems(newCreatedProblems)
+
+      const allProblemsCreated = problemsToCreate.every((rows, i) =>
+        rows.every((row) => newCreatedProblems[i].has(row.order)),
+      )
+      if (newSeriesIds[0] !== null && newSeriesIds[1] !== null && allProblemsCreated) {
         notify('content.notifications.semester_with_series.all_series_created', {type: 'success'})
         redirect('show', 'competition/semester', semesterId)
       }
@@ -281,8 +328,13 @@ const FormBody: FC = () => {
         {translate('content.semester_with_series.series_heading', {order: 1})}
       </Typography>
       <SeriesRow
+        seriesOrder={1}
         deadlineSource="series_1_deadline"
         createdId={createdSeriesIds[0]}
+        plan={plans[0]}
+        draft={drafts[0]}
+        onDraftChange={(draft) => setDraft(0, draft)}
+        createdProblems={createdProblems[0]}
         defaultTime={DEFAULT_DEADLINE_TIME}
       />
 
@@ -290,8 +342,13 @@ const FormBody: FC = () => {
         {translate('content.semester_with_series.series_heading', {order: 2})}
       </Typography>
       <SeriesRow
+        seriesOrder={2}
         deadlineSource="series_2_deadline"
         createdId={createdSeriesIds[1]}
+        plan={plans[1]}
+        draft={drafts[1]}
+        onDraftChange={(draft) => setDraft(1, draft)}
+        createdProblems={createdProblems[1]}
         defaultTime={DEFAULT_DEADLINE_TIME}
       />
 
@@ -313,11 +370,20 @@ const FormBody: FC = () => {
 }
 
 const SeriesRow: FC<{
+  seriesOrder: 1 | 2
   deadlineSource: 'series_1_deadline' | 'series_2_deadline'
   createdId: number | null
+  plan: SeriesImportPlan
+  draft: ImportDraft
+  onDraftChange: (draft: ImportDraft) => void
+  createdProblems: Set<number>
   defaultTime: string
-}> = ({deadlineSource, createdId, defaultTime}) => {
+}> = ({seriesOrder, deadlineSource, createdId, plan, draft, onDraftChange, createdProblems, defaultTime}) => {
   const translate = useTranslate()
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const rows = rowsToSave(plan, draft)
+  const withWarnings = rows.filter((row) => !createdProblems.has(row.order) && needsAttention(row)).length
+  const withImages = rows.filter((row) => row.file).length
 
   return (
     <Box>
@@ -330,6 +396,47 @@ const SeriesRow: FC<{
         defaultTime={defaultTime}
         validate={required()}
         disabled={createdId !== null}
+      />
+      {createdProblems.size > 0 && (
+        <Alert severity="success" sx={{mb: 1}}>
+          {translate('content.semester_with_series.problems_created', {
+            count: createdProblems.size,
+            total: rows.length,
+          })}
+        </Alert>
+      )}
+      <Stack direction="row" alignItems="center" gap={2}>
+        <Button variant="outlined" onClick={() => setDialogOpen(true)}>
+          {translate('content.latex_import.series_open')}
+        </Button>
+        {rows.length > 0 && (
+          <Box>
+            <Typography variant="body1">
+              {translate('content.semester_with_series.problems_ready', {count: rows.length})}
+              {withImages > 0 && ` ${translate('content.semester_with_series.problems_images', {count: withImages})}`}
+            </Typography>
+            {withWarnings > 0 && (
+              <Stack direction="row" alignItems="center" gap={0.5}>
+                <WarningAmber color="warning" fontSize="small" />
+                <Typography variant="body1">
+                  {translate('content.semester_with_series.problems_warnings', {count: withWarnings})}
+                </Typography>
+              </Stack>
+            )}
+          </Box>
+        )}
+      </Stack>
+      <ProblemsImportDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        seriesOrder={seriesOrder}
+        plan={plan}
+        draft={draft}
+        onDraftChange={onDraftChange}
+        confirmLabel={translate('content.latex_import.done')}
+        onConfirm={() => setDialogOpen(false)}
+        // after a partial create the rest stays fixable: a problem the backend refused can be edited or skipped
+        createdOrders={createdProblems}
       />
     </Box>
   )

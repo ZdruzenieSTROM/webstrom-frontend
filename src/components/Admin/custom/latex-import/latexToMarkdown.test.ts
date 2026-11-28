@@ -36,17 +36,19 @@ describe(latexToMarkdown, () => {
     expect(latexToMarkdown(problem1)).toStrictEqual({
       markdown: String.raw`V trojuholníku \(ABC\) os uhla \(ABC\) pretína \(AC\) v bode \(D\). Rovnobežka s \(BC\) vedená bodom \(D\) pretína \(AB\) v bode \(E\). Platí, že strany \(AB\) a \(BC\) sú v pomere \(2:1\). V akom pomere delí \(E\) úsečku \(AB\)?`,
       warnings: [],
+      images: [],
     })
   })
 
-  it(String.raw`should turn \textit into emphasis, keep paragraphs and drop the figure with a warning`, () => {
-    const {markdown, warnings} = latexToMarkdown(problem3)
+  it(String.raw`should turn \textit into emphasis, keep paragraphs and drop the figure and list its file`, () => {
+    const {markdown, warnings, images} = latexToMarkdown(problem3)
 
     expect(markdown)
       .toBe(String.raw`*Obec* je súvislý útvar zložený zo štvorcov rovnakej veľkosti, ktoré navzájom susedia hranou. Na obrázku pod úlohou je uvedené, ako by napríklad mohla vyzerať *obec* zložená z ôsmich štvorcov.
 
 *Mestom* nazveme takú *obec*, ktorá sa skladá z aspoň \(2026\) štvorcov. *Nedeliteľné mesto* je také, ktoré sa nedá rozdeliť na dve alebo viacero *miest*. Aký je maximálny počet štvorcov, z ktorých sa môže skladať *nedeliteľné mesto*?`)
-    expect(warnings).toStrictEqual(['Obrázok obr/4-3.PNG sa do textu neprenáša – nahraj ho do poľa Obrázok.'])
+    expect(warnings).toStrictEqual([])
+    expect(images).toStrictEqual(['obr/4-3.PNG'])
   })
 
   it('should turn itemize into a Markdown list without the source indentation', () => {
@@ -78,6 +80,7 @@ $$`)
       markdown:
         String.raw`Nech $ABC$ je trojuholník s $|\angle BAC |=\ang{120} $. Dotykové body označme $P$ a` + '\u00A0$Q$.',
       warnings: [],
+      images: [],
     })
   })
 
@@ -134,6 +137,7 @@ Dokážte, že existuje konečná pos\-tup\-nosť seknutí, pomocou ktorých Her
       markdown:
         'Dokážte, že existuje konečná postupnosť seknutí, pomocou ktorých Herkules odsekne všetky hlavy a tento postup popíšte.',
       warnings: [],
+      images: [],
     })
   })
 
@@ -172,6 +176,7 @@ Dokážte, že existuje konečná pos\-tup\-nosť seknutí, pomocou ktorých Her
     expect(latexToMarkdown('Plocha je \\')).toStrictEqual({
       markdown: 'Plocha je \\',
       warnings: [String.raw`Osamotené \ na konci textu som nechal bez zmeny.`],
+      images: [],
     })
   })
 

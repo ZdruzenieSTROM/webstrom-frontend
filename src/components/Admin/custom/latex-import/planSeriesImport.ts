@@ -7,6 +7,8 @@ export type ImportRow = {
   order: number
   markdown: string
   warnings: string[]
+  // pictures the LaTeX includes, which the text cannot carry
+  images: string[]
   // set when the series already has a problem with this order
   existing?: ExistingProblem
 }
@@ -44,4 +46,45 @@ export const planSeriesImport = (latex: string, seriesOrder: number, existing: E
     duplicates: [...duplicates],
     unclosed: unclosed.filter(({series}) => series === seriesOrder).map(({order}) => order),
   }
+}
+
+// what the editor changed in the import dialog, kept apart from the plan so a re-planned file can drop it
+export type ImportDraft = {
+  latex: string
+  skipped: ReadonlySet<number>
+  // Markdown the editor rewrote, by order
+  edits: ReadonlyMap<number, string>
+  // image files the editor attached, by order
+  files: ReadonlyMap<number, File>
+}
+
+export const emptyDraft: ImportDraft = {latex: '', skipped: new Set(), edits: new Map(), files: new Map()}
+
+export type RowToSave = ImportRow & {file?: File}
+
+// the rows to save: skipped ones left out, edited text in place of the converted one, attached files added
+export const rowsToSave = (plan: SeriesImportPlan, draft: ImportDraft): RowToSave[] =>
+  plan.rows
+    .filter((row) => !draft.skipped.has(row.order))
+    .map((row) => ({...row, markdown: draft.edits.get(row.order) ?? row.markdown, file: draft.files.get(row.order)}))
+
+// the backend refuses a problem without text, so a blank one must be fixed or skipped before saving
+export const isBlank = (row: Pick<ImportRow, 'markdown'>) => !row.markdown.trim()
+
+// whether the row has something the editor should look at: a converter warning, no text, or a picture the
+// LaTeX includes that neither a picked file nor the stored problem provides
+export const needsAttention = (row: RowToSave) =>
+  row.warnings.length > 0 || isBlank(row) || (row.images.length > 0 && !row.file && !row.existing?.image)
+
+// data for the data provider's create/update: multipart only with a file, so an overwrite without a new image
+// sends just the text and leaves the stored image alone
+export const problemData = (row: RowToSave, fields: Record<string, string | number>) => {
+  const data: Record<string, string | number> = {...fields, text: row.markdown}
+  if (!row.file) return data
+  // the id addresses the PATCH; it is not a field of the problem
+  const {id, ...rest} = data
+  const formData = new FormData()
+  for (const [key, value] of Object.entries(rest)) formData.append(key, String(value))
+  formData.append('image', row.file)
+  return id === undefined ? {formData} : {id, formData}
 }
