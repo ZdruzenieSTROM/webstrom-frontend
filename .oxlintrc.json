@@ -1,13 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript",
-    "nextjs",
-    "react",
-    "import",
-    "unicorn",
-    "promise"
-  ],
+  "plugins": ["typescript", "nextjs", "react", "import", "unicorn", "promise"],
   "jsPlugins": [
     "eslint-plugin-simple-import-sort",
     "eslint-plugin-eslint-comments",
@@ -44,12 +37,7 @@
     "typeAware": true,
     "reportUnusedDisableDirectives": "warn"
   },
-  "ignorePatterns": [
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts"
-  ],
+  "ignorePatterns": [".next/**", "out/**", "build/**", "next-env.d.ts"],
   "rules": {
     "constructor-super": "error",
     "for-direction": "error",
@@ -63,10 +51,7 @@
     "no-case-declarations": "error",
     "no-class-assign": "error",
     "no-compare-neg-zero": "error",
-    "no-cond-assign": [
-      "error",
-      "except-parens"
-    ],
+    "no-cond-assign": ["error", "except-parens"],
     "no-const-assign": "error",
     "no-constant-binary-expression": "error",
     "no-constant-condition": [
@@ -394,30 +379,18 @@
     "unicorn/prefer-structured-clone": [
       "error",
       {
-        "functions": [
-          "_.cloneDeep",
-          "lodash.cloneDeep"
-        ]
+        "functions": ["_.cloneDeep", "lodash.cloneDeep"]
       }
     ],
-    "unicorn/prefer-ternary": [
-      "error",
-      "always"
-    ],
+    "unicorn/prefer-ternary": ["error", "always"],
     "unicorn/prefer-top-level-await": "error",
     "unicorn/prefer-type-error": "error",
-    "unicorn/relative-url-style": [
-      "error",
-      "never"
-    ],
+    "unicorn/relative-url-style": ["error", "never"],
     "unicorn/require-array-join-separator": "error",
     "unicorn/require-module-attributes": "error",
     "unicorn/require-module-specifiers": "error",
     "unicorn/require-number-to-fixed-digits-argument": "error",
-    "unicorn/switch-case-braces": [
-      "error",
-      "always"
-    ],
+    "unicorn/switch-case-braces": ["error", "always"],
     "unicorn/text-encoding-identifier-case": [
       "error",
       {
@@ -517,28 +490,19 @@
         "paths": [
           {
             "name": "react-admin",
-            "importNames": [
-              "FileField",
-              "FileInput"
-            ],
+            "importNames": ["FileField", "FileInput"],
             "message": "Please use MyShowFileField, MyCreateFileInput, MyEditFileInput components from `@/components/Admin/custom/file-handling` instead."
           }
         ],
         "patterns": [
           {
-            "group": [
-              "**/types/api/generated",
-              "**/types/api/generated/**"
-            ],
+            "group": ["**/types/api/generated", "**/types/api/generated/**"],
             "message": "Please use types from src/types/api/ instead of **/generated/."
           }
         ]
       }
     ],
-    "eqeqeq": [
-      "warn",
-      "smart"
-    ],
+    "eqeqeq": ["warn", "smart"],
     "prefer-const": [
       "warn",
       {
@@ -629,14 +593,10 @@
       "always",
       {
         "line": {
-          "markers": [
-            "/"
-          ]
+          "markers": ["/"]
         },
         "block": {
-          "markers": [
-            "!"
-          ],
+          "markers": ["!"],
           "balanced": true
         }
       }
@@ -645,9 +605,7 @@
     "n/no-extraneous-import": [
       "error",
       {
-        "allowModules": [
-          "react-router-dom"
-        ]
+        "allowModules": ["react-router-dom"]
       }
     ],
     "n/no-extraneous-require": "error",
@@ -663,12 +621,7 @@
     "n/no-unsupported-features/node-builtins": [
       "error",
       {
-        "ignores": [
-          "navigator",
-          "localStorage",
-          "sessionStorage",
-          "URL.createObjectURL"
-        ]
+        "ignores": ["navigator", "localStorage", "sessionStorage", "URL.createObjectURL"]
       }
     ],
     "n/process-exit-as-throw": "error",
@@ -677,12 +630,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.mts",
-        "**/*.cts"
-      ],
+      "files": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
       "rules": {
         "constructor-super": "off",
         "getter-return": "off",
@@ -706,9 +654,7 @@
       }
     },
     {
-      "files": [
-        "**/*.{js,jsx,mjs,ts,tsx,mts,cts}"
-      ],
+      "files": ["**/*.{js,jsx,mjs,ts,tsx,mts,cts}"],
       "rules": {
         "react/display-name": "error",
         "react/jsx-key": "error",
@@ -731,12 +677,8 @@
         "jsx-a11y/alt-text": [
           "warn",
           {
-            "elements": [
-              "img"
-            ],
-            "img": [
-              "Image"
-            ]
+            "elements": ["img"],
+            "img": ["Image"]
           }
         ],
         "jsx-a11y/aria-props": "warn",
@@ -758,17 +700,10 @@
         "react/set-state-in-render": "error",
         "react/unsupported-syntax": "warn"
       },
-      "plugins": [
-        "jsx-a11y"
-      ]
+      "plugins": ["jsx-a11y"]
     },
     {
-      "files": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.mjs",
-        "**/*.mts"
-      ],
+      "files": ["**/*.ts", "**/*.tsx", "**/*.mjs", "**/*.mts"],
       "rules": {
         "node/no-exports-assign": "error",
         "import/no-commonjs": "warn",
@@ -779,15 +714,10 @@
           }
         ]
       },
-      "plugins": [
-        "node"
-      ]
+      "plugins": ["node"]
     },
     {
-      "files": [
-        "**/*.js",
-        "**/*.cjs"
-      ],
+      "files": ["**/*.js", "**/*.cjs"],
       "rules": {
         "node/no-exports-assign": "error",
         "n/no-unpublished-import": [
@@ -805,17 +735,10 @@
           }
         ]
       },
-      "plugins": [
-        "node"
-      ]
+      "plugins": ["node"]
     },
     {
-      "files": [
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "**/testUtils.{ts,tsx}",
-        "vitest.setup.ts"
-      ],
+      "files": ["**/*.test.ts", "**/*.test.tsx", "**/testUtils.{ts,tsx}", "vitest.setup.ts"],
       "rules": {
         "vitest/consistent-test-filename": "warn",
         "vitest/consistent-test-it": "warn",
@@ -898,14 +821,10 @@
         "vitest-js/prefer-vi-mocked": "warn",
         "n/no-unpublished-import": "off"
       },
-      "plugins": [
-        "vitest"
-      ]
+      "plugins": ["vitest"]
     },
     {
-      "files": [
-        "**/*.config.{mjs,ts,mts}"
-      ],
+      "files": ["**/*.config.{mjs,ts,mts}"],
       "rules": {
         "import/no-default-export": "off",
         "import/no-anonymous-default-export": "off",
@@ -913,17 +832,13 @@
       }
     },
     {
-      "files": [
-        "src/pages/**/*.tsx"
-      ],
+      "files": ["src/pages/**/*.tsx"],
       "rules": {
         "import/no-default-export": "off"
       }
     },
     {
-      "files": [
-        "src/types/api/generated/**/*.ts"
-      ],
+      "files": ["src/types/api/generated/**/*.ts"],
       "rules": {
         "typescript/no-explicit-any": "off"
       }

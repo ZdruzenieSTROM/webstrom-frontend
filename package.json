@@ -2,9 +2,6 @@
   "name": "webstrom-frontend",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": ">=22.0.0"
-  },
   "scripts": {
     "dev": "next dev",
     "dev:local": "BE_PROTOCOL=http BE_HOSTNAME=localhost BE_PORT=8000 npm run dev",
@@ -80,12 +77,15 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.15"
   },
-  "packageManager": "bun@1.4.5",
   "resolutions": {
-    "@tanstack/react-query": "npm:@tanstack/react-query@5.100.9",
-    "react-hook-form": "npm:react-hook-form@7.92.0",
-    "import-in-the-middle": "^3.0.1",
+    "@mui/icons-material": "^7.1.1",
     "@mui/material": "^7.1.1",
-    "@mui/icons-material": "^7.1.1"
-  }
+    "@tanstack/react-query": "npm:@tanstack/react-query@5.100.9",
+    "import-in-the-middle": "^3.0.1",
+    "react-hook-form": "npm:react-hook-form@7.92.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "bun@1.4.5"
 }

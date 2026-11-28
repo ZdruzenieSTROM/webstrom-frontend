@@ -5,8 +5,5 @@
   "singleQuote": true,
   "bracketSpacing": false,
   "trailingComma": "all",
-  "ignorePatterns": [
-    "next-env.d.ts",
-    "**/*.{json,jsonc,json5,md,mdx,yml,yaml,toml,css,scss,less,html,graphql,hbs,vue,svelte,astro}"
-  ]
+  "ignorePatterns": ["next-env.d.ts"]
 }
