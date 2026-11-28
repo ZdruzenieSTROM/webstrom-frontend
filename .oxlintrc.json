@@ -14,7 +14,11 @@
       "specifier": "@vitest/eslint-plugin"
     },
     "eslint-plugin-n",
-    "@stylistic/eslint-plugin"
+    "@stylistic/eslint-plugin",
+    {
+      "name": "next-js",
+      "specifier": "@next/eslint-plugin-next"
+    }
   ],
   "categories": {
     "correctness": "off"
@@ -621,7 +625,14 @@
     "n/no-unsupported-features/node-builtins": [
       "error",
       {
-        "ignores": ["navigator", "localStorage", "sessionStorage", "URL.createObjectURL"]
+        "ignores": [
+          "navigator",
+          "localStorage",
+          "sessionStorage",
+          "URL.createObjectURL",
+          "URL.revokeObjectURL",
+          "import.meta.dirname"
+        ]
       }
     ],
     "n/process-exit-as-throw": "error",
@@ -698,7 +709,8 @@
         "react/error-boundaries": "error",
         "react/purity": "error",
         "react/set-state-in-render": "error",
-        "react/unsupported-syntax": "warn"
+        "react/unsupported-syntax": "warn",
+        "next-js/no-location-assign-relative-destination": "warn"
       },
       "plugins": ["jsx-a11y"]
     },
