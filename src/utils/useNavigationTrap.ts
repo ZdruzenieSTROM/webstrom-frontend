@@ -1,6 +1,8 @@
 import {useRouter} from 'next/router'
 import {useCallback, useEffect, useRef, useState} from 'react'
 
+export const NAVIGATION_TRAP_ERROR_MESSAGE = 'Canceling navigation due to unsaved changes in the page'
+
 interface NavigationTrapProps {
   shouldBlockNavigation: boolean
   onNavigate: () => void
@@ -17,7 +19,9 @@ export const useNavigationTrap = ({shouldBlockNavigation, onNavigate}: Navigatio
   const killNavigation = useCallback(() => {
     router.events.emit('routeChangeError', '', '', {shallow: false})
 
-    throw new Error('Canceling navigation due to unsaved changes in the page')
+    // Next's pages router has no API to cancel a route change; throwing from a routeChangeStart handler is the only
+    // way to abort it. The error surfaces as an unhandled rejection, which sentryBeforeSend drops.
+    throw new Error(NAVIGATION_TRAP_ERROR_MESSAGE)
   }, [router])
 
   useEffect(() => {
