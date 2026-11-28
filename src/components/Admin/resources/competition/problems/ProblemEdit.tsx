@@ -33,8 +33,8 @@ export const ProblemEdit: FC = () => (
         <ImageInput source="image" accept={Accept.Image}>
           <MyImageField />
         </ImageInput>
-        <MyEditFileInput source="solution_pdf" accept={Accept.Pdf} />
         <ProblemPreview />
+        <MyEditFileInput source="solution_pdf" accept={Accept.Pdf} />
       </FormTab>
     </MyTabbedForm>
   </MyEdit>

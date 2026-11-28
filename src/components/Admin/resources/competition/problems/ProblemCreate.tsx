@@ -33,8 +33,8 @@ export const ProblemCreate: FC = () => (
         <ImageInput source="image" accept={Accept.Image} helperText="Povolené iba obrázkové formáty .jpeg, .jpg a .png">
           <MyImageField />
         </ImageInput>
-        <MyCreateFileInput source="solution_pdf" accept={Accept.Pdf} />
         <ProblemPreview />
+        <MyCreateFileInput source="solution_pdf" accept={Accept.Pdf} />
       </FormTab>
     </MyTabbedForm>
   </MyCreate>
