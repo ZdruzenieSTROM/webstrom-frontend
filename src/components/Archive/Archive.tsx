@@ -1,31 +1,13 @@
-import {
-  AssignmentOutlined,
-  AssignmentTurnedInOutlined,
-  EmojiEventsOutlined,
-  ExpandMore,
-  MenuBookOutlined,
-  PhotoLibraryOutlined,
-} from '@mui/icons-material'
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Stack,
-  SvgIconProps,
-  SxProps,
-  Theme,
-  Typography,
-} from '@mui/material'
+import {ExpandMore} from '@mui/icons-material'
+import {Accordion, AccordionDetails, AccordionSummary, Stack, Typography} from '@mui/material'
 import {useQuery} from '@tanstack/react-query'
-import {ComponentType, FC} from 'react'
+import {FC} from 'react'
 
 import {apiOptions} from '@/api/api'
-import {colors} from '@/theme/colors'
-import {Event, Publication, PublicationTypes} from '@/types/api/competition'
+import {Event, PublicationTypes} from '@/types/api/competition'
 import {useSeminarInfo} from '@/utils/useSeminarInfo'
 
-import {Link} from '../Clickable/Link'
+import {ArchiveButton, ArchiveRow} from './ArchiveRow'
 
 type YearGroup = {
   year: number
@@ -47,70 +29,6 @@ const getResultsUrl = (eventYear: number, eventSeason: number) => {
 
 const getProblemsUrl = (eventYear: number, eventSeason: number, seriesOrder: 1 | 2) => {
   return `../zadania/${eventYear}/${getSeasonSlug(eventSeason)}/${seriesOrder}`
-}
-
-const getArchiveButtonSx = (disabled = false): SxProps<Theme> => {
-  return {
-    '.archive-row:hover &': {
-      '--bgcolor': colors.black,
-      '--color': disabled ? colors.gray : colors.white,
-      bgcolor: colors.black,
-      color: disabled ? colors.gray : colors.white,
-    },
-    '.archive-row:hover &:hover': {
-      '--bgcolor': disabled ? colors.gray : colors.white,
-      '--color': disabled ? colors.white : colors.black,
-      bgcolor: disabled ? colors.gray : colors.white,
-      color: disabled ? colors.white : colors.black,
-    },
-  }
-}
-
-type ButtonKind = 'magazine' | 'results' | 'problems' | 'solutions' | 'photos'
-
-const buttonConfig: Record<ButtonKind, {label: string; Icon: ComponentType<SvgIconProps>}> = {
-  magazine: {label: 'Časopis', Icon: MenuBookOutlined},
-  results: {label: 'Poradie', Icon: EmojiEventsOutlined},
-  problems: {label: 'Zadania', Icon: AssignmentOutlined},
-  solutions: {label: 'Riešenia', Icon: AssignmentTurnedInOutlined},
-  photos: {label: 'Fotky', Icon: PhotoLibraryOutlined},
-}
-
-const ButtonContent: FC<{kind: ButtonKind}> = ({kind}) => {
-  const {label, Icon} = buttonConfig[kind]
-  return (
-    <Box component="span" sx={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
-      <Icon aria-hidden sx={{fontSize: '1em'}} />
-      {label}
-    </Box>
-  )
-}
-
-const ArchiveActionButton: FC<{
-  href: string
-  kind: ButtonKind
-}> = ({href, kind}) => {
-  return (
-    <Link variant="button2" href={href} sx={getArchiveButtonSx()}>
-      <ButtonContent kind={kind} />
-    </Link>
-  )
-}
-
-const PublicationButton: FC<{
-  publication?: Publication
-  kind: ButtonKind
-}> = ({publication, kind}) => {
-  return (
-    <Link
-      variant="button2"
-      disabled={!publication}
-      href={publication?.file || '#'}
-      sx={getArchiveButtonSx(!publication)}
-    >
-      <ButtonContent kind={kind} />
-    </Link>
-  )
 }
 
 // BE convention: LEAFLET (id=4) is overloaded — order=1 is the season magazine ("Časopis"),
@@ -150,37 +68,6 @@ const getYearGroups = (eventList: Event[]): YearGroup[] => {
     }))
 }
 
-const ArchiveRow: FC<{
-  label: string
-  children: React.ReactNode
-  indented?: boolean
-  gap?: number | string
-}> = ({label, children, indented = false, gap = 0.5}) => {
-  return (
-    <Stack
-      className="archive-row"
-      direction="row"
-      justifyContent="space-between"
-      alignItems="flex-start"
-      gap={1}
-      sx={{
-        pl: indented ? 3 : 1,
-        pr: 1,
-        py: 0.5,
-        '&:hover': {
-          bgcolor: colors.black,
-          color: colors.white,
-        },
-      }}
-    >
-      <Typography variant="h3">{label}</Typography>
-      <Stack direction="row" flexWrap="wrap" justifyContent="flex-end" gap={gap}>
-        {children}
-      </Stack>
-    </Stack>
-  )
-}
-
 export const Archive: FC = () => {
   const {seminarId} = useSeminarInfo()
 
@@ -213,20 +100,20 @@ export const Archive: FC = () => {
                   <Stack key={event.id}>
                     {/* 7px keeps season-row buttons aligned with the series rows below */}
                     <ArchiveRow label={getSeasonLabel(event.season_code)} gap={'7px'}>
-                      {seasonLeaflet && <PublicationButton publication={seasonLeaflet} kind="magazine" />}
-                      <ArchiveActionButton href={getResultsUrl(group.year, event.season_code)} kind="results" />
+                      {seasonLeaflet && <ArchiveButton kind="magazine" href={seasonLeaflet.file} />}
+                      <ArchiveButton kind="results" href={getResultsUrl(group.year, event.season_code)} />
                     </ArchiveRow>
                     <ArchiveRow label="1. séria" indented>
-                      <ArchiveActionButton href={getProblemsUrl(group.year, event.season_code, 1)} kind="problems" />
-                      <PublicationButton publication={firstSeriesLeaflet} kind="solutions" />
+                      <ArchiveButton kind="problems" href={getProblemsUrl(group.year, event.season_code, 1)} />
+                      <ArchiveButton kind="solutions" href={firstSeriesLeaflet?.file} />
                     </ArchiveRow>
                     <ArchiveRow label="2. séria" indented>
-                      <ArchiveActionButton href={getProblemsUrl(group.year, event.season_code, 2)} kind="problems" />
-                      <PublicationButton publication={secondSeriesLeaflet} kind="solutions" />
+                      <ArchiveButton kind="problems" href={getProblemsUrl(group.year, event.season_code, 2)} />
+                      <ArchiveButton kind="solutions" href={secondSeriesLeaflet?.file} />
                     </ArchiveRow>
                     {firstGallery && (
                       <ArchiveRow label="Sústredenie" indented>
-                        <ArchiveActionButton href={firstGallery.gallery_link} kind="photos" />
+                        <ArchiveButton kind="photos" href={firstGallery.gallery_link} />
                       </ArchiveRow>
                     )}
                   </Stack>

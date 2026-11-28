@@ -1,7 +1,9 @@
-import {Grid, Stack, Typography} from '@mui/material'
+import {Stack, SxProps, Theme, Typography} from '@mui/material'
 import {useRouter} from 'next/router'
-import {FC, Fragment} from 'react'
+import {FC, useState} from 'react'
 
+import {ArchiveButton, ArchiveRow} from '@/components/Archive/ArchiveRow'
+import {Button} from '@/components/Clickable/Button'
 import {Link} from '@/components/Clickable/Link'
 import {Competition, Event, PublicationTypes} from '@/types/api/competition'
 
@@ -12,6 +14,33 @@ type OurCompetition = Omit<Competition, 'history_events'> & {history_events: Eve
 type CompetitionPageProps = {
   competition: OurCompetition
 }
+
+const VISIBLE_HISTORY_EVENTS = 15
+
+// Labels are the publication type names, as on BE (type 2 is Brožúra: problems with solutions)
+const HISTORY_PUBLICATIONS = [
+  {type: PublicationTypes.PROBLEMS, kind: 'problems'},
+  {type: PublicationTypes.SOLUTIONS, kind: 'solutions'},
+  {type: PublicationTypes.RESULTS, kind: 'results'},
+] as const
+
+const getPublication = (event: Event, publicationType: number) => {
+  return event.publication_set.find((publication) => publication.publication_type === publicationType)
+}
+
+// e.g. "22. ročník \u2013 2023/2024 (Prešovský)", same separator as /archiv year headings
+const getHistoryTitle = (event: Event, competitionName: string) => {
+  const yearLabel = [event.year === null ? null : `${event.year}. ročník`, event.school_year]
+    .filter(Boolean)
+    .join(' \u2013 ')
+
+  if (!yearLabel) return event.additional_name || competitionName
+
+  return event.additional_name ? `${yearLabel} (${event.additional_name})` : yearLabel
+}
+
+// On mobile every group gets its own right aligned line: title, publications, galleries
+const historyButtonGroupSx: SxProps<Theme> = {flexBasis: {xs: '100%', sm: 'auto'}, justifyContent: 'flex-end'}
 
 export const CompetitionPage: FC<CompetitionPageProps> = ({
   competition: {
@@ -28,6 +57,9 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
   const router = useRouter()
   const detailsLink = long_description && `${router.asPath}/podrobnosti`
   const rulesLink = rules && `${router.asPath}/pravidla`
+  const [showAllHistory, setShowAllHistory] = useState<boolean>(false)
+  // history_events come from BE ordered from the newest
+  const visibleHistoryEvents = showAllHistory ? history_events : history_events.slice(0, VISIBLE_HISTORY_EVENTS)
 
   return (
     <Stack gap={5}>
@@ -80,52 +112,56 @@ export const CompetitionPage: FC<CompetitionPageProps> = ({
         )}
       </Stack>
 
-      <Grid container spacing={2}>
-        {history_events.map((event) => {
-          const results = event.publication_set.find((p) => p.publication_type === PublicationTypes.RESULTS.id)
-          const solutions = event.publication_set.find((p) => p.publication_type === PublicationTypes.SOLUTIONS.id)
-          const problems = event.publication_set.find((p) => p.publication_type === PublicationTypes.PROBLEMS.id)
-          const firstGallery = event.galleries.length > 0 ? event.galleries[0] : null
-          return (
-            <Fragment key={event.id}>
-              <Grid size={4}>
-                <Typography variant="h2" component="span">
-                  {name} {event.school_year}
-                  {event.additional_name ? ` (${event.additional_name})` : ''}
-                </Typography>
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {firstGallery ? (
-                  <Link variant="button2" href={firstGallery.gallery_link}>
-                    {firstGallery.name}
-                  </Link>
-                ) : null}
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {results && (
-                  <Link variant="button2" key={results.id} href={results.file}>
-                    {PublicationTypes.RESULTS.display_name}
-                  </Link>
-                )}
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {problems ? (
-                  <Link variant="button2" key={problems.id} href={problems.file} target="_blank">
-                    {PublicationTypes.PROBLEMS.display_name}
-                  </Link>
-                ) : null}
-              </Grid>
-              <Grid size={2} display="flex" justifyContent="end">
-                {solutions ? (
-                  <Link variant="button2" key={solutions.id} href={solutions.file}>
-                    {PublicationTypes.SOLUTIONS.display_name}
-                  </Link>
-                ) : null}
-              </Grid>
-            </Fragment>
-          )
-        })}
-      </Grid>
+      <Stack gap={1}>
+        {visibleHistoryEvents.map((event) => (
+          <ArchiveRow
+            key={event.id}
+            label={getHistoryTitle(event, name)}
+            labelVariant="h2"
+            sx={{flexWrap: {xs: 'wrap', sm: 'nowrap'}}}
+            labelSx={{flex: {xs: '1 1 100%', sm: '0 1 auto'}}}
+            // row-reverse: publications stay at the right edge, galleries wrap below them as a whole
+            buttonsSx={{
+              flexDirection: 'row-reverse',
+              justifyContent: 'flex-start',
+              flex: {xs: '1 1 100%', sm: '1 1 0'},
+            }}
+          >
+            <Stack direction="row" flexWrap={{xs: 'wrap', sm: 'nowrap'}} gap={0.5} sx={historyButtonGroupSx}>
+              {HISTORY_PUBLICATIONS.map(({type, kind}) => (
+                <ArchiveButton
+                  compact
+                  key={type.id}
+                  kind={kind}
+                  label={type.display_name}
+                  href={getPublication(event, type.id)?.file}
+                />
+              ))}
+            </Stack>
+            {/* no disabled Fotky: most past events have no gallery, a column of grey buttons is only noise */}
+            {event.galleries.length > 0 && (
+              <Stack direction="row" flexWrap="wrap" gap={0.5} sx={historyButtonGroupSx}>
+                {event.galleries.map((gallery) => (
+                  <ArchiveButton
+                    compact
+                    key={gallery.id}
+                    kind="photos"
+                    href={gallery.gallery_link}
+                    label={gallery.name}
+                  />
+                ))}
+              </Stack>
+            )}
+          </ArchiveRow>
+        ))}
+        {!showAllHistory && history_events.length > VISIBLE_HISTORY_EVENTS && (
+          <Stack direction="row" justifyContent="flex-end">
+            <Button type="button" variant="button2" onClick={() => setShowAllHistory(true)}>
+              Zobraziť staršie
+            </Button>
+          </Stack>
+        )}
+      </Stack>
     </Stack>
   )
 }
