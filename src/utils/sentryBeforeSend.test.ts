@@ -9,10 +9,10 @@ const errorEvent = (message: string, breadcrumbs: Breadcrumb[] = []): ErrorEvent
   breadcrumbs,
 })
 
-const nextDataFetch = (status_code?: number): Breadcrumb => ({
+const nextDataFetch = (status_code?: number, page = 'strom/poradie.json'): Breadcrumb => ({
   category: 'fetch',
   type: 'http',
-  data: {method: 'GET', url: '/_next/data/gcMHPzRtZH_nUkyvPROth/strom/poradie.json', status_code},
+  data: {method: 'GET', url: `/_next/data/gcMHPzRtZH_nUkyvPROth/${page}`, status_code},
 })
 
 const invariant = 'Invariant: attempted to hard navigate to the same URL /strom/poradie https://strom.sk/strom/poradie'
@@ -34,6 +34,29 @@ describe(sentryBeforeSend, () => {
     const event = errorEvent(invariant, [nextDataFetch(404), nextDataFetch(500)])
 
     expect(sentryBeforeSend(event)).toBe(event)
+  })
+
+  it('should judge the invariant by the data fetch of its own target, not a later prefetch of another page', () => {
+    const event = errorEvent(invariant, [nextDataFetch(500), nextDataFetch(404, 'strom/zadania.json')])
+
+    expect(sentryBeforeSend(event)).toBe(event)
+  })
+
+  it('should match a catch-all target whose data fetch carries a query', () => {
+    const event = errorEvent(
+      'Invariant: attempted to hard navigate to the same URL /strom/zadania/51/zima/1 https://strom.sk/strom/zadania/51/zima/1',
+      [nextDataFetch(undefined, 'strom/zadania/51/zima/1.json?params=51&params=zima&params=1')],
+    )
+
+    expect(sentryBeforeSend(event)).toBeNull()
+  })
+
+  it('should match the root page to index.json', () => {
+    const event = errorEvent('Invariant: attempted to hard navigate to the same URL / https://strom.sk/', [
+      nextDataFetch(404, 'index.json'),
+    ])
+
+    expect(sentryBeforeSend(event)).toBeNull()
   })
 
   it('should keep the hard-navigation invariant when getServerSideProps answered 5xx', () => {
