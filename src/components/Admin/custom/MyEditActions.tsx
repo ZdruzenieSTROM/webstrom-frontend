@@ -19,9 +19,9 @@ export const MyEditActions: FC = () => {
 
   return (
     <TopToolbar>
-      {/* TODO - UPDATE!: find better way - new RA version also memoizes ShowButton, and it doesn't take the `to` prop
-          as the args for that, meaning it doesn't rerender it when `to` changes */}
-      <ShowButton to={to} />
+      {/* `to` isn't a supported ShowButton prop: it works because rest props are spread after ShowButton's own `to`.
+          The `key` remounts the button on tab change, because ShowButton's memo ignores `to`. */}
+      <ShowButton key={to} to={to} />
       <ListButton label="content.labels.back_to_list" />
     </TopToolbar>
   )
