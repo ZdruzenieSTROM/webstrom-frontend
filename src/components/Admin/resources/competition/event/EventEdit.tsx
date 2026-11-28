@@ -7,6 +7,7 @@ import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
 import {MySimpleForm} from '@/components/Admin/custom/MySimpleForm'
+import {validateDateAfter} from '@/utils/validateDateAfter'
 
 export const EventEdit: FC = () => {
   const translate = useTranslate()
@@ -28,7 +29,7 @@ export const EventEdit: FC = () => {
         <NumberInput source="year" helperText="content.helpers.event_year" validate={required()} />
         <TextInput source="school_year" helperText="content.helpers.school_year" validate={required()} />
         <MyDateTimeInput source="start" validate={required()} />
-        <MyDateTimeInput source="end" validate={required()} />
+        <MyDateTimeInput source="end" validate={[required(), validateDateAfter('start')]} />
         <ReferenceInput source="competition" reference="competition/competition" filter={{competition_type_exclude: 0}}>
           <SelectInput validate={required()} />
         </ReferenceInput>
@@ -46,7 +47,10 @@ export const EventEdit: FC = () => {
               helperText="content.helpers.registration_url"
             />
             <MyDateTimeInput source="registration_link.start" validate={required()} />
-            <MyDateTimeInput source="registration_link.end" validate={required()} />
+            <MyDateTimeInput
+              source="registration_link.end"
+              validate={[required(), validateDateAfter('registration_link.start')]}
+            />
             <TextInput source="registration_link.additional_info" />
           </>
         )}

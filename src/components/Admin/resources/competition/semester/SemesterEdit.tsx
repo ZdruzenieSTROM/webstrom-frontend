@@ -14,6 +14,7 @@ import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyEdit} from '@/components/Admin/custom/MyEdit'
 import {MyEditToolbar} from '@/components/Admin/custom/MyEditToolbar'
 import {MyTabbedForm} from '@/components/Admin/custom/MyTabbedForm'
+import {validateDateAfter} from '@/utils/validateDateAfter'
 
 import {seasonCodeStrings} from '../../../seasonCodeStrings'
 
@@ -36,7 +37,7 @@ export const SemesterEdit: FC = () => (
         <SelectInput source="season_code" choices={seasonCodeStrings} validate={required()} />
         <TextInput source="school_year" helperText="content.helpers.school_year" />
         <MyDateTimeInput source="start" />
-        <MyDateTimeInput source="end" />
+        <MyDateTimeInput source="end" validate={validateDateAfter('start')} />
         <ReferenceArrayInput source="late_tags" reference="competition/late-tag">
           <CheckboxGroupInput
             label="resources.competition/semester.fields.late_tags"

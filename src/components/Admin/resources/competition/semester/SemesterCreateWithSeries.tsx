@@ -32,6 +32,7 @@ import {ProblemsImportDialog} from '@/components/Admin/custom/latex-import/Probl
 import {MyDateTimeInput} from '@/components/Admin/custom/MyDateTimeInput'
 import {MyDateTimeSplitInput} from '@/components/Admin/custom/MyDateTimeSplitInput'
 import {seasonCodeStrings} from '@/components/Admin/seasonCodeStrings'
+import {validateDateAfter} from '@/utils/validateDateAfter'
 
 import {bumpSchoolYear, shiftIso} from './semesterPrefillHelpers'
 
@@ -357,7 +358,7 @@ const FormBody: FC = () => {
           {translate('content.semester_with_series.end_heading')}
         </Typography>
         <Box sx={{mb: 1, opacity: 0.7}}>{translate('content.semester_with_series.end_hint')}</Box>
-        <MyDateTimeInput source="end" validate={required()} />
+        <MyDateTimeInput source="end" validate={[required(), validateDateAfter('start')]} />
       </Box>
 
       <Box>
