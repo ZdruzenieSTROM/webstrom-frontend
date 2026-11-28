@@ -58,6 +58,8 @@ export default tseslint.config(
     'out/**',
     'build/**',
     'next-env.d.ts',
+    // Claude Code worktrees: other branches' checkouts, linted in their own worktree
+    '.claude/**',
   ]),
   {
     rules: {
